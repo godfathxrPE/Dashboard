@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="./manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
@@ -19,7 +19,7 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js');
+      navigator.serviceWorker.register('./sw.js');
     });
   }
 </script>
@@ -27,7 +27,7 @@
 /* ══ SPLASH ══ */
 #splash {
   position: fixed; inset: 0; z-index: 9999;
-  background-image: url('splash-bg.jpg');
+  background-image: url('./splash-bg.jpg');
   background-size: cover;
   background-position: center;
   opacity: 1;
@@ -2735,6 +2735,132 @@
 </div>
 
 
+
+<script>
+/* ═══════════════════════════════════════════
+   KPI TRACKER
+═══════════════════════════════════════════ */
+const KPI_GOAL = 50;
+const KPI_METRICS = [
+  { id: 'contact',  name: 'Новый контакт',                   pts: 1  },
+  { id: 'demo',     name: 'Демо / встреча с новым клиентом', pts: 3  },
+  { id: 'close',    name: 'Закрытие сделки (новый клиент)',  pts: 15 },
+  { id: 'kp',       name: 'Защита КП',                       pts: 5  },
+  { id: 'interest', name: 'Новая сделка в стадии «интерес»', pts: 2  },
+  { id: 'nps',      name: 'NPS',                             pts: 2  },
+  { id: 'upsell',   name: 'Допродажа текущему клиенту',      pts: 10 },
+  { id: 'lead',     name: 'Передача лида между ролями',      pts: 5  },
+];
+const KPI_DAYS = ['Пн','Вт','Ср','Чт','Пт'];
+
+function kpiTodayIdx() {
+  const d = new Date().getDay(); // 0=вс
+  if (d === 0 || d === 6) return -1; // выходные — не выделяем
+  return d - 1; // пн=0..пт=4
+}
+
+// Загружаем данные. Формат: { counts: { metricId: [пн,вт,ср,чт,пт] } }
+let kpiData = LS.get('wdb_kpi', null);
+if (!kpiData || !kpiData.counts) {
+  kpiData = { counts: {} };
+  KPI_METRICS.forEach(m => { kpiData.counts[m.id] = [0,0,0,0,0]; });
+  LS.set('wdb_kpi', kpiData);
+}
+// Убеждаемся что все метрики есть (на случай добавления новых)
+KPI_METRICS.forEach(m => {
+  if (!kpiData.counts[m.id]) kpiData.counts[m.id] = [0,0,0,0,0];
+});
+
+function kpiSet(metricId, dayIdx, val) {
+  kpiData.counts[metricId][dayIdx] = Math.max(0, parseInt(val) || 0);
+  LS.set('wdb_kpi', kpiData);
+  renderKPI();
+}
+
+function kpiChange(metricId, dayIdx, delta) {
+  const cur = kpiData.counts[metricId][dayIdx] || 0;
+  kpiSet(metricId, dayIdx, cur + delta);
+}
+
+function kpiReset() {
+  if (!confirm('Сбросить все данные KPI?')) return;
+  KPI_METRICS.forEach(m => { kpiData.counts[m.id] = [0,0,0,0,0]; });
+  LS.set('wdb_kpi', kpiData);
+  renderKPI();
+}
+
+function renderKPI() {
+  const table = document.getElementById('kpi-table');
+  if (!table) return;
+  const today = kpiTodayIdx();
+
+  // Считаем итоги по дням
+  const dayTotals = [0,0,0,0,0];
+  KPI_METRICS.forEach(m => {
+    for (let di = 0; di < 5; di++) {
+      dayTotals[di] += (kpiData.counts[m.id][di] || 0) * m.pts;
+    }
+  });
+  const weekTotal = dayTotals.reduce((a,b) => a+b, 0);
+
+  // Обновляем шапку и прогресс-бар
+  const weekNumEl = document.getElementById('kpi-week-num');
+  if (weekNumEl) weekNumEl.textContent = weekTotal;
+
+  const pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
+  const fill = document.getElementById('kpi-progress-fill');
+  const pctEl = document.getElementById('kpi-progress-pct');
+  if (fill) {
+    fill.style.width = pct + '%';
+    fill.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : '');
+  }
+  if (pctEl) pctEl.textContent = pct + '%';
+
+  // Таблица — заголовок
+  let html = '<thead><tr>';
+  html += '<th class="kpi-metric-head">Показатель</th>';
+  KPI_DAYS.forEach((d, di) => {
+    const cls = di === today ? ' kpi-today-col' : '';
+    html += `<th class="${cls}">${d}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  // Строки метрик
+  KPI_METRICS.forEach(m => {
+    html += '<tr>';
+    html += `<td><div class="kpi-metric-name">${m.name}<span class="kpi-pts">${m.pts}&nbsp;б</span></div></td>`;
+    KPI_DAYS.forEach((_, di) => {
+      const val = kpiData.counts[m.id][di] || 0;
+      const tdCls = di === today ? ' kpi-today-col' : '';
+      const inCls = val === 0 ? ' zero' : '';
+      html += `<td class="${tdCls}">
+        <div class="kpi-cell">
+          <button class="kpi-btn" onclick="kpiChange('${m.id}',${di},-1)">−</button>
+          <input class="kpi-input${inCls}" type="number" min="0"
+            value="${val === 0 ? '' : val}"
+            placeholder="·"
+            onchange="kpiSet('${m.id}',${di},this.value)"
+            onblur="kpiSet('${m.id}',${di},this.value)"
+            onclick="event.stopPropagation();this.select()">
+          <button class="kpi-btn" onclick="kpiChange('${m.id}',${di},+1)">+</button>
+        </div></td>`;
+    });
+    html += '</tr>';
+  });
+
+  // Итого строка
+  html += '<tr class="kpi-total-row">';
+  html += '<td><span class="kpi-total-label">Баллы за день</span></td>';
+  KPI_DAYS.forEach((_, di) => {
+    const tdCls = di === today ? ' kpi-today-col' : '';
+    const vCls = dayTotals[di] === 0 ? ' zero' : '';
+    html += `<td class="${tdCls}"><div class="kpi-total-val${vCls}">${dayTotals[di] || '—'}</div></td>`;
+  });
+  html += '</tr></tbody>';
+  table.innerHTML = html;
+}
+</script>
+
 <script>
 /* ═══════════════════════════════════════════
    STORAGE HELPERS
@@ -4242,130 +4368,6 @@ window.addEventListener('load', () => {
 });
 </script>
 
-<script>
-/* ═══════════════════════════════════════════
-   KPI TRACKER
-═══════════════════════════════════════════ */
-const KPI_GOAL = 50;
-const KPI_METRICS = [
-  { id: 'contact',  name: 'Новый контакт',                   pts: 1  },
-  { id: 'demo',     name: 'Демо / встреча с новым клиентом', pts: 3  },
-  { id: 'close',    name: 'Закрытие сделки (новый клиент)',  pts: 15 },
-  { id: 'kp',       name: 'Защита КП',                       pts: 5  },
-  { id: 'interest', name: 'Новая сделка в стадии «интерес»', pts: 2  },
-  { id: 'nps',      name: 'NPS',                             pts: 2  },
-  { id: 'upsell',   name: 'Допродажа текущему клиенту',      pts: 10 },
-  { id: 'lead',     name: 'Передача лида между ролями',      pts: 5  },
-];
-const KPI_DAYS = ['Пн','Вт','Ср','Чт','Пт'];
-
-function kpiTodayIdx() {
-  const d = new Date().getDay(); // 0=вс
-  if (d === 0 || d === 6) return -1; // выходные — не выделяем
-  return d - 1; // пн=0..пт=4
-}
-
-// Загружаем данные. Формат: { counts: { metricId: [пн,вт,ср,чт,пт] } }
-let kpiData = LS.get('wdb_kpi', null);
-if (!kpiData || !kpiData.counts) {
-  kpiData = { counts: {} };
-  KPI_METRICS.forEach(m => { kpiData.counts[m.id] = [0,0,0,0,0]; });
-  LS.set('wdb_kpi', kpiData);
-}
-// Убеждаемся что все метрики есть (на случай добавления новых)
-KPI_METRICS.forEach(m => {
-  if (!kpiData.counts[m.id]) kpiData.counts[m.id] = [0,0,0,0,0];
-});
-
-function kpiSet(metricId, dayIdx, val) {
-  kpiData.counts[metricId][dayIdx] = Math.max(0, parseInt(val) || 0);
-  LS.set('wdb_kpi', kpiData);
-  renderKPI();
-}
-
-function kpiChange(metricId, dayIdx, delta) {
-  const cur = kpiData.counts[metricId][dayIdx] || 0;
-  kpiSet(metricId, dayIdx, cur + delta);
-}
-
-function kpiReset() {
-  if (!confirm('Сбросить все данные KPI?')) return;
-  KPI_METRICS.forEach(m => { kpiData.counts[m.id] = [0,0,0,0,0]; });
-  LS.set('wdb_kpi', kpiData);
-  renderKPI();
-}
-
-function renderKPI() {
-  const table = document.getElementById('kpi-table');
-  if (!table) return;
-  const today = kpiTodayIdx();
-
-  // Считаем итоги по дням
-  const dayTotals = [0,0,0,0,0];
-  KPI_METRICS.forEach(m => {
-    for (let di = 0; di < 5; di++) {
-      dayTotals[di] += (kpiData.counts[m.id][di] || 0) * m.pts;
-    }
-  });
-  const weekTotal = dayTotals.reduce((a,b) => a+b, 0);
-
-  // Обновляем шапку и прогресс-бар
-  const weekNumEl = document.getElementById('kpi-week-num');
-  if (weekNumEl) weekNumEl.textContent = weekTotal;
-
-  const pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
-  const fill = document.getElementById('kpi-progress-fill');
-  const pctEl = document.getElementById('kpi-progress-pct');
-  if (fill) {
-    fill.style.width = pct + '%';
-    fill.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : '');
-  }
-  if (pctEl) pctEl.textContent = pct + '%';
-
-  // Таблица — заголовок
-  let html = '<thead><tr>';
-  html += '<th class="kpi-metric-head">Показатель</th>';
-  KPI_DAYS.forEach((d, di) => {
-    const cls = di === today ? ' kpi-today-col' : '';
-    html += `<th class="${cls}">${d}</th>`;
-  });
-  html += '</tr></thead><tbody>';
-
-  // Строки метрик
-  KPI_METRICS.forEach(m => {
-    html += '<tr>';
-    html += `<td><div class="kpi-metric-name">${m.name}<span class="kpi-pts">${m.pts}&nbsp;б</span></div></td>`;
-    KPI_DAYS.forEach((_, di) => {
-      const val = kpiData.counts[m.id][di] || 0;
-      const tdCls = di === today ? ' kpi-today-col' : '';
-      const inCls = val === 0 ? ' zero' : '';
-      html += `<td class="${tdCls}">
-        <div class="kpi-cell">
-          <button class="kpi-btn" onclick="kpiChange('${m.id}',${di},-1)">−</button>
-          <input class="kpi-input${inCls}" type="number" min="0"
-            value="${val === 0 ? '' : val}"
-            placeholder="·"
-            onchange="kpiSet('${m.id}',${di},this.value)"
-            onblur="kpiSet('${m.id}',${di},this.value)"
-            onclick="event.stopPropagation();this.select()">
-          <button class="kpi-btn" onclick="kpiChange('${m.id}',${di},+1)">+</button>
-        </div></td>`;
-    });
-    html += '</tr>';
-  });
-
-  // Итого строка
-  html += '<tr class="kpi-total-row">';
-  html += '<td><span class="kpi-total-label">Баллы за день</span></td>';
-  KPI_DAYS.forEach((_, di) => {
-    const tdCls = di === today ? ' kpi-today-col' : '';
-    const vCls = dayTotals[di] === 0 ? ' zero' : '';
-    html += `<td class="${tdCls}"><div class="kpi-total-val${vCls}">${dayTotals[di] || '—'}</div></td>`;
-  });
-  html += '</tr></tbody>';
-  table.innerHTML = html;
-}
-</script>
 
 <!-- ══ PWA INSTALL ══ -->
 <script>
