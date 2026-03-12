@@ -67,6 +67,43 @@
   0%, 100% { opacity: 0.3; transform: scale(1); }
   50%       { opacity: 1;   transform: scale(1.3); }
 }
+
+  /* ══ KPI TRACKER ══ */
+  .kpi-table-wrap { overflow-x: auto; }
+  .kpi-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .kpi-table th {
+    padding: 6px 8px; text-align: center;
+    color: var(--text-dim); font-weight: 500;
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  .kpi-table th.kpi-metric-head { text-align: left; min-width: 155px; }
+  .kpi-table td { padding: 3px 5px; border-bottom: 1px solid var(--border2); vertical-align: middle; }
+  .kpi-table tbody tr:last-child td { border-bottom: none; }
+  .kpi-metric-name { color: var(--text); font-size: 12px; display: flex; align-items: center; gap: 6px; }
+  .kpi-pts { font-size: 10px; color: var(--text-mute); background: var(--surface2); border-radius: 4px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
+  .kpi-cell { display: flex; align-items: center; justify-content: center; gap: 3px; }
+  .kpi-btn { width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); font-size: 14px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.12s; flex-shrink: 0; }
+  .kpi-btn:hover { background: var(--accent-l); color: var(--accent); border-color: var(--accent); }
+  .kpi-input { width: 28px; text-align: center; font-size: 13px; font-weight: 600; color: var(--text); background: transparent; border: none; outline: none; font-family: inherit; padding: 0; -moz-appearance: textfield; }
+  .kpi-input::-webkit-inner-spin-button, .kpi-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .kpi-input:focus { color: var(--accent); }
+  .kpi-input.zero { color: var(--text-mute); font-weight: 400; }
+  .kpi-today-col { background: var(--accent-l); }
+  .kpi-total-row td { border-top: 2px solid var(--border); padding-top: 7px; border-bottom: none; }
+  .kpi-total-label { font-weight: 600; font-size: 11px; color: var(--text-dim); }
+  .kpi-total-val { text-align: center; font-weight: 700; font-size: 15px; color: var(--accent); }
+  .kpi-total-val.zero { color: var(--text-mute); font-weight: 400; font-size: 12px; }
+  .kpi-header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .kpi-week-block { display: flex; align-items: baseline; gap: 4px; }
+  .kpi-week-num { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .kpi-week-label { font-size: 11px; color: var(--text-dim); }
+  .kpi-progress-wrap { padding: 8px 0 4px; }
+  .kpi-progress-track { height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .kpi-progress-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.3s ease; }
+  .kpi-progress-fill.done { background: var(--green); }
+  .kpi-progress-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-mute); margin-top: 4px; }
+  .kpi-reset-btn { font-size: 11px; color: var(--text-mute); background: none; border: 1px solid var(--border); border-radius: var(--radius-s); padding: 3px 8px; cursor: pointer; white-space: nowrap; }
+  .kpi-reset-btn:hover { color: var(--red); border-color: var(--red); }
   /* шрифт подключён через <link> в <head> */
 
   /* ═══════════════════════════════════════════════════
@@ -2449,6 +2486,33 @@
     </div>
   </div>
 
+
+  <!-- ══ KPI TRACKER ══ -->
+  <div class="card kpi-block">
+    <div class="card-header">
+      <div class="card-title"><span class="dot" style="background:var(--green)"></span>KPI недели</div>
+      <div class="kpi-header-right">
+        <div class="kpi-week-block">
+          <span class="kpi-week-num" id="kpi-week-num">0</span>
+          <span class="kpi-week-label">/ 50 б</span>
+        </div>
+        <button class="kpi-reset-btn" onclick="kpiReset()">↺ Сброс</button>
+      </div>
+    </div>
+    <div class="kpi-progress-wrap">
+      <div class="kpi-progress-track">
+        <div class="kpi-progress-fill" id="kpi-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="kpi-progress-meta">
+        <span id="kpi-progress-pct">0%</span>
+        <span>Цель: 50 баллов</span>
+      </div>
+    </div>
+    <div class="kpi-table-wrap">
+      <table class="kpi-table" id="kpi-table"></table>
+    </div>
+  </div>
+
 </div><!-- /main -->
 
 <!-- ══ CONTEXT MENU ══ -->
@@ -3150,10 +3214,110 @@ function esc(str) {
 }
 
 /* ═══════════════════════════════════════════
+   KPI TRACKER
+═══════════════════════════════════════════ */
+const KPI_GOAL = 50;
+const KPI_METRICS = [
+  { id: 'contact',  name: 'Новый контакт',                   pts: 1  },
+  { id: 'demo',     name: 'Демо / встреча с новым клиентом', pts: 3  },
+  { id: 'close',    name: 'Закрытие сделки (новый клиент)',  pts: 15 },
+  { id: 'kp',       name: 'Защита КП',                       pts: 5  },
+  { id: 'interest', name: 'Новая сделка в стадии «интерес»', pts: 2  },
+  { id: 'nps',      name: 'NPS',                             pts: 2  },
+  { id: 'upsell',   name: 'Допродажа текущему клиенту',      pts: 10 },
+  { id: 'lead',     name: 'Передача лида между ролями',      pts: 5  },
+];
+const KPI_DAYS = ['Пн','Вт','Ср','Чт','Пт'];
+
+function kpiTodayIdx() {
+  const d = new Date().getDay();
+  if (d === 0 || d === 6) return -1;
+  return d - 1;
+}
+
+let kpiData = LS.get('wdb_kpi', null);
+if (!kpiData || !kpiData.counts) {
+  kpiData = { counts: {} };
+  KPI_METRICS.forEach(function(m) { kpiData.counts[m.id] = [0,0,0,0,0]; });
+  LS.set('wdb_kpi', kpiData);
+}
+KPI_METRICS.forEach(function(m) {
+  if (!kpiData.counts[m.id]) kpiData.counts[m.id] = [0,0,0,0,0];
+});
+
+function kpiSet(metricId, dayIdx, val) {
+  kpiData.counts[metricId][dayIdx] = Math.max(0, parseInt(val) || 0);
+  LS.set('wdb_kpi', kpiData);
+  renderKPI();
+}
+
+function kpiChange(metricId, dayIdx, delta) {
+  kpiSet(metricId, dayIdx, (kpiData.counts[metricId][dayIdx] || 0) + delta);
+}
+
+function kpiReset() {
+  if (!confirm('Сбросить все данные KPI?')) return;
+  KPI_METRICS.forEach(function(m) { kpiData.counts[m.id] = [0,0,0,0,0]; });
+  LS.set('wdb_kpi', kpiData);
+  renderKPI();
+}
+
+function renderKPI() {
+  var table = document.getElementById('kpi-table');
+  if (!table) return;
+  var today = kpiTodayIdx();
+  var dayTotals = [0,0,0,0,0];
+  KPI_METRICS.forEach(function(m) {
+    for (var di = 0; di < 5; di++) {
+      dayTotals[di] += (kpiData.counts[m.id][di] || 0) * m.pts;
+    }
+  });
+  var weekTotal = dayTotals.reduce(function(a,b){return a+b;}, 0);
+  var weekNumEl = document.getElementById('kpi-week-num');
+  if (weekNumEl) weekNumEl.textContent = weekTotal;
+  var pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
+  var fill = document.getElementById('kpi-progress-fill');
+  var pctEl = document.getElementById('kpi-progress-pct');
+  if (fill) { fill.style.width = pct + '%'; fill.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
+  if (pctEl) pctEl.textContent = pct + '%';
+
+  var html = '<thead><tr><th class="kpi-metric-head">Показатель</th>';
+  KPI_DAYS.forEach(function(d, di) {
+    html += '<th class="' + (di===today?'kpi-today-col':'') + '">' + d + '</th>';
+  });
+  html += '</tr></thead><tbody>';
+  KPI_METRICS.forEach(function(m) {
+    html += '<tr><td><div class="kpi-metric-name">' + m.name + '<span class="kpi-pts">' + m.pts + '&nbsp;б</span></div></td>';
+    KPI_DAYS.forEach(function(_, di) {
+      var val = kpiData.counts[m.id][di] || 0;
+      var tdCls = di===today ? 'kpi-today-col' : '';
+      var inCls = val===0 ? ' zero' : '';
+      html += '<td class="' + tdCls + '"><div class="kpi-cell">'
+        + '<button class="kpi-btn" onclick="kpiChange(''+m.id+'','+di+',-1)">−</button>'
+        + '<input class="kpi-input'+inCls+'" type="number" min="0" value="'+(val===0?'':val)+'" placeholder="·"'
+        + ' onchange="kpiSet(''+m.id+'','+di+',this.value)"'
+        + ' onclick="event.stopPropagation();this.select()">'
+        + '<button class="kpi-btn" onclick="kpiChange(''+m.id+'','+di+',+1)">+</button>'
+        + '</div></td>';
+    });
+    html += '</tr>';
+  });
+  html += '<tr class="kpi-total-row"><td><span class="kpi-total-label">Баллы за день</span></td>';
+  KPI_DAYS.forEach(function(_, di) {
+    var tdCls = di===today ? 'kpi-today-col' : '';
+    var vCls = dayTotals[di]===0 ? ' zero' : '';
+    html += '<td class="'+tdCls+'"><div class="kpi-total-val'+vCls+'">'+(dayTotals[di]||'—')+'</div></td>';
+  });
+  html += '</tr></tbody>';
+  table.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
 cleanOldDoneTasks(); // удаляем выполненные задачи старше 10 дней
 renderTasks();
+renderKPI();
 renderProjects();
 renderMeetings();
 renderComms();
@@ -4047,6 +4211,7 @@ try {
       localStorage.setItem(key, JSON.stringify(incoming));
       try {
         if (key === 'wdb_tasks')    { tasks    = incoming; renderTasks(); }
+                    if (key === 'wdb_kpi') { kpiData = incoming; renderKPI(); }
         if (key === 'wdb_projects') { projects = incoming; renderProjects(); }
         if (key === 'wdb_meetings') { meetings = incoming; renderMeetings(); }
         if (key === 'wdb_comms')    { comms    = incoming; renderComms(); }
@@ -4107,6 +4272,7 @@ window.addEventListener('load', () => {
                 localStorage.setItem(key, JSON.stringify(snap.val()));
                 try {
                   if (key === 'wdb_tasks')    { tasks    = snap.val(); renderTasks(); }
+                      if (key === 'wdb_kpi') { kpiData = snap.val(); renderKPI(); }
                   if (key === 'wdb_projects') { projects = snap.val(); renderProjects(); }
                   if (key === 'wdb_meetings') { meetings = snap.val(); renderMeetings(); }
                   if (key === 'wdb_comms')    { comms    = snap.val(); renderComms(); }
