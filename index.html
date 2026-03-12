@@ -3292,12 +3292,13 @@ function renderKPI() {
       var val = kpiData.counts[m.id][di] || 0;
       var tdCls = di===today ? 'kpi-today-col' : '';
       var inCls = val===0 ? ' zero' : '';
+      var mid = m.id;
       html += '<td class="' + tdCls + '"><div class="kpi-cell">'
-        + '<button class="kpi-btn" onclick="kpiChange(''+m.id+'','+di+',-1)">−</button>'
-        + '<input class="kpi-input'+inCls+'" type="number" min="0" value="'+(val===0?'':val)+'" placeholder="·"'
-        + ' onchange="kpiSet(''+m.id+'','+di+',this.value)"'
+        + '<button class="kpi-btn" onclick="kpiChange(\'' + mid + '\',' + di + ',-1)">−</button>'
+        + '<input class="kpi-input' + inCls + '" type="number" min="0" value="' + (val===0?'':val) + '" placeholder="·"'
+        + ' onchange="kpiSet(\'' + mid + '\',' + di + ',this.value)"'
         + ' onclick="event.stopPropagation();this.select()">'
-        + '<button class="kpi-btn" onclick="kpiChange(''+m.id+'','+di+',+1)">+</button>'
+        + '<button class="kpi-btn" onclick="kpiChange(\'' + mid + '\',' + di + ',+1)">+</button>'
         + '</div></td>';
     });
     html += '</tr>';
@@ -4155,7 +4156,7 @@ renderTimer();
    LS уже определён к этому моменту
 ═══════════════════════════════════════════════════ */
 const FB_SYNC_KEYS   = ['wdb_tasks','wdb_projects','wdb_meetings','wdb_comms',
-                        'wdb_notes','wdb_calls','wdb_focus'];
+                        'wdb_notes','wdb_calls','wdb_focus','wdb_kpi'];
 const FB_LOCAL_ONLY  = ['wdb_theme','wdb_timer_sessions'];
 const DB_PATH        = 'oleg';
 
