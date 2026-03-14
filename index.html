@@ -246,6 +246,35 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    /* overflow: visible — нужно для выпадающего меню тем.
+       Прогресс-бар не вылезает за края и без overflow:hidden. */
+  }
+
+  /* ── SCROLL PROGRESS BAR ──
+     Тонкая линия акцентного цвета внизу хедера.
+     Паттерн: Reading Indicator — используют Medium, Linear, Notion.
+     Трюк: абсолютное позиционирование внутри sticky header —
+     бар всегда видим и не сдвигает контент. */
+  #scroll-progress {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--accent);
+    /* ease-out делает движение "физически правдоподобным":
+       быстро в начале, плавно замедляется */
+    transition: width 0.1s ease-out;
+    /* z-index выше бордера хедера */
+    z-index: 1;
+  }
+  /* Тема Aurora — градиентный бар вместо однотонного */
+  html.t-aurora #scroll-progress {
+    background: linear-gradient(90deg, #a060ff, #20e8a0);
+  }
+  /* Тема Midnight — чуть ярче чтобы читался на тёмном */
+  html.t-midnight #scroll-progress {
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(56,200,160,0.5);
   }
   .header-left {
     display: flex;
@@ -2087,14 +2116,237 @@
   }
   @media (max-width:600px) { .sync-label { display:none; } }
 
+  /* ══════════════════════════════════════════
+     АНИМАЦИЯ A: AMBIENT GRADIENT ORBS
+     Медленно дышащий фон — работает на всех темах.
+     Псевдо-элемент body::before уже занят Aurora,
+     поэтому используем отдельный div#bg-orbs
+  ══════════════════════════════════════════ */
+  #bg-orbs {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none; overflow: hidden;
+  }
+  .bg-orb {
+    position: absolute; border-radius: 50%;
+    /* animate только transform+opacity — не вызывает reflow, нулевая нагрузка */
+    animation: orb-float var(--dur, 12s) ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+  @keyframes orb-float {
+    0%   { transform: scale(1) translate(0, 0); opacity: var(--op-lo, 0.5); }
+    33%  { transform: scale(1.12) translate(var(--tx1, 15px), var(--ty1, -10px)); }
+    66%  { transform: scale(0.94) translate(var(--tx2, -8px), var(--ty2, 18px)); opacity: var(--op-hi, 0.85); }
+    100% { transform: scale(1.06) translate(var(--tx3, 10px), var(--ty3, -5px)); opacity: var(--op-lo, 0.5); }
+  }
+
+  /* Тема Claude — бежево-терракотовые орбы */
+  html.t-claude #bg-orbs .orb-1 {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(181,98,42,0.10) 0%, transparent 70%);
+    top: -120px; left: -80px;
+    --dur: 18s; --tx1: 20px; --ty1: -15px; --tx2: -10px; --ty2: 25px; --tx3: 15px; --ty3: -8px;
+    --op-lo: 0.6; --op-hi: 1;
+  }
+  html.t-claude #bg-orbs .orb-2 {
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(46,125,82,0.07) 0%, transparent 70%);
+    bottom: -80px; right: 10%;
+    --dur: 22s; --tx1: -18px; --ty1: -12px; --tx2: 12px; --ty2: -20px; --tx3: -8px; --ty3: 15px;
+    --op-lo: 0.5; --op-hi: 0.9;
+  }
+  html.t-claude #bg-orbs .orb-3 {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(181,98,42,0.07) 0%, transparent 70%);
+    top: 35%; left: 55%;
+    --dur: 28s; --tx1: 25px; --ty1: 10px; --tx2: -15px; --ty2: -18px; --tx3: 8px; --ty3: 22px;
+    --op-lo: 0.4; --op-hi: 0.75;
+  }
+
+  /* Тема Pastel — лавандово-голубые орбы */
+  html.t-pastel #bg-orbs .orb-1 {
+    width: 440px; height: 440px;
+    background: radial-gradient(circle, rgba(122,91,170,0.11) 0%, transparent 70%);
+    top: -130px; left: -60px;
+    --dur: 20s; --tx1: 18px; --ty1: -20px; --tx2: -12px; --ty2: 22px; --tx3: 10px; --ty3: -10px;
+    --op-lo: 0.55; --op-hi: 0.95;
+  }
+  html.t-pastel #bg-orbs .orb-2 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(74,158,192,0.09) 0%, transparent 70%);
+    bottom: -60px; right: 15%;
+    --dur: 25s; --tx1: -20px; --ty1: -10px; --tx2: 14px; --ty2: -22px; --tx3: -6px; --ty3: 18px;
+    --op-lo: 0.45; --op-hi: 0.85;
+  }
+  html.t-pastel #bg-orbs .orb-3 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(200,72,136,0.06) 0%, transparent 70%);
+    top: 40%; left: 60%;
+    --dur: 30s; --tx1: 22px; --ty1: 12px; --tx2: -18px; --ty2: -15px; --tx3: 10px; --ty3: 20px;
+    --op-lo: 0.4; --op-hi: 0.7;
+  }
+
+  /* Тема Forest — зелёно-земляные орбы */
+  html.t-forest #bg-orbs .orb-1 {
+    width: 460px; height: 460px;
+    background: radial-gradient(circle, rgba(78,124,58,0.10) 0%, transparent 70%);
+    top: -140px; left: -100px;
+    --dur: 22s; --tx1: 15px; --ty1: -18px; --tx2: -10px; --ty2: 20px; --tx3: 12px; --ty3: -6px;
+    --op-lo: 0.55; --op-hi: 0.9;
+  }
+  html.t-forest #bg-orbs .orb-2 {
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(184,72,48,0.07) 0%, transparent 70%);
+    bottom: -90px; right: 5%;
+    --dur: 26s; --tx1: -16px; --ty1: -14px; --tx2: 10px; --ty2: -18px; --tx3: -8px; --ty3: 14px;
+    --op-lo: 0.45; --op-hi: 0.82;
+  }
+  html.t-forest #bg-orbs .orb-3 {
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(144,120,40,0.07) 0%, transparent 70%);
+    top: 45%; left: 50%;
+    --dur: 32s; --tx1: 20px; --ty1: 15px; --tx2: -14px; --ty2: -20px; --tx3: 8px; --ty3: 18px;
+    --op-lo: 0.4; --op-hi: 0.72;
+  }
+
+  /* Тема Midnight — тёмная с бирюзово-синими орбами */
+  html.t-midnight #bg-orbs .orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(56,200,160,0.13) 0%, transparent 65%);
+    top: -150px; left: -100px;
+    --dur: 20s; --tx1: 22px; --ty1: -16px; --tx2: -12px; --ty2: 24px; --tx3: 16px; --ty3: -10px;
+    --op-lo: 0.6; --op-hi: 1;
+  }
+  html.t-midnight #bg-orbs .orb-2 {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(88,152,232,0.12) 0%, transparent 65%);
+    bottom: -100px; right: 8%;
+    --dur: 27s; --tx1: -20px; --ty1: -12px; --tx2: 14px; --ty2: -24px; --tx3: -8px; --ty3: 16px;
+    --op-lo: 0.5; --op-hi: 0.9;
+  }
+  html.t-midnight #bg-orbs .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(56,200,128,0.09) 0%, transparent 65%);
+    top: 30%; left: 58%;
+    --dur: 34s; --tx1: 28px; --ty1: 14px; --tx2: -16px; --ty2: -22px; --tx3: 10px; --ty3: 24px;
+    --op-lo: 0.4; --op-hi: 0.78;
+  }
+
+  /* Aurora — орбы уже есть через body::before,
+     но усиливаем через #bg-orbs дополнительным слоем */
+  html.t-aurora #bg-orbs .orb-1 {
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(160,96,255,0.15) 0%, transparent 65%);
+    top: -130px; left: -80px;
+    --dur: 16s; --tx1: 25px; --ty1: -20px; --tx2: -15px; --ty2: 28px; --tx3: 18px; --ty3: -12px;
+    --op-lo: 0.65; --op-hi: 1;
+  }
+  html.t-aurora #bg-orbs .orb-2 {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(32,232,160,0.12) 0%, transparent 65%);
+    bottom: -90px; right: 12%;
+    --dur: 21s; --tx1: -22px; --ty1: -14px; --tx2: 16px; --ty2: -26px; --tx3: -10px; --ty3: 18px;
+    --op-lo: 0.55; --op-hi: 0.92;
+  }
+  html.t-aurora #bg-orbs .orb-3 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(64,184,255,0.10) 0%, transparent 65%);
+    top: 40%; left: 55%;
+    --dur: 29s; --tx1: 30px; --ty1: 16px; --tx2: -18px; --ty2: -24px; --tx3: 12px; --ty3: 26px;
+    --op-lo: 0.45; --op-hi: 0.8;
+  }
+
+  /* Орбы под контентом.
+     ВАЖНО: header выше .main — иначе выпадающее меню тем
+     (z-index:200 внутри header) не вылезет поверх карточек. */
+  .main { position: relative; z-index: 1; }
+  header { z-index: 200 !important; }
+
+  /* ══════════════════════════════════════════
+     АНИМАЦИЯ B: STAGGERED MOUNT REVEAL
+     Карточки появляются при каждой загрузке страницы.
+     Класс .will-reveal скрывает до момента запуска JS.
+  ══════════════════════════════════════════ */
+  .will-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  /* Transition задаётся через inline style в JS (для stagger),
+     здесь только базовый fallback */
+  .reveal-done {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  /* ══════════════════════════════════════════
+     АНИМАЦИЯ C: MICRO-INTERACTIONS
+  ══════════════════════════════════════════ */
+
+  /* Чекбокс bounce — squash & stretch как в Things 3 */
+  @keyframes check-bounce {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.5); }
+    55%  { transform: scale(0.82); }
+    75%  { transform: scale(1.18); }
+    90%  { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+  .task-check.bouncing {
+    animation: check-bounce 0.42s cubic-bezier(.22,.68,0,1.2) forwards;
+  }
+
+  /* Новая задача slide-in снизу */
+  @keyframes task-slide-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .task-card-item.task-new-anim {
+    animation: task-slide-in 0.35s cubic-bezier(.22,.68,0,1.2) forwards;
+  }
+
+  /* Удаление задачи — fade + collapse высоты */
+  @keyframes task-collapse {
+    0%   { opacity: 1; max-height: 60px; margin-bottom: 4px; padding-top: 6px; padding-bottom: 6px; }
+    40%  { opacity: 0; }
+    100% { opacity: 0; max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; }
+  }
+  .task-card-item.task-removing {
+    overflow: hidden;
+    animation: task-collapse 0.3s ease forwards;
+    pointer-events: none;
+  }
+
+  /* Project card hover lift — subtle elevation */
+  .project-card {
+    transition: border-color 0.15s, transform 0.18s cubic-bezier(.22,.68,0,1.1), box-shadow 0.18s ease;
+  }
+  .project-card:not(.expanded):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  }
+  html.t-midnight .project-card:not(.expanded):hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  html.t-aurora .project-card:not(.expanded):hover {
+    box-shadow: 0 4px 24px rgba(160,96,255,0.15);
+  }
+
 </style>
 </head>
 <body>
+
+<!-- ══ AMBIENT ORBS — фоновые орбы, работают на всех темах ══ -->
+<div id="bg-orbs" aria-hidden="true">
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+</div>
 
 <div id="splash"></div>
 
 <!-- HEADER -->
 <header>
+  <!-- Scroll Progress Bar — линия прокрутки внизу хедера -->
+  <div id="scroll-progress"></div>
   <div class="header-left">
     <div class="header-logo">ОП</div>
     <span class="header-title">Рабочий дашборд</span>
@@ -2154,7 +2406,7 @@
 <div class="main">
 
   <!-- ══ ТЕКУЩИЕ ДЕЛА ══ -->
-  <div class="card tasks-block">
+  <div class="card tasks-block will-reveal">
     <div class="card-header">
       <div class="card-title">
         <span class="dot"></span>
@@ -2211,7 +2463,7 @@
   </div>
 
   <!-- ══ ПРАВАЯ КОЛОНКА ══ -->
-  <div class="right-col">
+  <div class="right-col will-reveal">
 
     <!-- ВИДЖЕТ: ДАТА И ВРЕМЯ -->
     <div class="w-clock">
@@ -2458,7 +2710,7 @@
   </div>
 
   <!-- ══ ПРОЕКТЫ ══ -->
-  <div class="card projects-block">
+  <div class="card projects-block will-reveal">
     <div class="card-header">
       <div class="card-title"><span class="dot green"></span>Проекты по маркировке</div>
       <div style="display:flex;gap:6px;">
@@ -4347,6 +4599,141 @@ setTimeout(hideSplash, 2500);
   <div class="fail-reason-opt" onclick="pickFailReason('Отказ')"><span class="icon">✋</span>Отказ</div>
   <div class="fail-reason-opt" onclick="pickFailReason('Другое')"><span class="icon">💬</span>Другое</div>
 </div>
+
+<!-- ══ АНИМАЦИИ: SCROLL PROGRESS + STAGGER + MICRO-INTERACTIONS ══ -->
+<script>
+
+/* ─────────────────────────────────────────────
+   SCROLL PROGRESS BAR
+   Паттерн: Reading Indicator — Medium, Linear, Notion.
+   passive:true — не блокирует прокрутку на мобиле.
+──────────────────────────────────────────────*/
+(function() {
+  var bar = document.getElementById('scroll-progress');
+  if (!bar) return;
+
+  function updateBar() {
+    var doc = document.documentElement;
+    var scrollable = doc.scrollHeight - doc.clientHeight;
+    if (scrollable <= 0) { bar.style.width = '0%'; return; }
+    bar.style.width = ((window.scrollY / scrollable) * 100) + '%';
+  }
+
+  window.addEventListener('scroll', updateBar, { passive: true });
+  updateBar(); // инициализация на случай если страница открылась не с top
+})();
+
+/* ─────────────────────────────────────────────
+   B: STAGGERED MOUNT REVEAL
+   Карточки появляются при каждой загрузке.
+   Двойной rAF: гарантирует что браузер видит
+   opacity:0 до того как добавить reveal-done.
+──────────────────────────────────────────────*/
+function runStaggerReveal() {
+  var els = document.querySelectorAll('.will-reveal');
+  els.forEach(function(el, i) {
+    var delay = 80 + i * 90;
+    el.style.transition =
+      'opacity 0.5s ease ' + delay + 'ms, ' +
+      'transform 0.5s cubic-bezier(.22,.68,0,1.15) ' + delay + 'ms';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        el.classList.add('reveal-done');
+      });
+    });
+  });
+}
+window.addEventListener('load', function() { setTimeout(runStaggerReveal, 50); });
+
+/* ─────────────────────────────────────────────
+   C: MICRO — ЧЕКБОКС BOUNCE
+   Bounce проигрывается ДО rerenderа DOM,
+   поэтому оригинальный toggleTask вызываем
+   с задержкой 160ms.
+──────────────────────────────────────────────*/
+var _origToggleTask = toggleTask;
+window.toggleTask = function(id) {
+  var el = document.querySelector('.task-card-item[data-id="' + id + '"] .task-check');
+  if (el) {
+    el.classList.remove('bouncing');
+    void el.offsetWidth; // форс-рефлоу для перезапуска анимации
+    el.classList.add('bouncing');
+    setTimeout(function() {
+      _origToggleTask(id);
+    }, 160);
+  } else {
+    _origToggleTask(id);
+  }
+};
+
+/* ─────────────────────────────────────────────
+   C: MICRO — SLIDE-IN НОВОЙ ЗАДАЧИ
+   Помечаем уже анимированные элементы через
+   data-animated, чтобы не анимировать повторно.
+──────────────────────────────────────────────*/
+function animateNewTasks() {
+  requestAnimationFrame(function() {
+    var items = document.querySelectorAll('.task-card-item');
+    items.forEach(function(item) {
+      if (!item.dataset.animated) {
+        item.dataset.animated = '1';
+        item.classList.add('task-new-anim');
+        setTimeout(function() { item.classList.remove('task-new-anim'); }, 400);
+      }
+    });
+  });
+}
+
+var _origQuickAdd = quickAdd;
+window.quickAdd = function(lane, input) {
+  _origQuickAdd(lane, input);
+  animateNewTasks();
+};
+
+var _origSaveTask = saveTask;
+window.saveTask = function() {
+  var isNew = !document.getElementById('task-edit-id').value;
+  _origSaveTask();
+  if (isNew) animateNewTasks();
+};
+
+/* ─────────────────────────────────────────────
+   C: MICRO — FADE+COLLAPSE ПРИ УДАЛЕНИИ
+   max-height:60px → 0 — стандартный паттерн,
+   потому что height:auto нельзя анимировать в CSS.
+──────────────────────────────────────────────*/
+var _origDeleteTask = deleteTask;
+window.deleteTask = function(id) {
+  var el = document.querySelector('.task-card-item[data-id="' + id + '"]');
+  if (el) {
+    el.classList.add('task-removing');
+    setTimeout(function() { _origDeleteTask(id); }, 280);
+  } else {
+    _origDeleteTask(id);
+  }
+};
+
+var _origCtxDelete = ctxDelete;
+window.ctxDelete = function() {
+  if (!ctxTaskId) return;
+  var id = ctxTaskId;
+  var el = document.querySelector('.task-card-item[data-id="' + id + '"]');
+  closeCtx();
+  if (el) {
+    el.classList.add('task-removing');
+    setTimeout(function() {
+      tasks = tasks.filter(function(t) { return t.id !== id; });
+      LS.set('wdb_tasks', tasks);
+      renderTasks();
+    }, 280);
+  } else {
+    tasks = tasks.filter(function(t) { return t.id !== id; });
+    LS.set('wdb_tasks', tasks);
+    renderTasks();
+  }
+};
+
+</script>
 
 </body>
 </html>
