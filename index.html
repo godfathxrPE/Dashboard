@@ -351,9 +351,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    /* overflow:hidden нужен чтобы прогресс-бар не вылезал за скруглённые края,
-       если у header когда-нибудь появится border-radius */
-    overflow: hidden;
+    /* overflow: visible — нужно для выпадающего меню тем */
   }
 
   /* ── SCROLL PROGRESS BAR ──
@@ -2362,7 +2360,10 @@
   }
 
   /* Все карточки и header поверх орбов */
-  header, .main { position: relative; z-index: 1; }
+  /* Орбы под контентом. header выше .main — иначе дропдаун меню тем
+     не вылезает поверх карточек (stacking context). */
+  .main { position: relative; z-index: 1; }
+  header { z-index: 200 !important; }
 
   /* ══════════════════════════════════════════
      АНИМАЦИЯ B: STAGGERED MOUNT REVEAL
