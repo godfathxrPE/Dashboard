@@ -4606,7 +4606,8 @@ async function sendMagicLink(email) {
     options: {
       // false = только уже добавленные пользователи могут войти
       // Добавить коллегу: Supabase Dashboard → Authentication → Users → Invite
-      shouldCreateUser: false
+      shouldCreateUser: false,
+      emailRedirectTo: 'https://godfathxrpe.github.io/Dashboard/'
     }
   });
 
