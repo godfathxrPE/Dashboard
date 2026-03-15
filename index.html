@@ -229,18 +229,344 @@
     --radius:8px; --radius-s:5px;
   }
 
-  /* ТЕМА 2: Pastel — лаванда по кейкапам */
-  html.t-pastel {
-    --bg:#f0edf8; --surface:#ffffff; --surface2:#e8e3f4;
-    --border:#d8d0ec; --border2:#c4bade;
-    --text:#26223a; --text-dim:#6a6080; --text-mute:#a89ec0;
-    --accent:#7a5baa; --accent-l:rgba(122,91,170,0.10); --accent-l2:rgba(122,91,170,0.20);
-    --green:#3a9e72; --green-l:rgba(58,158,114,0.10);
-    --red:#c84888;   --red-l:rgba(200,72,136,0.10);
-    --blue:#4a9ec0;  --blue-l:rgba(74,158,192,0.10);
-    --yellow:#8a8a28;--yellow-l:rgba(138,138,40,0.10);
-    --logo-bg:linear-gradient(135deg,#b8a8d8,#90c8e0); --logo-color:#3a2870;
-    --radius:8px; --radius-s:5px;
+  /* ТЕМА 2: Frost — Frosted Glass / Apple-style
+     Философия: тёмно-индиго фон + матовые стеклянные карточки.
+     backdrop-filter: blur + saturate — максимум что даёт CSS без шейдеров.
+     Паттерн: Glassmorphism (Apple HIG, iOS 18+). */
+  html.t-frost {
+    --bg:#0d1020;
+    /* Карточки — полупрозрачное тёмное стекло */
+    --surface:rgba(255,255,255,0.07);
+    --surface2:rgba(255,255,255,0.04);
+    --border:rgba(255,255,255,0.12);
+    --border2:rgba(255,255,255,0.22);
+    --text:#eef2ff;
+    --text-dim:#8898cc;
+    --text-mute:#3a4870;
+    --accent:#5b8aff;
+    --accent-l:rgba(91,138,255,0.12);
+    --accent-l2:rgba(91,138,255,0.22);
+    --green:#34d399;  --green-l:rgba(52,211,153,0.12);
+    --red:#f87171;    --red-l:rgba(248,113,113,0.12);
+    --blue:#60a5fa;   --blue-l:rgba(96,165,250,0.12);
+    --yellow:#fbbf24; --yellow-l:rgba(251,191,36,0.12);
+    --logo-bg:linear-gradient(135deg,#5b8aff,#a78bfa);
+    --logo-color:#fff;
+    --radius:12px; --radius-s:8px;
+  }
+  /* Цветные световые пятна позади стёкол — создают глубину */
+  html.t-frost body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 50% at 15% 20%,  rgba(91,138,255,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 60% at 85% 15%,  rgba(167,139,250,0.14) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 40% at 50% 90%,  rgba(52,211,153,0.10) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 90% 70%,  rgba(251,191,36,0.07) 0%, transparent 60%);
+    animation: frost-drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes frost-drift {
+    0%   { transform: scale(1) translate(0,0); }
+    33%  { transform: scale(1.04) translate(-12px, 8px); }
+    66%  { transform: scale(0.97) translate(8px, -10px); }
+    100% { transform: scale(1.02) translate(-6px, 6px); }
+  }
+  html.t-frost .main { position:relative; z-index:1; }
+  html.t-frost header { position:sticky; top:0; z-index:100; }
+  /* Стеклянный хедер */
+  html.t-frost header {
+    background: rgba(13,16,32,0.6);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+  /* Все карточки — матовое стекло */
+  html.t-frost .card {
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.11);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  html.t-frost .card:hover {
+    border-color: rgba(255,255,255,0.20);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.16);
+  }
+  /* Scroll bar — сапфировый */
+  html.t-frost #scroll-progress {
+    background: linear-gradient(90deg, #5b8aff, #a78bfa);
+    box-shadow: 0 0 6px rgba(91,138,255,0.5);
+  }
+  /* Модальные окна — матовое стекло */
+  html.t-frost .kpi-modal-panel,
+  html.t-frost .modal {
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: rgba(13,16,32,0.75);
+    border-color: rgba(255,255,255,0.15);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 64px rgba(0,0,0,0.5);
+  }
+  /* Панель виджетов */
+  html.t-frost #wc-panel {
+    background: rgba(13,16,32,0.75);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-color: rgba(255,255,255,0.12);
+  }
+  /* Статусы проектов */
+  html.t-frost .status-pill { border:none !important; }
+  html.t-frost .st-0  { background:rgba(255,255,255,0.06); color:var(--text-mute); }
+  html.t-frost .st-1  { background:rgba(96,165,250,0.14);  color:#60a5fa; }
+  html.t-frost .st-2  { background:rgba(96,165,250,0.14);  color:#60a5fa; }
+  html.t-frost .st-3  { background:rgba(251,191,36,0.14);  color:#fbbf24; }
+  html.t-frost .st-4  { background:rgba(251,191,36,0.14);  color:#fbbf24; }
+  html.t-frost .st-5  { background:rgba(91,138,255,0.16);  color:#7ba4ff; }
+  html.t-frost .st-6  { background:rgba(91,138,255,0.20);  color:#7ba4ff; }
+  html.t-frost .st-7  { background:rgba(167,139,250,0.16); color:#c4b5fd; }
+  html.t-frost .st-8  { background:rgba(167,139,250,0.16); color:#c4b5fd; }
+  html.t-frost .st-9  { background:rgba(52,211,153,0.14);  color:#34d399; }
+  html.t-frost .st-10 { background:rgba(52,211,153,0.18);  color:#34d399; }
+  html.t-frost .st-11 { background:rgba(52,211,153,0.26);  color:#34d399; box-shadow:0 0 10px rgba(52,211,153,0.3); }
+  html.t-frost .funnel-step.active {
+    background:var(--accent); border-color:var(--accent); color:#fff;
+    box-shadow: 0 0 12px rgba(91,138,255,0.5);
+  }
+  html.t-frost .project-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  html.t-frost .project-card.expanded {
+    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(91,138,255,0.2);
+  }
+  /* Орбы для frost */
+  html.t-frost #bg-orbs .orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(91,138,255,0.14) 0%, transparent 70%);
+    top: -150px; left: -80px;
+    --dur: 22s; --tx1: 20px; --ty1: -18px; --tx2: -14px; --ty2: 24px; --tx3: 10px; --ty3: -12px;
+    --op-lo: 0.6; --op-hi: 1.0;
+  }
+  html.t-frost #bg-orbs .orb-2 {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%);
+    bottom: -80px; right: 8%;
+    --dur: 28s; --tx1: -18px; --ty1: -12px; --tx2: 16px; --ty2: -20px; --tx3: -8px; --ty3: 16px;
+    --op-lo: 0.5; --op-hi: 0.9;
+  }
+  html.t-frost #bg-orbs .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(52,211,153,0.09) 0%, transparent 70%);
+    top: 38%; left: 58%;
+    --dur: 32s; --tx1: 24px; --ty1: 14px; --tx2: -20px; --ty2: -16px; --tx3: 12px; --ty3: 22px;
+    --op-lo: 0.4; --op-hi: 0.8;
+  }
+
+  /* ══════════════════════════════════════════
+     ТЕМА 3: Paper — Editorial / Financial Times
+     Философия: кремовая бумага, засечки, линейки.
+     Ощущение The Financial Times или Monocle.
+     Паттерн: Editorial / Print-inspired UI.
+  ══════════════════════════════════════════ */
+  html.t-paper {
+    --bg:#f5f0e0;
+    --surface:#fdf8ec;
+    --surface2:#ede8d4;
+    --border:#c8bfa0;
+    --border2:#a89878;
+    --text:#1a1508;
+    --text-dim:#6b5a3e;
+    --text-mute:#a89070;
+    --accent:#8b3a1a;
+    --accent-l:rgba(139,58,26,0.08);
+    --accent-l2:rgba(139,58,26,0.15);
+    --green:#2e6b3a;  --green-l:rgba(46,107,58,0.09);
+    --red:#b02820;    --red-l:rgba(176,40,32,0.09);
+    --blue:#1a4878;   --blue-l:rgba(26,72,120,0.09);
+    --yellow:#7a5c10; --yellow-l:rgba(122,92,16,0.09);
+    --logo-bg:#1a1508; --logo-color:#f5f0e0;
+    --radius:2px; --radius-s:1px;
+    /* Подключаем Georgia как fallback для serif */
+    --font-editorial: 'Georgia', 'Times New Roman', serif;
+  }
+  /* Тонкая горизонтальная линовка — как на бумаге */
+  html.t-paper body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(0,0,0,0.028) 27px,
+      rgba(0,0,0,0.028) 28px
+    );
+  }
+  html.t-paper .main { position:relative; z-index:1; }
+  html.t-paper header { position:sticky; top:0; z-index:100; }
+  /* Хедер — толстая нижняя линия вместо тени */
+  html.t-paper header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--text);
+    box-shadow: none;
+  }
+  /* Карточки — острые углы, жирный верхний бордер */
+  html.t-paper .card {
+    border-radius: 0;
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--text);
+    box-shadow: none;
+  }
+  html.t-paper .card-header {
+    border-bottom: 1px solid var(--border);
+  }
+  /* Заголовки карточек — serif курсив */
+  html.t-paper .card-title {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  /* Точки-индикаторы — прямоугольники вместо кружков */
+  html.t-paper .card-title .dot {
+    border-radius: 0;
+    width: 7px; height: 7px;
+    background: var(--accent);
+  }
+  html.t-paper .card-title .dot.green  { background: var(--green); }
+  html.t-paper .card-title .dot.blue   { background: var(--blue); }
+  html.t-paper .card-title .dot.yellow { background: var(--yellow); }
+  /* Кнопки — строгие прямоугольники */
+  html.t-paper .btn { border-radius: 0; font-family: var(--font-editorial); font-style: italic; }
+  html.t-paper .btn-primary { border-radius: 0; }
+  /* Scroll bar — терракотовый */
+  html.t-paper #scroll-progress { background: var(--accent); }
+  /* Статусы */
+  html.t-paper .st-0  { background: var(--surface2); color: var(--text-mute); border-color: var(--border); border-radius:0; }
+  html.t-paper .st-1  { background: var(--blue-l);   color: var(--blue);   border-radius:0; }
+  html.t-paper .st-2  { background: var(--blue-l);   color: var(--blue);   border-radius:0; }
+  html.t-paper .st-3  { background: var(--yellow-l); color: var(--yellow); border-radius:0; }
+  html.t-paper .st-4  { background: var(--yellow-l); color: var(--yellow); border-radius:0; }
+  html.t-paper .st-5  { background: var(--accent-l); color: var(--accent); border-radius:0; }
+  html.t-paper .st-6  { background: var(--accent-l2);color: var(--accent); border-radius:0; }
+  html.t-paper .st-7  { background: var(--red-l);    color: var(--red);    border-radius:0; }
+  html.t-paper .st-8  { background: var(--red-l);    color: var(--red);    border-radius:0; }
+  html.t-paper .st-9  { background: var(--green-l);  color: var(--green);  border-radius:0; }
+  html.t-paper .st-10 { background: var(--green-l);  color: var(--green);  border-radius:0; }
+  html.t-paper .st-11 { background: rgba(46,107,58,0.18); color: var(--green); border-radius:0; }
+  html.t-paper .funnel-step { border-radius: 0; }
+  html.t-paper .funnel-step.active { background: var(--text); border-color: var(--text); color: var(--surface); }
+  html.t-paper .project-card { border-radius: 0; }
+  html.t-paper .project-card.expanded { border-color: var(--accent); box-shadow: 3px 3px 0 var(--accent); }
+  /* Модалки */
+  html.t-paper .kpi-modal-panel,
+  html.t-paper .modal { border-radius: 0; border-top: 2px solid var(--text); }
+  /* Панель виджетов */
+  html.t-paper #wc-panel { border-radius: 0; border-left: 2px solid var(--text); }
+  /* Орбы Paper — без орбов, бумага плоская */
+  html.t-paper #bg-orbs { display: none; }
+
+  /* ══════════════════════════════════════════
+     ТЕМА 4 (новая нумерация): Sand — Desert Brutalist
+     Философия: люксовый архитектурный минимализм.
+     Нулевой border-radius, жирные 2px линии,
+     терракотово-песочная палитра.
+     Паттерн: Brutalist / Architectural UI (Awwwards).
+  ══════════════════════════════════════════ */
+  html.t-sand {
+    --bg:#f0e8d8;
+    --surface:#faf5ea;
+    --surface2:#e8dfc8;
+    --border:#c0a880;
+    --border2:#a08860;
+    --text:#1c1208;
+    --text-dim:#6b4e2a;
+    --text-mute:#b09070;
+    --accent:#c05828;
+    --accent-l:rgba(192,88,40,0.08);
+    --accent-l2:rgba(192,88,40,0.16);
+    --green:#3a6820;  --green-l:rgba(58,104,32,0.09);
+    --red:#a02010;    --red-l:rgba(160,32,16,0.09);
+    --blue:#284870;   --blue-l:rgba(40,72,112,0.09);
+    --yellow:#806010; --yellow-l:rgba(128,96,16,0.09);
+    --logo-bg:#1c1208; --logo-color:#f0e8d8;
+    /* Ключевое: острые углы везде */
+    --radius:0px; --radius-s:0px;
+  }
+  html.t-sand .main { position:relative; z-index:1; }
+  html.t-sand header { position:sticky; top:0; z-index:100; }
+  /* Хедер — двойная нижняя линия */
+  html.t-sand header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--text);
+    box-shadow: 0 2px 0 var(--accent);
+  }
+  /* Карточки — жирный левый акцентный бордер */
+  html.t-sand .card {
+    border-radius: 0;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border2);
+    transition: border-left-color 0.15s;
+  }
+  html.t-sand .card:hover { border-left-color: var(--accent); }
+  html.t-sand .card-header { border-bottom: 1px solid var(--border); }
+  /* Заголовки карточек — caps, широкий трекинг */
+  html.t-sand .card-title {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  /* Точки — прямоугольники */
+  html.t-sand .card-title .dot {
+    border-radius: 0;
+    width: 8px; height: 3px;
+    background: var(--accent);
+  }
+  html.t-sand .card-title .dot.green  { background: var(--green); }
+  html.t-sand .card-title .dot.blue   { background: var(--blue); }
+  html.t-sand .card-title .dot.yellow { background: var(--yellow); }
+  /* Кнопки — острые */
+  html.t-sand .btn {
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  html.t-sand .btn-primary { border-radius: 0; }
+  html.t-sand .btn:hover { box-shadow: 2px 2px 0 var(--accent); }
+  /* Scroll bar */
+  html.t-sand #scroll-progress { background: var(--accent); height: 3px; }
+  /* Статусы — острые */
+  html.t-sand .status-pill { border-radius: 0 !important; font-weight: 700; letter-spacing: 0.05em; }
+  html.t-sand .funnel-step { border-radius: 0; text-transform: uppercase; font-size: 8px; letter-spacing: 0.06em; }
+  html.t-sand .funnel-step.active { background: var(--text); border-color: var(--text); color: var(--surface); }
+  html.t-sand .project-card { border-radius: 0; border-left: 3px solid var(--border2); }
+  html.t-sand .project-card:hover { border-left-color: var(--accent); }
+  html.t-sand .project-card.expanded { border-left-color: var(--accent); box-shadow: 4px 4px 0 rgba(192,88,40,0.25); }
+  /* Модалки */
+  html.t-sand .kpi-modal-panel,
+  html.t-sand .modal { border-radius: 0; border-top: 3px solid var(--text); }
+  /* Панель виджетов */
+  html.t-sand #wc-panel { border-radius: 0; border-left: 3px solid var(--text); }
+  html.t-sand .wc-row:hover { background: var(--surface2); }
+  /* Орбы Sand — тёплые земляные */
+  html.t-sand #bg-orbs .orb-1 {
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(192,88,40,0.07) 0%, transparent 70%);
+    top: -120px; left: -80px;
+    --dur: 26s; --tx1: 15px; --ty1: -20px; --tx2: -12px; --ty2: 18px; --tx3: 8px; --ty3: -10px;
+    --op-lo: 0.5; --op-hi: 0.9;
+  }
+  html.t-sand #bg-orbs .orb-2 {
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(128,96,16,0.08) 0%, transparent 70%);
+    bottom: -70px; right: 10%;
+    --dur: 30s; --tx1: -16px; --ty1: -10px; --tx2: 12px; --ty2: -16px; --tx3: -6px; --ty3: 12px;
+    --op-lo: 0.4; --op-hi: 0.8;
+  }
+  html.t-sand #bg-orbs .orb-3 {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(58,104,32,0.06) 0%, transparent 70%);
+    top: 42%; left: 62%;
+    --dur: 34s; --tx1: 18px; --ty1: 10px; --tx2: -14px; --ty2: -12px; --tx3: 8px; --ty3: 16px;
+    --op-lo: 0.35; --op-hi: 0.7;
   }
 
   /* ТЕМА 3: Midnight — тёмный изумрудно-синий */
@@ -321,6 +647,262 @@
   }
   html.t-aurora .project-card.expanded {
     box-shadow:0 0 0 1px var(--accent), 0 4px 24px rgba(160,96,255,0.18);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     ТЕМА 6: Neon — Cyberpunk
+     Философия: чёрная бездна + неоновые обводки.
+     Карточки — не закрашенные, а светящиеся изнутри.
+     Каждый цветовой канал имеет свой glow.
+     Паттерн: Outlined Neon Cards (Cyberpunk 2077 UI, Tron).
+  ══════════════════════════════════════════════════════════ */
+  html.t-neon {
+    /* Основа — чёрный как смола, не просто тёмно-синий */
+    --bg:#050508;
+    /* Карточки — почти прозрачные, сам фон просвечивает */
+    --surface:rgba(255,255,255,0.028);
+    --surface2:rgba(255,255,255,0.018);
+    /* Границы — главный выразительный элемент этой темы */
+    --border:rgba(0,238,255,0.22);
+    --border2:rgba(0,238,255,0.40);
+    /* Текст — холодный белый, не кремовый */
+    --text:#e8f8ff;
+    --text-dim:#6ab8cc;
+    --text-mute:#2a5060;
+    /* Акцент — cyan. Это главный цвет темы */
+    --accent:#00eeff;
+    --accent-l:rgba(0,238,255,0.10);
+    --accent-l2:rgba(0,238,255,0.20);
+    /* Зелёный — неоновый лайм */
+    --green:#00ff88;
+    --green-l:rgba(0,255,136,0.10);
+    /* Красный — горячий пинк */
+    --red:#ff2d6e;
+    --red-l:rgba(255,45,110,0.12);
+    /* Синий — электрик */
+    --blue:#4080ff;
+    --blue-l:rgba(64,128,255,0.12);
+    /* Жёлтый — янтарный неон */
+    --yellow:#ffcc00;
+    --yellow-l:rgba(255,204,0,0.10);
+    /* Логотип — градиент cyan→magenta */
+    --logo-bg:linear-gradient(135deg,#00eeff,#ff00aa);
+    --logo-color:#050508;
+    --radius:6px;
+    --radius-s:3px;
+  }
+
+  /* Фоновая сетка — создаёт ощущение киберпанк-пространства.
+     Паттерн: Grid Background — используют Tron, Cyberpunk 2077 UI. */
+  html.t-neon body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,238,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,238,255,0.035) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  /* Угловые засветки — имитируют неоновые лампы за кадром */
+  html.t-neon body::after {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 50% 40% at 0% 0%,   rgba(0,238,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 100% 100%, rgba(255,0,170,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 40% at 100% 0%,  rgba(64,128,255,0.05) 0%, transparent 60%);
+  }
+  html.t-neon .main { position:relative; z-index:1; }
+  html.t-neon header { position:sticky; top:0; z-index:100; }
+
+  /* Scroll progress — градиент cyan→magenta */
+  html.t-neon #scroll-progress {
+    background: linear-gradient(90deg, #00eeff, #ff00aa);
+    box-shadow: 0 0 8px rgba(0,238,255,0.6);
+    height: 1px;
+  }
+
+  /* Все карточки — outline-стиль с glow.
+     Ключевой трюк: box-shadow снаружи создаёт glow,
+     box-shadow inset создаёт внутреннее свечение. */
+  html.t-neon .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 0 0 0 transparent,
+      inset 0 0 20px rgba(0,238,255,0.03);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  html.t-neon .card:hover {
+    border-color: rgba(0,238,255,0.45);
+    box-shadow:
+      0 0 16px rgba(0,238,255,0.08),
+      inset 0 0 20px rgba(0,238,255,0.05);
+  }
+  html.t-neon .card-header {
+    border-bottom-color: rgba(0,238,255,0.12);
+  }
+
+  /* Точки-индикаторы — светятся */
+  html.t-neon .card-title .dot        { background:#00eeff; box-shadow:0 0 6px rgba(0,238,255,0.8); }
+  html.t-neon .card-title .dot.green  { background:#00ff88; box-shadow:0 0 6px rgba(0,255,136,0.8); }
+  html.t-neon .card-title .dot.blue   { background:#4080ff; box-shadow:0 0 6px rgba(64,128,255,0.8); }
+  html.t-neon .card-title .dot.yellow { background:#ffcc00; box-shadow:0 0 6px rgba(255,204,0,0.8); }
+
+  /* Header — стеклянный с неоновой границей снизу */
+  html.t-neon header {
+    background: rgba(5,5,8,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,238,255,0.15);
+    box-shadow: 0 1px 0 rgba(0,238,255,0.08), 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  /* Кнопки — неоновый outline при hover */
+  html.t-neon .btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 8px rgba(0,238,255,0.3);
+  }
+  html.t-neon .btn-primary {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(0,238,255,0.2), inset 0 0 10px rgba(0,238,255,0.05);
+  }
+  html.t-neon .btn-primary:hover {
+    background: rgba(0,238,255,0.1);
+    box-shadow: 0 0 16px rgba(0,238,255,0.4), inset 0 0 16px rgba(0,238,255,0.08);
+    filter: none;
+  }
+
+  /* Бейджи */
+  html.t-neon .badge {
+    background: rgba(0,238,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(0,238,255,0.25);
+  }
+
+  /* Инпуты */
+  html.t-neon input, html.t-neon textarea, html.t-neon select {
+    caret-color: var(--accent);
+  }
+  html.t-neon input:focus, html.t-neon textarea:focus, html.t-neon select:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 8px rgba(0,238,255,0.2);
+  }
+
+  /* Статусы проектов — каждый цвет канала */
+  html.t-neon .status-pill { border: none !important; }
+  html.t-neon .st-0  { background:rgba(255,255,255,0.05); color:var(--text-mute); }
+  html.t-neon .st-1  { background:rgba(64,128,255,0.12);  color:#4080ff; box-shadow:0 0 6px rgba(64,128,255,0.2); }
+  html.t-neon .st-2  { background:rgba(64,128,255,0.12);  color:#4080ff; }
+  html.t-neon .st-3  { background:rgba(255,204,0,0.12);   color:#ffcc00; box-shadow:0 0 6px rgba(255,204,0,0.2); }
+  html.t-neon .st-4  { background:rgba(255,204,0,0.12);   color:#ffcc00; }
+  html.t-neon .st-5  { background:rgba(0,238,255,0.12);   color:#00eeff; box-shadow:0 0 6px rgba(0,238,255,0.2); }
+  html.t-neon .st-6  { background:rgba(0,238,255,0.15);   color:#00eeff; box-shadow:0 0 8px rgba(0,238,255,0.25); }
+  html.t-neon .st-7  { background:rgba(255,0,170,0.12);   color:#ff40cc; box-shadow:0 0 6px rgba(255,0,170,0.2); }
+  html.t-neon .st-8  { background:rgba(255,0,170,0.12);   color:#ff40cc; }
+  html.t-neon .st-9  { background:rgba(0,255,136,0.10);   color:#00ff88; box-shadow:0 0 6px rgba(0,255,136,0.2); }
+  html.t-neon .st-10 { background:rgba(0,255,136,0.14);   color:#00ff88; box-shadow:0 0 8px rgba(0,255,136,0.25); }
+  html.t-neon .st-11 { background:rgba(0,255,136,0.20);   color:#00ff88; box-shadow:0 0 12px rgba(0,255,136,0.40); }
+
+  /* Воронка — активный шаг светится */
+  html.t-neon .funnel-step.active {
+    background: transparent;
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 12px rgba(0,238,255,0.45), inset 0 0 8px rgba(0,238,255,0.08);
+  }
+  html.t-neon .funnel-step.past {
+    background: rgba(0,238,255,0.06);
+    border-color: rgba(0,238,255,0.2);
+    color: rgba(0,238,255,0.6);
+  }
+
+  /* Раскрытая карточка проекта */
+  html.t-neon .project-card.expanded {
+    box-shadow: 0 0 0 1px var(--accent), 0 0 20px rgba(0,238,255,0.12);
+  }
+  html.t-neon .project-card { background: rgba(255,255,255,0.02); }
+
+  /* Progress bars — glow на заполненной части */
+  html.t-neon .kpi-progress-fill {
+    box-shadow: 0 0 8px rgba(0,255,136,0.5);
+  }
+  html.t-neon .kpi-progress-fill.done {
+    box-shadow: 0 0 12px rgba(0,255,136,0.7);
+  }
+
+  /* Таймер — цифры светятся */
+  html.t-neon .w-timer-digits {
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(0,238,255,0.6);
+  }
+  html.t-neon .w-timer-bar {
+    box-shadow: 0 0 8px rgba(0,238,255,0.4);
+  }
+
+  /* Трекер звонков — главное число */
+  html.t-neon .w-ct-num {
+    text-shadow: 0 0 16px currentColor;
+  }
+
+  /* Логотип — pulse анимация */
+  html.t-neon .header-logo {
+    animation: neon-logo-pulse 3s ease-in-out infinite;
+  }
+  @keyframes neon-logo-pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(0,238,255,0.4); }
+    50%       { box-shadow: 0 0 20px rgba(0,238,255,0.7), 0 0 40px rgba(255,0,170,0.3); }
+  }
+
+  /* Скроллбар — тонкий неоновый */
+  html.t-neon ::-webkit-scrollbar-thumb {
+    background: rgba(0,238,255,0.25);
+  }
+  html.t-neon ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,238,255,0.45);
+  }
+
+  /* KPI expand button */
+  html.t-neon .kpi-expand-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 8px rgba(0,238,255,0.3);
+  }
+
+  /* Modal panels */
+  html.t-neon .kpi-modal-panel {
+    background: rgba(5,5,8,0.95);
+    border-color: rgba(0,238,255,0.3);
+    box-shadow: 0 0 40px rgba(0,238,255,0.1), 0 24px 64px rgba(0,0,0,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Overlay модалки */
+  html.t-neon .overlay { background: rgba(0,0,0,0.75); }
+  html.t-neon .modal {
+    background: rgba(5,5,8,0.96);
+    border: 1px solid rgba(0,238,255,0.25);
+    box-shadow: 0 0 30px rgba(0,238,255,0.08), 0 20px 60px rgba(0,0,0,0.7);
+  }
+
+  /* Settings panel */
+  html.t-neon #wc-panel {
+    background: rgba(5,5,8,0.95);
+    border-color: rgba(0,238,255,0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  html.t-neon .wc-toggle input:checked + .wc-toggle-track {
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(0,238,255,0.5);
+  }
+
+  /* Активная строка виджета в панели */
+  html.t-neon .wc-row.is-on .wc-row-icon {
+    background: rgba(0,238,255,0.08);
+    border-color: rgba(0,238,255,0.35);
+    box-shadow: 0 0 8px rgba(0,238,255,0.15);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2266,29 +2848,6 @@
     --op-lo: 0.4; --op-hi: 0.75;
   }
 
-  /* Тема Pastel — лавандово-голубые орбы */
-  html.t-pastel #bg-orbs .orb-1 {
-    width: 440px; height: 440px;
-    background: radial-gradient(circle, rgba(122,91,170,0.11) 0%, transparent 70%);
-    top: -130px; left: -60px;
-    --dur: 20s; --tx1: 18px; --ty1: -20px; --tx2: -12px; --ty2: 22px; --tx3: 10px; --ty3: -10px;
-    --op-lo: 0.55; --op-hi: 0.95;
-  }
-  html.t-pastel #bg-orbs .orb-2 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(74,158,192,0.09) 0%, transparent 70%);
-    bottom: -60px; right: 15%;
-    --dur: 25s; --tx1: -20px; --ty1: -10px; --tx2: 14px; --ty2: -22px; --tx3: -6px; --ty3: 18px;
-    --op-lo: 0.45; --op-hi: 0.85;
-  }
-  html.t-pastel #bg-orbs .orb-3 {
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(200,72,136,0.06) 0%, transparent 70%);
-    top: 40%; left: 60%;
-    --dur: 30s; --tx1: 22px; --ty1: 12px; --tx2: -18px; --ty2: -15px; --tx3: 10px; --ty3: 20px;
-    --op-lo: 0.4; --op-hi: 0.7;
-  }
-
   /* Тема Forest — зелёно-земляные орбы */
   html.t-forest #bg-orbs .orb-1 {
     width: 460px; height: 460px;
@@ -2878,10 +3437,20 @@
           <span class="theme-swatch" style="background:#b5622a;"></span>
           Claude
         </div>
-        <div class="theme-item" onclick="setTheme('t-pastel')">
-          <span class="theme-swatch" style="background:#f0edf8;border:1px solid #d8d0ec;"></span>
-          <span class="theme-swatch" style="background:linear-gradient(135deg,#b8a8d8,#90c8e0);"></span>
-          Pastel
+        <div class="theme-item" onclick="setTheme('t-frost')">
+          <span class="theme-swatch" style="background:#0d1020;border:1px solid rgba(255,255,255,0.15);"></span>
+          <span class="theme-swatch" style="background:linear-gradient(135deg,#5b8aff,#a78bfa);"></span>
+          🧊 Frost
+        </div>
+        <div class="theme-item" onclick="setTheme('t-paper')">
+          <span class="theme-swatch" style="background:#f5f0e0;border:1px solid #c8bfa0;"></span>
+          <span class="theme-swatch" style="background:#8b3a1a;"></span>
+          📰 Paper
+        </div>
+        <div class="theme-item" onclick="setTheme('t-sand')">
+          <span class="theme-swatch" style="background:#f0e8d8;border:1px solid #c0a880;"></span>
+          <span class="theme-swatch" style="background:#c05828;"></span>
+          🏜 Sand
         </div>
         <div class="theme-item" onclick="setTheme('t-midnight')">
           <span class="theme-swatch" style="background:#0f1318;border:1px solid #243040;"></span>
@@ -2897,6 +3466,11 @@
           <span class="theme-swatch" style="background:#0a0e1a;border:1px solid rgba(255,255,255,0.15);"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#a060ff,#20e8a0);"></span>
           ✨ Aurora
+        </div>
+        <div class="theme-item" onclick="setTheme('t-neon')">
+          <span class="theme-swatch" style="background:#050508;border:1px solid rgba(0,238,255,0.3);box-shadow:0 0 6px rgba(0,238,255,0.3);"></span>
+          <span class="theme-swatch" style="background:linear-gradient(135deg,#00eeff,#ff00aa);box-shadow:0 0 6px rgba(0,238,255,0.4);"></span>
+          ⚡ Neon
         </div>
       </div>
     </div>
@@ -4216,7 +4790,7 @@ renderComms();
 /* ═══════════════════════════════════════════
    ТЕМА — переключатель
 ═══════════════════════════════════════════ */
-const THEMES = ['t-claude','t-pastel','t-midnight','t-forest','t-aurora'];
+const THEMES = ['t-claude','t-frost','t-paper','t-sand','t-midnight','t-forest','t-aurora','t-neon'];
 const THEME_KEY = 'wdb_theme';
 
 function setTheme(t) {
