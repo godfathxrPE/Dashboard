@@ -2434,6 +2434,395 @@
     box-shadow: 0 4px 24px rgba(160,96,255,0.15);
   }
 
+  /* ══════════════════════════════════════════
+     ВИДЖЕТ 1: ДЕДЛАЙН-РАДАР
+  ══════════════════════════════════════════ */
+  .w-deadline-radar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .w-dr-label {
+    font-size: 10px; font-weight: 700; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .w-dr-empty { font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0; }
+  .w-dr-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .w-dr-item:last-child { border-bottom: none; }
+  .w-dr-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+  .w-dr-dot.overdue  { background: var(--red); box-shadow: 0 0 5px rgba(192,57,43,0.45); }
+  .w-dr-dot.today    { background: var(--red); }
+  .w-dr-dot.tomorrow { background: var(--yellow); }
+  .w-dr-dot.soon     { background: var(--accent); }
+  .w-dr-name { font-size: 12px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .w-dr-type { font-size: 9px; color: var(--text-mute); background: var(--surface2); border-radius: 3px; padding: 1px 5px; flex-shrink: 0; }
+  .w-dr-days {
+    font-size: 11px; font-weight: 700; flex-shrink: 0; min-width: 36px; text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .w-dr-days.overdue  { color: var(--red); }
+  .w-dr-days.today    { color: var(--red); }
+  .w-dr-days.tomorrow { color: var(--yellow); }
+  .w-dr-days.soon     { color: var(--accent); }
+
+  /* ══════════════════════════════════════════
+     ВИДЖЕТ 2: ПРОГРЕСС ПРОЕКТОВ
+  ══════════════════════════════════════════ */
+  .w-proj-progress {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .w-pp-label {
+    font-size: 10px; font-weight: 700; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px;
+  }
+  .w-pp-empty { font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0; }
+  .w-pp-item { margin-bottom: 10px; }
+  .w-pp-item:last-child { margin-bottom: 0; }
+  .w-pp-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 4px; gap: 8px;
+  }
+  .w-pp-name { font-size: 12px; font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .w-pp-pct { font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .w-pp-track {
+    height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .w-pp-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    transition: width 0.5s ease;
+  }
+  .w-pp-fill.done { background: var(--green); }
+  .w-pp-stage { font-size: 9px; color: var(--text-mute); margin-top: 2px; }
+
+  /* ══════════════════════════════════════════
+     ВИДЖЕТ 3: ПЛАН vs ФАКТ НЕДЕЛИ
+  ══════════════════════════════════════════ */
+  .w-plan-fact {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .w-pf-label {
+    font-size: 10px; font-weight: 700; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .w-pf-week { font-size: 10px; color: var(--text-mute); font-weight: 400; }
+  .w-pf-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+  }
+  .w-pf-row:last-child { border-bottom: none; }
+  .w-pf-metric { font-size: 11px; color: var(--text-dim); width: 100px; flex-shrink: 0; }
+  .w-pf-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .w-pf-bar-row { display: flex; align-items: center; gap: 5px; }
+  .w-pf-bar-label { font-size: 9px; color: var(--text-mute); width: 24px; flex-shrink: 0; }
+  .w-pf-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
+  .w-pf-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  .w-pf-bar-fill.plan { background: var(--border2); }
+  .w-pf-bar-fill.fact { background: var(--accent); }
+  .w-pf-bar-fill.fact.over  { background: var(--green); }
+  .w-pf-bar-fill.fact.under { background: var(--red); }
+  .w-pf-num { font-size: 11px; font-weight: 700; width: 28px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; color: var(--text); }
+  .w-pf-delta {
+    font-size: 10px; font-weight: 600; flex-shrink: 0; min-width: 30px; text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .w-pf-delta.pos { color: var(--green); }
+  .w-pf-delta.neg { color: var(--red); }
+  .w-pf-delta.neu { color: var(--text-mute); }
+  /* Поля плана */
+  .w-pf-inputs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border);
+  }
+  .w-pf-input-row { display: flex; flex-direction: column; gap: 3px; }
+  .w-pf-input-label { font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; }
+  .w-pf-input {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-s); color: var(--text); font-family: inherit;
+    font-size: 12px; font-weight: 600; padding: 4px 7px; outline: none;
+    width: 100%; text-align: center; transition: border-color 0.12s;
+    -moz-appearance: textfield;
+  }
+  .w-pf-input::-webkit-inner-spin-button, .w-pf-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .w-pf-input:focus { border-color: var(--accent); }
+  .w-pf-summary {
+    margin-top: 8px; padding: 7px 10px;
+    background: var(--accent-l); border: 1px solid var(--accent);
+    border-radius: var(--radius-s); font-size: 11px; color: var(--text);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .w-pf-summary b { color: var(--accent); }
+
+  /* ══════════════════════════════════════════
+     ВИДЖЕТ 4: БЫСТРЫЙ ЛОГ ИТОГА
+  ══════════════════════════════════════════ */
+  .w-quick-log {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .w-ql-label {
+    font-size: 10px; font-weight: 700; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .w-ql-types {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px;
+  }
+  .w-ql-type {
+    font-size: 10px; padding: 3px 9px; border-radius: 20px;
+    border: 1px solid var(--border2); cursor: pointer; color: var(--text-mute);
+    background: var(--surface2); transition: all 0.12s; font-family: inherit;
+  }
+  .w-ql-type.active {
+    background: var(--accent-l); border-color: var(--accent); color: var(--accent);
+  }
+  .w-ql-input-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+  .w-ql-input {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-s); color: var(--text); font-family: inherit;
+    font-size: 12px; padding: 6px 9px; outline: none; transition: border-color 0.12s;
+  }
+  .w-ql-input:focus { border-color: var(--accent); }
+  .w-ql-input::placeholder { color: var(--text-mute); }
+  .w-ql-add {
+    padding: 6px 12px; border-radius: var(--radius-s); border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; font-family: inherit; font-size: 11px;
+    font-weight: 500; cursor: pointer; transition: filter 0.15s; flex-shrink: 0;
+  }
+  .w-ql-add:hover { filter: brightness(1.1); }
+  .w-ql-history { max-height: 130px; overflow-y: auto; }
+  .w-ql-entry {
+    display: flex; align-items: flex-start; gap: 7px; padding: 5px 0;
+    border-bottom: 1px solid var(--border); font-size: 11px;
+  }
+  .w-ql-entry:last-child { border-bottom: none; }
+  .w-ql-entry-type {
+    font-size: 9px; padding: 2px 6px; border-radius: 10px; flex-shrink: 0;
+    font-weight: 600; white-space: nowrap;
+  }
+  .ql-call  { background: var(--blue-l);   color: var(--blue);   }
+  .ql-meet  { background: var(--green-l);  color: var(--green);  }
+  .ql-kp    { background: var(--accent-l); color: var(--accent); }
+  .ql-deal  { background: var(--green-l);  color: var(--green);  box-shadow: 0 0 6px rgba(46,125,82,0.3); }
+  .ql-other { background: var(--surface2); color: var(--text-mute); }
+  .w-ql-entry-text { flex: 1; color: var(--text-dim); line-height: 1.4; }
+  .w-ql-entry-time { font-size: 9px; color: var(--text-mute); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .w-ql-entry-del {
+    background: none; border: none; cursor: pointer; color: var(--text-mute);
+    font-size: 11px; padding: 0 2px; line-height: 1; transition: color 0.1s;
+    flex-shrink: 0;
+  }
+  .w-ql-entry-del:hover { color: var(--red); }
+
+  /* ══════════════════════════════════════════════════════
+     WIDGET CONSTRUCTOR — Settings Panel (Slide-over)
+     Паттерн: Slide-over Settings Panel (Linear, Vercel, Notion)
+     Панель выезжает справа поверх контента.
+     Backdrop Dimming — блюр фона создаёт фокус на панели.
+  ══════════════════════════════════════════════════════ */
+
+  /* Кнопка «Настроить» в хедере */
+  #wc-open-btn {
+    display: flex; align-items: center; gap: 5px;
+    padding: 5px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-s);
+    font-size: 11px; font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  #wc-open-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+  #wc-open-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-l2); }
+  #wc-open-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  /* Backdrop — полупрозрачная подложка */
+  #wc-backdrop {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0);
+    pointer-events: none;
+    transition: background 0.3s ease;
+  }
+  #wc-backdrop.open {
+    background: rgba(0,0,0,0.18);
+    pointer-events: all;
+  }
+
+  /* Панель — выезжает справа */
+  #wc-panel {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 300px;
+    z-index: 501;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 40px rgba(0,0,0,0.10);
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    /* cubic-bezier с overshoot — панель «пружинит» при открытии */
+    transition: transform 0.32s cubic-bezier(.22,.68,0,1.12);
+  }
+  #wc-panel.open { transform: translateX(0); }
+
+  /* Хедер панели */
+  .wc-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .wc-header-left {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600;
+  }
+  .wc-header-icon {
+    width: 22px; height: 22px;
+    background: var(--accent-l2);
+    border-radius: var(--radius-s);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .wc-close-btn {
+    width: 24px; height: 24px;
+    border-radius: var(--radius-s);
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-size: 16px; line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    padding: 0; font-family: inherit;
+  }
+  .wc-close-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-l); }
+
+  /* Подзаголовок-подсказка */
+  .wc-sub {
+    padding: 7px 16px;
+    font-size: 10px; color: var(--text-mute);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  /* Тело панели — прокручивается */
+  .wc-body {
+    flex: 1; overflow-y: auto;
+    padding: 4px 0 8px;
+  }
+
+  /* Метка секции */
+  .wc-section-label {
+    padding: 10px 16px 3px;
+    font-size: 9px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-mute);
+  }
+
+  /* Строка виджета */
+  .wc-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: background 0.1s;
+    user-select: none;
+  }
+  .wc-row:hover { background: var(--surface2); }
+
+  .wc-row-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-s);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .wc-row.is-on .wc-row-icon {
+    background: var(--accent-l2);
+    border-color: var(--accent);
+  }
+
+  .wc-row-info { flex: 1; min-width: 0; }
+  .wc-row-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .wc-row-desc { font-size: 10px; color: var(--text-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Toggle-переключатель */
+  .wc-toggle {
+    position: relative; width: 32px; height: 18px; flex-shrink: 0;
+  }
+  .wc-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .wc-toggle-track {
+    position: absolute; inset: 0;
+    background: var(--border2);
+    border-radius: 99px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .wc-toggle input:checked + .wc-toggle-track { background: var(--accent); }
+  .wc-toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 12px; height: 12px;
+    background: #fff; border-radius: 50%;
+    pointer-events: none;
+    /* overshoot — thumb пружинит при переключении */
+    transition: transform 0.22s cubic-bezier(.22,.68,0,1.4);
+  }
+  .wc-toggle input:checked ~ .wc-toggle-thumb { transform: translateX(14px); }
+
+  /* Подвал панели */
+  .wc-footer {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .wc-counter {
+    font-size: 10px; color: var(--text-mute);
+    text-align: center; margin-bottom: 8px;
+  }
+  .wc-counter b { color: var(--accent); }
+  .wc-reset-btn {
+    width: 100%; padding: 7px;
+    background: none;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-s);
+    font-size: 11px; color: var(--text-dim);
+    cursor: pointer; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .wc-reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Виджет-контейнер скрывается плавно */
+  .wc-hidden {
+    display: none !important;
+  }
+
+  /* Aurora тема — стеклянная панель */
+  html.t-aurora #wc-panel {
+    background: rgba(15,20,35,0.90);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
 </style>
 </head>
 <body>
@@ -2466,6 +2855,14 @@
     <button id="pwa-install-btn" onclick="installPWA()" title="Установить приложение" style="display:none;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface);color:var(--text-dim);font-size:12px;cursor:pointer;font-family:inherit;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Установить
+    </button>
+    <!-- WIDGET CONSTRUCTOR BUTTON -->
+    <button id="wc-open-btn" onclick="wcToggle()" title="Настроить виджеты">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
+        <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
+      </svg>
+      Виджеты
     </button>
     <!-- THEME SWITCHER -->
     <div class="theme-switcher" id="theme-switcher">
@@ -2570,7 +2967,7 @@
   <div class="right-col will-reveal">
 
     <!-- ВИДЖЕТ: ДАТА И ВРЕМЯ -->
-    <div class="w-clock">
+    <div class="w-clock" data-widget-id="clock">
       <div class="w-clock-time" id="w-time">--:--:--</div>
       <div class="w-clock-row">
         <div class="w-clock-date" id="w-date">загрузка...</div>
@@ -2579,7 +2976,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ФОКУС ДНЯ -->
-    <div class="w-focus">
+    <div class="w-focus" data-widget-id="focus">
       <div class="w-focus-label">🎯 Фокус дня</div>
       <input class="w-focus-input" id="w-focus-input"
         placeholder="Одно главное дело на сегодня..."
@@ -2588,7 +2985,7 @@
     </div>
 
     <!-- ВИДЖЕТ: МИНИ-СТАТИСТИКА -->
-    <div class="w-stats">
+    <div class="w-stats" data-widget-id="stats">
       <div class="w-stats-label">📊 Сейчас в работе</div>
       <div class="w-stats-grid">
         <div class="w-stat-item">
@@ -2611,7 +3008,7 @@
     </div>
 
     <!-- ВИДЖЕТ: POMODORO ТАЙМЕР -->
-    <div class="w-timer">
+    <div class="w-timer" data-widget-id="timer">
       <div class="w-timer-label">
         <span>⏱ Таймер</span>
         <div class="w-timer-mode-btns">
@@ -2640,7 +3037,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ТРЕКЕР ЗВОНКОВ ЗА ДЕНЬ -->
-    <div class="w-call-tracker">
+    <div class="w-call-tracker" data-widget-id="call-tracker">
       <div class="w-call-tracker-label">
         <span>📞 Звонки сегодня</span>
         <button class="w-cr-reset" onclick="resetDayReport()">сброс дня</button>
@@ -2687,7 +3084,7 @@
     </div>
 
     <!-- ВИДЖЕТ: РЕЗУЛЬТАТИВНОСТЬ ЗВОНКОВ -->
-    <div class="w-call-results">
+    <div class="w-call-results" data-widget-id="call-results">
       <div class="w-cr-label">🎯 Результат звонков (сегодня)</div>
       <div class="w-cr-btns">
         <button class="w-cr-btn success" onclick="callResultAdd('success')" title="Дозвонился, поговорил">
@@ -2716,7 +3113,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ВОРОНКА НЕДЕЛИ -->
-    <div class="w-funnel">
+    <div class="w-funnel" data-widget-id="funnel">
       <div class="w-fn-label">
         <span>🔻 Воронка недели</span>
         <span class="w-fn-week-label" id="wfn-week-label"></span>
@@ -2764,7 +3161,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ТЕПЛОВАЯ КАРТА НЕДЕЛИ -->
-    <div class="w-heatmap">
+    <div class="w-heatmap" data-widget-id="heatmap">
       <div class="w-hm-label">
         <span>🗓 Активность по часам</span>
         <div class="w-hm-legend">
@@ -2778,8 +3175,72 @@
       <div class="w-hm-grid" id="w-hm-grid"></div>
     </div>
 
+    <!-- ВИДЖЕТ: ДЕДЛАЙН-РАДАР -->
+    <div class="w-deadline-radar" data-widget-id="deadlines">
+      <div class="w-dr-label">
+        <span>🔴 Дедлайн-радар</span>
+        <span id="wdr-count" style="font-size:10px;font-weight:400;"></span>
+      </div>
+      <div id="wdr-list"><div class="w-dr-empty">Нет срочных дедлайнов</div></div>
+    </div>
+
+    <!-- ВИДЖЕТ: ПРОГРЕСС ПРОЕКТОВ -->
+    <div class="w-proj-progress" data-widget-id="proj-progress">
+      <div class="w-pp-label">📈 Прогресс проектов</div>
+      <div id="wpp-list"><div class="w-pp-empty">Проектов пока нет</div></div>
+    </div>
+
+    <!-- ВИДЖЕТ: ПЛАН vs ФАКТ НЕДЕЛИ -->
+    <div class="w-plan-fact" data-widget-id="plan-fact">
+      <div class="w-pf-label">
+        <span>📊 План vs Факт</span>
+        <span class="w-pf-week" id="wpf-week-label"></span>
+      </div>
+      <div id="wpf-rows"></div>
+      <!-- Поля плана -->
+      <div class="w-pf-inputs">
+        <div class="w-pf-input-row">
+          <label class="w-pf-input-label">📞 План звонков</label>
+          <input class="w-pf-input" id="wpf-plan-calls" type="number" min="0" value="200" oninput="savePFPlans();renderPlanFact()">
+        </div>
+        <div class="w-pf-input-row">
+          <label class="w-pf-input-label">🤝 План встреч</label>
+          <input class="w-pf-input" id="wpf-plan-meets" type="number" min="0" value="5" oninput="savePFPlans();renderPlanFact()">
+        </div>
+        <div class="w-pf-input-row">
+          <label class="w-pf-input-label">📄 План КП</label>
+          <input class="w-pf-input" id="wpf-plan-kp" type="number" min="0" value="3" oninput="savePFPlans();renderPlanFact()">
+        </div>
+        <div class="w-pf-input-row">
+          <label class="w-pf-input-label">✅ План сделок</label>
+          <input class="w-pf-input" id="wpf-plan-deals" type="number" min="0" value="1" oninput="savePFPlans();renderPlanFact()">
+        </div>
+      </div>
+      <div class="w-pf-summary" id="wpf-summary" style="display:none"></div>
+    </div>
+
+    <!-- ВИДЖЕТ: БЫСТРЫЙ ЛОГ ИТОГА -->
+    <div class="w-quick-log" data-widget-id="quick-log">
+      <div class="w-ql-label">
+        <span>⚡ Быстрый лог</span>
+        <button class="w-cr-reset" onclick="qlClear()">очистить</button>
+      </div>
+      <div class="w-ql-types">
+        <button class="w-ql-type active" data-type="call"  onclick="qlSelectType(this)">📞 Звонок</button>
+        <button class="w-ql-type"        data-type="meet"  onclick="qlSelectType(this)">🤝 Встреча</button>
+        <button class="w-ql-type"        data-type="kp"    onclick="qlSelectType(this)">📄 КП</button>
+        <button class="w-ql-type"        data-type="deal"  onclick="qlSelectType(this)">✅ Сделка</button>
+        <button class="w-ql-type"        data-type="other" onclick="qlSelectType(this)">💬 Другое</button>
+      </div>
+      <div class="w-ql-input-row">
+        <input class="w-ql-input" id="ql-text" placeholder="Компания / клиент / что произошло..." onkeydown="if(event.key==='Enter')qlAdd()">
+        <button class="w-ql-add" onclick="qlAdd()">+ Добавить</button>
+      </div>
+      <div class="w-ql-history" id="ql-history"></div>
+    </div>
+
     <!-- ВСТРЕЧИ -->
-    <div class="card">
+    <div class="card" data-widget-id="meetings">
       <div class="card-header">
         <div class="card-title"><span class="dot blue"></span>Встречи на неделе</div>
         <button class="btn" onclick="openMeetingModal()">+ Встреча</button>
@@ -2790,7 +3251,7 @@
     </div>
 
     <!-- КОММУНИКАЦИИ -->
-    <div class="card">
+    <div class="card" data-widget-id="comms">
       <div class="card-header">
         <div class="card-title"><span class="dot yellow"></span>Коммуникации</div>
         <button class="btn" onclick="openCommModal()">+ Напоминание</button>
@@ -2801,7 +3262,7 @@
     </div>
 
     <!-- ЗАМЕТКИ -->
-    <div class="card">
+    <div class="card" data-widget-id="notes">
       <div class="card-header">
         <div class="card-title"><span class="dot green"></span>Быстрые заметки</div>
       </div>
@@ -4427,7 +4888,300 @@ function updateStats() {
 updateStats();
 // Обновляем статистику при любом изменении localStorage
 const _origLSset = LS.set.bind(LS);
-LS.set = function(k, v) { _origLSset(k, v); updateStats(); };
+LS.set = function(k, v) {
+  _origLSset(k, v);
+  updateStats();
+  // Перерисовываем новые виджеты при изменении данных
+  if (k === 'wdb_projects' || k === 'wdb_tasks') {
+    renderDeadlineRadar();
+    renderProjProgress();
+  }
+  renderPlanFact();
+};
+
+/* ═══════════════════════════════════════════
+   ВИДЖЕТ 1: ДЕДЛАЙН-РАДАР
+═══════════════════════════════════════════ */
+function renderDeadlineRadar() {
+  const el = document.getElementById('wdr-list');
+  const countEl = document.getElementById('wdr-count');
+  if (!el) return;
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const items = [];
+
+  // Из проектов
+  (LS.get('wdb_projects', [])).forEach(p => {
+    if (!p.deadline) return;
+    const d = new Date(p.deadline + 'T00:00:00');
+    const diff = Math.round((d - today) / 86400000);
+    if (diff <= 5) items.push({ name: p.name, diff, type: 'Проект' });
+  });
+
+  // Из задач с дедлайном
+  (LS.get('wdb_tasks', [])).filter(t => t.deadline && t.lane !== 'done').forEach(t => {
+    const d = new Date(t.deadline + 'T00:00:00');
+    const diff = Math.round((d - today) / 86400000);
+    if (diff <= 5) items.push({ name: t.text, diff, type: 'Задача' });
+  });
+
+  // Из коммуникаций
+  (LS.get('wdb_comms', [])).forEach(c => {
+    if (!c.deadline) return;
+    const d = new Date(c.deadline + 'T00:00:00');
+    const diff = Math.round((d - today) / 86400000);
+    if (diff <= 3) items.push({ name: c.person + (c.topic ? ': ' + c.topic : ''), diff, type: 'Контакт' });
+  });
+
+  items.sort((a,b) => a.diff - b.diff);
+
+  if (countEl) countEl.textContent = items.length ? items.length + ' пунктов' : '';
+
+  if (!items.length) {
+    el.innerHTML = '<div class="w-dr-empty">✓ Срочных дедлайнов нет</div>';
+    return;
+  }
+
+  function getDotClass(diff) {
+    if (diff < 0)  return 'overdue';
+    if (diff === 0) return 'today';
+    if (diff === 1) return 'tomorrow';
+    return 'soon';
+  }
+  function getDaysLabel(diff) {
+    if (diff < 0)  return 'просроч.';
+    if (diff === 0) return 'сегодня';
+    if (diff === 1) return 'завтра';
+    return 'через ' + diff + ' д.';
+  }
+
+  el.innerHTML = items.slice(0, 7).map(item => {
+    const dc = getDotClass(item.diff);
+    return `<div class="w-dr-item">
+      <div class="w-dr-dot ${dc}"></div>
+      <div class="w-dr-name" title="${esc(item.name)}">${esc(item.name)}</div>
+      <span class="w-dr-type">${item.type}</span>
+      <div class="w-dr-days ${dc}">${getDaysLabel(item.diff)}</div>
+    </div>`;
+  }).join('');
+}
+renderDeadlineRadar();
+
+/* ═══════════════════════════════════════════
+   ВИДЖЕТ 2: ПРОГРЕСС ПРОЕКТОВ
+═══════════════════════════════════════════ */
+function renderProjProgress() {
+  const el = document.getElementById('wpp-list');
+  if (!el) return;
+  const projs = LS.get('wdb_projects', []);
+  if (!projs.length) {
+    el.innerHTML = '<div class="w-pp-empty">Проектов пока нет</div>';
+    return;
+  }
+
+  el.innerHTML = projs.map(p => {
+    const stage = parseInt(p.stage) || 0;
+    const total = 11; // 0-11 stages
+    const pct = Math.round((stage / total) * 100);
+    const doneClass = stage >= 11 ? ' done' : '';
+    return `<div class="w-pp-item">
+      <div class="w-pp-top">
+        <div class="w-pp-name" title="${esc(p.name)}">${esc(p.name)}</div>
+        <div class="w-pp-pct">${pct}%</div>
+      </div>
+      <div class="w-pp-track">
+        <div class="w-pp-fill${doneClass}" style="width:${pct}%"></div>
+      </div>
+      <div class="w-pp-stage">${FUNNEL[stage]}${p.deadline ? ' · ' + fmtDate(p.deadline) : ''}</div>
+    </div>`;
+  }).join('');
+}
+renderProjProgress();
+
+/* ═══════════════════════════════════════════
+   ВИДЖЕТ 3: ПЛАН vs ФАКТ НЕДЕЛИ
+═══════════════════════════════════════════ */
+function getPFWeekKey() {
+  const d = new Date();
+  const day = d.getDay() === 0 ? 6 : d.getDay() - 1; // 0=пн
+  const mon = new Date(d); mon.setDate(d.getDate() - day); mon.setHours(0,0,0,0);
+  return `${mon.getFullYear()}_${mon.getMonth()}_${mon.getDate()}`;
+}
+
+function loadPFPlans() {
+  const saved = LS.get('wdb_pf_plans_' + getPFWeekKey(), { calls: 200, meets: 5, kp: 3, deals: 1 });
+  const ids = { calls: 'wpf-plan-calls', meets: 'wpf-plan-meets', kp: 'wpf-plan-kp', deals: 'wpf-plan-deals' };
+  Object.keys(ids).forEach(k => {
+    const inp = document.getElementById(ids[k]);
+    if (inp && inp !== document.activeElement) inp.value = saved[k] ?? { calls:200, meets:5, kp:3, deals:1 }[k];
+  });
+}
+
+function savePFPlans() {
+  const data = {
+    calls: parseInt(document.getElementById('wpf-plan-calls')?.value) || 200,
+    meets: parseInt(document.getElementById('wpf-plan-meets')?.value) || 5,
+    kp:    parseInt(document.getElementById('wpf-plan-kp')?.value)    || 3,
+    deals: parseInt(document.getElementById('wpf-plan-deals')?.value) || 1,
+  };
+  LS.get; // avoid circular
+  localStorage.setItem('wdb_pf_plans_' + getPFWeekKey(), JSON.stringify(data));
+}
+
+function renderPlanFact() {
+  const el = document.getElementById('wpf-rows');
+  const wlEl = document.getElementById('wpf-week-label');
+  if (!el) return;
+
+  // Неделя
+  const d = new Date();
+  const weekNum = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
+  if (wlEl) wlEl.textContent = 'Неделя ' + weekNum;
+
+  const plans = LS.get('wdb_pf_plans_' + getPFWeekKey(), { calls: 200, meets: 5, kp: 3, deals: 1 });
+
+  // Факт: звонки из трекера (суммируем 5 дней недели)
+  const day = d.getDay() === 0 ? 6 : d.getDay() - 1;
+  const mon = new Date(d); mon.setDate(d.getDate() - day); mon.setHours(0,0,0,0);
+  let factCalls = 0;
+  for (let i = 0; i <= day; i++) {
+    const dd = new Date(mon); dd.setDate(mon.getDate() + i);
+    const key = `wdb_call_tracker_${dd.getFullYear()}_${dd.getMonth()}_${dd.getDate()}`;
+    const ct = LS.get(key, { done: 0 });
+    factCalls += ct.done || 0;
+  }
+
+  // Факт: встречи из блока встреч
+  const weekStart = mon.toISOString().split('T')[0];
+  const weekEnd = new Date(mon); weekEnd.setDate(mon.getDate() + 6);
+  const weekEndStr = weekEnd.toISOString().split('T')[0];
+  const factMeets = (LS.get('wdb_meetings', [])).filter(m => m.date >= weekStart && m.date <= weekEndStr).length;
+
+  // Факт: КП и сделки из воронки (ручной ввод из виджета воронки)
+  const weekNum2 = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
+  const funnelKey = `wdb_funnel_${d.getFullYear()}_w${weekNum2}`;
+  const funnelManual = LS.get(funnelKey, { meetings: 0, kp: 0, deals: 0 });
+  const factKP    = funnelManual.kp    || 0;
+  const factDeals = funnelManual.deals || 0;
+
+  const metrics = [
+    { label: '📞 Звонки',  plan: plans.calls, fact: factCalls },
+    { label: '🤝 Встречи', plan: plans.meets, fact: factMeets },
+    { label: '📄 КП',      plan: plans.kp,    fact: factKP    },
+    { label: '✅ Сделки',  plan: plans.deals,  fact: factDeals },
+  ];
+
+  const maxVal = Math.max(1, ...metrics.map(m => Math.max(m.plan, m.fact)));
+
+  el.innerHTML = metrics.map(m => {
+    const planPct = Math.round((m.plan / maxVal) * 100);
+    const factPct = Math.round((m.fact / maxVal) * 100);
+    const delta = m.fact - m.plan;
+    const dClass = delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu';
+    const dText  = delta > 0 ? '+' + delta : delta < 0 ? String(delta) : '=';
+    const factBarCls = delta >= 0 ? ' over' : ' under';
+    return `<div class="w-pf-row">
+      <div class="w-pf-metric">${m.label}</div>
+      <div class="w-pf-bars">
+        <div class="w-pf-bar-row">
+          <span class="w-pf-bar-label" style="color:var(--text-mute)">план</span>
+          <div class="w-pf-bar-wrap"><div class="w-pf-bar-fill plan" style="width:${planPct}%"></div></div>
+          <span class="w-pf-num" style="color:var(--text-mute)">${m.plan}</span>
+        </div>
+        <div class="w-pf-bar-row">
+          <span class="w-pf-bar-label" style="color:var(--accent)">факт</span>
+          <div class="w-pf-bar-wrap"><div class="w-pf-bar-fill fact${factBarCls}" style="width:${factPct}%"></div></div>
+          <span class="w-pf-num">${m.fact}</span>
+        </div>
+      </div>
+      <div class="w-pf-delta ${dClass}">${dText}</div>
+    </div>`;
+  }).join('');
+
+  // Саммари
+  const summaryEl = document.getElementById('wpf-summary');
+  if (summaryEl) {
+    const done = metrics.filter(m => m.fact >= m.plan).length;
+    const total = metrics.length;
+    summaryEl.style.display = '';
+    summaryEl.innerHTML = `Выполнено показателей: <b>${done} / ${total}</b> — ${done === total ? '🎉 отличная неделя!' : done >= 2 ? '👍 хороший темп' : '⚡ нужно ускориться'}`;
+  }
+}
+loadPFPlans();
+renderPlanFact();
+// Обновляем каждые 2 минуты
+setInterval(renderPlanFact, 120000);
+
+/* ═══════════════════════════════════════════
+   ВИДЖЕТ 4: БЫСТРЫЙ ЛОГ ИТОГА
+═══════════════════════════════════════════ */
+let qlActiveType = 'call';
+
+function qlSelectType(btn) {
+  qlActiveType = btn.dataset.type;
+  document.querySelectorAll('.w-ql-type').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ql-text')?.focus();
+}
+
+function qlGetData() {
+  const today = new Date().toDateString();
+  const saved = LS.get('wdb_quicklog', null);
+  if (!saved || saved.date !== today) return [];
+  return saved.entries || [];
+}
+
+function qlSaveData(entries) {
+  localStorage.setItem('wdb_quicklog', JSON.stringify({ date: new Date().toDateString(), entries }));
+}
+
+const QL_TYPE_LABELS = { call: 'Звонок', meet: 'Встреча', kp: 'КП', deal: 'Сделка', other: 'Другое' };
+
+function qlAdd() {
+  const inp = document.getElementById('ql-text');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) { inp.focus(); return; }
+  const entries = qlGetData();
+  const now = new Date();
+  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  entries.unshift({ id: uid(), type: qlActiveType, text, time: timeStr });
+  qlSaveData(entries);
+  inp.value = '';
+  renderQL();
+  inp.focus();
+}
+
+function qlDelete(id) {
+  const entries = qlGetData().filter(e => e.id !== id);
+  qlSaveData(entries);
+  renderQL();
+}
+
+function qlClear() {
+  if (!confirm('Очистить лог за сегодня?')) return;
+  qlSaveData([]);
+  renderQL();
+}
+
+function renderQL() {
+  const el = document.getElementById('ql-history');
+  if (!el) return;
+  const entries = qlGetData();
+  if (!entries.length) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--text-mute);padding:6px 0;text-align:center">Лог пуст — фиксируй итоги за день</div>';
+    return;
+  }
+  el.innerHTML = entries.map(e => `
+    <div class="w-ql-entry">
+      <span class="w-ql-entry-type ql-${e.type}">${QL_TYPE_LABELS[e.type] || e.type}</span>
+      <div class="w-ql-entry-text">${esc(e.text)}</div>
+      <span class="w-ql-entry-time">${e.time}</span>
+      <button class="w-ql-entry-del" onclick="qlDelete('${e.id}')" title="Удалить">✕</button>
+    </div>`).join('');
+}
+renderQL();
 
 /* ── POMODORO ТАЙМЕР ── */
 const TIMER_MODES = { work: 25*60, short: 5*60, long: 15*60 };
@@ -4910,6 +5664,240 @@ window.ctxDelete = function() {
   }
 };
 
+</script>
+
+<!-- ══ WIDGET CONSTRUCTOR — backdrop + panel ══ -->
+<!-- Backdrop Dimming — полупрозрачный фон, закрывает панель по клику -->
+<div id="wc-backdrop" onclick="wcClose()"></div>
+
+<!-- Slide-over панель -->
+<div id="wc-panel">
+  <div class="wc-header">
+    <div class="wc-header-left">
+      <div class="wc-header-icon">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="var(--accent)" stroke-width="1.5">
+          <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
+          <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
+        </svg>
+      </div>
+      Настройка виджетов
+    </div>
+    <button class="wc-close-btn" onclick="wcClose()">×</button>
+  </div>
+  <div class="wc-sub">Включай и выключай блоки на дашборде</div>
+
+  <div class="wc-body" id="wc-body">
+    <!-- строки рендерятся через JS -->
+  </div>
+
+  <div class="wc-footer">
+    <div class="wc-counter">Включено: <b id="wc-on-count">0</b> из <b id="wc-total-count">0</b></div>
+    <button class="wc-reset-btn" onclick="wcResetAll()">Включить все виджеты</button>
+  </div>
+</div>
+
+<!-- ══ WIDGET CONSTRUCTOR JS ══ -->
+<script>
+/* ─────────────────────────────────────────────────────
+   РЕЕСТР ВИДЖЕТОВ
+   Каждый виджет: id совпадает с data-widget-id в HTML,
+   icon — эмодзи, name — название, desc — подсказка,
+   section — группа для секционных меток в панели.
+───────────────────────────────────────────────────── */
+var WC_REGISTRY = [
+  { id: 'clock',        icon: '🕐', name: 'Дата и время',        desc: 'Живые часы + день недели',       section: 'Ориентация' },
+  { id: 'focus',        icon: '🎯', name: 'Фокус дня',           desc: 'Одно главное дело на сегодня',   section: 'Ориентация' },
+  { id: 'stats',        icon: '📊', name: 'Мини-статистика',      desc: 'Проекты, звонки, задачи',        section: 'Ориентация' },
+  { id: 'timer',        icon: '⏱', name: 'Pomodoro таймер',      desc: 'Фокус-сессии 25/5/15 мин',       section: 'Продуктивность' },
+  { id: 'call-tracker', icon: '📞', name: 'Трекер звонков',       desc: 'Счётчик и план на день',         section: 'Продуктивность' },
+  { id: 'call-results', icon: '🎯', name: 'Результат звонков',    desc: 'Успешные, неуспешные, причины',  section: 'Продуктивность' },
+  { id: 'quick-log',    icon: '⚡', name: 'Быстрый лог',          desc: 'Звонки, встречи, КП, сделки',    section: 'Продуктивность' },
+  { id: 'funnel',       icon: '🔻', name: 'Воронка недели',       desc: 'Конверсия по этапам',            section: 'Аналитика' },
+  { id: 'heatmap',      icon: '🗓', name: 'Тепловая карта',       desc: 'Активность по часам недели',     section: 'Аналитика' },
+  { id: 'deadlines',    icon: '🔴', name: 'Дедлайн-радар',        desc: 'Срочные задачи из проектов',     section: 'Аналитика' },
+  { id: 'proj-progress',icon: '📈', name: 'Прогресс проектов',    desc: 'Бары готовности по клиентам',    section: 'Аналитика' },
+  { id: 'plan-fact',    icon: '📊', name: 'План vs Факт',          desc: 'Сравнение план/факт за неделю',  section: 'Аналитика' },
+  { id: 'meetings',     icon: '🤝', name: 'Встречи на неделе',    desc: 'Календарь встреч',               section: 'Коммуникации' },
+  { id: 'comms',        icon: '💬', name: 'Коммуникации',         desc: 'Напоминания по контактам',       section: 'Коммуникации' },
+  { id: 'notes',        icon: '📝', name: 'Быстрые заметки',      desc: 'Свободный текст, черновики',     section: 'Коммуникации' },
+];
+
+/* ─────────────────────────────────────────────────────
+   СОСТОЯНИЕ
+   Загружаем из localStorage — если нет, все включены.
+   Ключ хранения: wdb_widget_visibility
+───────────────────────────────────────────────────── */
+var WC_STORAGE_KEY = 'wdb_widget_visibility';
+
+function wcLoadState() {
+  try {
+    var saved = localStorage.getItem(WC_STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  // По умолчанию — все включены
+  var def = {};
+  WC_REGISTRY.forEach(function(w) { def[w.id] = true; });
+  return def;
+}
+
+function wcSaveState(state) {
+  try { localStorage.setItem(WC_STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+var wcState = wcLoadState();
+
+/* ─────────────────────────────────────────────────────
+   ПРИМЕНЕНИЕ СОСТОЯНИЯ К DOM
+   Скрываем/показываем виджеты по data-widget-id.
+   Используем display:none через класс wc-hidden —
+   не трогаем inline styles самих виджетов.
+───────────────────────────────────────────────────── */
+function wcApplyAll() {
+  WC_REGISTRY.forEach(function(w) {
+    var el = document.querySelector('[data-widget-id="' + w.id + '"]');
+    if (!el) return;
+    if (wcState[w.id]) {
+      el.classList.remove('wc-hidden');
+    } else {
+      el.classList.add('wc-hidden');
+    }
+  });
+}
+
+/* ─────────────────────────────────────────────────────
+   РЕНДЕР СТРОК ПАНЕЛИ
+   Группируем по секциям, рендерим section-label + rows.
+───────────────────────────────────────────────────── */
+function wcRenderPanel() {
+  var body = document.getElementById('wc-body');
+  if (!body) return;
+
+  // Собираем уникальные секции в нужном порядке
+  var sections = [];
+  WC_REGISTRY.forEach(function(w) {
+    if (sections.indexOf(w.section) === -1) sections.push(w.section);
+  });
+
+  var html = '';
+  sections.forEach(function(sec) {
+    html += '<div class="wc-section-label">' + sec + '</div>';
+    WC_REGISTRY.filter(function(w) { return w.section === sec; }).forEach(function(w) {
+      var isOn = wcState[w.id] !== false;
+      html +=
+        '<div class="wc-row' + (isOn ? ' is-on' : '') + '" id="wc-row-' + w.id + '" onclick="wcToggleRow(\'' + w.id + '\')">' +
+          '<div class="wc-row-icon">' + w.icon + '</div>' +
+          '<div class="wc-row-info">' +
+            '<div class="wc-row-name">' + w.name + '</div>' +
+            '<div class="wc-row-desc">' + w.desc + '</div>' +
+          '</div>' +
+          '<label class="wc-toggle" onclick="event.stopPropagation()">' +
+            '<input type="checkbox"' + (isOn ? ' checked' : '') + ' onchange="wcToggleById(\'' + w.id + '\', this.checked)">' +
+            '<div class="wc-toggle-track"></div>' +
+            '<div class="wc-toggle-thumb"></div>' +
+          '</label>' +
+        '</div>';
+    });
+  });
+
+  body.innerHTML = html;
+  wcUpdateCounter();
+}
+
+/* ─────────────────────────────────────────────────────
+   TOGGLE — переключаем один виджет
+   Вызывается и из checkbox, и из клика по всей строке.
+───────────────────────────────────────────────────── */
+function wcToggleById(id, val) {
+  wcState[id] = val;
+  wcSaveState(wcState);
+
+  // Обновляем класс строки
+  var row = document.getElementById('wc-row-' + id);
+  if (row) {
+    row.className = 'wc-row' + (val ? ' is-on' : '');
+    var cb = row.querySelector('input[type=checkbox]');
+    if (cb) cb.checked = val;
+  }
+
+  // Показываем/скрываем виджет
+  var el = document.querySelector('[data-widget-id="' + id + '"]');
+  if (el) {
+    if (val) el.classList.remove('wc-hidden');
+    else el.classList.add('wc-hidden');
+  }
+
+  wcUpdateCounter();
+}
+
+function wcToggleRow(id) {
+  // Клик по строке = инвертируем текущее состояние
+  wcToggleById(id, !wcState[id]);
+}
+
+/* ─────────────────────────────────────────────────────
+   СБРОС — включаем все виджеты
+───────────────────────────────────────────────────── */
+function wcResetAll() {
+  WC_REGISTRY.forEach(function(w) { wcState[w.id] = true; });
+  wcSaveState(wcState);
+  wcRenderPanel();   // перерисовываем строки
+  wcApplyAll();      // показываем все виджеты
+}
+
+/* ─────────────────────────────────────────────────────
+   СЧЁТЧИК в подвале панели
+───────────────────────────────────────────────────── */
+function wcUpdateCounter() {
+  var on = WC_REGISTRY.filter(function(w) { return wcState[w.id] !== false; }).length;
+  var total = WC_REGISTRY.length;
+  var elOn = document.getElementById('wc-on-count');
+  var elTotal = document.getElementById('wc-total-count');
+  if (elOn) elOn.textContent = on;
+  if (elTotal) elTotal.textContent = total;
+}
+
+/* ─────────────────────────────────────────────────────
+   ОТКРЫТИЕ / ЗАКРЫТИЕ ПАНЕЛИ
+   Паттерн: Slide-over с Backdrop Dimming.
+   body overflow:hidden — убирает скролл страницы
+   пока панель открыта.
+───────────────────────────────────────────────────── */
+var wcIsOpen = false;
+
+function wcToggle() {
+  if (wcIsOpen) wcClose(); else wcOpen();
+}
+
+function wcOpen() {
+  wcIsOpen = true;
+  wcRenderPanel();
+  document.getElementById('wc-panel').classList.add('open');
+  document.getElementById('wc-backdrop').classList.add('open');
+  document.getElementById('wc-open-btn').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function wcClose() {
+  wcIsOpen = false;
+  document.getElementById('wc-panel').classList.remove('open');
+  document.getElementById('wc-backdrop').classList.remove('open');
+  document.getElementById('wc-open-btn').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Закрытие по Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && wcIsOpen) wcClose();
+});
+
+/* ─────────────────────────────────────────────────────
+   ИНИЦИАЛИЗАЦИЯ
+   Применяем сохранённое состояние сразу при загрузке —
+   до рендера чтобы не было flash скрытых виджетов.
+───────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  wcApplyAll();
+});
 </script>
 
 </body>
