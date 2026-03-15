@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<!-- ══ SUPABASE AUTH — подключаем библиотеку первой ══ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <meta charset="UTF-8">
 <meta name="viewport"content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="/manifest.json">
@@ -104,111 +107,6 @@
   .kpi-progress-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-mute); margin-top: 4px; }
   .kpi-reset-btn { font-size: 11px; color: var(--text-mute); background: none; border: 1px solid var(--border); border-radius: var(--radius-s); padding: 3px 8px; cursor: pointer; white-space: nowrap; }
   .kpi-reset-btn:hover { color: var(--red); border-color: var(--red); }
-
-  /* ══════════════════════════════════════════
-     KPI EXPAND MODAL
-     Паттерн: Expandable Widget Overlay.
-     Backdrop — полупрозрачный, блюрит фон.
-     Панель — центрирована, прокручивается внутри.
-  ══════════════════════════════════════════ */
-  .kpi-expand-btn {
-    width: 22px; height: 22px;
-    border-radius: var(--radius-s);
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text-dim);
-    font-size: 12px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.12s;
-    flex-shrink: 0;
-    padding: 0;
-  }
-  .kpi-expand-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
-
-  /* Backdrop — перекрывает всё */
-  .kpi-modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    z-index: 800;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-  .kpi-modal-backdrop.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  /* Панель модалки */
-  .kpi-modal-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    width: min(92vw, 820px);
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transform: scale(0.96) translateY(8px);
-    transition: transform 0.22s cubic-bezier(.22,.68,0,1.15);
-    box-shadow: 0 24px 64px rgba(0,0,0,0.18);
-  }
-  .kpi-modal-backdrop.open .kpi-modal-panel {
-    transform: scale(1) translateY(0);
-  }
-
-  /* Хедер панели */
-  .kpi-modal-header {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0;
-  }
-  .kpi-modal-title {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 600; font-size: 14px;
-  }
-
-  /* Кнопка закрытия */
-  .kpi-modal-close {
-    width: 26px; height: 26px;
-    border-radius: var(--radius-s);
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text-dim);
-    font-size: 16px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.12s;
-    padding: 0;
-    line-height: 1;
-  }
-  .kpi-modal-close:hover { border-color: var(--red); color: var(--red); background: var(--red-l); }
-
-  /* Контент панели — прокручивается */
-  .kpi-modal-body {
-    overflow-y: auto;
-    padding: 14px 18px 18px;
-    flex: 1;
-  }
-
-  /* В модалке таблица шире, шрифт чуть крупнее */
-  .kpi-modal-body .kpi-table { font-size: 13px; }
-  .kpi-modal-body .kpi-metric-name { font-size: 13px; }
-  .kpi-modal-body .kpi-btn { width: 24px; height: 24px; font-size: 15px; }
-  .kpi-modal-body .kpi-input { width: 32px; font-size: 14px; }
-  .kpi-modal-body .kpi-progress-wrap { margin-bottom: 6px; }
-
-  /* Тема Aurora — стеклянная панель */
-  html.t-aurora .kpi-modal-panel {
-    background: rgba(15,20,30,0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
   /* шрифт подключён через <link> в <head> */
 
   /* ═══════════════════════════════════════════════════
@@ -229,344 +127,18 @@
     --radius:8px; --radius-s:5px;
   }
 
-  /* ТЕМА 2: Frost — Frosted Glass / Apple-style
-     Философия: тёмно-индиго фон + матовые стеклянные карточки.
-     backdrop-filter: blur + saturate — максимум что даёт CSS без шейдеров.
-     Паттерн: Glassmorphism (Apple HIG, iOS 18+). */
-  html.t-frost {
-    --bg:#0d1020;
-    /* Карточки — полупрозрачное тёмное стекло */
-    --surface:rgba(255,255,255,0.07);
-    --surface2:rgba(255,255,255,0.04);
-    --border:rgba(255,255,255,0.12);
-    --border2:rgba(255,255,255,0.22);
-    --text:#eef2ff;
-    --text-dim:#8898cc;
-    --text-mute:#3a4870;
-    --accent:#5b8aff;
-    --accent-l:rgba(91,138,255,0.12);
-    --accent-l2:rgba(91,138,255,0.22);
-    --green:#34d399;  --green-l:rgba(52,211,153,0.12);
-    --red:#f87171;    --red-l:rgba(248,113,113,0.12);
-    --blue:#60a5fa;   --blue-l:rgba(96,165,250,0.12);
-    --yellow:#fbbf24; --yellow-l:rgba(251,191,36,0.12);
-    --logo-bg:linear-gradient(135deg,#5b8aff,#a78bfa);
-    --logo-color:#fff;
-    --radius:12px; --radius-s:8px;
-  }
-  /* Цветные световые пятна позади стёкол — создают глубину */
-  html.t-frost body::before {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(ellipse 60% 50% at 15% 20%,  rgba(91,138,255,0.18) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 60% at 85% 15%,  rgba(167,139,250,0.14) 0%, transparent 60%),
-      radial-gradient(ellipse 70% 40% at 50% 90%,  rgba(52,211,153,0.10) 0%, transparent 65%),
-      radial-gradient(ellipse 40% 50% at 90% 70%,  rgba(251,191,36,0.07) 0%, transparent 60%);
-    animation: frost-drift 18s ease-in-out infinite alternate;
-  }
-  @keyframes frost-drift {
-    0%   { transform: scale(1) translate(0,0); }
-    33%  { transform: scale(1.04) translate(-12px, 8px); }
-    66%  { transform: scale(0.97) translate(8px, -10px); }
-    100% { transform: scale(1.02) translate(-6px, 6px); }
-  }
-  html.t-frost .main { position:relative; z-index:1; }
-  html.t-frost header { position:sticky; top:0; z-index:100; }
-  /* Стеклянный хедер */
-  html.t-frost header {
-    background: rgba(13,16,32,0.6);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255,255,255,0.10);
-  }
-  /* Все карточки — матовое стекло */
-  html.t-frost .card {
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.11);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
-  }
-  html.t-frost .card:hover {
-    border-color: rgba(255,255,255,0.20);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.16);
-  }
-  /* Scroll bar — сапфировый */
-  html.t-frost #scroll-progress {
-    background: linear-gradient(90deg, #5b8aff, #a78bfa);
-    box-shadow: 0 0 6px rgba(91,138,255,0.5);
-  }
-  /* Модальные окна — матовое стекло */
-  html.t-frost .kpi-modal-panel,
-  html.t-frost .modal {
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    background: rgba(13,16,32,0.75);
-    border-color: rgba(255,255,255,0.15);
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 64px rgba(0,0,0,0.5);
-  }
-  /* Панель виджетов */
-  html.t-frost #wc-panel {
-    background: rgba(13,16,32,0.75);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border-color: rgba(255,255,255,0.12);
-  }
-  /* Статусы проектов */
-  html.t-frost .status-pill { border:none !important; }
-  html.t-frost .st-0  { background:rgba(255,255,255,0.06); color:var(--text-mute); }
-  html.t-frost .st-1  { background:rgba(96,165,250,0.14);  color:#60a5fa; }
-  html.t-frost .st-2  { background:rgba(96,165,250,0.14);  color:#60a5fa; }
-  html.t-frost .st-3  { background:rgba(251,191,36,0.14);  color:#fbbf24; }
-  html.t-frost .st-4  { background:rgba(251,191,36,0.14);  color:#fbbf24; }
-  html.t-frost .st-5  { background:rgba(91,138,255,0.16);  color:#7ba4ff; }
-  html.t-frost .st-6  { background:rgba(91,138,255,0.20);  color:#7ba4ff; }
-  html.t-frost .st-7  { background:rgba(167,139,250,0.16); color:#c4b5fd; }
-  html.t-frost .st-8  { background:rgba(167,139,250,0.16); color:#c4b5fd; }
-  html.t-frost .st-9  { background:rgba(52,211,153,0.14);  color:#34d399; }
-  html.t-frost .st-10 { background:rgba(52,211,153,0.18);  color:#34d399; }
-  html.t-frost .st-11 { background:rgba(52,211,153,0.26);  color:#34d399; box-shadow:0 0 10px rgba(52,211,153,0.3); }
-  html.t-frost .funnel-step.active {
-    background:var(--accent); border-color:var(--accent); color:#fff;
-    box-shadow: 0 0 12px rgba(91,138,255,0.5);
-  }
-  html.t-frost .project-card {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-  html.t-frost .project-card.expanded {
-    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(91,138,255,0.2);
-  }
-  /* Орбы для frost */
-  html.t-frost #bg-orbs .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(91,138,255,0.14) 0%, transparent 70%);
-    top: -150px; left: -80px;
-    --dur: 22s; --tx1: 20px; --ty1: -18px; --tx2: -14px; --ty2: 24px; --tx3: 10px; --ty3: -12px;
-    --op-lo: 0.6; --op-hi: 1.0;
-  }
-  html.t-frost #bg-orbs .orb-2 {
-    width: 360px; height: 360px;
-    background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%);
-    bottom: -80px; right: 8%;
-    --dur: 28s; --tx1: -18px; --ty1: -12px; --tx2: 16px; --ty2: -20px; --tx3: -8px; --ty3: 16px;
-    --op-lo: 0.5; --op-hi: 0.9;
-  }
-  html.t-frost #bg-orbs .orb-3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(52,211,153,0.09) 0%, transparent 70%);
-    top: 38%; left: 58%;
-    --dur: 32s; --tx1: 24px; --ty1: 14px; --tx2: -20px; --ty2: -16px; --tx3: 12px; --ty3: 22px;
-    --op-lo: 0.4; --op-hi: 0.8;
-  }
-
-  /* ══════════════════════════════════════════
-     ТЕМА 3: Paper — Editorial / Financial Times
-     Философия: кремовая бумага, засечки, линейки.
-     Ощущение The Financial Times или Monocle.
-     Паттерн: Editorial / Print-inspired UI.
-  ══════════════════════════════════════════ */
-  html.t-paper {
-    --bg:#f5f0e0;
-    --surface:#fdf8ec;
-    --surface2:#ede8d4;
-    --border:#c8bfa0;
-    --border2:#a89878;
-    --text:#1a1508;
-    --text-dim:#6b5a3e;
-    --text-mute:#a89070;
-    --accent:#8b3a1a;
-    --accent-l:rgba(139,58,26,0.08);
-    --accent-l2:rgba(139,58,26,0.15);
-    --green:#2e6b3a;  --green-l:rgba(46,107,58,0.09);
-    --red:#b02820;    --red-l:rgba(176,40,32,0.09);
-    --blue:#1a4878;   --blue-l:rgba(26,72,120,0.09);
-    --yellow:#7a5c10; --yellow-l:rgba(122,92,16,0.09);
-    --logo-bg:#1a1508; --logo-color:#f5f0e0;
-    --radius:2px; --radius-s:1px;
-    /* Подключаем Georgia как fallback для serif */
-    --font-editorial: 'Georgia', 'Times New Roman', serif;
-  }
-  /* Тонкая горизонтальная линовка — как на бумаге */
-  html.t-paper body::before {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 27px,
-      rgba(0,0,0,0.028) 27px,
-      rgba(0,0,0,0.028) 28px
-    );
-  }
-  html.t-paper .main { position:relative; z-index:1; }
-  html.t-paper header { position:sticky; top:0; z-index:100; }
-  /* Хедер — толстая нижняя линия вместо тени */
-  html.t-paper header {
-    background: var(--surface);
-    border-bottom: 2px solid var(--text);
-    box-shadow: none;
-  }
-  /* Карточки — острые углы, жирный верхний бордер */
-  html.t-paper .card {
-    border-radius: 0;
-    border: 1px solid var(--border);
-    border-top: 2px solid var(--text);
-    box-shadow: none;
-  }
-  html.t-paper .card-header {
-    border-bottom: 1px solid var(--border);
-  }
-  /* Заголовки карточек — serif курсив */
-  html.t-paper .card-title {
-    font-family: var(--font-editorial);
-    font-style: italic;
-    font-size: 13px;
-    letter-spacing: 0;
-  }
-  /* Точки-индикаторы — прямоугольники вместо кружков */
-  html.t-paper .card-title .dot {
-    border-radius: 0;
-    width: 7px; height: 7px;
-    background: var(--accent);
-  }
-  html.t-paper .card-title .dot.green  { background: var(--green); }
-  html.t-paper .card-title .dot.blue   { background: var(--blue); }
-  html.t-paper .card-title .dot.yellow { background: var(--yellow); }
-  /* Кнопки — строгие прямоугольники */
-  html.t-paper .btn { border-radius: 0; font-family: var(--font-editorial); font-style: italic; }
-  html.t-paper .btn-primary { border-radius: 0; }
-  /* Scroll bar — терракотовый */
-  html.t-paper #scroll-progress { background: var(--accent); }
-  /* Статусы */
-  html.t-paper .st-0  { background: var(--surface2); color: var(--text-mute); border-color: var(--border); border-radius:0; }
-  html.t-paper .st-1  { background: var(--blue-l);   color: var(--blue);   border-radius:0; }
-  html.t-paper .st-2  { background: var(--blue-l);   color: var(--blue);   border-radius:0; }
-  html.t-paper .st-3  { background: var(--yellow-l); color: var(--yellow); border-radius:0; }
-  html.t-paper .st-4  { background: var(--yellow-l); color: var(--yellow); border-radius:0; }
-  html.t-paper .st-5  { background: var(--accent-l); color: var(--accent); border-radius:0; }
-  html.t-paper .st-6  { background: var(--accent-l2);color: var(--accent); border-radius:0; }
-  html.t-paper .st-7  { background: var(--red-l);    color: var(--red);    border-radius:0; }
-  html.t-paper .st-8  { background: var(--red-l);    color: var(--red);    border-radius:0; }
-  html.t-paper .st-9  { background: var(--green-l);  color: var(--green);  border-radius:0; }
-  html.t-paper .st-10 { background: var(--green-l);  color: var(--green);  border-radius:0; }
-  html.t-paper .st-11 { background: rgba(46,107,58,0.18); color: var(--green); border-radius:0; }
-  html.t-paper .funnel-step { border-radius: 0; }
-  html.t-paper .funnel-step.active { background: var(--text); border-color: var(--text); color: var(--surface); }
-  html.t-paper .project-card { border-radius: 0; }
-  html.t-paper .project-card.expanded { border-color: var(--accent); box-shadow: 3px 3px 0 var(--accent); }
-  /* Модалки */
-  html.t-paper .kpi-modal-panel,
-  html.t-paper .modal { border-radius: 0; border-top: 2px solid var(--text); }
-  /* Панель виджетов */
-  html.t-paper #wc-panel { border-radius: 0; border-left: 2px solid var(--text); }
-  /* Орбы Paper — без орбов, бумага плоская */
-  html.t-paper #bg-orbs { display: none; }
-
-  /* ══════════════════════════════════════════
-     ТЕМА 4 (новая нумерация): Sand — Desert Brutalist
-     Философия: люксовый архитектурный минимализм.
-     Нулевой border-radius, жирные 2px линии,
-     терракотово-песочная палитра.
-     Паттерн: Brutalist / Architectural UI (Awwwards).
-  ══════════════════════════════════════════ */
-  html.t-sand {
-    --bg:#f0e8d8;
-    --surface:#faf5ea;
-    --surface2:#e8dfc8;
-    --border:#c0a880;
-    --border2:#a08860;
-    --text:#1c1208;
-    --text-dim:#6b4e2a;
-    --text-mute:#b09070;
-    --accent:#c05828;
-    --accent-l:rgba(192,88,40,0.08);
-    --accent-l2:rgba(192,88,40,0.16);
-    --green:#3a6820;  --green-l:rgba(58,104,32,0.09);
-    --red:#a02010;    --red-l:rgba(160,32,16,0.09);
-    --blue:#284870;   --blue-l:rgba(40,72,112,0.09);
-    --yellow:#806010; --yellow-l:rgba(128,96,16,0.09);
-    --logo-bg:#1c1208; --logo-color:#f0e8d8;
-    /* Ключевое: острые углы везде */
-    --radius:0px; --radius-s:0px;
-  }
-  html.t-sand .main { position:relative; z-index:1; }
-  html.t-sand header { position:sticky; top:0; z-index:100; }
-  /* Хедер — двойная нижняя линия */
-  html.t-sand header {
-    background: var(--surface);
-    border-bottom: 2px solid var(--text);
-    box-shadow: 0 2px 0 var(--accent);
-  }
-  /* Карточки — жирный левый акцентный бордер */
-  html.t-sand .card {
-    border-radius: 0;
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--border2);
-    transition: border-left-color 0.15s;
-  }
-  html.t-sand .card:hover { border-left-color: var(--accent); }
-  html.t-sand .card-header { border-bottom: 1px solid var(--border); }
-  /* Заголовки карточек — caps, широкий трекинг */
-  html.t-sand .card-title {
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 10px;
-    font-weight: 700;
-  }
-  /* Точки — прямоугольники */
-  html.t-sand .card-title .dot {
-    border-radius: 0;
-    width: 8px; height: 3px;
-    background: var(--accent);
-  }
-  html.t-sand .card-title .dot.green  { background: var(--green); }
-  html.t-sand .card-title .dot.blue   { background: var(--blue); }
-  html.t-sand .card-title .dot.yellow { background: var(--yellow); }
-  /* Кнопки — острые */
-  html.t-sand .btn {
-    border-radius: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 10px;
-    font-weight: 600;
-  }
-  html.t-sand .btn-primary { border-radius: 0; }
-  html.t-sand .btn:hover { box-shadow: 2px 2px 0 var(--accent); }
-  /* Scroll bar */
-  html.t-sand #scroll-progress { background: var(--accent); height: 3px; }
-  /* Статусы — острые */
-  html.t-sand .status-pill { border-radius: 0 !important; font-weight: 700; letter-spacing: 0.05em; }
-  html.t-sand .funnel-step { border-radius: 0; text-transform: uppercase; font-size: 8px; letter-spacing: 0.06em; }
-  html.t-sand .funnel-step.active { background: var(--text); border-color: var(--text); color: var(--surface); }
-  html.t-sand .project-card { border-radius: 0; border-left: 3px solid var(--border2); }
-  html.t-sand .project-card:hover { border-left-color: var(--accent); }
-  html.t-sand .project-card.expanded { border-left-color: var(--accent); box-shadow: 4px 4px 0 rgba(192,88,40,0.25); }
-  /* Модалки */
-  html.t-sand .kpi-modal-panel,
-  html.t-sand .modal { border-radius: 0; border-top: 3px solid var(--text); }
-  /* Панель виджетов */
-  html.t-sand #wc-panel { border-radius: 0; border-left: 3px solid var(--text); }
-  html.t-sand .wc-row:hover { background: var(--surface2); }
-  /* Орбы Sand — тёплые земляные */
-  html.t-sand #bg-orbs .orb-1 {
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(192,88,40,0.07) 0%, transparent 70%);
-    top: -120px; left: -80px;
-    --dur: 26s; --tx1: 15px; --ty1: -20px; --tx2: -12px; --ty2: 18px; --tx3: 8px; --ty3: -10px;
-    --op-lo: 0.5; --op-hi: 0.9;
-  }
-  html.t-sand #bg-orbs .orb-2 {
-    width: 320px; height: 320px;
-    background: radial-gradient(circle, rgba(128,96,16,0.08) 0%, transparent 70%);
-    bottom: -70px; right: 10%;
-    --dur: 30s; --tx1: -16px; --ty1: -10px; --tx2: 12px; --ty2: -16px; --tx3: -6px; --ty3: 12px;
-    --op-lo: 0.4; --op-hi: 0.8;
-  }
-  html.t-sand #bg-orbs .orb-3 {
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(58,104,32,0.06) 0%, transparent 70%);
-    top: 42%; left: 62%;
-    --dur: 34s; --tx1: 18px; --ty1: 10px; --tx2: -14px; --ty2: -12px; --tx3: 8px; --ty3: 16px;
-    --op-lo: 0.35; --op-hi: 0.7;
+  /* ТЕМА 2: Pastel — лаванда по кейкапам */
+  html.t-pastel {
+    --bg:#f0edf8; --surface:#ffffff; --surface2:#e8e3f4;
+    --border:#d8d0ec; --border2:#c4bade;
+    --text:#26223a; --text-dim:#6a6080; --text-mute:#a89ec0;
+    --accent:#7a5baa; --accent-l:rgba(122,91,170,0.10); --accent-l2:rgba(122,91,170,0.20);
+    --green:#3a9e72; --green-l:rgba(58,158,114,0.10);
+    --red:#c84888;   --red-l:rgba(200,72,136,0.10);
+    --blue:#4a9ec0;  --blue-l:rgba(74,158,192,0.10);
+    --yellow:#8a8a28;--yellow-l:rgba(138,138,40,0.10);
+    --logo-bg:linear-gradient(135deg,#b8a8d8,#90c8e0); --logo-color:#3a2870;
+    --radius:8px; --radius-s:5px;
   }
 
   /* ТЕМА 3: Midnight — тёмный изумрудно-синий */
@@ -649,262 +221,6 @@
     box-shadow:0 0 0 1px var(--accent), 0 4px 24px rgba(160,96,255,0.18);
   }
 
-  /* ══════════════════════════════════════════════════════════
-     ТЕМА 6: Neon — Cyberpunk
-     Философия: чёрная бездна + неоновые обводки.
-     Карточки — не закрашенные, а светящиеся изнутри.
-     Каждый цветовой канал имеет свой glow.
-     Паттерн: Outlined Neon Cards (Cyberpunk 2077 UI, Tron).
-  ══════════════════════════════════════════════════════════ */
-  html.t-neon {
-    /* Основа — чёрный как смола, не просто тёмно-синий */
-    --bg:#050508;
-    /* Карточки — почти прозрачные, сам фон просвечивает */
-    --surface:rgba(255,255,255,0.028);
-    --surface2:rgba(255,255,255,0.018);
-    /* Границы — главный выразительный элемент этой темы */
-    --border:rgba(0,238,255,0.22);
-    --border2:rgba(0,238,255,0.40);
-    /* Текст — холодный белый, не кремовый */
-    --text:#e8f8ff;
-    --text-dim:#6ab8cc;
-    --text-mute:#2a5060;
-    /* Акцент — cyan. Это главный цвет темы */
-    --accent:#00eeff;
-    --accent-l:rgba(0,238,255,0.10);
-    --accent-l2:rgba(0,238,255,0.20);
-    /* Зелёный — неоновый лайм */
-    --green:#00ff88;
-    --green-l:rgba(0,255,136,0.10);
-    /* Красный — горячий пинк */
-    --red:#ff2d6e;
-    --red-l:rgba(255,45,110,0.12);
-    /* Синий — электрик */
-    --blue:#4080ff;
-    --blue-l:rgba(64,128,255,0.12);
-    /* Жёлтый — янтарный неон */
-    --yellow:#ffcc00;
-    --yellow-l:rgba(255,204,0,0.10);
-    /* Логотип — градиент cyan→magenta */
-    --logo-bg:linear-gradient(135deg,#00eeff,#ff00aa);
-    --logo-color:#050508;
-    --radius:6px;
-    --radius-s:3px;
-  }
-
-  /* Фоновая сетка — создаёт ощущение киберпанк-пространства.
-     Паттерн: Grid Background — используют Tron, Cyberpunk 2077 UI. */
-  html.t-neon body::before {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background-image:
-      linear-gradient(rgba(0,238,255,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,238,255,0.035) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-  /* Угловые засветки — имитируют неоновые лампы за кадром */
-  html.t-neon body::after {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(ellipse 50% 40% at 0% 0%,   rgba(0,238,255,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 50% at 100% 100%, rgba(255,0,170,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 30% 40% at 100% 0%,  rgba(64,128,255,0.05) 0%, transparent 60%);
-  }
-  html.t-neon .main { position:relative; z-index:1; }
-  html.t-neon header { position:sticky; top:0; z-index:100; }
-
-  /* Scroll progress — градиент cyan→magenta */
-  html.t-neon #scroll-progress {
-    background: linear-gradient(90deg, #00eeff, #ff00aa);
-    box-shadow: 0 0 8px rgba(0,238,255,0.6);
-    height: 1px;
-  }
-
-  /* Все карточки — outline-стиль с glow.
-     Ключевой трюк: box-shadow снаружи создаёт glow,
-     box-shadow inset создаёт внутреннее свечение. */
-  html.t-neon .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow:
-      0 0 0 0 transparent,
-      inset 0 0 20px rgba(0,238,255,0.03);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  html.t-neon .card:hover {
-    border-color: rgba(0,238,255,0.45);
-    box-shadow:
-      0 0 16px rgba(0,238,255,0.08),
-      inset 0 0 20px rgba(0,238,255,0.05);
-  }
-  html.t-neon .card-header {
-    border-bottom-color: rgba(0,238,255,0.12);
-  }
-
-  /* Точки-индикаторы — светятся */
-  html.t-neon .card-title .dot        { background:#00eeff; box-shadow:0 0 6px rgba(0,238,255,0.8); }
-  html.t-neon .card-title .dot.green  { background:#00ff88; box-shadow:0 0 6px rgba(0,255,136,0.8); }
-  html.t-neon .card-title .dot.blue   { background:#4080ff; box-shadow:0 0 6px rgba(64,128,255,0.8); }
-  html.t-neon .card-title .dot.yellow { background:#ffcc00; box-shadow:0 0 6px rgba(255,204,0,0.8); }
-
-  /* Header — стеклянный с неоновой границей снизу */
-  html.t-neon header {
-    background: rgba(5,5,8,0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,238,255,0.15);
-    box-shadow: 0 1px 0 rgba(0,238,255,0.08), 0 4px 24px rgba(0,0,0,0.4);
-  }
-
-  /* Кнопки — неоновый outline при hover */
-  html.t-neon .btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 8px rgba(0,238,255,0.3);
-  }
-  html.t-neon .btn-primary {
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 10px rgba(0,238,255,0.2), inset 0 0 10px rgba(0,238,255,0.05);
-  }
-  html.t-neon .btn-primary:hover {
-    background: rgba(0,238,255,0.1);
-    box-shadow: 0 0 16px rgba(0,238,255,0.4), inset 0 0 16px rgba(0,238,255,0.08);
-    filter: none;
-  }
-
-  /* Бейджи */
-  html.t-neon .badge {
-    background: rgba(0,238,255,0.1);
-    color: var(--accent);
-    border: 1px solid rgba(0,238,255,0.25);
-  }
-
-  /* Инпуты */
-  html.t-neon input, html.t-neon textarea, html.t-neon select {
-    caret-color: var(--accent);
-  }
-  html.t-neon input:focus, html.t-neon textarea:focus, html.t-neon select:focus {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 8px rgba(0,238,255,0.2);
-  }
-
-  /* Статусы проектов — каждый цвет канала */
-  html.t-neon .status-pill { border: none !important; }
-  html.t-neon .st-0  { background:rgba(255,255,255,0.05); color:var(--text-mute); }
-  html.t-neon .st-1  { background:rgba(64,128,255,0.12);  color:#4080ff; box-shadow:0 0 6px rgba(64,128,255,0.2); }
-  html.t-neon .st-2  { background:rgba(64,128,255,0.12);  color:#4080ff; }
-  html.t-neon .st-3  { background:rgba(255,204,0,0.12);   color:#ffcc00; box-shadow:0 0 6px rgba(255,204,0,0.2); }
-  html.t-neon .st-4  { background:rgba(255,204,0,0.12);   color:#ffcc00; }
-  html.t-neon .st-5  { background:rgba(0,238,255,0.12);   color:#00eeff; box-shadow:0 0 6px rgba(0,238,255,0.2); }
-  html.t-neon .st-6  { background:rgba(0,238,255,0.15);   color:#00eeff; box-shadow:0 0 8px rgba(0,238,255,0.25); }
-  html.t-neon .st-7  { background:rgba(255,0,170,0.12);   color:#ff40cc; box-shadow:0 0 6px rgba(255,0,170,0.2); }
-  html.t-neon .st-8  { background:rgba(255,0,170,0.12);   color:#ff40cc; }
-  html.t-neon .st-9  { background:rgba(0,255,136,0.10);   color:#00ff88; box-shadow:0 0 6px rgba(0,255,136,0.2); }
-  html.t-neon .st-10 { background:rgba(0,255,136,0.14);   color:#00ff88; box-shadow:0 0 8px rgba(0,255,136,0.25); }
-  html.t-neon .st-11 { background:rgba(0,255,136,0.20);   color:#00ff88; box-shadow:0 0 12px rgba(0,255,136,0.40); }
-
-  /* Воронка — активный шаг светится */
-  html.t-neon .funnel-step.active {
-    background: transparent;
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 12px rgba(0,238,255,0.45), inset 0 0 8px rgba(0,238,255,0.08);
-  }
-  html.t-neon .funnel-step.past {
-    background: rgba(0,238,255,0.06);
-    border-color: rgba(0,238,255,0.2);
-    color: rgba(0,238,255,0.6);
-  }
-
-  /* Раскрытая карточка проекта */
-  html.t-neon .project-card.expanded {
-    box-shadow: 0 0 0 1px var(--accent), 0 0 20px rgba(0,238,255,0.12);
-  }
-  html.t-neon .project-card { background: rgba(255,255,255,0.02); }
-
-  /* Progress bars — glow на заполненной части */
-  html.t-neon .kpi-progress-fill {
-    box-shadow: 0 0 8px rgba(0,255,136,0.5);
-  }
-  html.t-neon .kpi-progress-fill.done {
-    box-shadow: 0 0 12px rgba(0,255,136,0.7);
-  }
-
-  /* Таймер — цифры светятся */
-  html.t-neon .w-timer-digits {
-    color: var(--accent);
-    text-shadow: 0 0 20px rgba(0,238,255,0.6);
-  }
-  html.t-neon .w-timer-bar {
-    box-shadow: 0 0 8px rgba(0,238,255,0.4);
-  }
-
-  /* Трекер звонков — главное число */
-  html.t-neon .w-ct-num {
-    text-shadow: 0 0 16px currentColor;
-  }
-
-  /* Логотип — pulse анимация */
-  html.t-neon .header-logo {
-    animation: neon-logo-pulse 3s ease-in-out infinite;
-  }
-  @keyframes neon-logo-pulse {
-    0%, 100% { box-shadow: 0 0 8px rgba(0,238,255,0.4); }
-    50%       { box-shadow: 0 0 20px rgba(0,238,255,0.7), 0 0 40px rgba(255,0,170,0.3); }
-  }
-
-  /* Скроллбар — тонкий неоновый */
-  html.t-neon ::-webkit-scrollbar-thumb {
-    background: rgba(0,238,255,0.25);
-  }
-  html.t-neon ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0,238,255,0.45);
-  }
-
-  /* KPI expand button */
-  html.t-neon .kpi-expand-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 8px rgba(0,238,255,0.3);
-  }
-
-  /* Modal panels */
-  html.t-neon .kpi-modal-panel {
-    background: rgba(5,5,8,0.95);
-    border-color: rgba(0,238,255,0.3);
-    box-shadow: 0 0 40px rgba(0,238,255,0.1), 0 24px 64px rgba(0,0,0,0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  /* Overlay модалки */
-  html.t-neon .overlay { background: rgba(0,0,0,0.75); }
-  html.t-neon .modal {
-    background: rgba(5,5,8,0.96);
-    border: 1px solid rgba(0,238,255,0.25);
-    box-shadow: 0 0 30px rgba(0,238,255,0.08), 0 20px 60px rgba(0,0,0,0.7);
-  }
-
-  /* Settings panel */
-  html.t-neon #wc-panel {
-    background: rgba(5,5,8,0.95);
-    border-color: rgba(0,238,255,0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-  html.t-neon .wc-toggle input:checked + .wc-toggle-track {
-    background: var(--accent);
-    box-shadow: 0 0 8px rgba(0,238,255,0.5);
-  }
-
-  /* Активная строка виджета в панели */
-  html.t-neon .wc-row.is-on .wc-row-icon {
-    background: rgba(0,238,255,0.08);
-    border-color: rgba(0,238,255,0.35);
-    box-shadow: 0 0 8px rgba(0,238,255,0.15);
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -933,34 +249,6 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    /* overflow: visible — нужно для выпадающего меню тем */
-  }
-
-  /* ── SCROLL PROGRESS BAR ──
-     Тонкая линия акцентного цвета внизу хедера.
-     Паттерн: Reading Indicator — используют Medium, Linear, Notion.
-     Трюк: абсолютное позиционирование внутри sticky header —
-     бар всегда видим и не сдвигает контент. */
-  #scroll-progress {
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 2px;
-    width: 0%;
-    background: var(--accent);
-    /* ease-out делает движение "физически правдоподобным":
-       быстро в начале, плавно замедляется */
-    transition: width 0.1s ease-out;
-    /* z-index выше бордера хедера */
-    z-index: 1;
-  }
-  /* Тема Aurora — градиентный бар вместо однотонного */
-  html.t-aurora #scroll-progress {
-    background: linear-gradient(90deg, #a060ff, #20e8a0);
-  }
-  /* Тема Midnight — чуть ярче чтобы читался на тёмном */
-  html.t-midnight #scroll-progress {
-    background: var(--accent);
-    box-shadow: 0 0 8px rgba(56,200,160,0.5);
   }
   .header-left {
     display: flex;
@@ -2802,603 +2090,88 @@
   }
   @media (max-width:600px) { .sync-label { display:none; } }
 
-  /* ══════════════════════════════════════════
-     АНИМАЦИЯ A: AMBIENT GRADIENT ORBS
-     Медленно дышащий фон — работает на всех темах.
-     Псевдо-элемент body::before уже занят Aurora,
-     поэтому используем отдельный div#bg-orbs
-  ══════════════════════════════════════════ */
-  #bg-orbs {
-    position: fixed; inset: 0; z-index: 0;
-    pointer-events: none; overflow: hidden;
-  }
-  .bg-orb {
-    position: absolute; border-radius: 50%;
-    /* animate только transform+opacity — не вызывает reflow, нулевая нагрузка */
-    animation: orb-float var(--dur, 12s) ease-in-out infinite alternate;
-    will-change: transform, opacity;
-  }
-  @keyframes orb-float {
-    0%   { transform: scale(1) translate(0, 0); opacity: var(--op-lo, 0.5); }
-    33%  { transform: scale(1.12) translate(var(--tx1, 15px), var(--ty1, -10px)); }
-    66%  { transform: scale(0.94) translate(var(--tx2, -8px), var(--ty2, 18px)); opacity: var(--op-hi, 0.85); }
-    100% { transform: scale(1.06) translate(var(--tx3, 10px), var(--ty3, -5px)); opacity: var(--op-lo, 0.5); }
-  }
-
-  /* Тема Claude — бежево-терракотовые орбы */
-  html.t-claude #bg-orbs .orb-1 {
-    width: 420px; height: 420px;
-    background: radial-gradient(circle, rgba(181,98,42,0.10) 0%, transparent 70%);
-    top: -120px; left: -80px;
-    --dur: 18s; --tx1: 20px; --ty1: -15px; --tx2: -10px; --ty2: 25px; --tx3: 15px; --ty3: -8px;
-    --op-lo: 0.6; --op-hi: 1;
-  }
-  html.t-claude #bg-orbs .orb-2 {
-    width: 320px; height: 320px;
-    background: radial-gradient(circle, rgba(46,125,82,0.07) 0%, transparent 70%);
-    bottom: -80px; right: 10%;
-    --dur: 22s; --tx1: -18px; --ty1: -12px; --tx2: 12px; --ty2: -20px; --tx3: -8px; --ty3: 15px;
-    --op-lo: 0.5; --op-hi: 0.9;
-  }
-  html.t-claude #bg-orbs .orb-3 {
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(181,98,42,0.07) 0%, transparent 70%);
-    top: 35%; left: 55%;
-    --dur: 28s; --tx1: 25px; --ty1: 10px; --tx2: -15px; --ty2: -18px; --tx3: 8px; --ty3: 22px;
-    --op-lo: 0.4; --op-hi: 0.75;
-  }
-
-  /* Тема Forest — зелёно-земляные орбы */
-  html.t-forest #bg-orbs .orb-1 {
-    width: 460px; height: 460px;
-    background: radial-gradient(circle, rgba(78,124,58,0.10) 0%, transparent 70%);
-    top: -140px; left: -100px;
-    --dur: 22s; --tx1: 15px; --ty1: -18px; --tx2: -10px; --ty2: 20px; --tx3: 12px; --ty3: -6px;
-    --op-lo: 0.55; --op-hi: 0.9;
-  }
-  html.t-forest #bg-orbs .orb-2 {
-    width: 340px; height: 340px;
-    background: radial-gradient(circle, rgba(184,72,48,0.07) 0%, transparent 70%);
-    bottom: -90px; right: 5%;
-    --dur: 26s; --tx1: -16px; --ty1: -14px; --tx2: 10px; --ty2: -18px; --tx3: -8px; --ty3: 14px;
-    --op-lo: 0.45; --op-hi: 0.82;
-  }
-  html.t-forest #bg-orbs .orb-3 {
-    width: 240px; height: 240px;
-    background: radial-gradient(circle, rgba(144,120,40,0.07) 0%, transparent 70%);
-    top: 45%; left: 50%;
-    --dur: 32s; --tx1: 20px; --ty1: 15px; --tx2: -14px; --ty2: -20px; --tx3: 8px; --ty3: 18px;
-    --op-lo: 0.4; --op-hi: 0.72;
-  }
-
-  /* Тема Midnight — тёмная с бирюзово-синими орбами */
-  html.t-midnight #bg-orbs .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(56,200,160,0.13) 0%, transparent 65%);
-    top: -150px; left: -100px;
-    --dur: 20s; --tx1: 22px; --ty1: -16px; --tx2: -12px; --ty2: 24px; --tx3: 16px; --ty3: -10px;
-    --op-lo: 0.6; --op-hi: 1;
-  }
-  html.t-midnight #bg-orbs .orb-2 {
-    width: 380px; height: 380px;
-    background: radial-gradient(circle, rgba(88,152,232,0.12) 0%, transparent 65%);
-    bottom: -100px; right: 8%;
-    --dur: 27s; --tx1: -20px; --ty1: -12px; --tx2: 14px; --ty2: -24px; --tx3: -8px; --ty3: 16px;
-    --op-lo: 0.5; --op-hi: 0.9;
-  }
-  html.t-midnight #bg-orbs .orb-3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(56,200,128,0.09) 0%, transparent 65%);
-    top: 30%; left: 58%;
-    --dur: 34s; --tx1: 28px; --ty1: 14px; --tx2: -16px; --ty2: -22px; --tx3: 10px; --ty3: 24px;
-    --op-lo: 0.4; --op-hi: 0.78;
-  }
-
-  /* Aurora — орбы уже есть через body::before,
-     но усиливаем через #bg-orbs дополнительным слоем */
-  html.t-aurora #bg-orbs .orb-1 {
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(160,96,255,0.15) 0%, transparent 65%);
-    top: -130px; left: -80px;
-    --dur: 16s; --tx1: 25px; --ty1: -20px; --tx2: -15px; --ty2: 28px; --tx3: 18px; --ty3: -12px;
-    --op-lo: 0.65; --op-hi: 1;
-  }
-  html.t-aurora #bg-orbs .orb-2 {
-    width: 360px; height: 360px;
-    background: radial-gradient(circle, rgba(32,232,160,0.12) 0%, transparent 65%);
-    bottom: -90px; right: 12%;
-    --dur: 21s; --tx1: -22px; --ty1: -14px; --tx2: 16px; --ty2: -26px; --tx3: -10px; --ty3: 18px;
-    --op-lo: 0.55; --op-hi: 0.92;
-  }
-  html.t-aurora #bg-orbs .orb-3 {
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(64,184,255,0.10) 0%, transparent 65%);
-    top: 40%; left: 55%;
-    --dur: 29s; --tx1: 30px; --ty1: 16px; --tx2: -18px; --ty2: -24px; --tx3: 12px; --ty3: 26px;
-    --op-lo: 0.45; --op-hi: 0.8;
-  }
-
-  /* Все карточки и header поверх орбов */
-  /* Орбы под контентом. header выше .main — иначе дропдаун меню тем
-     не вылезает поверх карточек (stacking context). */
-  .main { position: relative; z-index: 1; }
-  header { z-index: 200 !important; }
-
-  /* ══════════════════════════════════════════
-     АНИМАЦИЯ B: STAGGERED MOUNT REVEAL
-     Карточки появляются при каждой загрузке страницы.
-     Класс .will-reveal скрывает до момента запуска JS.
-  ══════════════════════════════════════════ */
-  .will-reveal {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  /* Transition задаётся через inline style в JS (для stagger),
-     здесь только базовый fallback */
-  .reveal-done {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-
-  /* ══════════════════════════════════════════
-     АНИМАЦИЯ C: MICRO-INTERACTIONS
-  ══════════════════════════════════════════ */
-
-  /* Чекбокс bounce — squash & stretch как в Things 3 */
-  @keyframes check-bounce {
-    0%   { transform: scale(1); }
-    30%  { transform: scale(1.5); }
-    55%  { transform: scale(0.82); }
-    75%  { transform: scale(1.18); }
-    90%  { transform: scale(0.95); }
-    100% { transform: scale(1); }
-  }
-  .task-check.bouncing {
-    animation: check-bounce 0.42s cubic-bezier(.22,.68,0,1.2) forwards;
-  }
-
-  /* Новая задача slide-in снизу */
-  @keyframes task-slide-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .task-card-item.task-new-anim {
-    animation: task-slide-in 0.35s cubic-bezier(.22,.68,0,1.2) forwards;
-  }
-
-  /* Удаление задачи — fade + collapse высоты */
-  @keyframes task-collapse {
-    0%   { opacity: 1; max-height: 60px; margin-bottom: 4px; padding-top: 6px; padding-bottom: 6px; }
-    40%  { opacity: 0; }
-    100% { opacity: 0; max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; }
-  }
-  .task-card-item.task-removing {
-    overflow: hidden;
-    animation: task-collapse 0.3s ease forwards;
-    pointer-events: none;
-  }
-
-  /* Project card hover lift — subtle elevation */
-  .project-card {
-    transition: border-color 0.15s, transform 0.18s cubic-bezier(.22,.68,0,1.1), box-shadow 0.18s ease;
-  }
-  .project-card:not(.expanded):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-  }
-  html.t-midnight .project-card:not(.expanded):hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-  }
-  html.t-aurora .project-card:not(.expanded):hover {
-    box-shadow: 0 4px 24px rgba(160,96,255,0.15);
-  }
-
-  /* ══════════════════════════════════════════
-     ВИДЖЕТ 1: ДЕДЛАЙН-РАДАР
-  ══════════════════════════════════════════ */
-  .w-deadline-radar {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-  }
-  .w-dr-label {
-    font-size: 10px; font-weight: 700; color: var(--text-mute);
-    text-transform: uppercase; letter-spacing: 0.07em;
-    margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
-  }
-  .w-dr-empty { font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0; }
-  .w-dr-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 6px 0; border-bottom: 1px solid var(--border);
-  }
-  .w-dr-item:last-child { border-bottom: none; }
-  .w-dr-dot {
-    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-  }
-  .w-dr-dot.overdue  { background: var(--red); box-shadow: 0 0 5px rgba(192,57,43,0.45); }
-  .w-dr-dot.today    { background: var(--red); }
-  .w-dr-dot.tomorrow { background: var(--yellow); }
-  .w-dr-dot.soon     { background: var(--accent); }
-  .w-dr-name { font-size: 12px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .w-dr-type { font-size: 9px; color: var(--text-mute); background: var(--surface2); border-radius: 3px; padding: 1px 5px; flex-shrink: 0; }
-  .w-dr-days {
-    font-size: 11px; font-weight: 700; flex-shrink: 0; min-width: 36px; text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-  .w-dr-days.overdue  { color: var(--red); }
-  .w-dr-days.today    { color: var(--red); }
-  .w-dr-days.tomorrow { color: var(--yellow); }
-  .w-dr-days.soon     { color: var(--accent); }
-
-  /* ══════════════════════════════════════════
-     ВИДЖЕТ 2: ПРОГРЕСС ПРОЕКТОВ
-  ══════════════════════════════════════════ */
-  .w-proj-progress {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-  }
-  .w-pp-label {
-    font-size: 10px; font-weight: 700; color: var(--text-mute);
-    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px;
-  }
-  .w-pp-empty { font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0; }
-  .w-pp-item { margin-bottom: 10px; }
-  .w-pp-item:last-child { margin-bottom: 0; }
-  .w-pp-top {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 4px; gap: 8px;
-  }
-  .w-pp-name { font-size: 12px; font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .w-pp-pct { font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; font-variant-numeric: tabular-nums; }
-  .w-pp-track {
-    height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .w-pp-fill {
-    height: 100%; border-radius: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--green));
-    transition: width 0.5s ease;
-  }
-  .w-pp-fill.done { background: var(--green); }
-  .w-pp-stage { font-size: 9px; color: var(--text-mute); margin-top: 2px; }
-
-  /* ══════════════════════════════════════════
-     ВИДЖЕТ 3: ПЛАН vs ФАКТ НЕДЕЛИ
-  ══════════════════════════════════════════ */
-  .w-plan-fact {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-  }
-  .w-pf-label {
-    font-size: 10px; font-weight: 700; color: var(--text-mute);
-    text-transform: uppercase; letter-spacing: 0.07em;
-    margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-  }
-  .w-pf-week { font-size: 10px; color: var(--text-mute); font-weight: 400; }
-  .w-pf-row {
-    display: flex; align-items: center; gap: 8px;
-    padding: 5px 0; border-bottom: 1px solid var(--border);
-  }
-  .w-pf-row:last-child { border-bottom: none; }
-  .w-pf-metric { font-size: 11px; color: var(--text-dim); width: 100px; flex-shrink: 0; }
-  .w-pf-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-  .w-pf-bar-row { display: flex; align-items: center; gap: 5px; }
-  .w-pf-bar-label { font-size: 9px; color: var(--text-mute); width: 24px; flex-shrink: 0; }
-  .w-pf-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
-  .w-pf-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
-  .w-pf-bar-fill.plan { background: var(--border2); }
-  .w-pf-bar-fill.fact { background: var(--accent); }
-  .w-pf-bar-fill.fact.over  { background: var(--green); }
-  .w-pf-bar-fill.fact.under { background: var(--red); }
-  .w-pf-num { font-size: 11px; font-weight: 700; width: 28px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; color: var(--text); }
-  .w-pf-delta {
-    font-size: 10px; font-weight: 600; flex-shrink: 0; min-width: 30px; text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-  .w-pf-delta.pos { color: var(--green); }
-  .w-pf-delta.neg { color: var(--red); }
-  .w-pf-delta.neu { color: var(--text-mute); }
-  /* Поля плана */
-  .w-pf-inputs {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border);
-  }
-  .w-pf-input-row { display: flex; flex-direction: column; gap: 3px; }
-  .w-pf-input-label { font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; }
-  .w-pf-input {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: var(--radius-s); color: var(--text); font-family: inherit;
-    font-size: 12px; font-weight: 600; padding: 4px 7px; outline: none;
-    width: 100%; text-align: center; transition: border-color 0.12s;
-    -moz-appearance: textfield;
-  }
-  .w-pf-input::-webkit-inner-spin-button, .w-pf-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-  .w-pf-input:focus { border-color: var(--accent); }
-  .w-pf-summary {
-    margin-top: 8px; padding: 7px 10px;
-    background: var(--accent-l); border: 1px solid var(--accent);
-    border-radius: var(--radius-s); font-size: 11px; color: var(--text);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .w-pf-summary b { color: var(--accent); }
-
-  /* ══════════════════════════════════════════
-     ВИДЖЕТ 4: БЫСТРЫЙ ЛОГ ИТОГА
-  ══════════════════════════════════════════ */
-  .w-quick-log {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-  }
-  .w-ql-label {
-    font-size: 10px; font-weight: 700; color: var(--text-mute);
-    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .w-ql-types {
-    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px;
-  }
-  .w-ql-type {
-    font-size: 10px; padding: 3px 9px; border-radius: 20px;
-    border: 1px solid var(--border2); cursor: pointer; color: var(--text-mute);
-    background: var(--surface2); transition: all 0.12s; font-family: inherit;
-  }
-  .w-ql-type.active {
-    background: var(--accent-l); border-color: var(--accent); color: var(--accent);
-  }
-  .w-ql-input-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
-  .w-ql-input {
-    flex: 1; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: var(--radius-s); color: var(--text); font-family: inherit;
-    font-size: 12px; padding: 6px 9px; outline: none; transition: border-color 0.12s;
-  }
-  .w-ql-input:focus { border-color: var(--accent); }
-  .w-ql-input::placeholder { color: var(--text-mute); }
-  .w-ql-add {
-    padding: 6px 12px; border-radius: var(--radius-s); border: 1px solid var(--accent);
-    background: var(--accent); color: #fff; font-family: inherit; font-size: 11px;
-    font-weight: 500; cursor: pointer; transition: filter 0.15s; flex-shrink: 0;
-  }
-  .w-ql-add:hover { filter: brightness(1.1); }
-  .w-ql-history { max-height: 130px; overflow-y: auto; }
-  .w-ql-entry {
-    display: flex; align-items: flex-start; gap: 7px; padding: 5px 0;
-    border-bottom: 1px solid var(--border); font-size: 11px;
-  }
-  .w-ql-entry:last-child { border-bottom: none; }
-  .w-ql-entry-type {
-    font-size: 9px; padding: 2px 6px; border-radius: 10px; flex-shrink: 0;
-    font-weight: 600; white-space: nowrap;
-  }
-  .ql-call  { background: var(--blue-l);   color: var(--blue);   }
-  .ql-meet  { background: var(--green-l);  color: var(--green);  }
-  .ql-kp    { background: var(--accent-l); color: var(--accent); }
-  .ql-deal  { background: var(--green-l);  color: var(--green);  box-shadow: 0 0 6px rgba(46,125,82,0.3); }
-  .ql-other { background: var(--surface2); color: var(--text-mute); }
-  .w-ql-entry-text { flex: 1; color: var(--text-dim); line-height: 1.4; }
-  .w-ql-entry-time { font-size: 9px; color: var(--text-mute); flex-shrink: 0; font-variant-numeric: tabular-nums; }
-  .w-ql-entry-del {
-    background: none; border: none; cursor: pointer; color: var(--text-mute);
-    font-size: 11px; padding: 0 2px; line-height: 1; transition: color 0.1s;
-    flex-shrink: 0;
-  }
-  .w-ql-entry-del:hover { color: var(--red); }
-
-  /* ══════════════════════════════════════════════════════
-     WIDGET CONSTRUCTOR — Settings Panel (Slide-over)
-     Паттерн: Slide-over Settings Panel (Linear, Vercel, Notion)
-     Панель выезжает справа поверх контента.
-     Backdrop Dimming — блюр фона создаёт фокус на панели.
-  ══════════════════════════════════════════════════════ */
-
-  /* Кнопка «Настроить» в хедере */
-  #wc-open-btn {
-    display: flex; align-items: center; gap: 5px;
-    padding: 5px 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-s);
-    font-size: 11px; font-weight: 500;
-    color: var(--text-dim);
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-  #wc-open-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
-  #wc-open-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-l2); }
-  #wc-open-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
-
-  /* Backdrop — полупрозрачная подложка */
-  #wc-backdrop {
-    position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0);
-    pointer-events: none;
-    transition: background 0.3s ease;
-  }
-  #wc-backdrop.open {
-    background: rgba(0,0,0,0.18);
-    pointer-events: all;
-  }
-
-  /* Панель — выезжает справа */
-  #wc-panel {
-    position: fixed;
-    top: 0; right: 0; bottom: 0;
-    width: 300px;
-    z-index: 501;
-    background: var(--surface);
-    border-left: 1px solid var(--border);
-    box-shadow: -8px 0 40px rgba(0,0,0,0.10);
-    display: flex; flex-direction: column;
-    transform: translateX(100%);
-    /* cubic-bezier с overshoot — панель «пружинит» при открытии */
-    transition: transform 0.32s cubic-bezier(.22,.68,0,1.12);
-  }
-  #wc-panel.open { transform: translateX(0); }
-
-  /* Хедер панели */
-  .wc-header {
-    padding: 14px 16px 12px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0;
-  }
-  .wc-header-left {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600;
-  }
-  .wc-header-icon {
-    width: 22px; height: 22px;
-    background: var(--accent-l2);
-    border-radius: var(--radius-s);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .wc-close-btn {
-    width: 24px; height: 24px;
-    border-radius: var(--radius-s);
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text-dim);
-    font-size: 16px; line-height: 1;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.12s;
-    padding: 0; font-family: inherit;
-  }
-  .wc-close-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-l); }
-
-  /* Подзаголовок-подсказка */
-  .wc-sub {
-    padding: 7px 16px;
-    font-size: 10px; color: var(--text-mute);
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  /* Тело панели — прокручивается */
-  .wc-body {
-    flex: 1; overflow-y: auto;
-    padding: 4px 0 8px;
-  }
-
-  /* Метка секции */
-  .wc-section-label {
-    padding: 10px 16px 3px;
-    font-size: 9px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--text-mute);
-  }
-
-  /* Строка виджета */
-  .wc-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 7px 16px;
-    cursor: pointer;
-    transition: background 0.1s;
-    user-select: none;
-  }
-  .wc-row:hover { background: var(--surface2); }
-
-  .wc-row-icon {
-    width: 28px; height: 28px;
-    border-radius: var(--radius-s);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; flex-shrink: 0;
-    transition: all 0.15s;
-  }
-  .wc-row.is-on .wc-row-icon {
-    background: var(--accent-l2);
-    border-color: var(--accent);
-  }
-
-  .wc-row-info { flex: 1; min-width: 0; }
-  .wc-row-name { font-size: 12px; font-weight: 500; color: var(--text); }
-  .wc-row-desc { font-size: 10px; color: var(--text-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  /* Toggle-переключатель */
-  .wc-toggle {
-    position: relative; width: 32px; height: 18px; flex-shrink: 0;
-  }
-  .wc-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-  .wc-toggle-track {
-    position: absolute; inset: 0;
-    background: var(--border2);
-    border-radius: 99px;
-    transition: background 0.2s;
-    cursor: pointer;
-  }
-  .wc-toggle input:checked + .wc-toggle-track { background: var(--accent); }
-  .wc-toggle-thumb {
-    position: absolute; top: 3px; left: 3px;
-    width: 12px; height: 12px;
-    background: #fff; border-radius: 50%;
-    pointer-events: none;
-    /* overshoot — thumb пружинит при переключении */
-    transition: transform 0.22s cubic-bezier(.22,.68,0,1.4);
-  }
-  .wc-toggle input:checked ~ .wc-toggle-thumb { transform: translateX(14px); }
-
-  /* Подвал панели */
-  .wc-footer {
-    padding: 10px 16px;
-    border-top: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .wc-counter {
-    font-size: 10px; color: var(--text-mute);
-    text-align: center; margin-bottom: 8px;
-  }
-  .wc-counter b { color: var(--accent); }
-  .wc-reset-btn {
-    width: 100%; padding: 7px;
-    background: none;
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-s);
-    font-size: 11px; color: var(--text-dim);
-    cursor: pointer; font-family: inherit;
-    transition: all 0.15s;
-  }
-  .wc-reset-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* Виджет-контейнер скрывается плавно */
-  .wc-hidden {
-    display: none !important;
-  }
-
-  /* Aurora тема — стеклянная панель */
-  html.t-aurora #wc-panel {
-    background: rgba(15,20,35,0.90);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
 </style>
 </head>
 <body>
 
-<!-- ══ AMBIENT ORBS — фоновые орбы, работают на всех темах ══ -->
-<div id="bg-orbs" aria-hidden="true">
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
-  <div class="bg-orb orb-3"></div>
+<!-- ══════════════════════════════════════════════════
+     AUTH SCREEN — экран входа
+     Паттерн: Auth Gate. Скрыт по умолчанию.
+     initAuth() покажет его если сессии нет.
+══════════════════════════════════════════════════ -->
+<div id="auth-screen" style="
+  display: none;
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--bg, #1a1916);
+  align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+">
+  <div style="
+    background: var(--surface, #242220);
+    border: 1px solid var(--border, #333);
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%; max-width: 360px;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+  ">
+    <div style="font-size: 28px; margin-bottom: 10px;">📊</div>
+    <h2 style="color: var(--text, #1a1916); font-size: 18px; font-weight: 600; margin: 0 0 6px; font-family: 'Inter', sans-serif;">
+      Рабочий дашборд
+    </h2>
+    <p style="color: var(--text-dim, #6b6860); font-size: 13px; margin: 0 0 28px; font-family: 'Inter', sans-serif;">
+      Введи рабочую почту — пришлём ссылку для входа
+    </p>
+    <input
+      type="email"
+      id="login-email"
+      placeholder="твоя@почта.ru"
+      style="
+        width: 100%; box-sizing: border-box;
+        padding: 10px 14px; border-radius: 8px;
+        border: 1px solid var(--border, #d4d2ca);
+        background: var(--surface2, #f0efe9);
+        color: var(--text, #1a1916);
+        font-size: 14px; font-family: 'Inter', sans-serif;
+        outline: none; margin-bottom: 12px;
+        transition: border-color 0.15s;
+      "
+      onkeydown="if(event.key==='Enter') document.getElementById('login-btn').click()"
+      onfocus="this.style.borderColor='#b5622a'"
+      onblur="this.style.borderColor=''"
+    >
+    <button
+      id="login-btn"
+      onclick="sendMagicLink(document.getElementById('login-email').value)"
+      style="
+        width: 100%; padding: 10px;
+        background: #b5622a; color: #fff;
+        border: none; border-radius: 8px;
+        font-size: 14px; font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer; transition: filter 0.15s;
+      "
+      onmouseover="this.style.filter='brightness(0.9)'"
+      onmouseout="this.style.filter=''"
+    >
+      Войти через email
+    </button>
+    <p id="login-msg" style="font-size: 12px; margin-top: 14px; min-height: 18px; color: var(--text-dim, #6b6860); font-family: 'Inter', sans-serif;">
+    </p>
+  </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════
+     APP WRAPPER — весь дашборд внутри этого div.
+     display:none до авторизации → показывается в showDashboard()
+══════════════════════════════════════════════════ -->
+<div id="app" style="display: none;">
+
 
 <div id="splash"></div>
 
 <!-- HEADER -->
 <header>
-  <!-- Scroll Progress Bar — линия прокрутки внизу хедера -->
-  <div id="scroll-progress"></div>
   <div class="header-left">
     <div class="header-logo">ОП</div>
     <span class="header-title">Рабочий дашборд</span>
@@ -3415,14 +2188,6 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Установить
     </button>
-    <!-- WIDGET CONSTRUCTOR BUTTON -->
-    <button id="wc-open-btn" onclick="wcToggle()" title="Настроить виджеты">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
-        <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
-      </svg>
-      Виджеты
-    </button>
     <!-- THEME SWITCHER -->
     <div class="theme-switcher" id="theme-switcher">
       <button class="theme-btn" onclick="toggleThemeMenu()" title="Сменить тему">
@@ -3437,20 +2202,10 @@
           <span class="theme-swatch" style="background:#b5622a;"></span>
           Claude
         </div>
-        <div class="theme-item" onclick="setTheme('t-frost')">
-          <span class="theme-swatch" style="background:#0d1020;border:1px solid rgba(255,255,255,0.15);"></span>
-          <span class="theme-swatch" style="background:linear-gradient(135deg,#5b8aff,#a78bfa);"></span>
-          🧊 Frost
-        </div>
-        <div class="theme-item" onclick="setTheme('t-paper')">
-          <span class="theme-swatch" style="background:#f5f0e0;border:1px solid #c8bfa0;"></span>
-          <span class="theme-swatch" style="background:#8b3a1a;"></span>
-          📰 Paper
-        </div>
-        <div class="theme-item" onclick="setTheme('t-sand')">
-          <span class="theme-swatch" style="background:#f0e8d8;border:1px solid #c0a880;"></span>
-          <span class="theme-swatch" style="background:#c05828;"></span>
-          🏜 Sand
+        <div class="theme-item" onclick="setTheme('t-pastel')">
+          <span class="theme-swatch" style="background:#f0edf8;border:1px solid #d8d0ec;"></span>
+          <span class="theme-swatch" style="background:linear-gradient(135deg,#b8a8d8,#90c8e0);"></span>
+          Pastel
         </div>
         <div class="theme-item" onclick="setTheme('t-midnight')">
           <span class="theme-swatch" style="background:#0f1318;border:1px solid #243040;"></span>
@@ -3467,11 +2222,6 @@
           <span class="theme-swatch" style="background:linear-gradient(135deg,#a060ff,#20e8a0);"></span>
           ✨ Aurora
         </div>
-        <div class="theme-item" onclick="setTheme('t-neon')">
-          <span class="theme-swatch" style="background:#050508;border:1px solid rgba(0,238,255,0.3);box-shadow:0 0 6px rgba(0,238,255,0.3);"></span>
-          <span class="theme-swatch" style="background:linear-gradient(135deg,#00eeff,#ff00aa);box-shadow:0 0 6px rgba(0,238,255,0.4);"></span>
-          ⚡ Neon
-        </div>
       </div>
     </div>
   </div>
@@ -3481,7 +2231,7 @@
 <div class="main">
 
   <!-- ══ ТЕКУЩИЕ ДЕЛА ══ -->
-  <div class="card tasks-block will-reveal">
+  <div class="card tasks-block">
     <div class="card-header">
       <div class="card-title">
         <span class="dot"></span>
@@ -3541,7 +2291,7 @@
   <div class="right-col will-reveal">
 
     <!-- ВИДЖЕТ: ДАТА И ВРЕМЯ -->
-    <div class="w-clock" data-widget-id="clock">
+    <div class="w-clock">
       <div class="w-clock-time" id="w-time">--:--:--</div>
       <div class="w-clock-row">
         <div class="w-clock-date" id="w-date">загрузка...</div>
@@ -3550,7 +2300,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ФОКУС ДНЯ -->
-    <div class="w-focus" data-widget-id="focus">
+    <div class="w-focus">
       <div class="w-focus-label">🎯 Фокус дня</div>
       <input class="w-focus-input" id="w-focus-input"
         placeholder="Одно главное дело на сегодня..."
@@ -3559,7 +2309,7 @@
     </div>
 
     <!-- ВИДЖЕТ: МИНИ-СТАТИСТИКА -->
-    <div class="w-stats" data-widget-id="stats">
+    <div class="w-stats">
       <div class="w-stats-label">📊 Сейчас в работе</div>
       <div class="w-stats-grid">
         <div class="w-stat-item">
@@ -3582,7 +2332,7 @@
     </div>
 
     <!-- ВИДЖЕТ: POMODORO ТАЙМЕР -->
-    <div class="w-timer" data-widget-id="timer">
+    <div class="w-timer">
       <div class="w-timer-label">
         <span>⏱ Таймер</span>
         <div class="w-timer-mode-btns">
@@ -3611,7 +2361,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ТРЕКЕР ЗВОНКОВ ЗА ДЕНЬ -->
-    <div class="w-call-tracker" data-widget-id="call-tracker">
+    <div class="w-call-tracker">
       <div class="w-call-tracker-label">
         <span>📞 Звонки сегодня</span>
         <button class="w-cr-reset" onclick="resetDayReport()">сброс дня</button>
@@ -3658,7 +2408,7 @@
     </div>
 
     <!-- ВИДЖЕТ: РЕЗУЛЬТАТИВНОСТЬ ЗВОНКОВ -->
-    <div class="w-call-results" data-widget-id="call-results">
+    <div class="w-call-results">
       <div class="w-cr-label">🎯 Результат звонков (сегодня)</div>
       <div class="w-cr-btns">
         <button class="w-cr-btn success" onclick="callResultAdd('success')" title="Дозвонился, поговорил">
@@ -3687,7 +2437,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ВОРОНКА НЕДЕЛИ -->
-    <div class="w-funnel" data-widget-id="funnel">
+    <div class="w-funnel">
       <div class="w-fn-label">
         <span>🔻 Воронка недели</span>
         <span class="w-fn-week-label" id="wfn-week-label"></span>
@@ -3735,7 +2485,7 @@
     </div>
 
     <!-- ВИДЖЕТ: ТЕПЛОВАЯ КАРТА НЕДЕЛИ -->
-    <div class="w-heatmap" data-widget-id="heatmap">
+    <div class="w-heatmap">
       <div class="w-hm-label">
         <span>🗓 Активность по часам</span>
         <div class="w-hm-legend">
@@ -3749,72 +2499,8 @@
       <div class="w-hm-grid" id="w-hm-grid"></div>
     </div>
 
-    <!-- ВИДЖЕТ: ДЕДЛАЙН-РАДАР -->
-    <div class="w-deadline-radar" data-widget-id="deadlines">
-      <div class="w-dr-label">
-        <span>🔴 Дедлайн-радар</span>
-        <span id="wdr-count" style="font-size:10px;font-weight:400;"></span>
-      </div>
-      <div id="wdr-list"><div class="w-dr-empty">Нет срочных дедлайнов</div></div>
-    </div>
-
-    <!-- ВИДЖЕТ: ПРОГРЕСС ПРОЕКТОВ -->
-    <div class="w-proj-progress" data-widget-id="proj-progress">
-      <div class="w-pp-label">📈 Прогресс проектов</div>
-      <div id="wpp-list"><div class="w-pp-empty">Проектов пока нет</div></div>
-    </div>
-
-    <!-- ВИДЖЕТ: ПЛАН vs ФАКТ НЕДЕЛИ -->
-    <div class="w-plan-fact" data-widget-id="plan-fact">
-      <div class="w-pf-label">
-        <span>📊 План vs Факт</span>
-        <span class="w-pf-week" id="wpf-week-label"></span>
-      </div>
-      <div id="wpf-rows"></div>
-      <!-- Поля плана -->
-      <div class="w-pf-inputs">
-        <div class="w-pf-input-row">
-          <label class="w-pf-input-label">📞 План звонков</label>
-          <input class="w-pf-input" id="wpf-plan-calls" type="number" min="0" value="200" oninput="savePFPlans();renderPlanFact()">
-        </div>
-        <div class="w-pf-input-row">
-          <label class="w-pf-input-label">🤝 План встреч</label>
-          <input class="w-pf-input" id="wpf-plan-meets" type="number" min="0" value="5" oninput="savePFPlans();renderPlanFact()">
-        </div>
-        <div class="w-pf-input-row">
-          <label class="w-pf-input-label">📄 План КП</label>
-          <input class="w-pf-input" id="wpf-plan-kp" type="number" min="0" value="3" oninput="savePFPlans();renderPlanFact()">
-        </div>
-        <div class="w-pf-input-row">
-          <label class="w-pf-input-label">✅ План сделок</label>
-          <input class="w-pf-input" id="wpf-plan-deals" type="number" min="0" value="1" oninput="savePFPlans();renderPlanFact()">
-        </div>
-      </div>
-      <div class="w-pf-summary" id="wpf-summary" style="display:none"></div>
-    </div>
-
-    <!-- ВИДЖЕТ: БЫСТРЫЙ ЛОГ ИТОГА -->
-    <div class="w-quick-log" data-widget-id="quick-log">
-      <div class="w-ql-label">
-        <span>⚡ Быстрый лог</span>
-        <button class="w-cr-reset" onclick="qlClear()">очистить</button>
-      </div>
-      <div class="w-ql-types">
-        <button class="w-ql-type active" data-type="call"  onclick="qlSelectType(this)">📞 Звонок</button>
-        <button class="w-ql-type"        data-type="meet"  onclick="qlSelectType(this)">🤝 Встреча</button>
-        <button class="w-ql-type"        data-type="kp"    onclick="qlSelectType(this)">📄 КП</button>
-        <button class="w-ql-type"        data-type="deal"  onclick="qlSelectType(this)">✅ Сделка</button>
-        <button class="w-ql-type"        data-type="other" onclick="qlSelectType(this)">💬 Другое</button>
-      </div>
-      <div class="w-ql-input-row">
-        <input class="w-ql-input" id="ql-text" placeholder="Компания / клиент / что произошло..." onkeydown="if(event.key==='Enter')qlAdd()">
-        <button class="w-ql-add" onclick="qlAdd()">+ Добавить</button>
-      </div>
-      <div class="w-ql-history" id="ql-history"></div>
-    </div>
-
     <!-- ВСТРЕЧИ -->
-    <div class="card" data-widget-id="meetings">
+    <div class="card">
       <div class="card-header">
         <div class="card-title"><span class="dot blue"></span>Встречи на неделе</div>
         <button class="btn" onclick="openMeetingModal()">+ Встреча</button>
@@ -3825,7 +2511,7 @@
     </div>
 
     <!-- КОММУНИКАЦИИ -->
-    <div class="card" data-widget-id="comms">
+    <div class="card">
       <div class="card-header">
         <div class="card-title"><span class="dot yellow"></span>Коммуникации</div>
         <button class="btn" onclick="openCommModal()">+ Напоминание</button>
@@ -3836,7 +2522,7 @@
     </div>
 
     <!-- ЗАМЕТКИ -->
-    <div class="card" data-widget-id="notes">
+    <div class="card">
       <div class="card-header">
         <div class="card-title"><span class="dot green"></span>Быстрые заметки</div>
       </div>
@@ -3849,7 +2535,7 @@
   </div>
 
   <!-- ══ ПРОЕКТЫ ══ -->
-  <div class="card projects-block will-reveal">
+<div class="card projects-block will-reveal">
     <div class="card-header">
       <div class="card-title"><span class="dot green"></span>Проекты по маркировке</div>
       <div style="display:flex;gap:6px;">
@@ -3888,8 +2574,6 @@
           <span class="kpi-week-label">/ 50 б</span>
         </div>
         <button class="kpi-reset-btn" onclick="kpiReset()">↺ Сброс</button>
-        <!-- Кнопка разворачивания виджета в модальное окно -->
-        <button class="kpi-expand-btn" onclick="kpiModalOpen()" title="Развернуть KPI">⤢</button>
       </div>
     </div>
     <div class="kpi-progress-wrap">
@@ -3907,46 +2591,6 @@
   </div>
 
 </div><!-- /main -->
-
-<!-- ══ KPI MODAL OVERLAY ══ -->
-<div class="kpi-modal-backdrop" id="kpi-modal-backdrop" onclick="kpiModalBackdropClick(event)">
-  <div class="kpi-modal-panel" id="kpi-modal-panel">
-
-    <!-- Хедер модалки — дублируем прогресс и сброс -->
-    <div class="kpi-modal-header">
-      <div class="kpi-modal-title">
-        <span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;display:inline-block;"></span>
-        KPI недели
-        <span style="font-size:13px;font-weight:400;color:var(--text-dim)">—</span>
-        <span id="kpi-modal-week-num" style="font-size:22px;font-weight:700;color:var(--accent)">0</span>
-        <span style="font-size:12px;color:var(--text-dim)">/ 50 б</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button class="kpi-reset-btn" onclick="kpiReset()">↺ Сброс</button>
-        <button class="kpi-modal-close" onclick="kpiModalClose()" title="Закрыть">×</button>
-      </div>
-    </div>
-
-    <!-- Прогресс-бар внутри модалки -->
-    <div class="kpi-progress-wrap" style="padding:10px 18px 0;">
-      <div class="kpi-progress-track">
-        <div class="kpi-progress-fill" id="kpi-modal-progress-fill" style="width:0%"></div>
-      </div>
-      <div class="kpi-progress-meta">
-        <span id="kpi-modal-progress-pct">0%</span>
-        <span>Цель: 50 баллов</span>
-      </div>
-    </div>
-
-    <!-- Таблица KPI -->
-    <div class="kpi-modal-body">
-      <div class="kpi-table-wrap">
-        <table class="kpi-table" id="kpi-modal-table"></table>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!-- ══ CONTEXT MENU ══ -->
 <div class="ctx-menu" id="ctx-menu">
@@ -4706,21 +3350,14 @@ function renderKPI() {
     }
   });
   var weekTotal = dayTotals.reduce(function(a,b){return a+b;}, 0);
-
-  // Синхронизируем числа в обоих местах: виджет + модалка
-  ['kpi-week-num', 'kpi-modal-week-num'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.textContent = weekTotal;
-  });
+  var weekNumEl = document.getElementById('kpi-week-num');
+  if (weekNumEl) weekNumEl.textContent = weekTotal;
   var pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
-  ['kpi-progress-fill','kpi-modal-progress-fill'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) { el.style.width = pct + '%'; el.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
-  });
-  ['kpi-progress-pct','kpi-modal-progress-pct'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.textContent = pct + '%';
-  });
+  var fill = document.getElementById('kpi-progress-fill');
+  var pctEl = document.getElementById('kpi-progress-pct');
+  if (fill) { fill.style.width = pct + '%'; fill.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
+  if (pctEl) pctEl.textContent = pct + '%';
 
-  // Генерируем HTML таблицы один раз — ставим в оба контейнера
   var html = '<thead><tr><th class="kpi-metric-head">Показатель</th>';
   KPI_DAYS.forEach(function(d, di) {
     html += '<th class="' + (di===today?'kpi-today-col':'') + '">' + d + '</th>';
@@ -4750,32 +3387,8 @@ function renderKPI() {
     html += '<td class="'+tdCls+'"><div class="kpi-total-val'+vCls+'">'+(dayTotals[di]||'—')+'</div></td>';
   });
   html += '</tr></tbody>';
-
   table.innerHTML = html;
-  var modalTable = document.getElementById('kpi-modal-table');
-  if (modalTable) modalTable.innerHTML = html;
 }
-
-/* ── KPI MODAL: открытие / закрытие ── */
-function kpiModalOpen() {
-  renderKPI(); // актуализируем данные перед показом
-  var bd = document.getElementById('kpi-modal-backdrop');
-  bd.classList.add('open');
-  // Блокируем прокрутку страницы пока модалка открыта
-  document.body.style.overflow = 'hidden';
-}
-function kpiModalClose() {
-  document.getElementById('kpi-modal-backdrop').classList.remove('open');
-  document.body.style.overflow = '';
-}
-// Клик по тёмному backdrop (не по панели) — закрываем
-function kpiModalBackdropClick(e) {
-  if (e.target === document.getElementById('kpi-modal-backdrop')) kpiModalClose();
-}
-// Escape закрывает модалку
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') kpiModalClose();
-});
 
 /* ═══════════════════════════════════════════
    INIT
@@ -4790,7 +3403,7 @@ renderComms();
 /* ═══════════════════════════════════════════
    ТЕМА — переключатель
 ═══════════════════════════════════════════ */
-const THEMES = ['t-claude','t-frost','t-paper','t-sand','t-midnight','t-forest','t-aurora','t-neon'];
+const THEMES = ['t-claude','t-pastel','t-midnight','t-forest','t-aurora'];
 const THEME_KEY = 'wdb_theme';
 
 function setTheme(t) {
@@ -5462,300 +4075,7 @@ function updateStats() {
 updateStats();
 // Обновляем статистику при любом изменении localStorage
 const _origLSset = LS.set.bind(LS);
-LS.set = function(k, v) {
-  _origLSset(k, v);
-  updateStats();
-  // Перерисовываем новые виджеты при изменении данных
-  if (k === 'wdb_projects' || k === 'wdb_tasks') {
-    renderDeadlineRadar();
-    renderProjProgress();
-  }
-  renderPlanFact();
-};
-
-/* ═══════════════════════════════════════════
-   ВИДЖЕТ 1: ДЕДЛАЙН-РАДАР
-═══════════════════════════════════════════ */
-function renderDeadlineRadar() {
-  const el = document.getElementById('wdr-list');
-  const countEl = document.getElementById('wdr-count');
-  if (!el) return;
-
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const items = [];
-
-  // Из проектов
-  (LS.get('wdb_projects', [])).forEach(p => {
-    if (!p.deadline) return;
-    const d = new Date(p.deadline + 'T00:00:00');
-    const diff = Math.round((d - today) / 86400000);
-    if (diff <= 5) items.push({ name: p.name, diff, type: 'Проект' });
-  });
-
-  // Из задач с дедлайном
-  (LS.get('wdb_tasks', [])).filter(t => t.deadline && t.lane !== 'done').forEach(t => {
-    const d = new Date(t.deadline + 'T00:00:00');
-    const diff = Math.round((d - today) / 86400000);
-    if (diff <= 5) items.push({ name: t.text, diff, type: 'Задача' });
-  });
-
-  // Из коммуникаций
-  (LS.get('wdb_comms', [])).forEach(c => {
-    if (!c.deadline) return;
-    const d = new Date(c.deadline + 'T00:00:00');
-    const diff = Math.round((d - today) / 86400000);
-    if (diff <= 3) items.push({ name: c.person + (c.topic ? ': ' + c.topic : ''), diff, type: 'Контакт' });
-  });
-
-  items.sort((a,b) => a.diff - b.diff);
-
-  if (countEl) countEl.textContent = items.length ? items.length + ' пунктов' : '';
-
-  if (!items.length) {
-    el.innerHTML = '<div class="w-dr-empty">✓ Срочных дедлайнов нет</div>';
-    return;
-  }
-
-  function getDotClass(diff) {
-    if (diff < 0)  return 'overdue';
-    if (diff === 0) return 'today';
-    if (diff === 1) return 'tomorrow';
-    return 'soon';
-  }
-  function getDaysLabel(diff) {
-    if (diff < 0)  return 'просроч.';
-    if (diff === 0) return 'сегодня';
-    if (diff === 1) return 'завтра';
-    return 'через ' + diff + ' д.';
-  }
-
-  el.innerHTML = items.slice(0, 7).map(item => {
-    const dc = getDotClass(item.diff);
-    return `<div class="w-dr-item">
-      <div class="w-dr-dot ${dc}"></div>
-      <div class="w-dr-name" title="${esc(item.name)}">${esc(item.name)}</div>
-      <span class="w-dr-type">${item.type}</span>
-      <div class="w-dr-days ${dc}">${getDaysLabel(item.diff)}</div>
-    </div>`;
-  }).join('');
-}
-renderDeadlineRadar();
-
-/* ═══════════════════════════════════════════
-   ВИДЖЕТ 2: ПРОГРЕСС ПРОЕКТОВ
-═══════════════════════════════════════════ */
-function renderProjProgress() {
-  const el = document.getElementById('wpp-list');
-  if (!el) return;
-  const projs = LS.get('wdb_projects', []);
-  if (!projs.length) {
-    el.innerHTML = '<div class="w-pp-empty">Проектов пока нет</div>';
-    return;
-  }
-
-  el.innerHTML = projs.map(p => {
-    const stage = parseInt(p.stage) || 0;
-    const total = 11; // 0-11 stages
-    const pct = Math.round((stage / total) * 100);
-    const doneClass = stage >= 11 ? ' done' : '';
-    return `<div class="w-pp-item">
-      <div class="w-pp-top">
-        <div class="w-pp-name" title="${esc(p.name)}">${esc(p.name)}</div>
-        <div class="w-pp-pct">${pct}%</div>
-      </div>
-      <div class="w-pp-track">
-        <div class="w-pp-fill${doneClass}" style="width:${pct}%"></div>
-      </div>
-      <div class="w-pp-stage">${FUNNEL[stage]}${p.deadline ? ' · ' + fmtDate(p.deadline) : ''}</div>
-    </div>`;
-  }).join('');
-}
-renderProjProgress();
-
-/* ═══════════════════════════════════════════
-   ВИДЖЕТ 3: ПЛАН vs ФАКТ НЕДЕЛИ
-═══════════════════════════════════════════ */
-function getPFWeekKey() {
-  const d = new Date();
-  const day = d.getDay() === 0 ? 6 : d.getDay() - 1; // 0=пн
-  const mon = new Date(d); mon.setDate(d.getDate() - day); mon.setHours(0,0,0,0);
-  return `${mon.getFullYear()}_${mon.getMonth()}_${mon.getDate()}`;
-}
-
-function loadPFPlans() {
-  const saved = LS.get('wdb_pf_plans_' + getPFWeekKey(), { calls: 200, meets: 5, kp: 3, deals: 1 });
-  const ids = { calls: 'wpf-plan-calls', meets: 'wpf-plan-meets', kp: 'wpf-plan-kp', deals: 'wpf-plan-deals' };
-  Object.keys(ids).forEach(k => {
-    const inp = document.getElementById(ids[k]);
-    if (inp && inp !== document.activeElement) inp.value = saved[k] ?? { calls:200, meets:5, kp:3, deals:1 }[k];
-  });
-}
-
-function savePFPlans() {
-  const data = {
-    calls: parseInt(document.getElementById('wpf-plan-calls')?.value) || 200,
-    meets: parseInt(document.getElementById('wpf-plan-meets')?.value) || 5,
-    kp:    parseInt(document.getElementById('wpf-plan-kp')?.value)    || 3,
-    deals: parseInt(document.getElementById('wpf-plan-deals')?.value) || 1,
-  };
-  LS.get; // avoid circular
-  localStorage.setItem('wdb_pf_plans_' + getPFWeekKey(), JSON.stringify(data));
-}
-
-function renderPlanFact() {
-  const el = document.getElementById('wpf-rows');
-  const wlEl = document.getElementById('wpf-week-label');
-  if (!el) return;
-
-  // Неделя
-  const d = new Date();
-  const weekNum = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
-  if (wlEl) wlEl.textContent = 'Неделя ' + weekNum;
-
-  const plans = LS.get('wdb_pf_plans_' + getPFWeekKey(), { calls: 200, meets: 5, kp: 3, deals: 1 });
-
-  // Факт: звонки из трекера (суммируем 5 дней недели)
-  const day = d.getDay() === 0 ? 6 : d.getDay() - 1;
-  const mon = new Date(d); mon.setDate(d.getDate() - day); mon.setHours(0,0,0,0);
-  let factCalls = 0;
-  for (let i = 0; i <= day; i++) {
-    const dd = new Date(mon); dd.setDate(mon.getDate() + i);
-    const key = `wdb_call_tracker_${dd.getFullYear()}_${dd.getMonth()}_${dd.getDate()}`;
-    const ct = LS.get(key, { done: 0 });
-    factCalls += ct.done || 0;
-  }
-
-  // Факт: встречи из блока встреч
-  const weekStart = mon.toISOString().split('T')[0];
-  const weekEnd = new Date(mon); weekEnd.setDate(mon.getDate() + 6);
-  const weekEndStr = weekEnd.toISOString().split('T')[0];
-  const factMeets = (LS.get('wdb_meetings', [])).filter(m => m.date >= weekStart && m.date <= weekEndStr).length;
-
-  // Факт: КП и сделки из воронки (ручной ввод из виджета воронки)
-  const weekNum2 = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
-  const funnelKey = `wdb_funnel_${d.getFullYear()}_w${weekNum2}`;
-  const funnelManual = LS.get(funnelKey, { meetings: 0, kp: 0, deals: 0 });
-  const factKP    = funnelManual.kp    || 0;
-  const factDeals = funnelManual.deals || 0;
-
-  const metrics = [
-    { label: '📞 Звонки',  plan: plans.calls, fact: factCalls },
-    { label: '🤝 Встречи', plan: plans.meets, fact: factMeets },
-    { label: '📄 КП',      plan: plans.kp,    fact: factKP    },
-    { label: '✅ Сделки',  plan: plans.deals,  fact: factDeals },
-  ];
-
-  const maxVal = Math.max(1, ...metrics.map(m => Math.max(m.plan, m.fact)));
-
-  el.innerHTML = metrics.map(m => {
-    const planPct = Math.round((m.plan / maxVal) * 100);
-    const factPct = Math.round((m.fact / maxVal) * 100);
-    const delta = m.fact - m.plan;
-    const dClass = delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu';
-    const dText  = delta > 0 ? '+' + delta : delta < 0 ? String(delta) : '=';
-    const factBarCls = delta >= 0 ? ' over' : ' under';
-    return `<div class="w-pf-row">
-      <div class="w-pf-metric">${m.label}</div>
-      <div class="w-pf-bars">
-        <div class="w-pf-bar-row">
-          <span class="w-pf-bar-label" style="color:var(--text-mute)">план</span>
-          <div class="w-pf-bar-wrap"><div class="w-pf-bar-fill plan" style="width:${planPct}%"></div></div>
-          <span class="w-pf-num" style="color:var(--text-mute)">${m.plan}</span>
-        </div>
-        <div class="w-pf-bar-row">
-          <span class="w-pf-bar-label" style="color:var(--accent)">факт</span>
-          <div class="w-pf-bar-wrap"><div class="w-pf-bar-fill fact${factBarCls}" style="width:${factPct}%"></div></div>
-          <span class="w-pf-num">${m.fact}</span>
-        </div>
-      </div>
-      <div class="w-pf-delta ${dClass}">${dText}</div>
-    </div>`;
-  }).join('');
-
-  // Саммари
-  const summaryEl = document.getElementById('wpf-summary');
-  if (summaryEl) {
-    const done = metrics.filter(m => m.fact >= m.plan).length;
-    const total = metrics.length;
-    summaryEl.style.display = '';
-    summaryEl.innerHTML = `Выполнено показателей: <b>${done} / ${total}</b> — ${done === total ? '🎉 отличная неделя!' : done >= 2 ? '👍 хороший темп' : '⚡ нужно ускориться'}`;
-  }
-}
-loadPFPlans();
-renderPlanFact();
-// Обновляем каждые 2 минуты
-setInterval(renderPlanFact, 120000);
-
-/* ═══════════════════════════════════════════
-   ВИДЖЕТ 4: БЫСТРЫЙ ЛОГ ИТОГА
-═══════════════════════════════════════════ */
-let qlActiveType = 'call';
-
-function qlSelectType(btn) {
-  qlActiveType = btn.dataset.type;
-  document.querySelectorAll('.w-ql-type').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('ql-text')?.focus();
-}
-
-function qlGetData() {
-  const today = new Date().toDateString();
-  const saved = LS.get('wdb_quicklog', null);
-  if (!saved || saved.date !== today) return [];
-  return saved.entries || [];
-}
-
-function qlSaveData(entries) {
-  localStorage.setItem('wdb_quicklog', JSON.stringify({ date: new Date().toDateString(), entries }));
-}
-
-const QL_TYPE_LABELS = { call: 'Звонок', meet: 'Встреча', kp: 'КП', deal: 'Сделка', other: 'Другое' };
-
-function qlAdd() {
-  const inp = document.getElementById('ql-text');
-  if (!inp) return;
-  const text = inp.value.trim();
-  if (!text) { inp.focus(); return; }
-  const entries = qlGetData();
-  const now = new Date();
-  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  entries.unshift({ id: uid(), type: qlActiveType, text, time: timeStr });
-  qlSaveData(entries);
-  inp.value = '';
-  renderQL();
-  inp.focus();
-}
-
-function qlDelete(id) {
-  const entries = qlGetData().filter(e => e.id !== id);
-  qlSaveData(entries);
-  renderQL();
-}
-
-function qlClear() {
-  if (!confirm('Очистить лог за сегодня?')) return;
-  qlSaveData([]);
-  renderQL();
-}
-
-function renderQL() {
-  const el = document.getElementById('ql-history');
-  if (!el) return;
-  const entries = qlGetData();
-  if (!entries.length) {
-    el.innerHTML = '<div style="font-size:11px;color:var(--text-mute);padding:6px 0;text-align:center">Лог пуст — фиксируй итоги за день</div>';
-    return;
-  }
-  el.innerHTML = entries.map(e => `
-    <div class="w-ql-entry">
-      <span class="w-ql-entry-type ql-${e.type}">${QL_TYPE_LABELS[e.type] || e.type}</span>
-      <div class="w-ql-entry-text">${esc(e.text)}</div>
-      <span class="w-ql-entry-time">${e.time}</span>
-      <button class="w-ql-entry-del" onclick="qlDelete('${e.id}')" title="Удалить">✕</button>
-    </div>`).join('');
-}
-renderQL();
+LS.set = function(k, v) { _origLSset(k, v); updateStats(); };
 
 /* ── POMODORO ТАЙМЕР ── */
 const TIMER_MODES = { work: 25*60, short: 5*60, long: 15*60 };
@@ -6094,6 +4414,130 @@ function hideSplash() {
 }
 
 setTimeout(hideSplash, 2500);
+
+</script>
+<!-- ══ АНИМАЦИИ: STAGGER + MICRO-INTERACTIONS ══ -->
+<script>
+
+/* ────────────────────────────────────────────
+   B: STAGGERED MOUNT REVEAL
+   Запускается при каждой загрузке страницы.
+   Берём все .will-reveal и анимируем по очереди.
+──────────────────────────────────────────────*/
+function runStaggerReveal() {
+  const els = document.querySelectorAll('.will-reveal');
+  els.forEach((el, i) => {
+    // transition задаём инлайн — чтобы был стаггер
+    el.style.transition = `opacity 0.5s ease ${80 + i * 90}ms, transform 0.5s cubic-bezier(.22,.68,0,1.15) ${80 + i * 90}ms`;
+    // Небольшой rAF гарантирует что браузер увидел opacity:0 перед анимацией
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => el.classList.add('reveal-done'));
+    });
+  });
+}
+// Запускаем после полной загрузки — данные уже отрисованы
+window.addEventListener('load', () => setTimeout(runStaggerReveal, 50));
+
+/* ────────────────────────────────────────────
+   C: MICRO-INTERACTIONS — ЧЕКБОКС BOUNCE
+   Перехватываем toggleTask и добавляем анимацию
+   до вызова renderTasks (который сносит DOM).
+──────────────────────────────────────────────*/
+const _origToggleTask = toggleTask;
+window.toggleTask = function(id) {
+  // Находим чекбокс ДО rerenderа
+  const el = document.querySelector(`.task-card-item[data-id="${id}"] .task-check`);
+  if (el) {
+    el.classList.remove('bouncing');
+    // Форс-рефлоу чтобы анимация перезапустилась если уже была
+    void el.offsetWidth;
+    el.classList.add('bouncing');
+    // Вызываем оригинал с задержкой = половина анимации,
+    // чтобы bounce был виден до перерисовки
+    setTimeout(() => {
+      _origToggleTask(id);
+      // После renderTasks убираем класс у нового элемента (на всякий)
+      setTimeout(() => {
+        const newEl = document.querySelector(`.task-card-item[data-id="${id}"] .task-check`);
+        if (newEl) newEl.classList.remove('bouncing');
+      }, 50);
+    }, 160);
+  } else {
+    _origToggleTask(id);
+  }
+};
+
+/* ────────────────────────────────────────────
+   C: MICRO-INTERACTIONS — SLIDE-IN НОВОЙ ЗАДАЧИ
+   Перехватываем quickAdd и saveTask.
+──────────────────────────────────────────────*/
+function animateNewTasks(prevCount) {
+  // Ждём renderTasks, потом находим новые элементы
+  requestAnimationFrame(() => {
+    const items = document.querySelectorAll('.task-card-item');
+    items.forEach(item => {
+      // Элемент без класса анимации = только что создан
+      if (!item.dataset.animated) {
+        item.dataset.animated = '1';
+        item.classList.add('task-new-anim');
+        setTimeout(() => item.classList.remove('task-new-anim'), 400);
+      }
+    });
+  });
+}
+
+const _origQuickAdd = quickAdd;
+window.quickAdd = function(lane, input) {
+  _origQuickAdd(lane, input);
+  animateNewTasks();
+};
+
+const _origSaveTask = saveTask;
+window.saveTask = function() {
+  const isNew = !document.getElementById('task-edit-id').value;
+  _origSaveTask();
+  if (isNew) animateNewTasks();
+};
+
+/* ────────────────────────────────────────────
+   C: MICRO-INTERACTIONS — FADE+COLLAPSE УДАЛЕНИЯ
+   Перехватываем deleteTask.
+──────────────────────────────────────────────*/
+const _origDeleteTask = deleteTask;
+window.deleteTask = function(id) {
+  const el = document.querySelector(`.task-card-item[data-id="${id}"]`);
+  if (el) {
+    el.classList.add('task-removing');
+    // Ждём конца анимации (300ms), потом реально удаляем
+    setTimeout(() => _origDeleteTask(id), 280);
+  } else {
+    _origDeleteTask(id);
+  }
+};
+
+/* ────────────────────────────────────────────
+   C: MICRO-INTERACTIONS — то же для ctxDelete
+──────────────────────────────────────────────*/
+const _origCtxDelete = ctxDelete;
+window.ctxDelete = function() {
+  if (!ctxTaskId) return;
+  const id = ctxTaskId;
+  const el = document.querySelector(`.task-card-item[data-id="${id}"]`);
+  closeCtx();
+  if (el) {
+    el.classList.add('task-removing');
+    setTimeout(() => {
+      tasks = tasks.filter(t => t.id !== id);
+      LS.set('wdb_tasks', tasks);
+      renderTasks();
+    }, 280);
+  } else {
+    tasks = tasks.filter(t => t.id !== id);
+    LS.set('wdb_tasks', tasks);
+    renderTasks();
+  }
+};
+
 </script>
 <!-- ══ ПОПАП: ПРИЧИНА НЕУСПЕХА (вне всех контейнеров!) ══ -->
 <div class="fail-reason-popup" id="fail-reason-popup">
@@ -6105,373 +4549,112 @@ setTimeout(hideSplash, 2500);
   <div class="fail-reason-opt" onclick="pickFailReason('Другое')"><span class="icon">💬</span>Другое</div>
 </div>
 
-<!-- ══ АНИМАЦИИ: SCROLL PROGRESS + STAGGER + MICRO-INTERACTIONS ══ -->
+</div><!-- /app -->
+
+<!-- ══════════════════════════════════════════════════
+     SUPABASE AUTH LOGIC
+     Паттерн: Auth Gate + Magic Link (OTP)
+     Все функции объявлены глобально для доступа из HTML
+══════════════════════════════════════════════════ -->
 <script>
+// ── КОНФИГУРАЦИЯ ──────────────────────────────────────
+// Замени эти значения на свои из Supabase Dashboard → Settings → API
+const SUPABASE_URL      = 'https://uoiavcabxgdjugzryrmj.supabase.co';  // ← твой Project URL
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvaWF2Y2FieGdkanVnenJ5cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODUyOTgsImV4cCI6MjA4OTE2MTI5OH0.Q64IVBFl_7LQd1SaBqbFu-QFkMwPQViMAnnmZPommqo';                    // ← твой anon public key
 
-/* ─────────────────────────────────────────────
-   SCROLL PROGRESS BAR
-   Паттерн: Reading Indicator — Medium, Linear, Notion.
-   passive:true — не блокирует прокрутку на мобиле.
-──────────────────────────────────────────────*/
-(function() {
-  var bar = document.getElementById('scroll-progress');
-  if (!bar) return;
+// Инициализируем клиент Supabase
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  function updateBar() {
-    var doc = document.documentElement;
-    var scrollable = doc.scrollHeight - doc.clientHeight;
-    if (scrollable <= 0) { bar.style.width = '0%'; return; }
-    bar.style.width = ((window.scrollY / scrollable) * 100) + '%';
-  }
+// ── AUTH GATE — главный страж ─────────────────────────
+async function initAuth() {
+  // Проверяем есть ли активная сессия (например после перехода по Magic Link)
+  const { data: { session } } = await _supabase.auth.getSession();
 
-  window.addEventListener('scroll', updateBar, { passive: true });
-  updateBar(); // инициализация на случай если страница открылась не с top
-})();
-
-/* ─────────────────────────────────────────────
-   B: STAGGERED MOUNT REVEAL
-   Карточки появляются при каждой загрузке.
-   Двойной rAF: гарантирует что браузер видит
-   opacity:0 до того как добавить reveal-done.
-──────────────────────────────────────────────*/
-function runStaggerReveal() {
-  var els = document.querySelectorAll('.will-reveal');
-  els.forEach(function(el, i) {
-    var delay = 80 + i * 90;
-    el.style.transition =
-      'opacity 0.5s ease ' + delay + 'ms, ' +
-      'transform 0.5s cubic-bezier(.22,.68,0,1.15) ' + delay + 'ms';
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        el.classList.add('reveal-done');
-      });
-    });
-  });
-}
-window.addEventListener('load', function() { setTimeout(runStaggerReveal, 50); });
-
-/* ─────────────────────────────────────────────
-   C: MICRO — ЧЕКБОКС BOUNCE
-   Bounce проигрывается ДО rerenderа DOM,
-   поэтому оригинальный toggleTask вызываем
-   с задержкой 160ms.
-──────────────────────────────────────────────*/
-var _origToggleTask = toggleTask;
-window.toggleTask = function(id) {
-  var el = document.querySelector('.task-card-item[data-id="' + id + '"] .task-check');
-  if (el) {
-    el.classList.remove('bouncing');
-    void el.offsetWidth; // форс-рефлоу для перезапуска анимации
-    el.classList.add('bouncing');
-    setTimeout(function() {
-      _origToggleTask(id);
-    }, 160);
+  if (session) {
+    showDashboard(session.user);
   } else {
-    _origToggleTask(id);
+    showLoginScreen();
   }
-};
 
-/* ─────────────────────────────────────────────
-   C: MICRO — SLIDE-IN НОВОЙ ЗАДАЧИ
-   Помечаем уже анимированные элементы через
-   data-animated, чтобы не анимировать повторно.
-──────────────────────────────────────────────*/
-function animateNewTasks() {
-  requestAnimationFrame(function() {
-    var items = document.querySelectorAll('.task-card-item');
-    items.forEach(function(item) {
-      if (!item.dataset.animated) {
-        item.dataset.animated = '1';
-        item.classList.add('task-new-anim');
-        setTimeout(function() { item.classList.remove('task-new-anim'); }, 400);
-      }
-    });
-  });
-}
-
-var _origQuickAdd = quickAdd;
-window.quickAdd = function(lane, input) {
-  _origQuickAdd(lane, input);
-  animateNewTasks();
-};
-
-var _origSaveTask = saveTask;
-window.saveTask = function() {
-  var isNew = !document.getElementById('task-edit-id').value;
-  _origSaveTask();
-  if (isNew) animateNewTasks();
-};
-
-/* ─────────────────────────────────────────────
-   C: MICRO — FADE+COLLAPSE ПРИ УДАЛЕНИИ
-   max-height:60px → 0 — стандартный паттерн,
-   потому что height:auto нельзя анимировать в CSS.
-──────────────────────────────────────────────*/
-var _origDeleteTask = deleteTask;
-window.deleteTask = function(id) {
-  var el = document.querySelector('.task-card-item[data-id="' + id + '"]');
-  if (el) {
-    el.classList.add('task-removing');
-    setTimeout(function() { _origDeleteTask(id); }, 280);
-  } else {
-    _origDeleteTask(id);
-  }
-};
-
-var _origCtxDelete = ctxDelete;
-window.ctxDelete = function() {
-  if (!ctxTaskId) return;
-  var id = ctxTaskId;
-  var el = document.querySelector('.task-card-item[data-id="' + id + '"]');
-  closeCtx();
-  if (el) {
-    el.classList.add('task-removing');
-    setTimeout(function() {
-      tasks = tasks.filter(function(t) { return t.id !== id; });
-      LS.set('wdb_tasks', tasks);
-      renderTasks();
-    }, 280);
-  } else {
-    tasks = tasks.filter(function(t) { return t.id !== id; });
-    LS.set('wdb_tasks', tasks);
-    renderTasks();
-  }
-};
-
-</script>
-
-<!-- ══ WIDGET CONSTRUCTOR — backdrop + panel ══ -->
-<!-- Backdrop Dimming — полупрозрачный фон, закрывает панель по клику -->
-<div id="wc-backdrop" onclick="wcClose()"></div>
-
-<!-- Slide-over панель -->
-<div id="wc-panel">
-  <div class="wc-header">
-    <div class="wc-header-left">
-      <div class="wc-header-icon">
-        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="var(--accent)" stroke-width="1.5">
-          <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
-          <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
-        </svg>
-      </div>
-      Настройка виджетов
-    </div>
-    <button class="wc-close-btn" onclick="wcClose()">×</button>
-  </div>
-  <div class="wc-sub">Включай и выключай блоки на дашборде</div>
-
-  <div class="wc-body" id="wc-body">
-    <!-- строки рендерятся через JS -->
-  </div>
-
-  <div class="wc-footer">
-    <div class="wc-counter">Включено: <b id="wc-on-count">0</b> из <b id="wc-total-count">0</b></div>
-    <button class="wc-reset-btn" onclick="wcResetAll()">Включить все виджеты</button>
-  </div>
-</div>
-
-<!-- ══ WIDGET CONSTRUCTOR JS ══ -->
-<script>
-/* ─────────────────────────────────────────────────────
-   РЕЕСТР ВИДЖЕТОВ
-   Каждый виджет: id совпадает с data-widget-id в HTML,
-   icon — эмодзи, name — название, desc — подсказка,
-   section — группа для секционных меток в панели.
-───────────────────────────────────────────────────── */
-var WC_REGISTRY = [
-  { id: 'clock',        icon: '🕐', name: 'Дата и время',        desc: 'Живые часы + день недели',       section: 'Ориентация' },
-  { id: 'focus',        icon: '🎯', name: 'Фокус дня',           desc: 'Одно главное дело на сегодня',   section: 'Ориентация' },
-  { id: 'stats',        icon: '📊', name: 'Мини-статистика',      desc: 'Проекты, звонки, задачи',        section: 'Ориентация' },
-  { id: 'timer',        icon: '⏱', name: 'Pomodoro таймер',      desc: 'Фокус-сессии 25/5/15 мин',       section: 'Продуктивность' },
-  { id: 'call-tracker', icon: '📞', name: 'Трекер звонков',       desc: 'Счётчик и план на день',         section: 'Продуктивность' },
-  { id: 'call-results', icon: '🎯', name: 'Результат звонков',    desc: 'Успешные, неуспешные, причины',  section: 'Продуктивность' },
-  { id: 'quick-log',    icon: '⚡', name: 'Быстрый лог',          desc: 'Звонки, встречи, КП, сделки',    section: 'Продуктивность' },
-  { id: 'funnel',       icon: '🔻', name: 'Воронка недели',       desc: 'Конверсия по этапам',            section: 'Аналитика' },
-  { id: 'heatmap',      icon: '🗓', name: 'Тепловая карта',       desc: 'Активность по часам недели',     section: 'Аналитика' },
-  { id: 'deadlines',    icon: '🔴', name: 'Дедлайн-радар',        desc: 'Срочные задачи из проектов',     section: 'Аналитика' },
-  { id: 'proj-progress',icon: '📈', name: 'Прогресс проектов',    desc: 'Бары готовности по клиентам',    section: 'Аналитика' },
-  { id: 'plan-fact',    icon: '📊', name: 'План vs Факт',          desc: 'Сравнение план/факт за неделю',  section: 'Аналитика' },
-  { id: 'meetings',     icon: '🤝', name: 'Встречи на неделе',    desc: 'Календарь встреч',               section: 'Коммуникации' },
-  { id: 'comms',        icon: '💬', name: 'Коммуникации',         desc: 'Напоминания по контактам',       section: 'Коммуникации' },
-  { id: 'notes',        icon: '📝', name: 'Быстрые заметки',      desc: 'Свободный текст, черновики',     section: 'Коммуникации' },
-];
-
-/* ─────────────────────────────────────────────────────
-   СОСТОЯНИЕ
-   Загружаем из localStorage — если нет, все включены.
-   Ключ хранения: wdb_widget_visibility
-───────────────────────────────────────────────────── */
-var WC_STORAGE_KEY = 'wdb_widget_visibility';
-
-function wcLoadState() {
-  try {
-    var saved = localStorage.getItem(WC_STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
-  } catch(e) {}
-  // По умолчанию — все включены
-  var def = {};
-  WC_REGISTRY.forEach(function(w) { def[w.id] = true; });
-  return def;
-}
-
-function wcSaveState(state) {
-  try { localStorage.setItem(WC_STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-}
-
-var wcState = wcLoadState();
-
-/* ─────────────────────────────────────────────────────
-   ПРИМЕНЕНИЕ СОСТОЯНИЯ К DOM
-   Скрываем/показываем виджеты по data-widget-id.
-   Используем display:none через класс wc-hidden —
-   не трогаем inline styles самих виджетов.
-───────────────────────────────────────────────────── */
-function wcApplyAll() {
-  WC_REGISTRY.forEach(function(w) {
-    var el = document.querySelector('[data-widget-id="' + w.id + '"]');
-    if (!el) return;
-    if (wcState[w.id]) {
-      el.classList.remove('wc-hidden');
-    } else {
-      el.classList.add('wc-hidden');
+  // Слушаем все изменения состояния авторизации
+  _supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') {
+      showDashboard(session.user);
+    } else if (event === 'SIGNED_OUT') {
+      showLoginScreen();
     }
   });
 }
 
-/* ─────────────────────────────────────────────────────
-   РЕНДЕР СТРОК ПАНЕЛИ
-   Группируем по секциям, рендерим section-label + rows.
-───────────────────────────────────────────────────── */
-function wcRenderPanel() {
-  var body = document.getElementById('wc-body');
-  if (!body) return;
-
-  // Собираем уникальные секции в нужном порядке
-  var sections = [];
-  WC_REGISTRY.forEach(function(w) {
-    if (sections.indexOf(w.section) === -1) sections.push(w.section);
-  });
-
-  var html = '';
-  sections.forEach(function(sec) {
-    html += '<div class="wc-section-label">' + sec + '</div>';
-    WC_REGISTRY.filter(function(w) { return w.section === sec; }).forEach(function(w) {
-      var isOn = wcState[w.id] !== false;
-      html +=
-        '<div class="wc-row' + (isOn ? ' is-on' : '') + '" id="wc-row-' + w.id + '" onclick="wcToggleRow(\'' + w.id + '\')">' +
-          '<div class="wc-row-icon">' + w.icon + '</div>' +
-          '<div class="wc-row-info">' +
-            '<div class="wc-row-name">' + w.name + '</div>' +
-            '<div class="wc-row-desc">' + w.desc + '</div>' +
-          '</div>' +
-          '<label class="wc-toggle" onclick="event.stopPropagation()">' +
-            '<input type="checkbox"' + (isOn ? ' checked' : '') + ' onchange="wcToggleById(\'' + w.id + '\', this.checked)">' +
-            '<div class="wc-toggle-track"></div>' +
-            '<div class="wc-toggle-thumb"></div>' +
-          '</label>' +
-        '</div>';
-    });
-  });
-
-  body.innerHTML = html;
-  wcUpdateCounter();
-}
-
-/* ─────────────────────────────────────────────────────
-   TOGGLE — переключаем один виджет
-   Вызывается и из checkbox, и из клика по всей строке.
-───────────────────────────────────────────────────── */
-function wcToggleById(id, val) {
-  wcState[id] = val;
-  wcSaveState(wcState);
-
-  // Обновляем класс строки
-  var row = document.getElementById('wc-row-' + id);
-  if (row) {
-    row.className = 'wc-row' + (val ? ' is-on' : '');
-    var cb = row.querySelector('input[type=checkbox]');
-    if (cb) cb.checked = val;
+// ── MAGIC LINK — отправка письма ─────────────────────
+async function sendMagicLink(email) {
+  if (!email || !email.includes('@')) {
+    document.getElementById('login-msg').textContent = 'Введи корректный email';
+    document.getElementById('login-msg').style.color = '#c0392b';
+    return;
   }
 
-  // Показываем/скрываем виджет
-  var el = document.querySelector('[data-widget-id="' + id + '"]');
-  if (el) {
-    if (val) el.classList.remove('wc-hidden');
-    else el.classList.add('wc-hidden');
+  const btn = document.getElementById('login-btn');
+  const msg = document.getElementById('login-msg');
+
+  btn.disabled = true;
+  btn.textContent = 'Отправляем...';
+  msg.textContent = '';
+
+  const { error } = await _supabase.auth.signInWithOtp({
+    email: email,
+    options: {
+      // false = только уже добавленные пользователи могут войти
+      // Добавить коллегу: Supabase Dashboard → Authentication → Users → Invite
+      shouldCreateUser: false
+    }
+  });
+
+  if (error) {
+    // Частая ошибка: пользователь не найден в системе
+    msg.textContent = error.message.includes('not found')
+      ? '⚠️ Email не найден. Попроси Олега добавить тебя.'
+      : 'Ошибка: ' + error.message;
+    msg.style.color = '#c0392b';
+    btn.disabled = false;
+    btn.textContent = 'Войти через email';
+  } else {
+    msg.textContent = '✉️ Письмо отправлено! Проверь почту и кликни ссылку.';
+    msg.style.color = '#2e7d52';
   }
-
-  wcUpdateCounter();
 }
 
-function wcToggleRow(id) {
-  // Клик по строке = инвертируем текущее состояние
-  wcToggleById(id, !wcState[id]);
+// ── ВЫХОД ─────────────────────────────────────────────
+async function signOut() {
+  await _supabase.auth.signOut();
 }
 
-/* ─────────────────────────────────────────────────────
-   СБРОС — включаем все виджеты
-───────────────────────────────────────────────────── */
-function wcResetAll() {
-  WC_REGISTRY.forEach(function(w) { wcState[w.id] = true; });
-  wcSaveState(wcState);
-  wcRenderPanel();   // перерисовываем строки
-  wcApplyAll();      // показываем все виджеты
+// ── ПОКАЗАТЬ ДАШБОРД ──────────────────────────────────
+function showDashboard(user) {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+
+  // Показываем имя пользователя в badge (если элемент есть в разметке)
+  const badge = document.getElementById('user-badge');
+  if (badge) {
+    badge.textContent = user.email.split('@')[0];
+  }
 }
 
-/* ─────────────────────────────────────────────────────
-   СЧЁТЧИК в подвале панели
-───────────────────────────────────────────────────── */
-function wcUpdateCounter() {
-  var on = WC_REGISTRY.filter(function(w) { return wcState[w.id] !== false; }).length;
-  var total = WC_REGISTRY.length;
-  var elOn = document.getElementById('wc-on-count');
-  var elTotal = document.getElementById('wc-total-count');
-  if (elOn) elOn.textContent = on;
-  if (elTotal) elTotal.textContent = total;
+// ── ПОКАЗАТЬ ЭКРАН ВХОДА ──────────────────────────────
+function showLoginScreen() {
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
 }
 
-/* ─────────────────────────────────────────────────────
-   ОТКРЫТИЕ / ЗАКРЫТИЕ ПАНЕЛИ
-   Паттерн: Slide-over с Backdrop Dimming.
-   body overflow:hidden — убирает скролл страницы
-   пока панель открыта.
-───────────────────────────────────────────────────── */
-var wcIsOpen = false;
-
-function wcToggle() {
-  if (wcIsOpen) wcClose(); else wcOpen();
+// ── ЗАПУСК ────────────────────────────────────────────
+// DOMContentLoaded уже мог сработать — вызываем initAuth напрямую
+// если документ уже загружен, иначе ждём события
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAuth);
+} else {
+  initAuth();
 }
-
-function wcOpen() {
-  wcIsOpen = true;
-  wcRenderPanel();
-  document.getElementById('wc-panel').classList.add('open');
-  document.getElementById('wc-backdrop').classList.add('open');
-  document.getElementById('wc-open-btn').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function wcClose() {
-  wcIsOpen = false;
-  document.getElementById('wc-panel').classList.remove('open');
-  document.getElementById('wc-backdrop').classList.remove('open');
-  document.getElementById('wc-open-btn').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// Закрытие по Escape
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' && wcIsOpen) wcClose();
-});
-
-/* ─────────────────────────────────────────────────────
-   ИНИЦИАЛИЗАЦИЯ
-   Применяем сохранённое состояние сразу при загрузке —
-   до рендера чтобы не было flash скрытых виджетов.
-───────────────────────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', function() {
-  wcApplyAll();
-});
 </script>
 
 </body>
