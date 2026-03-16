@@ -4905,7 +4905,7 @@ function projectHTML(p) {
 
   const funnelHTML = FUNNEL.map((s,i) => {
     const cls = i === stage ? 'active' : (i < stage ? 'past' : '');
-    return '<span class="funnel-step ' + cls + '" onclick="event.stopPropagation();setProjectStage('' + p.id + '',' + i + ')" title="' + s + '">' + s + '</span>';
+    return '<span class="funnel-step ' + cls + '" onclick="event.stopPropagation();setProjectStage(\'' + p.id + '\',' + i + ')" title="' + s + '">' + s + '</span>';
   }).join('');
 
   const nextStepPreview = p.nextStep
