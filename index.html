@@ -3382,6 +3382,112 @@
     -webkit-backdrop-filter: blur(20px);
   }
 
+  /* ══════════════════════════════════════════
+     ДОРАБОТКИ БЛОКА ПРОЕКТОВ
+  ══════════════════════════════════════════ */
+  .proj-sort-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px 4px; flex-wrap: wrap;
+  }
+  .proj-sort-label { font-size: 10px; color: var(--text-mute); }
+  .proj-sort-btn {
+    font-size: 10px; padding: 2px 9px; border-radius: 20px;
+    border: 1px solid var(--border2); background: none;
+    color: var(--text-mute); cursor: pointer; font-family: inherit; transition: all 0.12s;
+  }
+  .proj-sort-btn.active { background: var(--accent-l); border-color: var(--accent); color: var(--accent); }
+
+  /* Следующий шаг */
+  .proj-next-step {
+    margin-top: 8px; padding: 7px 10px;
+    background: var(--accent-l); border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  }
+  .proj-next-step-label {
+    font-size: 9px; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px;
+  }
+  .proj-next-step-input {
+    width: 100%; box-sizing: border-box; background: transparent;
+    border: none; outline: none; color: var(--text);
+    font-family: inherit; font-size: 12px;
+  }
+
+  /* Последний контакт */
+  .proj-last-contact {
+    margin-top: 6px; padding: 7px 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+  }
+  .proj-last-contact-label {
+    font-size: 9px; font-weight: 700; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+  }
+  .proj-last-contact-input {
+    width: 100%; box-sizing: border-box; background: transparent;
+    border: none; outline: none; color: var(--text);
+    font-family: inherit; font-size: 12px; line-height: 1.5;
+    resize: none; min-height: 34px;
+  }
+  .proj-last-contact-meta {
+    font-size: 9px; color: var(--text-mute); margin-top: 2px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* Дни до дедлайна */
+  .proj-deadline-days {
+    font-size: 10px; font-weight: 700; padding: 1px 6px;
+    border-radius: 10px; flex-shrink: 0;
+  }
+  .proj-deadline-days.overdue { background: var(--red-l);    color: var(--red); }
+  .proj-deadline-days.urgent  { background: var(--red-l);    color: var(--red); }
+  .proj-deadline-days.soon    { background: var(--yellow-l); color: var(--yellow); }
+  .proj-deadline-days.ok      { background: var(--surface2); color: var(--text-mute); }
+
+  /* Проигранные сделки */
+  .projects-divider {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px 4px; cursor: pointer; user-select: none;
+  }
+  .projects-divider-line { flex: 1; height: 1px; background: var(--border2); }
+  .projects-divider-label {
+    font-size: 11px; font-weight: 600; color: var(--text-mute);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .projects-divider-chevron {
+    font-size: 9px; color: var(--text-mute); transition: transform 0.2s;
+  }
+  .projects-divider-chevron.open { transform: rotate(180deg); }
+  .projects-lost-grid {
+    padding: 0 16px 12px; display: none;
+    flex-direction: column; gap: 6px;
+  }
+  .projects-lost-grid.open { display: flex; }
+  .project-card.lost {
+    opacity: 0.78; border-left: 3px solid var(--red);
+    background: var(--surface2);
+  }
+  .project-card.lost .project-name {
+    color: var(--text-dim); text-decoration: line-through;
+    text-decoration-color: var(--text-mute);
+  }
+  .proj-lost-reason { font-size: 10px; color: var(--red); margin-top: 2px; font-style: italic; }
+  .proj-loss-badge {
+    font-size: 9px; padding: 2px 7px; border-radius: 10px;
+    background: var(--red-l); color: var(--red);
+    border: 1px solid rgba(192,57,43,0.25); white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* Модалка — причины проигрыша */
+  .loss-reason-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+  .loss-reason-opt {
+    padding: 8px 10px; border: 1px solid var(--border2);
+    border-radius: var(--radius-s); cursor: pointer;
+    font-size: 11px; color: var(--text-dim); background: var(--surface2);
+    transition: all 0.12s; text-align: center; font-family: inherit;
+  }
+  .loss-reason-opt.active { background: var(--red-l); border-color: var(--red); color: var(--red); font-weight: 500; }
+
 </style>
 
 <!-- ══ SUPABASE — подключаем первым, до любых скриптов ══ -->
@@ -4084,14 +4190,31 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
   <div class="card projects-block will-reveal">
     <div class="card-header">
       <div class="card-title"><span class="dot green"></span>Проекты по маркировке</div>
-      <div style="display:flex;gap:6px;">
+      <div style="display:flex;gap:6px;align-items:center;">
         <span class="badge" id="projects-count">0</span>
         <button class="btn btn-primary" onclick="openProjectModal()">+ Проект</button>
       </div>
     </div>
+    <div class="proj-sort-bar">
+      <span class="proj-sort-label">Сортировка:</span>
+      <button class="proj-sort-btn active" onclick="setProjSort('added',this)">По добавлению</button>
+      <button class="proj-sort-btn" onclick="setProjSort('deadline',this)">По дедлайну</button>
+      <button class="proj-sort-btn" onclick="setProjSort('stage',this)">По стадии</button>
+    </div>
     <div class="projects-grid" id="projects-list">
       <div class="empty-msg">Проектов пока нет. Нажми «+ Проект»</div>
     </div>
+    <!-- Раздел проигранных сделок -->
+    <div class="projects-divider" onclick="toggleLostSection()">
+      <div class="projects-divider-line"></div>
+      <div class="projects-divider-label">
+        Проигранные сделки
+        <span class="badge" id="lost-count" style="background:var(--red-l);color:var(--red);">0</span>
+      </div>
+      <div class="projects-divider-line"></div>
+      <span class="projects-divider-chevron" id="lost-chevron">▼</span>
+    </div>
+    <div class="projects-lost-grid" id="lost-list"></div>
   </div>
 
 
@@ -4229,7 +4352,7 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
 
 <!-- ══ MODAL: ПРОЕКТ ══ -->
 <div class="overlay" id="project-modal" onclick="closeModalOnBg(event,'project-modal')">
-  <div class="modal" style="width:500px">
+  <div class="modal" style="width:520px">
     <div class="modal-title">
       <span id="proj-modal-title">Новый проект</span>
       <button class="btn btn-ghost btn-icon" onclick="closeModal('project-modal')">✕</button>
@@ -4254,12 +4377,12 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       </div>
       <div class="modal-field">
         <label>Бюджет (₽)</label>
-        <input class="modal-input" id="proj-budget-in" placeholder="4 000 000">
+        <input class="modal-input" id="proj-budget-in" placeholder="11 000 000" oninput="formatBudgetInput(this)">
       </div>
     </div>
     <div class="modal-field">
       <label>Этап воронки</label>
-      <select class="modal-select" id="proj-stage-in">
+      <select class="modal-select" id="proj-stage-in" onchange="checkLostStage(this.value)">
         <option value="0">Новый лид</option>
         <option value="1">Квалификация</option>
         <option value="2">Ожидание материалов</option>
@@ -4272,7 +4395,26 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
         <option value="9">Оформление эксперимента</option>
         <option value="10">Согласование договора</option>
         <option value="11">Подписание договора</option>
+        <option value="lost">❌ Сделка проиграна</option>
       </select>
+    </div>
+    <!-- Причина проигрыша — появляется только при stage=lost -->
+    <div class="modal-field" id="proj-loss-block" style="display:none;">
+      <label>Причина проигрыша</label>
+      <div class="loss-reason-grid">
+        <button class="loss-reason-opt" onclick="selectLossReason(this,'Цена')" data-r="Цена">💰 Цена</button>
+        <button class="loss-reason-opt" onclick="selectLossReason(this,'Конкурент')" data-r="Конкурент">🏁 Конкурент</button>
+        <button class="loss-reason-opt" onclick="selectLossReason(this,'Нет бюджета')" data-r="Нет бюджета">🚫 Нет бюджета</button>
+        <button class="loss-reason-opt" onclick="selectLossReason(this,'Отложили')" data-r="Отложили">⏸ Отложили</button>
+        <button class="loss-reason-opt" onclick="selectLossReason(this,'Не наш продукт')" data-r="Не наш продукт">❓ Не наш продукт</button>
+        <button class="loss-reason-opt" onclick="selectLossReason(this,'Другое')" data-r="Другое">💬 Другое</button>
+      </div>
+      <input class="modal-input" id="proj-loss-detail-in" placeholder="Уточнение (опционально)" style="margin-top:8px;">
+      <input type="hidden" id="proj-loss-reason-in">
+    </div>
+    <div class="modal-field">
+      <label>→ Следующий шаг</label>
+      <input class="modal-input" id="proj-nextstep-in" placeholder="Что нужно сделать прямо сейчас?">
     </div>
     <div class="modal-field">
       <label>Ответственный</label>
@@ -4567,38 +4709,134 @@ function ctxDelete() {
    ПРОЕКТЫ
 ═══════════════════════════════════════════ */
 let expandedProject = null;
+let projSort = 'added';
+let lostSectionOpen = false;
+let selectedLossReason = '';
+
+function setProjSort(mode, btn) {
+  projSort = mode;
+  document.querySelectorAll('.proj-sort-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderProjects();
+}
+
+function toggleLostSection() {
+  lostSectionOpen = !lostSectionOpen;
+  document.getElementById('lost-list')?.classList.toggle('open', lostSectionOpen);
+  document.getElementById('lost-chevron')?.classList.toggle('open', lostSectionOpen);
+}
+
+function fmtBudget(raw) {
+  if (!raw) return '';
+  const num = parseInt(String(raw).replace(/\D/g,''));
+  return isNaN(num) ? String(raw) : num.toLocaleString('ru-RU') + ' ₽';
+}
+
+function formatBudgetInput(inp) {
+  const digits = inp.value.replace(/\D/g,'');
+  if (!digits) { inp.value = ''; return; }
+  inp.value = parseInt(digits).toLocaleString('ru-RU');
+}
+
+function deadlineDays(iso) {
+  if (!iso) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((new Date(iso+'T00:00:00') - today) / 86400000);
+  if (diff < 0)  return { text: `просроч. ${Math.abs(diff)} дн.`, cls: 'overdue' };
+  if (diff === 0) return { text: 'сегодня', cls: 'urgent' };
+  if (diff === 1) return { text: 'завтра',  cls: 'urgent' };
+  if (diff <= 7) return { text: `${diff} дн.`, cls: 'soon' };
+  return { text: `${diff} дн.`, cls: 'ok' };
+}
+
+function checkLostStage(val) {
+  const block = document.getElementById('proj-loss-block');
+  if (block) block.style.display = val === 'lost' ? '' : 'none';
+}
+
+function selectLossReason(btn, reason) {
+  selectedLossReason = reason;
+  document.querySelectorAll('.loss-reason-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('proj-loss-reason-in').value = reason;
+}
+
+function saveLastContact(id, text) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  p.lastContact = text;
+  p.lastContactDate = new Date().toISOString().split('T')[0];
+  LS.set('wdb_projects', projects);
+  const metaEl = document.getElementById('plc-meta-' + id);
+  if (metaEl) metaEl.textContent = 'обновлено ' + fmtDate(p.lastContactDate);
+}
+
+function saveNextStep(id, text) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  p.nextStep = text;
+  LS.set('wdb_projects', projects);
+}
 
 function renderProjects() {
   const el = document.getElementById('projects-list');
-  document.getElementById('projects-count').textContent = projects.length;
-  if(!projects.length) {
-    el.innerHTML = '<div class="empty-msg">Проектов пока нет. Нажми «+ Проект»</div>';
-    return;
+  const lostEl = document.getElementById('lost-list');
+  const lostCount = document.getElementById('lost-count');
+
+  const active = projects.filter(p => p.stage !== 'lost');
+  const lost   = projects.filter(p => p.stage === 'lost');
+
+  document.getElementById('projects-count').textContent = active.length;
+  if (lostCount) lostCount.textContent = lost.length;
+
+  // Сортировка
+  const sorted = [...active].sort((a, b) => {
+    if (projSort === 'deadline') return (a.deadline||'9999').localeCompare(b.deadline||'9999');
+    if (projSort === 'stage')    return (parseInt(b.stage)||0) - (parseInt(a.stage)||0);
+    return 0;
+  });
+
+  el.innerHTML = sorted.length
+    ? sorted.map(p => projectHTML(p)).join('')
+    : '<div class="empty-msg">Проектов пока нет. Нажми «+ Проект»</div>';
+
+  if (lostEl) {
+    lostEl.innerHTML = lost.length
+      ? lost.map(p => lostProjectHTML(p)).join('')
+      : '<div class="empty-msg" style="padding:6px 0">Проигранных сделок нет</div>';
   }
-  el.innerHTML = projects.map(p => projectHTML(p)).join('');
 }
 
 function projectHTML(p) {
   const stage = parseInt(p.stage) || 0;
   const expanded = expandedProject === p.id;
-  const deadlineStr = p.deadline ? `<span style="font-size:11px;color:${isDueSoon(p.deadline)?'var(--red)':'var(--text-mute)'}">📅 ${fmtDate(p.deadline)}</span>` : '';
+  const dd = deadlineDays(p.deadline);
+
+  const deadlineHtml = p.deadline ? `
+    <span style="font-size:11px;color:${dd.cls==='overdue'||dd.cls==='urgent'?'var(--red)':'var(--text-mute)'}">📅 ${fmtDate(p.deadline)}</span>
+    <span class="proj-deadline-days ${dd.cls}">${dd.text}</span>` : '';
 
   const funnelHTML = FUNNEL.map((s,i) => {
     const cls = i === stage ? 'active' : (i < stage ? 'past' : '');
     return `<span class="funnel-step ${cls}" onclick="event.stopPropagation();setProjectStage('${p.id}',${i})" title="${s}">${s}</span>`;
   }).join('');
 
+  const nextStepPreview = p.nextStep
+    ? `<div style="font-size:10px;color:var(--accent);margin-top:2px;">→ ${esc(p.nextStep)}</div>`
+    : '';
+
   return `
   <div class="project-card ${expanded?'expanded':''}" data-id="${p.id}"
        onclick="toggleProject('${p.id}')"
-       oncontextmenu="event.preventDefault();projCtx('${p.id}',event)">
+       oncontextmenu="event.preventDefault();openProjectModal('${p.id}')">
     <div class="project-top">
-      <div>
+      <div style="flex:1;min-width:0;">
         <div class="project-name">${esc(p.name)}</div>
-        <div class="project-client">${esc(p.client)}${p.contact?' · '+esc(p.contact):''}</div>
+        <div class="project-client">${esc(p.client||'')}${p.contact?' · '+esc(p.contact):''}</div>
+        ${nextStepPreview}
       </div>
-      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-        ${deadlineStr}
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
+        ${deadlineHtml}
         <span class="status-pill st-${stage}">${FUNNEL[stage]}</span>
       </div>
     </div>
@@ -4612,18 +4850,61 @@ function projectHTML(p) {
         </div>
         <div class="project-field">
           <label>Бюджет</label>
-          <input value="${esc(p.budget||'')}" onclick="event.stopPropagation()"
-            onchange="updateProjField('${p.id}','budget',this.value)" placeholder="—">
+          <input value="${p.budget ? fmtBudget(p.budget) : ''}"
+            onclick="event.stopPropagation()" oninput="formatBudgetInput(this)"
+            onchange="updateProjField('${p.id}','budget',this.value.replace(/\\D/g,''))" placeholder="—">
         </div>
         <div class="project-field">
           <label>Дедлайн</label>
           <input type="date" value="${p.deadline||''}" onclick="event.stopPropagation()"
-            onchange="updateProjField('${p.id}','deadline',this.value)">
+            onchange="updateProjField('${p.id}','deadline',this.value);renderProjects()">
+        </div>
+      </div>
+      <!-- Следующий шаг -->
+      <div class="proj-next-step">
+        <div class="proj-next-step-label">→ Следующий шаг</div>
+        <input class="proj-next-step-input"
+          placeholder="Что сделать прямо сейчас?"
+          value="${esc(p.nextStep||'')}"
+          onclick="event.stopPropagation()"
+          onblur="saveNextStep('${p.id}',this.value)"
+          onchange="saveNextStep('${p.id}',this.value)">
+      </div>
+      <!-- Последний контакт -->
+      <div class="proj-last-contact">
+        <div class="proj-last-contact-label">💬 Последний контакт</div>
+        <textarea class="proj-last-contact-input"
+          placeholder="Что обсудили, договорённости, настроение клиента..."
+          onclick="event.stopPropagation()"
+          onblur="saveLastContact('${p.id}',this.value)">${esc(p.lastContact||'')}</textarea>
+        <div class="proj-last-contact-meta">
+          <span id="plc-meta-${p.id}">${p.lastContactDate ? 'обновлено ' + fmtDate(p.lastContactDate) : 'ещё не заполнено'}</span>
+          <span>blur — сохранит</span>
         </div>
       </div>
       <div class="project-actions-row">
         <button class="btn" onclick="event.stopPropagation();openProjectModal('${p.id}')">✏️ Редактировать</button>
-        <button class="btn danger" style="color:var(--red)" onclick="event.stopPropagation();deleteProject('${p.id}')">Удалить</button>
+        <button class="btn" style="color:var(--red)" onclick="event.stopPropagation();markProjectLost('${p.id}')">❌ Проиграть</button>
+        <button class="btn danger" style="color:var(--red)" onclick="event.stopPropagation();deleteProject('${p.id}')">🗑 Удалить</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function lostProjectHTML(p) {
+  return `
+  <div class="project-card lost" data-id="${p.id}">
+    <div class="project-top">
+      <div style="flex:1;min-width:0;">
+        <div class="project-name">${esc(p.name)}</div>
+        <div class="project-client">${esc(p.client||'')}${p.contact?' · '+esc(p.contact):''}</div>
+        ${p.lossDetail ? `<div class="proj-lost-reason">${esc(p.lossDetail)}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
+        ${p.budget ? `<span style="font-size:10px;color:var(--text-mute)">${fmtBudget(p.budget)}</span>` : ''}
+        <span class="proj-loss-badge">❌ ${esc(p.lossReason||'Проиграна')}${p.lostDate?' · '+fmtDate(p.lostDate):''}</span>
+        <button class="btn" style="font-size:10px;padding:2px 8px;" onclick="restoreProject('${p.id}')">↩ Вернуть</button>
+        <button class="btn" style="font-size:10px;padding:2px 8px;color:var(--red)" onclick="deleteProject('${p.id}')">🗑</button>
       </div>
     </div>
   </div>`;
@@ -4636,7 +4917,7 @@ function toggleProject(id) {
 
 function setProjectStage(id, stage) {
   const p = projects.find(x => x.id === id);
-  if(p) { p.stage = stage; LS.set('wdb_projects', projects); renderProjects(); }
+  if(p) { p.stage = stage; LS.set('wdb_projects', projects); renderProjects(); renderProjProgress(); }
 }
 
 function updateProjField(id, field, value) {
@@ -4644,7 +4925,28 @@ function updateProjField(id, field, value) {
   if(p) { p[field] = value; LS.set('wdb_projects', projects); }
 }
 
+function markProjectLost(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  p.stage = 'lost';
+  p.lossReason = 'Не указана';
+  p.lostDate = new Date().toISOString().split('T')[0];
+  LS.set('wdb_projects', projects);
+  if (expandedProject === id) expandedProject = null;
+  renderProjects(); renderProjProgress(); renderDeadlineRadar();
+}
+
+function restoreProject(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  p.stage = 0;
+  delete p.lossReason; delete p.lostDate; delete p.lossDetail;
+  LS.set('wdb_projects', projects);
+  renderProjects();
+}
+
 function openProjectModal(id) {
+  selectedLossReason = '';
   const p = id ? projects.find(x => x.id === id) : null;
   document.getElementById('proj-modal-title').textContent = p ? 'Редактировать проект' : 'Новый проект';
   document.getElementById('proj-edit-id').value      = p?.id || '';
@@ -4652,34 +4954,52 @@ function openProjectModal(id) {
   document.getElementById('proj-client-in').value    = p?.client || '';
   document.getElementById('proj-contact-in').value   = p?.contact || '';
   document.getElementById('proj-deadline-in').value  = p?.deadline || '';
-  document.getElementById('proj-budget-in').value    = p?.budget || '';
+  const raw = p?.budget ? parseInt(String(p.budget).replace(/\D/g,'')) : '';
+  document.getElementById('proj-budget-in').value = raw ? raw.toLocaleString('ru-RU') : '';
   document.getElementById('proj-stage-in').value     = p?.stage ?? 0;
   document.getElementById('proj-owner-in').value     = p?.owner || '';
+  document.getElementById('proj-nextstep-in').value  = p?.nextStep || '';
+  const lossBlock = document.getElementById('proj-loss-block');
+  if (lossBlock) lossBlock.style.display = p?.stage === 'lost' ? '' : 'none';
+  document.getElementById('proj-loss-reason-in').value = p?.lossReason || '';
+  document.getElementById('proj-loss-detail-in').value = p?.lossDetail || '';
+  document.querySelectorAll('.loss-reason-opt').forEach(b => {
+    b.classList.toggle('active', b.dataset.r === p?.lossReason);
+  });
+  selectedLossReason = p?.lossReason || '';
   document.getElementById('project-modal').classList.add('open');
   setTimeout(() => document.getElementById('proj-name-in').focus(), 80);
 }
 
 function saveProject() {
   const id = document.getElementById('proj-edit-id').value;
+  const stageVal = document.getElementById('proj-stage-in').value;
+  const rawBudget = document.getElementById('proj-budget-in').value.replace(/\D/g,'');
   const data = {
     name:     document.getElementById('proj-name-in').value.trim(),
     client:   document.getElementById('proj-client-in').value.trim(),
     contact:  document.getElementById('proj-contact-in').value.trim(),
     deadline: document.getElementById('proj-deadline-in').value,
-    budget:   document.getElementById('proj-budget-in').value.trim(),
-    stage:    parseInt(document.getElementById('proj-stage-in').value),
+    budget:   rawBudget,
+    stage:    stageVal === 'lost' ? 'lost' : parseInt(stageVal),
     owner:    document.getElementById('proj-owner-in').value.trim(),
+    nextStep: document.getElementById('proj-nextstep-in').value.trim(),
   };
-  if(!data.name) return;
-  if(id) {
+  if (stageVal === 'lost') {
+    data.lossReason = document.getElementById('proj-loss-reason-in').value || selectedLossReason || 'Не указана';
+    data.lossDetail = document.getElementById('proj-loss-detail-in').value.trim();
+    if (!data.lostDate) data.lostDate = new Date().toISOString().split('T')[0];
+  }
+  if (!data.name) return;
+  if (id) {
     const p = projects.find(x => x.id === id);
-    if(p) Object.assign(p, data);
+    if (p) Object.assign(p, data);
   } else {
     projects.push({ id: uid(), ...data });
   }
   LS.set('wdb_projects', projects);
   closeModal('project-modal');
-  renderProjects();
+  renderProjects(); renderProjProgress(); renderDeadlineRadar();
 }
 
 function deleteProject(id) {
@@ -4687,12 +5007,10 @@ function deleteProject(id) {
   projects = projects.filter(x => x.id !== id);
   LS.set('wdb_projects', projects);
   if(expandedProject === id) expandedProject = null;
-  renderProjects();
+  renderProjects(); renderProjProgress(); renderDeadlineRadar();
 }
 
 function projCtx(id, e) {
-  ctxTaskId = null;
-  // simple: open edit
   openProjectModal(id);
 }
 
@@ -5718,7 +6036,7 @@ function renderDeadlineRadar() {
   const items = [];
 
   // Из проектов
-  (LS.get('wdb_projects', [])).forEach(p => {
+  (LS.get('wdb_projects', [])).filter(p => p.stage !== 'lost').forEach(p => {
     if (!p.deadline) return;
     const d = new Date(p.deadline + 'T00:00:00');
     const diff = Math.round((d - today) / 86400000);
@@ -5780,15 +6098,14 @@ renderDeadlineRadar();
 function renderProjProgress() {
   const el = document.getElementById('wpp-list');
   if (!el) return;
-  const projs = LS.get('wdb_projects', []);
+  const projs = (LS.get('wdb_projects', [])).filter(p => p.stage !== 'lost');
   if (!projs.length) {
     el.innerHTML = '<div class="w-pp-empty">Проектов пока нет</div>';
     return;
   }
-
   el.innerHTML = projs.map(p => {
     const stage = parseInt(p.stage) || 0;
-    const total = 11; // 0-11 stages
+    const total = 11;
     const pct = Math.round((stage / total) * 100);
     const doneClass = stage >= 11 ? ' done' : '';
     return `<div class="w-pp-item">
