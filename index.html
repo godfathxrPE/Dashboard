@@ -3510,7 +3510,7 @@ html.t-aurora #auth-card {
 #auth-sub {
   font-family: 'Inter', sans-serif;
   font-size: 13px; line-height: 1.55;
-  color: var(--text-dim, #6b6860);
+  color: var(--text, #1a1916);
   margin: 0 0 28px;
 }
 
@@ -6132,28 +6132,24 @@ renderTimer();
   </div>
 </div>
 
-<!-- ══ FIREBASE ══ -->
-
-
-
-<!-- ══ FIREBASE ══ -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- ══ SUPABASE REALTIME SYNC ══ -->
 <script>
 /* ═══════════════════════════════════════════════════
-   FIREBASE SYNC — загружается ПОСЛЕ основного JS
-   LS уже определён к этому моменту
+   SUPABASE REALTIME SYNC
+   Замена Firebase — работает в РФ без VPN.
+   Использует тот же _sb клиент что и авторизация.
+   Таблица: dashboard_sync (id TEXT PK, data JSONB, updated_at TIMESTAMPTZ)
+   RLS: каждый видит только свои строки (auth.uid()).
 ═══════════════════════════════════════════════════ */
-const FB_SYNC_KEYS   = ['wdb_tasks','wdb_projects','wdb_meetings','wdb_comms',
-                        'wdb_notes','wdb_calls','wdb_focus','wdb_kpi'];
-const FB_LOCAL_ONLY  = ['wdb_theme','wdb_timer_sessions'];
-const DB_PATH        = 'oleg';
+const SB_SYNC_KEYS  = ['wdb_tasks','wdb_projects','wdb_meetings','wdb_comms',
+                       'wdb_notes','wdb_calls','wdb_focus','wdb_kpi'];
+const SB_LOCAL_ONLY = ['wdb_theme','wdb_timer_sessions'];
 
-let fbApp, fbDb;
-let fbConnected  = false;
-let syncPending  = {};
+let sbUserId     = null;  // заполняется после авторизации
 let suppressSync = false;
+let syncChannel  = null;  // Realtime канал
 
+/* ── Хелпер статуса (тот же UI что был у Firebase) ── */
 function setSyncStatus(state, text) {
   const ind = document.getElementById('sync-indicator');
   const lbl = document.getElementById('sync-label');
@@ -6162,124 +6158,123 @@ function setSyncStatus(state, text) {
   if (lbl) lbl.textContent = text;
 }
 
-const FB_CONFIG = {
-  apiKey:            "AIzaSyATAfvPaxHA0JPYJz28zkpncbsdKEaR09s",
-  authDomain:        "mode-project-2b2d8.firebaseapp.com",
-  databaseURL:       "https://mode-project-2b2d8-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:         "mode-project-2b2d8",
-  storageBucket:     "mode-project-2b2d8.firebasestorage.app",
-  messagingSenderId: "420396765651",
-  appId:             "1:420396765651:web:0f9e2a076cc730a34a5f26"
-};
-
-try {
-  fbApp = firebase.initializeApp(FB_CONFIG);
-  fbDb  = firebase.database(fbApp);
-
-  // Статус соединения
-  fbDb.ref('.info/connected').on('value', snap => {
-    fbConnected = snap.val() === true;
-    setSyncStatus(fbConnected ? 'ok' : 'err',
-                  fbConnected ? 'синхронизировано' : 'нет связи');
-    if (fbConnected) {
-      Object.keys(syncPending).forEach(k => {
-        fbDb.ref(DB_PATH + '/' + k).set(syncPending[k]);
-        delete syncPending[k];
-      });
+/* ── Применить входящие данные к UI ── */
+function sbApplyIncoming(key, incoming) {
+  suppressSync = true;
+  localStorage.setItem(key, JSON.stringify(incoming));
+  try {
+    if (key === 'wdb_tasks')    { tasks    = incoming; renderTasks(); }
+    if (key === 'wdb_kpi')      { kpiData  = incoming; renderKPI(); }
+    if (key === 'wdb_projects') { projects = incoming; renderProjects(); }
+    if (key === 'wdb_meetings') { meetings = incoming; renderMeetings(); }
+    if (key === 'wdb_comms')    { comms    = incoming; renderComms(); }
+    if (key === 'wdb_calls')    { calls    = incoming; renderCalls(); }
+    if (key === 'wdb_notes') {
+      const na = document.getElementById('notes-area');
+      if (na) na.value = incoming || '';
     }
-  });
-
-  // Слушаем входящие изменения с других устройств
-  FB_SYNC_KEYS.forEach(key => {
-    fbDb.ref(DB_PATH + '/' + key).on('value', snap => {
-      if (snap.val() === null) return;
-      const incoming = snap.val();
-      const local    = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch{ return null; } })();
-      if (JSON.stringify(incoming) === JSON.stringify(local)) return;
-
-      suppressSync = true;
-      localStorage.setItem(key, JSON.stringify(incoming));
-      try {
-        if (key === 'wdb_tasks')    { tasks    = incoming; renderTasks(); }
-                    if (key === 'wdb_kpi') { kpiData = incoming; renderKPI(); }
-        if (key === 'wdb_projects') { projects = incoming; renderProjects(); }
-        if (key === 'wdb_meetings') { meetings = incoming; renderMeetings(); }
-        if (key === 'wdb_comms')    { comms    = incoming; renderComms(); }
-        if (key === 'wdb_calls')    { calls    = incoming; renderCalls(); }
-        if (key === 'wdb_notes') {
-          const na = document.getElementById('notes-area');
-          if (na) na.value = incoming || '';
-        }
-        if (key === 'wdb_focus') {
-          const fi = document.getElementById('w-focus-input');
-          if (fi && incoming.date === new Date().toDateString()) fi.value = incoming.text || '';
-        }
-        updateStats();
-      } catch(e) {}
-      suppressSync = false;
-      setSyncStatus('syncing', 'обновление...');
-      setTimeout(() => setSyncStatus('ok', 'синхронизировано'), 800);
-    });
-  });
-
-} catch(e) {
-  console.warn('Firebase init error:', e);
-  setSyncStatus('err', 'ошибка Firebase');
+    if (key === 'wdb_focus') {
+      const fi = document.getElementById('w-focus-input');
+      if (fi && incoming.date === new Date().toDateString()) fi.value = incoming.text || '';
+    }
+    updateStats();
+  } catch(e) {}
+  suppressSync = false;
 }
 
-// Перехватываем LS.set — пишем в Firebase параллельно
-const _lsSetOrigFb = LS.set.bind(LS);
-LS.set = function(key, value) {
-  _lsSetOrigFb(key, value);
-  if (suppressSync) return;
-  if (FB_LOCAL_ONLY.includes(key)) return;
-  if (fbConnected && fbDb) {
-    setSyncStatus('syncing', 'сохранение...');
-    fbDb.ref(DB_PATH + '/' + key).set(value)
-      .then(()  => setSyncStatus('ok',  'синхронизировано'))
-      .catch(() => setSyncStatus('err', 'ошибка записи'));
+/* ── Записать одну запись в Supabase ── */
+async function sbWrite(key, value) {
+  if (!sbUserId || !_sb) return;
+  setSyncStatus('syncing', 'сохранение...');
+  const { error } = await _sb
+    .from('dashboard_sync')
+    .upsert(
+      { id: key, user_id: sbUserId, data: value, updated_at: new Date().toISOString() },
+      { onConflict: 'id,user_id' }
+    );
+  if (error) {
+    console.warn('Supabase write error:', error.message);
+    setSyncStatus('err', 'ошибка записи');
   } else {
-    syncPending[key] = value;
-    setSyncStatus('err', 'оффлайн, ожидание...');
+    setSyncStatus('ok', 'синхронизировано');
   }
-};
+}
 
-// При первом запуске — заливаем текущий localStorage в Firebase
-window.addEventListener('load', () => {
-  if (!fbDb || !fbConnected) {
-    // Ждём соединения и потом заливаем
-    const waitAndUpload = setInterval(() => {
-      if (!fbConnected) return;
-      clearInterval(waitAndUpload);
-      FB_SYNC_KEYS.forEach(key => {
-        const val = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch{ return null; } })();
-        if (val !== null && !(Array.isArray(val) && val.length === 0)) {
-          fbDb.ref(DB_PATH + '/' + key).once('value').then(snap => {
-            // Загружаем из Firebase только если локально пусто
-            if (snap.val() !== null) {
-              const local = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch{ return null; } })();
-              if (!local || (Array.isArray(local) && local.length === 0)) {
-                localStorage.setItem(key, JSON.stringify(snap.val()));
-                try {
-                  if (key === 'wdb_tasks')    { tasks    = snap.val(); renderTasks(); }
-                      if (key === 'wdb_kpi') { kpiData = snap.val(); renderKPI(); }
-                  if (key === 'wdb_projects') { projects = snap.val(); renderProjects(); }
-                  if (key === 'wdb_meetings') { meetings = snap.val(); renderMeetings(); }
-                  if (key === 'wdb_comms')    { comms    = snap.val(); renderComms(); }
-                  if (key === 'wdb_calls')    { calls    = snap.val(); renderCalls(); }
-                  updateStats();
-                } catch(e) {}
-              }
-            } else if (val !== null) {
-              // Локальные данные есть — заливаем в Firebase
-              fbDb.ref(DB_PATH + '/' + key).set(val);
-            }
-          });
-        }
-      });
-    }, 500);
+/* ── Загрузить все ключи при старте ── */
+async function sbLoadAll() {
+  if (!sbUserId || !_sb) return;
+  setSyncStatus('syncing', 'загрузка...');
+  const { data, error } = await _sb
+    .from('dashboard_sync')
+    .select('id, data')
+    .eq('user_id', sbUserId);
+  if (error) {
+    console.warn('Supabase load error:', error.message);
+    setSyncStatus('err', 'ошибка загрузки');
+    return;
   }
-});
+  // Мержим: облако приоритетнее если локально пусто
+  (data || []).forEach(row => {
+    const key      = row.id;
+    const incoming = row.data;
+    if (!SB_SYNC_KEYS.includes(key)) return;
+    const local = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } })();
+    const localEmpty = !local || (Array.isArray(local) && local.length === 0);
+    if (localEmpty) {
+      sbApplyIncoming(key, incoming);
+    } else {
+      // Локальные данные есть — заливаем в облако
+      sbWrite(key, local);
+    }
+  });
+  setSyncStatus('ok', 'синхронизировано');
+}
+
+/* ── Подписка Realtime — слушаем изменения от других устройств ── */
+function sbSubscribe() {
+  if (!sbUserId || !_sb) return;
+  // Отписываемся от старого канала если был
+  if (syncChannel) { _sb.removeChannel(syncChannel); syncChannel = null; }
+
+  syncChannel = _sb
+    .channel('dashboard-sync-' + sbUserId)
+    .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'dashboard_sync',
+          filter: 'user_id=eq.' + sbUserId },
+        payload => {
+          const key      = payload.new?.id;
+          const incoming = payload.new?.data;
+          if (!key || incoming === undefined) return;
+          if (!SB_SYNC_KEYS.includes(key)) return;
+          const local = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } })();
+          if (JSON.stringify(incoming) === JSON.stringify(local)) return;
+          setSyncStatus('syncing', 'обновление...');
+          sbApplyIncoming(key, incoming);
+          setTimeout(() => setSyncStatus('ok', 'синхронизировано'), 600);
+        }
+    )
+    .subscribe(status => {
+      if (status === 'SUBSCRIBED') setSyncStatus('ok', 'синхронизировано');
+      if (status === 'CLOSED')     setSyncStatus('err', 'нет связи');
+    });
+}
+
+/* ── Инициализация после авторизации ── */
+// Вызывается из showDashboard() когда пользователь вошёл
+async function sbSyncInit(user) {
+  sbUserId = user.id;
+  await sbLoadAll();
+  sbSubscribe();
+}
+
+/* ── Перехватываем LS.set — пишем в Supabase параллельно ── */
+const _lsSetOrigSb = LS.set.bind(LS);
+LS.set = function(key, value) {
+  _lsSetOrigSb(key, value);
+  if (suppressSync) return;
+  if (SB_LOCAL_ONLY.includes(key)) return;
+  if (sbUserId) sbWrite(key, value);
+};
 </script>
 <!-- ══ PWA INSTALL ══ -->
 <script>
@@ -6776,6 +6771,8 @@ function showDashboard(user) {
   document.getElementById('app').style.display = 'block';
   const badge = document.getElementById('user-badge');
   if (badge) badge.textContent = user.email.split('@')[0];
+  // Запускаем Supabase Realtime синхронизацию после входа
+  sbSyncInit(user);
 }
 
 function showLoginScreen() {
