@@ -3030,6 +3030,15 @@
   .w-dr-days.today    { color: var(--red); }
   .w-dr-days.tomorrow { color: var(--yellow); }
   .w-dr-days.soon     { color: var(--accent); }
+  .w-dr-dismiss {
+    width: 20px; height: 20px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-mute); font-size: 11px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; flex-shrink: 0; opacity: 0; transition: all 0.15s;
+  }
+  .w-dr-item:hover .w-dr-dismiss { opacity: 1; }
+  .w-dr-dismiss:hover { border-color: var(--red); color: var(--red); background: var(--red-l, rgba(255,59,48,0.08)); }
 
   /* ══════════════════════════════════════════
      ВИДЖЕТ 2: ПРОГРЕСС ПРОЕКТОВ
@@ -6099,6 +6108,18 @@ LS.set = function(k, v) {
 /* ═══════════════════════════════════════════
    ВИДЖЕТ 1: ДЕДЛАЙН-РАДАР
 ═══════════════════════════════════════════ */
+/* Dismissed items — храним ID/ключи снятых из радара событий */
+function drDismissedKey() {
+  return 'wdb_dr_dismissed';
+}
+function drGetDismissed() { return LS.get(drDismissedKey(), []); }
+function drDismiss(itemKey) {
+  const list = drGetDismissed();
+  if (!list.includes(itemKey)) list.push(itemKey);
+  LS.set(drDismissedKey(), list);
+  renderDeadlineRadar();
+}
+
 function renderDeadlineRadar() {
   const el = document.getElementById('wdr-list');
   const countEl = document.getElementById('wdr-count');
@@ -6107,28 +6128,38 @@ function renderDeadlineRadar() {
   const today = new Date();
   today.setHours(0,0,0,0);
   const items = [];
+  const dismissed = drGetDismissed();
 
-  // Из проектов
+  // Из проектов — исключаем lost и последний этап (stage 11 = подписание договора)
   (LS.get('wdb_projects', [])).forEach(p => {
     if (!p.deadline) return;
+    if (p.stage === 'lost') return;
+    if (parseInt(p.stage) >= 11) return;
+    const itemKey = 'proj_' + p.id;
+    if (dismissed.includes(itemKey)) return;
     const d = new Date(p.deadline + 'T00:00:00');
     const diff = Math.round((d - today) / 86400000);
-    if (diff <= 5) items.push({ name: p.name, diff, type: 'Проект' });
+    if (diff <= 5) items.push({ id: itemKey, name: p.name, diff, type: 'Проект' });
   });
 
-  // Из задач с дедлайном
+  // Из задач с дедлайном — исключаем выполненные
   (LS.get('wdb_tasks', [])).filter(t => t.deadline && t.lane !== 'done').forEach(t => {
+    const itemKey = 'task_' + t.id;
+    if (dismissed.includes(itemKey)) return;
     const d = new Date(t.deadline + 'T00:00:00');
     const diff = Math.round((d - today) / 86400000);
-    if (diff <= 5) items.push({ name: t.text, diff, type: 'Задача' });
+    if (diff <= 5) items.push({ id: itemKey, name: t.text, diff, type: 'Задача' });
   });
 
-  // Из коммуникаций
+  // Из коммуникаций — исключаем выполненные (status === 'done')
   (LS.get('wdb_comms', [])).forEach(c => {
     if (!c.deadline) return;
+    if (c.status === 'done') return;
+    const itemKey = 'comm_' + c.id;
+    if (dismissed.includes(itemKey)) return;
     const d = new Date(c.deadline + 'T00:00:00');
     const diff = Math.round((d - today) / 86400000);
-    if (diff <= 3) items.push({ name: c.person + (c.topic ? ': ' + c.topic : ''), diff, type: 'Контакт' });
+    if (diff <= 3) items.push({ id: itemKey, name: c.person + (c.topic ? ': ' + c.topic : ''), diff, type: 'Контакт' });
   });
 
   items.sort((a,b) => a.diff - b.diff);
@@ -6160,6 +6191,7 @@ function renderDeadlineRadar() {
       <div class="w-dr-name" title="${esc(item.name)}">${esc(item.name)}</div>
       <span class="w-dr-type">${item.type}</span>
       <div class="w-dr-days ${dc}">${getDaysLabel(item.diff)}</div>
+      <button class="w-dr-dismiss" onclick="drDismiss('${item.id}')" title="Убрать из радара">✕</button>
     </div>`;
   }).join('');
 }
