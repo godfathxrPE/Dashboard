@@ -1838,6 +1838,189 @@
     color: var(--text-mute);
   }
 
+
+  /* ── Запланированные звонки (виджет) ── */
+  .w-daycalls {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px 12px;
+  }
+  .w-daycalls-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .w-daycalls-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--text-dim);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .w-daycalls-count {
+    font-size: 10px; font-weight: 600; color: var(--accent);
+    background: var(--accent-l); border-radius: 8px; padding: 1px 7px;
+  }
+  .w-daycalls-add {
+    font-size: 11px; padding: 3px 10px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text-dim); cursor: pointer; transition: all 0.12s;
+  }
+  .w-daycalls-add:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+  .w-daycalls-empty {
+    font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0;
+  }
+  .w-daycalls-table {
+    width: 100%; border-collapse: collapse; font-size: 11px;
+  }
+  .w-daycalls-table th {
+    text-align: left; padding: 4px 6px; font-size: 9px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-mute); border-bottom: 1px solid var(--border);
+  }
+  .w-daycalls-table td {
+    padding: 5px 6px; border-bottom: 1px solid var(--border2);
+    color: var(--text); vertical-align: middle;
+  }
+  .w-daycalls-table tbody tr:last-child td { border-bottom: none; }
+  .w-daycalls-table tbody tr { transition: background 0.12s; }
+  .w-daycalls-table tbody tr:hover { background: var(--surface2); }
+  .dc-time { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .dc-time.past { color: var(--text-mute); text-decoration: line-through; }
+  .dc-time.soon { color: var(--orange, var(--yellow)); }
+  .dc-time.upcoming { color: var(--accent); }
+  .dc-company { font-weight: 500; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dc-contact { color: var(--text-dim); max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dc-phone { font-variant-numeric: tabular-nums; color: var(--text-dim); white-space: nowrap; }
+  .dc-phone a { color: inherit; text-decoration: none; }
+  .dc-phone a:hover { color: var(--accent); text-decoration: underline; }
+  .dc-actions { display: flex; gap: 3px; }
+  .dc-btn-sm {
+    width: 20px; height: 20px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-mute); font-size: 11px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; transition: all 0.12s; flex-shrink: 0;
+  }
+  .dc-btn-sm:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+  .dc-btn-sm.bell-on { border-color: var(--green); color: var(--green); background: rgba(52,199,89,0.08); }
+  .dc-btn-sm.done-on { color: var(--green); border-color: var(--green); }
+  .dc-btn-sm.del:hover { border-color: var(--red); color: var(--red); background: rgba(255,59,48,0.08); }
+  .dc-row-done td { opacity: 0.4; }
+  .dc-row-done .dc-time { text-decoration: line-through; }
+
+  /* ── Модалка: запланировать звонок ── */
+  .dc-modal-backdrop {
+    position: fixed; inset: 0; z-index: 810;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+  }
+  .dc-modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .dc-modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; width: min(92vw, 420px); padding: 0;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+    transform: scale(0.96) translateY(8px);
+    transition: transform 0.22s cubic-bezier(.22,.68,0,1.15);
+  }
+  .dc-modal-backdrop.open .dc-modal { transform: scale(1) translateY(0); }
+  .dc-modal-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-weight: 600; font-size: 14px;
+  }
+  .dc-modal-close {
+    width: 26px; height: 26px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text-dim); font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+    transition: all 0.12s;
+  }
+  .dc-modal-close:hover { border-color: var(--red); color: var(--red); }
+  .dc-modal-body { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .dc-modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dc-modal-field { display: flex; flex-direction: column; gap: 3px; }
+  .dc-modal-field label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.04em; }
+  .dc-modal-field input {
+    padding: 7px 10px; font-size: 13px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text); font-family: inherit; outline: none;
+    transition: border-color 0.15s;
+  }
+  .dc-modal-field input:focus { border-color: var(--accent); }
+  .dc-modal-field input::placeholder { color: var(--text-mute); }
+  .dc-modal-footer {
+    padding: 12px 18px; border-top: 1px solid var(--border);
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+
+  /* ── Оповещение о звонке ── */
+  .dc-alert-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  }
+  .dc-alert-overlay.open { opacity: 1; pointer-events: all; }
+  .dc-alert-card {
+    background: var(--surface); border: 2px solid var(--accent);
+    border-radius: 16px; width: min(92vw, 380px); padding: 0;
+    box-shadow: 0 0 60px rgba(181,98,42,0.25), 0 24px 64px rgba(0,0,0,0.25);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(.22,.68,0,1.15);
+    overflow: hidden;
+    animation: dc-alert-pulse 2s ease-in-out infinite;
+  }
+  .dc-alert-overlay.open .dc-alert-card { transform: scale(1) translateY(0); }
+  @keyframes dc-alert-pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(181,98,42,0.2), 0 24px 64px rgba(0,0,0,0.2); }
+    50%      { box-shadow: 0 0 70px rgba(181,98,42,0.4), 0 24px 64px rgba(0,0,0,0.25); }
+  }
+  .dc-alert-header {
+    background: var(--accent); color: #fff; padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 15px;
+  }
+  .dc-alert-icon { font-size: 22px; animation: dc-ring 0.6s ease-in-out infinite alternate; }
+  @keyframes dc-ring {
+    0%   { transform: rotate(-15deg); }
+    100% { transform: rotate(15deg); }
+  }
+  .dc-alert-body { padding: 18px; }
+  .dc-alert-info { display: flex; flex-direction: column; gap: 10px; }
+  .dc-alert-row { display: flex; align-items: baseline; gap: 8px; }
+  .dc-alert-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-mute); min-width: 70px; letter-spacing: 0.04em; }
+  .dc-alert-value { font-size: 14px; font-weight: 500; color: var(--text); }
+  .dc-alert-value.big { font-size: 20px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .dc-alert-phone-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .dc-alert-phone-link:hover { text-decoration: underline; }
+  .dc-alert-footer {
+    padding: 12px 18px; border-top: 1px solid var(--border);
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+  .dc-alert-btn {
+    padding: 8px 18px; border-radius: var(--radius-s);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text); transition: all 0.15s;
+  }
+  .dc-alert-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .dc-alert-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .dc-alert-btn.primary:hover { opacity: 0.9; }
+
+  /* ── Дедлайн-радар: кнопка dismiss ── */
+  .w-dr-dismiss {
+    width: 20px; height: 20px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-mute); font-size: 11px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; flex-shrink: 0; opacity: 0; transition: all 0.15s;
+  }
+  .w-dr-item:hover .w-dr-dismiss { opacity: 1; }
+  .w-dr-dismiss:hover { border-color: var(--red); color: var(--red); background: rgba(255,59,48,0.08); }
+
+
   /* ── Фокус дня ── */
   .w-focus {
     background: var(--accent-l);
@@ -3030,15 +3213,6 @@
   .w-dr-days.today    { color: var(--red); }
   .w-dr-days.tomorrow { color: var(--yellow); }
   .w-dr-days.soon     { color: var(--accent); }
-  .w-dr-dismiss {
-    width: 20px; height: 20px; border-radius: var(--radius-s);
-    border: 1px solid var(--border); background: var(--surface);
-    color: var(--text-mute); font-size: 11px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    padding: 0; flex-shrink: 0; opacity: 0; transition: all 0.15s;
-  }
-  .w-dr-item:hover .w-dr-dismiss { opacity: 1; }
-  .w-dr-dismiss:hover { border-color: var(--red); color: var(--red); background: var(--red-l, rgba(255,59,48,0.08)); }
 
   /* ══════════════════════════════════════════
      ВИДЖЕТ 2: ПРОГРЕСС ПРОЕКТОВ
@@ -3926,6 +4100,16 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
         <div class="w-clock-date" id="w-date">загрузка...</div>
         <div class="w-clock-week" id="w-week"></div>
       </div>
+    </div>
+
+
+    <!-- ВИДЖЕТ: ЗАПЛАНИРОВАННЫЕ ЗВОНКИ -->
+    <div class="w-daycalls" data-widget-id="daycalls">
+      <div class="w-daycalls-head">
+        <div class="w-daycalls-title">📅 Запланированные звонки <span class="w-daycalls-count" id="dc-count">0</span></div>
+        <button class="w-daycalls-add" onclick="dcOpenModal()">+ Звонок</button>
+      </div>
+      <div id="dc-list"></div>
     </div>
 
     <!-- ВИДЖЕТ: ФОКУС ДНЯ -->
@@ -6108,15 +6292,12 @@ LS.set = function(k, v) {
 /* ═══════════════════════════════════════════
    ВИДЖЕТ 1: ДЕДЛАЙН-РАДАР
 ═══════════════════════════════════════════ */
-/* Dismissed items — храним ID/ключи снятых из радара событий */
-function drDismissedKey() {
-  return 'wdb_dr_dismissed';
-}
-function drGetDismissed() { return LS.get(drDismissedKey(), []); }
+/* Dismissed из радара — по ID */
+function drGetDismissed() { return LS.get('wdb_dr_dismissed', []); }
 function drDismiss(itemKey) {
   const list = drGetDismissed();
   if (!list.includes(itemKey)) list.push(itemKey);
-  LS.set(drDismissedKey(), list);
+  LS.set('wdb_dr_dismissed', list);
   renderDeadlineRadar();
 }
 
@@ -6130,7 +6311,7 @@ function renderDeadlineRadar() {
   const items = [];
   const dismissed = drGetDismissed();
 
-  // Из проектов — исключаем lost и последний этап (stage 11 = подписание договора)
+  // Из проектов — исключаем lost и финальный этап (11 = подписание)
   (LS.get('wdb_projects', [])).forEach(p => {
     if (!p.deadline) return;
     if (p.stage === 'lost') return;
@@ -6142,7 +6323,7 @@ function renderDeadlineRadar() {
     if (diff <= 5) items.push({ id: itemKey, name: p.name, diff, type: 'Проект' });
   });
 
-  // Из задач с дедлайном — исключаем выполненные
+  // Из задач — исключаем выполненные
   (LS.get('wdb_tasks', [])).filter(t => t.deadline && t.lane !== 'done').forEach(t => {
     const itemKey = 'task_' + t.id;
     if (dismissed.includes(itemKey)) return;
@@ -6151,7 +6332,7 @@ function renderDeadlineRadar() {
     if (diff <= 5) items.push({ id: itemKey, name: t.text, diff, type: 'Задача' });
   });
 
-  // Из коммуникаций — исключаем выполненные (status === 'done')
+  // Из коммуникаций — исключаем done
   (LS.get('wdb_comms', [])).forEach(c => {
     if (!c.deadline) return;
     if (c.status === 'done') return;
@@ -6191,7 +6372,7 @@ function renderDeadlineRadar() {
       <div class="w-dr-name" title="${esc(item.name)}">${esc(item.name)}</div>
       <span class="w-dr-type">${item.type}</span>
       <div class="w-dr-days ${dc}">${getDaysLabel(item.diff)}</div>
-      <button class="w-dr-dismiss" onclick="drDismiss('${item.id}')" title="Убрать из радара">✕</button>
+      <button class="w-dr-dismiss" onclick="drDismiss('${item.id}')" title="Убрать">✕</button>
     </div>`;
   }).join('');
 }
@@ -6552,6 +6733,88 @@ renderTimer();
       <button class="btn btn-primary" onclick="saveCall()">Сохранить звонок</button>
     </div>
 
+  </div>
+</div>
+
+
+<!-- ══ МОДАЛКА: ЗАПЛАНИРОВАТЬ ЗВОНОК ══ -->
+<div class="dc-modal-backdrop" id="dc-modal" onclick="if(event.target===this)dcCloseModal()">
+  <div class="dc-modal">
+    <div class="dc-modal-header">
+      <span id="dc-modal-title">📅 Запланировать звонок</span>
+      <button class="dc-modal-close" onclick="dcCloseModal()">×</button>
+    </div>
+    <div class="dc-modal-body">
+      <div class="dc-modal-row">
+        <div class="dc-modal-field">
+          <label>Время *</label>
+          <input type="time" id="dc-f-time">
+        </div>
+        <div class="dc-modal-field">
+          <label>Напомнить за (мин)</label>
+          <input type="number" id="dc-f-remind" value="2" min="0" max="30" style="width:100%">
+        </div>
+      </div>
+      <div class="dc-modal-field">
+        <label>Компания *</label>
+        <input id="dc-f-company" placeholder="ООО Ромашка">
+      </div>
+      <div class="dc-modal-field">
+        <label>Контактное лицо</label>
+        <input id="dc-f-contact" placeholder="Иван Петров">
+      </div>
+      <div class="dc-modal-field">
+        <label>Телефон</label>
+        <input id="dc-f-phone" type="tel" placeholder="+7 (999) 123-45-67">
+      </div>
+      <div class="dc-modal-field">
+        <label>Заметка</label>
+        <input id="dc-f-note" placeholder="Обсудить КП, уточнить бюджет...">
+      </div>
+    </div>
+    <div class="dc-modal-footer">
+      <button class="btn" onclick="dcCloseModal()">Отмена</button>
+      <button class="btn btn-primary" onclick="dcSave()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ОПОВЕЩЕНИЕ О ЗВОНКЕ ══ -->
+<div class="dc-alert-overlay" id="dc-alert" onclick="if(event.target===this)dcDismissAlert()">
+  <div class="dc-alert-card">
+    <div class="dc-alert-header">
+      <span class="dc-alert-icon">🔔</span>
+      <span>Звонок через <span id="dc-alert-mins">2</span> мин!</span>
+    </div>
+    <div class="dc-alert-body">
+      <div class="dc-alert-info">
+        <div class="dc-alert-row">
+          <span class="dc-alert-label">Время</span>
+          <span class="dc-alert-value big" id="dc-alert-time">--:--</span>
+        </div>
+        <div class="dc-alert-row">
+          <span class="dc-alert-label">Компания</span>
+          <span class="dc-alert-value" id="dc-alert-company">—</span>
+        </div>
+        <div class="dc-alert-row">
+          <span class="dc-alert-label">Контакт</span>
+          <span class="dc-alert-value" id="dc-alert-contact">—</span>
+        </div>
+        <div class="dc-alert-row">
+          <span class="dc-alert-label">Телефон</span>
+          <span class="dc-alert-value" id="dc-alert-phone">—</span>
+        </div>
+        <div class="dc-alert-row" id="dc-alert-note-row" style="display:none">
+          <span class="dc-alert-label">Заметка</span>
+          <span class="dc-alert-value" id="dc-alert-note">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="dc-alert-footer">
+      <button class="dc-alert-btn" onclick="dcSnooze()">⏰ +5 мин</button>
+      <button class="dc-alert-btn" onclick="dcDismissAlert()">Закрыть</button>
+      <button class="dc-alert-btn primary" onclick="dcMarkDoneFromAlert()">✓ Позвонил</button>
+    </div>
   </div>
 </div>
 
@@ -6928,8 +7191,270 @@ window.ctxDelete = function() {
    icon — эмодзи, name — название, desc — подсказка,
    section — группа для секционных меток в панели.
 ───────────────────────────────────────────────────── */
+
+/* ═══════════════════════════════════════════
+   ЗАПЛАНИРОВАННЫЕ ЗВОНКИ — виджет + оповещения
+═══════════════════════════════════════════ */
+function dcKey() {
+  var d = new Date();
+  return 'wdb_daycalls_' + d.getFullYear() + '_' + (d.getMonth()+1) + '_' + d.getDate();
+}
+function dcLoad() { return LS.get(dcKey(), []); }
+function dcSaveData(arr) { LS.set(dcKey(), arr); }
+
+var dcEditId = null;
+var dcAlertCurrentId = null;
+var dcTimerHandle = null;
+var dcFiredAlerts = {};
+
+function dcRender() {
+  var list = dcLoad();
+  var el = document.getElementById('dc-list');
+  var countEl = document.getElementById('dc-count');
+  if (!el) return;
+
+  var active = list.filter(function(x){ return !x.done; });
+  if (countEl) countEl.textContent = active.length;
+
+  if (list.length === 0) {
+    el.innerHTML = '<div class="w-daycalls-empty">Нет запланированных звонков</div>';
+    return;
+  }
+
+  var sorted = list.slice().sort(function(a,b){ return (a.time||'').localeCompare(b.time||''); });
+  var now = new Date();
+  var nowMins = now.getHours() * 60 + now.getMinutes();
+
+  var rows = sorted.map(function(c) {
+    var parts = (c.time||'00:00').split(':');
+    var callMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    var diff = callMins - nowMins;
+    var timeCls = 'dc-time';
+    if (c.done) { /* row class handles it */ }
+    else if (diff < 0) timeCls += ' past';
+    else if (diff <= 5) timeCls += ' soon';
+    else timeCls += ' upcoming';
+
+    var bellCls = 'dc-btn-sm' + (c.remind !== false && c.remind >= 0 ? ' bell-on' : '');
+    var rowCls = c.done ? 'dc-row-done' : '';
+    var phoneFmt = c.phone ? '<a href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a>' : '—';
+    var doneMark = c.done ? '✓' : '○';
+    var doneCls = 'dc-btn-sm' + (c.done ? ' done-on' : '');
+
+    return '<tr class="' + rowCls + '">' +
+      '<td class="' + timeCls + '">' + esc(c.time || '--:--') + '</td>' +
+      '<td class="dc-company" title="' + esc(c.company) + '">' + esc(c.company) + '</td>' +
+      '<td class="dc-contact" title="' + esc(c.contact||'') + '">' + esc(c.contact || '—') + '</td>' +
+      '<td class="dc-phone">' + phoneFmt + '</td>' +
+      '<td class="dc-actions">' +
+        '<button class="' + doneCls + '" onclick="dcToggleDone(\'' + c.id + '\')" title="Выполнено">' + doneMark + '</button>' +
+        '<button class="' + bellCls + '" onclick="dcToggleBell(\'' + c.id + '\')" title="Оповещение">🔔</button>' +
+        '<button class="dc-btn-sm del" onclick="dcDelete(\'' + c.id + '\')" title="Удалить">✕</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+
+  el.innerHTML = '<table class="w-daycalls-table"><thead><tr>' +
+    '<th>Время</th><th>Компания</th><th>Контакт</th><th>Телефон</th><th></th>' +
+    '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+function dcOpenModal(id) {
+  dcEditId = id || null;
+  var c = id ? dcLoad().find(function(x){ return x.id === id; }) : null;
+  document.getElementById('dc-modal-title').textContent = c ? '✏️ Редактировать' : '📅 Запланировать звонок';
+  document.getElementById('dc-f-time').value = c ? (c.time||'') : '';
+  document.getElementById('dc-f-company').value = c ? (c.company||'') : '';
+  document.getElementById('dc-f-contact').value = c ? (c.contact||'') : '';
+  document.getElementById('dc-f-phone').value = c ? (c.phone||'') : '';
+  document.getElementById('dc-f-note').value = c ? (c.note||'') : '';
+  document.getElementById('dc-f-remind').value = c && c.remind >= 0 ? c.remind : 2;
+  document.getElementById('dc-modal').classList.add('open');
+  setTimeout(function(){ document.getElementById('dc-f-time').focus(); }, 80);
+}
+function dcCloseModal() {
+  document.getElementById('dc-modal').classList.remove('open');
+  dcEditId = null;
+}
+
+function dcSave() {
+  var time = document.getElementById('dc-f-time').value;
+  var company = document.getElementById('dc-f-company').value.trim();
+  if (!time || !company) {
+    if (!time) document.getElementById('dc-f-time').focus();
+    else document.getElementById('dc-f-company').focus();
+    return;
+  }
+  var data = {
+    time: time,
+    company: company,
+    contact: document.getElementById('dc-f-contact').value.trim(),
+    phone: document.getElementById('dc-f-phone').value.trim(),
+    note: document.getElementById('dc-f-note').value.trim(),
+    remind: parseInt(document.getElementById('dc-f-remind').value) || 2,
+    done: false
+  };
+  var list = dcLoad();
+  if (dcEditId) {
+    var idx = list.findIndex(function(x){ return x.id === dcEditId; });
+    if (idx >= 0) { data.id = dcEditId; data.done = list[idx].done; list[idx] = data; }
+  } else {
+    data.id = uid();
+    list.push(data);
+  }
+  dcSaveData(list);
+  dcRender();
+  dcCloseModal();
+  dcScheduleAlerts();
+}
+
+function dcDelete(id) {
+  if (!confirm('Удалить этот звонок?')) return;
+  var list = dcLoad().filter(function(x){ return x.id !== id; });
+  dcSaveData(list);
+  dcRender();
+}
+
+function dcToggleBell(id) {
+  var list = dcLoad();
+  var c = list.find(function(x){ return x.id === id; });
+  if (!c) return;
+  c.remind = (c.remind !== false && c.remind >= 0) ? false : 2;
+  dcSaveData(list);
+  dcRender();
+}
+
+function dcToggleDone(id) {
+  var list = dcLoad();
+  var c = list.find(function(x){ return x.id === id; });
+  if (!c) return;
+  c.done = !c.done;
+  dcSaveData(list);
+  dcRender();
+}
+
+/* ── Оповещения ── */
+function dcScheduleAlerts() {
+  if (dcTimerHandle) clearInterval(dcTimerHandle);
+  dcTimerHandle = setInterval(dcCheckAlerts, 15000);
+  dcCheckAlerts();
+}
+
+function dcCheckAlerts() {
+  var list = dcLoad();
+  var now = new Date();
+  var nowMins = now.getHours() * 60 + now.getMinutes();
+
+  list.forEach(function(c) {
+    if (c.done) return;
+    if (c.remind === false || c.remind < 0) return;
+    var parts = (c.time||'').split(':');
+    var callMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    var alertAt = callMins - (c.remind || 2);
+    var alertKey = c.id + '_' + c.time;
+
+    if (nowMins >= alertAt && nowMins <= callMins + 1 && !dcFiredAlerts[alertKey]) {
+      dcFiredAlerts[alertKey] = true;
+      dcShowAlert(c, callMins - nowMins);
+    }
+  });
+}
+
+function dcShowAlert(c, minsLeft) {
+  dcAlertCurrentId = c.id;
+  var mins = Math.max(0, minsLeft);
+  document.getElementById('dc-alert-mins').textContent = mins <= 0 ? '< 1' : mins;
+  document.getElementById('dc-alert-time').textContent = c.time || '--:--';
+  document.getElementById('dc-alert-company').textContent = c.company || '—';
+  document.getElementById('dc-alert-contact').textContent = c.contact || '—';
+
+  var phoneEl = document.getElementById('dc-alert-phone');
+  if (c.phone) {
+    phoneEl.innerHTML = '<a class="dc-alert-phone-link" href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a>';
+  } else {
+    phoneEl.textContent = '—';
+  }
+
+  var noteRow = document.getElementById('dc-alert-note-row');
+  if (c.note) {
+    noteRow.style.display = '';
+    document.getElementById('dc-alert-note').textContent = c.note;
+  } else {
+    noteRow.style.display = 'none';
+  }
+
+  document.getElementById('dc-alert').classList.add('open');
+
+  // Звуковой сигнал
+  try {
+    var actx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = actx.createOscillator();
+    var gain = actx.createGain();
+    osc.connect(gain); gain.connect(actx.destination);
+    osc.frequency.value = 880; osc.type = 'sine';
+    gain.gain.setValueAtTime(0.15, actx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.8);
+    osc.start(actx.currentTime); osc.stop(actx.currentTime + 0.8);
+    setTimeout(function(){
+      try {
+        var o2 = actx.createOscillator(); var g2 = actx.createGain();
+        o2.connect(g2); g2.connect(actx.destination);
+        o2.frequency.value = 1100; o2.type = 'sine';
+        g2.gain.setValueAtTime(0.12, actx.currentTime);
+        g2.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.6);
+        o2.start(actx.currentTime); o2.stop(actx.currentTime + 0.6);
+      } catch(e){}
+    }, 500);
+  } catch(e){}
+
+  // Browser Notification
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+    new Notification('📞 Звонок через ' + (mins <= 0 ? '< 1' : mins) + ' мин!', {
+      body: c.company + (c.contact ? ' — ' + c.contact : '') + (c.phone ? '\n' + c.phone : ''),
+      requireInteraction: true
+    });
+  }
+}
+
+function dcDismissAlert() {
+  document.getElementById('dc-alert').classList.remove('open');
+  dcAlertCurrentId = null;
+}
+
+function dcSnooze() {
+  if (!dcAlertCurrentId) { dcDismissAlert(); return; }
+  var list = dcLoad();
+  var c = list.find(function(x){ return x.id === dcAlertCurrentId; });
+  if (c) {
+    var parts = (c.time||'00:00').split(':');
+    var h = parseInt(parts[0]), m = parseInt(parts[1]) + 5;
+    if (m >= 60) { h++; m -= 60; }
+    c.time = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+    delete dcFiredAlerts[dcAlertCurrentId + '_' + parts.join(':')];
+    dcSaveData(list);
+    dcRender();
+  }
+  dcDismissAlert();
+}
+
+function dcMarkDoneFromAlert() {
+  if (!dcAlertCurrentId) { dcDismissAlert(); return; }
+  dcToggleDone(dcAlertCurrentId);
+  dcDismissAlert();
+}
+
+if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+  Notification.requestPermission();
+}
+
+dcRender();
+dcScheduleAlerts();
+setInterval(function(){ dcRender(); dcCheckAlerts(); }, 60000);
+
+
 var WC_REGISTRY = [
   { id: 'clock',        icon: '🕐', name: 'Дата и время',        desc: 'Живые часы + день недели',       section: 'Ориентация' },
+  { id: 'daycalls',     icon: '📅', name: 'Заплан. звонки',      desc: 'План звонков + оповещения',      section: 'Ориентация' },
   { id: 'focus',        icon: '🎯', name: 'Фокус дня',           desc: 'Одно главное дело на сегодня',   section: 'Ориентация' },
   { id: 'stats',        icon: '📊', name: 'Мини-статистика',      desc: 'Проекты, звонки, задачи',        section: 'Ориентация' },
   { id: 'timer',        icon: '⏱', name: 'Pomodoro таймер',      desc: 'Фокус-сессии 25/5/15 мин',       section: 'Продуктивность' },
