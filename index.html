@@ -341,6 +341,43 @@
     -webkit-backdrop-filter: blur(20px) saturate(160%);
     border-color: rgba(255,255,255,0.12);
   }
+
+  /* Standalone виджеты — glassmorphism как у .card */
+  html.t-frost .w-clock,
+  html.t-frost .w-daycalls,
+  html.t-frost .w-focus,
+  html.t-frost .w-stats,
+  html.t-frost .w-timer,
+  html.t-frost .w-call-tracker,
+  html.t-frost .w-call-results,
+  html.t-frost .w-quick-log,
+  html.t-frost .w-funnel,
+  html.t-frost .w-heatmap,
+  html.t-frost .w-deadline-radar,
+  html.t-frost .w-proj-progress,
+  html.t-frost .w-plan-fact {
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.11);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  html.t-frost .w-clock:hover,
+  html.t-frost .w-daycalls:hover,
+  html.t-frost .w-focus:hover,
+  html.t-frost .w-stats:hover,
+  html.t-frost .w-timer:hover,
+  html.t-frost .w-call-tracker:hover,
+  html.t-frost .w-call-results:hover,
+  html.t-frost .w-quick-log:hover,
+  html.t-frost .w-funnel:hover,
+  html.t-frost .w-heatmap:hover,
+  html.t-frost .w-deadline-radar:hover,
+  html.t-frost .w-proj-progress:hover,
+  html.t-frost .w-plan-fact:hover {
+    border-color: rgba(255,255,255,0.20);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.16);
+  }
+
   /* Статусы проектов */
   html.t-frost .status-pill { border:none !important; }
   html.t-frost .st-0  { background:rgba(255,255,255,0.06); color:var(--text-mute); }
@@ -492,6 +529,25 @@
   html.t-paper .modal { border-radius: 0; border-top: 2px solid var(--text); }
   /* Панель виджетов */
   html.t-paper #wc-panel { border-radius: 0; border-left: 2px solid var(--text); }
+
+  /* Standalone виджеты — editorial border-top */
+  html.t-paper .w-clock,
+  html.t-paper .w-daycalls,
+  html.t-paper .w-focus,
+  html.t-paper .w-stats,
+  html.t-paper .w-timer,
+  html.t-paper .w-call-tracker,
+  html.t-paper .w-call-results,
+  html.t-paper .w-quick-log,
+  html.t-paper .w-funnel,
+  html.t-paper .w-heatmap,
+  html.t-paper .w-deadline-radar,
+  html.t-paper .w-proj-progress,
+  html.t-paper .w-plan-fact {
+    border-radius: 0;
+    border-top: 2px solid var(--text);
+    box-shadow: none;
+  }
   /* Орбы Paper — без орбов, бумага плоская */
   html.t-paper #bg-orbs { display: none; }
 
@@ -583,6 +639,39 @@
   html.t-sand .modal { border-radius: 0; border-top: 3px solid var(--text); }
   /* Панель виджетов */
   html.t-sand #wc-panel { border-radius: 0; border-left: 3px solid var(--text); }
+
+  /* Standalone виджеты — тот же brutalist border-left */
+  html.t-sand .w-clock,
+  html.t-sand .w-daycalls,
+  html.t-sand .w-focus,
+  html.t-sand .w-stats,
+  html.t-sand .w-timer,
+  html.t-sand .w-call-tracker,
+  html.t-sand .w-call-results,
+  html.t-sand .w-quick-log,
+  html.t-sand .w-funnel,
+  html.t-sand .w-heatmap,
+  html.t-sand .w-deadline-radar,
+  html.t-sand .w-proj-progress,
+  html.t-sand .w-plan-fact {
+    border-radius: 0;
+    border-left: 3px solid var(--border2);
+  }
+  html.t-sand .w-clock:hover,
+  html.t-sand .w-daycalls:hover,
+  html.t-sand .w-focus:hover,
+  html.t-sand .w-stats:hover,
+  html.t-sand .w-timer:hover,
+  html.t-sand .w-call-tracker:hover,
+  html.t-sand .w-call-results:hover,
+  html.t-sand .w-quick-log:hover,
+  html.t-sand .w-funnel:hover,
+  html.t-sand .w-heatmap:hover,
+  html.t-sand .w-deadline-radar:hover,
+  html.t-sand .w-proj-progress:hover,
+  html.t-sand .w-plan-fact:hover {
+    border-left-color: var(--accent);
+  }
   html.t-sand .wc-row:hover { background: var(--surface2); }
   /* Орбы Sand — тёплые земляные */
   html.t-sand #bg-orbs .orb-1 {
@@ -671,6 +760,22 @@
   }
   html.t-aurora .main { position:relative; z-index:1; }
   html.t-aurora header, html.t-aurora .card {
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  }
+  /* Standalone виджеты — тот же backdrop blur */
+  html.t-aurora .w-clock,
+  html.t-aurora .w-daycalls,
+  html.t-aurora .w-focus,
+  html.t-aurora .w-stats,
+  html.t-aurora .w-timer,
+  html.t-aurora .w-call-tracker,
+  html.t-aurora .w-call-results,
+  html.t-aurora .w-quick-log,
+  html.t-aurora .w-funnel,
+  html.t-aurora .w-heatmap,
+  html.t-aurora .w-deadline-radar,
+  html.t-aurora .w-proj-progress,
+  html.t-aurora .w-plan-fact {
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
   }
   @keyframes aurora-drift {
@@ -945,6 +1050,40 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
+
+  /* Standalone виджеты — cyan glow как у .card */
+  html.t-neon .w-clock,
+  html.t-neon .w-daycalls,
+  html.t-neon .w-focus,
+  html.t-neon .w-stats,
+  html.t-neon .w-timer,
+  html.t-neon .w-call-tracker,
+  html.t-neon .w-call-results,
+  html.t-neon .w-quick-log,
+  html.t-neon .w-funnel,
+  html.t-neon .w-heatmap,
+  html.t-neon .w-deadline-radar,
+  html.t-neon .w-proj-progress,
+  html.t-neon .w-plan-fact {
+    box-shadow: 0 0 0 0 transparent, inset 0 0 20px rgba(0,238,255,0.03);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  html.t-neon .w-clock:hover,
+  html.t-neon .w-daycalls:hover,
+  html.t-neon .w-focus:hover,
+  html.t-neon .w-stats:hover,
+  html.t-neon .w-timer:hover,
+  html.t-neon .w-call-tracker:hover,
+  html.t-neon .w-call-results:hover,
+  html.t-neon .w-quick-log:hover,
+  html.t-neon .w-funnel:hover,
+  html.t-neon .w-heatmap:hover,
+  html.t-neon .w-deadline-radar:hover,
+  html.t-neon .w-proj-progress:hover,
+  html.t-neon .w-plan-fact:hover {
+    border-color: rgba(0,238,255,0.45);
+    box-shadow: 0 0 16px rgba(0,238,255,0.08), inset 0 0 20px rgba(0,238,255,0.05);
+  }
   html.t-neon .wc-toggle input:checked + .wc-toggle-track {
     background: var(--accent);
     box-shadow: 0 0 8px rgba(0,238,255,0.5);
@@ -1064,6 +1203,46 @@
     box-shadow: var(--shadow-md);
     border-color: var(--border2);
   }
+
+  /* ── SHARED WIDGET SURFACE ──
+     Паттерн: Consistent Surface Behavior.
+     Все standalone-виджеты ведут себя как .card:
+     transition при hover, тень усиливается, border меняется.
+     Это то, что создаёт ощущение "живого" интерфейса. */
+  .w-clock,
+  .w-daycalls,
+  .w-focus,
+  .w-stats,
+  .w-timer,
+  .w-call-tracker,
+  .w-call-results,
+  .w-quick-log,
+  .w-funnel,
+  .w-heatmap,
+  .w-deadline-radar,
+  .w-proj-progress,
+  .w-plan-fact {
+    transition: box-shadow var(--duration-normal, 0.25s) var(--ease-out, ease),
+                border-color var(--duration-fast, 0.15s) ease,
+                transform var(--duration-normal, 0.25s) var(--ease-out, ease);
+  }
+  .w-clock:hover,
+  .w-daycalls:hover,
+  .w-focus:hover,
+  .w-stats:hover,
+  .w-timer:hover,
+  .w-call-tracker:hover,
+  .w-call-results:hover,
+  .w-quick-log:hover,
+  .w-funnel:hover,
+  .w-heatmap:hover,
+  .w-deadline-radar:hover,
+  .w-proj-progress:hover,
+  .w-plan-fact:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border2);
+  }
+
   .card-header {
     padding: 14px 18px;
     border-bottom: 1px solid var(--border);
@@ -1404,6 +1583,23 @@
     background: var(--accent-l);
     border-color: rgba(193,127,63,0.3);
     color: var(--accent);
+  }
+
+  /* ── PROJECT DRAG-AND-DROP ──
+     Паттерн: Kanban Drag (Trello, Linear, Notion Board).
+     Проект перетаскивается на этап воронки. */
+  .project-card[draggable="true"] { cursor: grab; }
+  .project-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+    box-shadow: var(--shadow-lg);
+  }
+  .funnel-step.drop-target {
+    outline: 2px dashed var(--accent);
+    outline-offset: -2px;
+    background: var(--accent-l) !important;
+    color: var(--accent) !important;
+    transform: scale(1.08);
   }
 
   .project-actions-row {
@@ -2414,6 +2610,7 @@
   .header-sub { display: none; }
   .header-date { display: none; }
   .theme-btn span:first-child { display: none; } /* прячем текст "Тема" */
+  [onclick="cmdOpen()"] { display: none !important; } /* Cmd+K бесполезен на мобиле */
 
   /* Основная сетка */
   .main {
@@ -4414,6 +4611,11 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Установить
     </button>
+    <!-- COMMAND PALETTE BUTTON -->
+    <button onclick="cmdOpen()" title="Поиск команд (⌘K)" style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border2);border-radius:var(--radius-s);background:var(--surface2);color:var(--text-dim);font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="cmd-kbd" style="font-size:9px;padding:1px 5px;">⌘K</span>
+    </button>
     <!-- WIDGET CONSTRUCTOR BUTTON -->
     <button id="wc-open-btn" onclick="wcToggle()" title="Настроить виджеты">
       <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -5366,6 +5568,7 @@ function saveTask() {
   LS.set('wdb_tasks', tasks);
   closeModal('task-modal');
   renderTasks();
+  toast(id ? 'Задача обновлена' : 'Задача создана', 'success');
 }
 
 /* drag-drop */
@@ -5393,10 +5596,19 @@ function ctxEdit() {
 }
 function ctxDelete() {
   if(!ctxTaskId) return;
-  tasks = tasks.filter(t => t.id !== ctxTaskId);
+  var deleted = tasks.find(t => t.id === ctxTaskId);
+  if (!deleted) return;
+  var idx = tasks.indexOf(deleted);
+  var delId = ctxTaskId;
+  tasks = tasks.filter(t => t.id !== delId);
   LS.set('wdb_tasks', tasks);
   renderTasks();
   closeCtx();
+  toastUndo('Задача удалена', function() {
+    tasks.splice(idx, 0, deleted);
+    LS.set('wdb_tasks', tasks);
+    renderTasks();
+  });
 }
 
 /* ═══════════════════════════════════════════
@@ -5544,7 +5756,12 @@ function projectHTML(p) {
 
   const funnelHTML = FUNNEL.map((s,i) => {
     const cls = i === stage ? 'active' : (i < stage ? 'past' : '');
-    return '<span class="funnel-step ' + cls + '" onclick="event.stopPropagation();setProjectStage(\'' + p.id + '\',' + i + ')" title="' + s + '">' + s + '</span>';
+    return '<span class="funnel-step ' + cls + '"' +
+      ' onclick="event.stopPropagation();setProjectStage(\'' + p.id + '\',' + i + ')"' +
+      ' ondragover="projFunnelDragOver(event)"' +
+      ' ondragleave="projFunnelDragLeave(event)"' +
+      ' ondrop="projFunnelDrop(event,\'' + p.id + '\',' + i + ')"' +
+      ' title="' + s + '">' + s + '</span>';
   }).join('');
 
   const nextStepPreview = p.nextStep
@@ -5553,6 +5770,9 @@ function projectHTML(p) {
 
   return `
   <div class="project-card ${expanded?'expanded':''}" data-id="${p.id}"
+       draggable="true"
+       ondragstart="projDragStart(event,'${p.id}')"
+       ondragend="projDragEnd(event)"
        onclick="toggleProject('${p.id}')"
        oncontextmenu="event.preventDefault();openProjectModal('${p.id}')">
     <div class="project-top">
@@ -5641,7 +5861,60 @@ function toggleProject(id) {
 
 function setProjectStage(id, stage) {
   const p = projects.find(x => x.id === id);
-  if(p) { p.stage = stage; LS.set('wdb_projects', projects); renderProjects(); }
+  if(p) {
+    var oldStage = p.stage;
+    p.stage = stage;
+    LS.set('wdb_projects', projects);
+    renderProjects();
+    if (oldStage !== stage) toast(FUNNEL[stage], 'success', 2000);
+  }
+}
+
+/* ── DRAG-AND-DROP ПРОЕКТОВ ──
+   Паттерн: Kanban Drag (Trello, Linear, Notion Board).
+   Проект перетаскивается → бросается на этап воронки.
+   Также поддерживает перетаскивание между карточками проектов
+   для изменения порядка. */
+var projDraggingId = null;
+
+function projDragStart(e, id) {
+  projDraggingId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', id);
+  /* Задержка чтобы dragging-класс не мешал snapshot */
+  setTimeout(function() {
+    var card = document.querySelector('.project-card[data-id="' + id + '"]');
+    if (card) card.classList.add('dragging');
+  }, 0);
+}
+
+function projDragEnd(e) {
+  projDraggingId = null;
+  document.querySelectorAll('.project-card.dragging').forEach(function(el) {
+    el.classList.remove('dragging');
+  });
+  document.querySelectorAll('.funnel-step.drop-target').forEach(function(el) {
+    el.classList.remove('drop-target');
+  });
+}
+
+function projFunnelDragOver(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.add('drop-target');
+}
+
+function projFunnelDragLeave(e) {
+  e.currentTarget.classList.remove('drop-target');
+}
+
+function projFunnelDrop(e, projId, stageIdx) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.remove('drop-target');
+  /* Используем id перетаскиваемого проекта если бросили на чужую воронку */
+  var id = projDraggingId || projId;
+  setProjectStage(id, stageIdx);
 }
 
 function updateProjField(id, field, value) {
@@ -5713,14 +5986,22 @@ function saveProject() {
   LS.set('wdb_projects', projects);
   closeModal('project-modal');
   renderProjects();
+  toast(id ? 'Проект обновлён' : 'Проект создан', 'success');
 }
 
 function deleteProject(id) {
-  if(!confirm('Удалить проект?')) return;
+  var deleted = projects.find(x => x.id === id);
+  if (!deleted) return;
+  var idx = projects.indexOf(deleted);
   projects = projects.filter(x => x.id !== id);
   LS.set('wdb_projects', projects);
   if(expandedProject === id) expandedProject = null;
   renderProjects();
+  toastUndo('Проект удалён', function() {
+    projects.splice(idx, 0, deleted);
+    LS.set('wdb_projects', projects);
+    renderProjects();
+  });
 }
 
 function projCtx(id, e) {
@@ -5783,12 +6064,21 @@ function saveMeeting() {
   LS.set('wdb_meetings', meetings);
   closeModal('meeting-modal');
   renderMeetings();
+  toast(id ? 'Встреча обновлена' : 'Встреча добавлена', 'success');
 }
 
 function deleteMeeting(id) {
+  var deleted = meetings.find(x => x.id === id);
+  if (!deleted) return;
+  var idx = meetings.indexOf(deleted);
   meetings = meetings.filter(x => x.id !== id);
   LS.set('wdb_meetings', meetings);
   renderMeetings();
+  toastUndo('Встреча удалена', function() {
+    meetings.splice(idx, 0, deleted);
+    LS.set('wdb_meetings', meetings);
+    renderMeetings();
+  });
 }
 
 /* ═══════════════════════════════════════════
@@ -5848,12 +6138,21 @@ function saveComm() {
   LS.set('wdb_comms', comms);
   closeModal('comm-modal');
   renderComms();
+  toast('Напоминание добавлено', 'success');
 }
 
 function deleteComm(id) {
+  var deleted = comms.find(x => x.id === id);
+  if (!deleted) return;
+  var idx = comms.indexOf(deleted);
   comms = comms.filter(x => x.id !== id);
   LS.set('wdb_comms', comms);
   renderComms();
+  toastUndo('Напоминание удалено', function() {
+    comms.splice(idx, 0, deleted);
+    LS.set('wdb_comms', comms);
+    renderComms();
+  });
 }
 
 /* ═══════════════════════════════════════════
@@ -5951,10 +6250,12 @@ function kpiChange(metricId, dayIdx, delta) {
 }
 
 function kpiReset() {
-  if (!confirm('Сбросить все данные KPI?')) return;
-  KPI_METRICS.forEach(function(m) { kpiData.counts[m.id] = [0,0,0,0,0]; });
-  LS.set('wdb_kpi', kpiData);
-  renderKPI();
+  toastConfirm('Сбросить все данные KPI?', function() {
+    KPI_METRICS.forEach(function(m) { kpiData.counts[m.id] = [0,0,0,0,0]; });
+    LS.set('wdb_kpi', kpiData);
+    renderKPI();
+    toast('KPI сброшен', 'success');
+  });
 }
 
 function renderKPI() {
@@ -6185,13 +6486,21 @@ function saveCall() {
   LS.set('wdb_calls', calls);
   renderCalls();
   closeCallModal();
+  toast(editCallId ? 'Звонок обновлён' : 'Звонок записан', 'success');
 }
 
 function deleteCall(id) {
-  if (!confirm('Удалить этот звонок?')) return;
+  var deleted = calls.find(x => x.id === id);
+  if (!deleted) return;
+  var idx = calls.indexOf(deleted);
   calls = calls.filter(x => x.id !== id);
   LS.set('wdb_calls', calls);
   renderCalls();
+  toastUndo('Звонок удалён', function() {
+    calls.splice(idx, 0, deleted);
+    LS.set('wdb_calls', calls);
+    renderCalls();
+  });
 }
 
 renderCalls();
@@ -6347,11 +6656,13 @@ function renderCallTracker() {
 }
 
 function resetDayReport() {
-  if (!confirm('Сбросить все данные за сегодня?')) return;
-  const ct = { done: getCTData().plan || 40, plan: getCTData().plan || 40, hourly: {}, reportShown: false };
-  const blankCt = { done: 0, plan: ct.plan, hourly: {}, reportShown: false };
-  saveCTData(blankCt);
-  renderCallTracker();
+  toastConfirm('Сбросить все данные за сегодня?', function() {
+    const ct = { done: getCTData().plan || 40, plan: getCTData().plan || 40, hourly: {}, reportShown: false };
+    const blankCt = { done: 0, plan: ct.plan, hourly: {}, reportShown: false };
+    saveCTData(blankCt);
+    renderCallTracker();
+    toast('Данные сброшены', 'success');
+  });
 }
 
 // Обновляем каждую минуту для отслеживания смены часа
@@ -6369,9 +6680,11 @@ function callResultAdd(type) {
 }
 
 function callResultReset() {
-  if (!confirm('Обнулить результаты за сегодня?')) return;
-  saveCRData({ success: 0, fail: 0, reasons: {} });
-  renderCallResults();
+  toastConfirm('Обнулить результаты за сегодня?', function() {
+    saveCRData({ success: 0, fail: 0, reasons: {} });
+    renderCallResults();
+    toast('Результаты обнулены', 'success');
+  });
 }
 
 function renderCallResults() {
@@ -6694,7 +7007,7 @@ function updateStats() {
   const closedStages = ['closed','cancelled'];
   const activeProjects = (LS.get('wdb_projects',[])).filter(p => !closedStages.includes(p.stage)).length;
   const el1 = document.getElementById('ws-projects');
-  if (el1) el1.textContent = activeProjects;
+  if (el1) animateValue(el1, activeProjects);
 
   // Звонки за неделю
   const weekAgo = Date.now() - 7*24*60*60*1000;
@@ -6706,7 +7019,8 @@ function updateStats() {
   if (el2) {
     // Показываем звонки из трекера сегодня если есть, иначе за неделю
     const todayCt = getCTData ? getCTData() : null;
-    el2.textContent = todayCt && todayCt.done > 0 ? todayCt.done : weekCalls;
+    const callVal = todayCt && todayCt.done > 0 ? todayCt.done : weekCalls;
+    animateValue(el2, callVal);
     // Обновляем desc
     const desc = el2.closest('.w-stat-item')?.querySelector('.w-stat-desc');
     if (desc) desc.innerHTML = todayCt && todayCt.done > 0 ? 'звонков<br>сегодня' : 'звонков<br>за неделю';
@@ -6718,8 +7032,8 @@ function updateStats() {
   const doneTasks = allTasks.filter(t => t.lane === 'done').length;
   const el3 = document.getElementById('ws-tasks-now');
   const el4 = document.getElementById('ws-tasks-done');
-  if (el3) el3.textContent = nowTasks;
-  if (el4) el4.textContent = doneTasks;
+  if (el3) animateValue(el3, nowTasks);
+  if (el4) animateValue(el4, doneTasks);
 }
 updateStats();
 // Обновляем статистику при любом изменении localStorage
@@ -7016,9 +7330,11 @@ function qlDelete(id) {
 }
 
 function qlClear() {
-  if (!confirm('Очистить лог за сегодня?')) return;
-  qlSaveData([]);
-  renderQL();
+  toastConfirm('Очистить лог за сегодня?', function() {
+    qlSaveData([]);
+    renderQL();
+    toast('Лог очищен', 'success');
+  });
 }
 
 function renderQL() {
@@ -7327,6 +7643,7 @@ async function sbWrite(key, value) {
   if (error) {
     console.warn('Supabase write error:', error.message);
     setSyncStatus('err', 'ошибка записи');
+    toast('Ошибка синхронизации', 'error');
   } else {
     setSyncStatus('ok', 'синхронизировано');
   }
@@ -7343,6 +7660,7 @@ async function sbLoadAll() {
   if (error) {
     console.warn('Supabase load error:', error.message);
     setSyncStatus('err', 'ошибка загрузки');
+    toast('Ошибка загрузки из облака', 'error');
     return;
   }
   // Мержим: облако приоритетнее если локально пусто
@@ -7755,10 +8073,19 @@ function dcSave() {
 }
 
 function dcDelete(id) {
-  if (!confirm('Удалить этот звонок?')) return;
-  var list = dcLoad().filter(function(x){ return x.id !== id; });
-  dcSaveData(list);
+  var list = dcLoad();
+  var deleted = list.find(function(x){ return x.id === id; });
+  if (!deleted) return;
+  var idx = list.indexOf(deleted);
+  var newList = list.filter(function(x){ return x.id !== id; });
+  dcSaveData(newList);
   dcRender();
+  toastUndo('Звонок удалён', function() {
+    var restored = dcLoad();
+    restored.splice(idx, 0, deleted);
+    dcSaveData(restored);
+    dcRender();
+  });
 }
 
 function dcToggleBell(id) {
@@ -8282,9 +8609,70 @@ function toastConfirm(message, onConfirm) {
   el._timer = timer;
 }
 
+/* Тост с кнопкой "Отменить" (Undo pattern)
+   Паттерн: Optimistic Deletion (Gmail, Linear, Notion).
+   Действие выполняется сразу, но пользователь может отменить
+   в течение 6 секунд. Быстрее чем confirm, безопаснее чем без подтверждения. */
+function toastUndo(message, onUndo, duration) {
+  duration = duration || 6000;
+  var container = document.getElementById('toast-container');
+  if (!container) return;
+
+  var el = document.createElement('div');
+  el.className = 'toast success';
+  el.style.setProperty('--toast-duration', duration + 'ms');
+  el.innerHTML =
+    '<span class="toast-icon">✓</span>' +
+    '<div class="toast-body">' +
+      '<div class="toast-msg">' + message + '</div>' +
+    '</div>' +
+    '<button class="btn" style="font-size:11px;padding:3px 10px;margin-left:4px;white-space:nowrap;flex-shrink:0;" onclick="event.stopPropagation()">Отменить</button>' +
+    '<div class="toast-progress"></div>';
+
+  container.appendChild(el);
+
+  var undoBtn = el.querySelector('.btn');
+  undoBtn.onclick = function(e) {
+    e.stopPropagation();
+    dismissToast(el);
+    if (onUndo) onUndo();
+    toast('Действие отменено', 'info', 2000);
+  };
+
+  var timer = setTimeout(function() { dismissToast(el); }, duration);
+  el._timer = timer;
+}
+
 
 /* ══════════════════════════════════════════
-   2. SKELETON LOADING STATES
+   ANIMATED COUNTERS
+   Паттерн: CountUp Animation (Stripe Dashboard, Linear).
+   Числа плавно «докручиваются» до нового значения
+   вместо мгновенной подмены — создаёт ощущение
+   живых данных.
+══════════════════════════════════════════ */
+function animateValue(el, to, duration) {
+  if (!el) return;
+  var from = parseInt(el.textContent) || 0;
+  if (from === to) return;
+  duration = duration || 500;
+  var start = null;
+  var diff = to - from;
+
+  function step(ts) {
+    if (!start) start = ts;
+    var progress = Math.min((ts - start) / duration, 1);
+    /* easeOutQuart — быстро стартует, плавно тормозит */
+    var eased = 1 - Math.pow(1 - progress, 4);
+    el.textContent = Math.round(from + diff * eased);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+
+/* ══════════════════════════════════════════
+   SKELETON LOADING STATES
    Показывает shimmer-placeholder'ы в карточках
    пока данные грузятся из Supabase.
 ══════════════════════════════════════════ */
@@ -8308,10 +8696,38 @@ function showSkeletons() {
         '<div class="skeleton sk-card"></div>' +
       '</div>';
   }
+  /* Встречи */
+  var meetList = document.getElementById('meetings-list');
+  if (meetList && meetList.querySelector('.empty-msg')) {
+    meetList.innerHTML =
+      '<div id="sk-meetings" style="padding:4px 0;">' +
+        '<div class="skeleton-row" style="padding:7px 0;gap:10px;"><div class="skeleton sk-line" style="width:60px"></div><div class="skeleton sk-line" style="flex:1"></div></div>' +
+        '<div class="skeleton-row" style="padding:7px 0;gap:10px;"><div class="skeleton sk-line" style="width:60px"></div><div class="skeleton sk-line" style="flex:1;width:70%"></div></div>' +
+      '</div>';
+  }
+  /* Коммуникации */
+  var commList = document.getElementById('comms-list');
+  if (commList && commList.children.length === 0) {
+    commList.innerHTML =
+      '<div id="sk-comms" style="padding:4px 0;">' +
+        '<div class="skeleton-row" style="padding:7px 0;gap:10px;"><div class="skeleton sk-circle"></div><div style="flex:1"><div class="skeleton sk-line"></div><div class="skeleton sk-line-sm"></div></div></div>' +
+        '<div class="skeleton-row" style="padding:7px 0;gap:10px;"><div class="skeleton sk-circle"></div><div style="flex:1"><div class="skeleton sk-line" style="width:75%"></div><div class="skeleton sk-line-sm"></div></div></div>' +
+      '</div>';
+  }
+  /* Звонки */
+  var callList = document.getElementById('calls-list');
+  if (callList && callList.children.length === 0) {
+    callList.innerHTML =
+      '<div id="sk-calls">' +
+        '<div class="skeleton sk-card"></div>' +
+        '<div class="skeleton sk-card"></div>' +
+        '<div class="skeleton sk-card" style="width:80%"></div>' +
+      '</div>';
+  }
 }
 
 function hideSkeletons() {
-  var ids = ['sk-tasks', 'sk-projects'];
+  var ids = ['sk-tasks', 'sk-projects', 'sk-meetings', 'sk-comms', 'sk-calls'];
   ids.forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.remove();
@@ -8335,15 +8751,24 @@ var cmdActions = [
   { group: 'Навигация',    icon: '📋', label: 'Задачи',              action: function(){ scrollToWidget('.tasks-block'); } },
   { group: 'Навигация',    icon: '📁', label: 'Проекты',             action: function(){ scrollToWidget('.projects-block'); } },
   { group: 'Навигация',    icon: '📞', label: 'Звонки',              action: function(){ scrollToWidget('.calls-block'); } },
+  { group: 'Навигация',    icon: '🕐', label: 'Наверх',              action: function(){ cmdClose(); window.scrollTo({top:0, behavior:'smooth'}); } },
 
   /* Быстрые действия */
   { group: 'Действия',     icon: '➕', label: 'Новая задача',         action: function(){ cmdClose(); openTaskModal(null); } },
-  { group: 'Действия',     icon: '📁', label: 'Новый проект',        action: function(){ cmdClose(); addProject(); } },
+  { group: 'Действия',     icon: '📁', label: 'Новый проект',        action: function(){ cmdClose(); openProjectModal(); } },
   { group: 'Действия',     icon: '📞', label: 'Записать звонок',     action: function(){ cmdClose(); openCallModal(); } },
   { group: 'Действия',     icon: '📅', label: 'Запланировать звонок', action: function(){ cmdClose(); if(typeof dcOpenModal==='function') dcOpenModal(); } },
+  { group: 'Действия',     icon: '🤝', label: 'Новая встреча',       action: function(){ cmdClose(); openMeetingModal(); } },
+  { group: 'Действия',     icon: '💬', label: 'Новое напоминание',   action: function(){ cmdClose(); openCommModal(); } },
+
+  /* Сбросы */
+  { group: 'Сбросы',       icon: '🔄', label: 'Сбросить KPI',        action: function(){ cmdClose(); kpiReset(); } },
+  { group: 'Сбросы',       icon: '🔄', label: 'Сбросить трекер',     action: function(){ cmdClose(); resetDayReport(); } },
+  { group: 'Сбросы',       icon: '🔄', label: 'Сбросить результаты', action: function(){ cmdClose(); callResultReset(); } },
+  { group: 'Сбросы',       icon: '🗑', label: 'Очистить лог',        action: function(){ cmdClose(); qlClear(); } },
 
   /* Виджеты */
-  { group: 'Виджеты',      icon: '🔧', label: 'Настроить виджеты',   action: function(){ cmdClose(); wcToggle(); } },
+  { group: 'Настройки',    icon: '🔧', label: 'Настроить виджеты',   action: function(){ cmdClose(); wcToggle(); } },
 
   /* Темы */
   { group: 'Тема',         icon: '🎨', label: 'Claude',              action: function(){ cmdClose(); setTheme('t-claude'); toast('Тема: Claude', 'success'); } },
