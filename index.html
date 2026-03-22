@@ -343,39 +343,13 @@
   }
 
   /* Standalone виджеты — glassmorphism как у .card */
-  html.t-frost .w-clock,
-  html.t-frost .w-daycalls,
-  html.t-frost .w-focus,
-  html.t-frost .w-stats,
-  html.t-frost .w-timer,
-  html.t-frost .w-call-tracker,
-  html.t-frost .w-call-results,
-  html.t-frost .w-quick-log,
-  html.t-frost .w-funnel,
-  html.t-frost .w-heatmap,
-  html.t-frost .w-deadline-radar,
-  html.t-frost .w-proj-progress,
-  html.t-frost .w-plan-fact,
-  html.t-frost .w-activity {
+  html.t-frost [data-widget-id]:not(.card) {
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
     border: 1px solid rgba(255,255,255,0.11);
     box-shadow: 0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
   }
-  html.t-frost .w-clock:hover,
-  html.t-frost .w-daycalls:hover,
-  html.t-frost .w-focus:hover,
-  html.t-frost .w-stats:hover,
-  html.t-frost .w-timer:hover,
-  html.t-frost .w-call-tracker:hover,
-  html.t-frost .w-call-results:hover,
-  html.t-frost .w-quick-log:hover,
-  html.t-frost .w-funnel:hover,
-  html.t-frost .w-heatmap:hover,
-  html.t-frost .w-deadline-radar:hover,
-  html.t-frost .w-proj-progress:hover,
-  html.t-frost .w-plan-fact:hover,
-  html.t-frost .w-activity:hover {
+  html.t-frost [data-widget-id]:not(.card):hover {
     border-color: rgba(255,255,255,0.20);
     box-shadow: 0 8px 32px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.16);
   }
@@ -533,20 +507,7 @@
   html.t-paper #wc-panel { border-radius: 0; border-left: 2px solid var(--text); }
 
   /* Standalone виджеты — editorial border-top */
-  html.t-paper .w-clock,
-  html.t-paper .w-daycalls,
-  html.t-paper .w-focus,
-  html.t-paper .w-stats,
-  html.t-paper .w-timer,
-  html.t-paper .w-call-tracker,
-  html.t-paper .w-call-results,
-  html.t-paper .w-quick-log,
-  html.t-paper .w-funnel,
-  html.t-paper .w-heatmap,
-  html.t-paper .w-deadline-radar,
-  html.t-paper .w-proj-progress,
-  html.t-paper .w-plan-fact,
-  html.t-paper .w-activity {
+  html.t-paper [data-widget-id]:not(.card) {
     border-radius: 0;
     border-top: 2px solid var(--text);
     box-shadow: none;
@@ -644,37 +605,11 @@
   html.t-sand #wc-panel { border-radius: 0; border-left: 3px solid var(--text); }
 
   /* Standalone виджеты — тот же brutalist border-left */
-  html.t-sand .w-clock,
-  html.t-sand .w-daycalls,
-  html.t-sand .w-focus,
-  html.t-sand .w-stats,
-  html.t-sand .w-timer,
-  html.t-sand .w-call-tracker,
-  html.t-sand .w-call-results,
-  html.t-sand .w-quick-log,
-  html.t-sand .w-funnel,
-  html.t-sand .w-heatmap,
-  html.t-sand .w-deadline-radar,
-  html.t-sand .w-proj-progress,
-  html.t-sand .w-plan-fact,
-  html.t-sand .w-activity {
+  html.t-sand [data-widget-id]:not(.card) {
     border-radius: 0;
     border-left: 3px solid var(--border2);
   }
-  html.t-sand .w-clock:hover,
-  html.t-sand .w-daycalls:hover,
-  html.t-sand .w-focus:hover,
-  html.t-sand .w-stats:hover,
-  html.t-sand .w-timer:hover,
-  html.t-sand .w-call-tracker:hover,
-  html.t-sand .w-call-results:hover,
-  html.t-sand .w-quick-log:hover,
-  html.t-sand .w-funnel:hover,
-  html.t-sand .w-heatmap:hover,
-  html.t-sand .w-deadline-radar:hover,
-  html.t-sand .w-proj-progress:hover,
-  html.t-sand .w-plan-fact:hover,
-  html.t-sand .w-activity:hover {
+  html.t-sand [data-widget-id]:not(.card):hover {
     border-left-color: var(--accent);
   }
   html.t-sand .wc-row:hover { background: var(--surface2); }
@@ -768,20 +703,7 @@
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
   }
   /* Standalone виджеты — тот же backdrop blur */
-  html.t-aurora .w-clock,
-  html.t-aurora .w-daycalls,
-  html.t-aurora .w-focus,
-  html.t-aurora .w-stats,
-  html.t-aurora .w-timer,
-  html.t-aurora .w-call-tracker,
-  html.t-aurora .w-call-results,
-  html.t-aurora .w-quick-log,
-  html.t-aurora .w-funnel,
-  html.t-aurora .w-heatmap,
-  html.t-aurora .w-deadline-radar,
-  html.t-aurora .w-proj-progress,
-  html.t-aurora .w-plan-fact,
-  html.t-aurora .w-activity {
+  html.t-aurora [data-widget-id]:not(.card) {
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
   }
   @keyframes aurora-drift {
@@ -1058,37 +980,11 @@
   }
 
   /* Standalone виджеты — cyan glow как у .card */
-  html.t-neon .w-clock,
-  html.t-neon .w-daycalls,
-  html.t-neon .w-focus,
-  html.t-neon .w-stats,
-  html.t-neon .w-timer,
-  html.t-neon .w-call-tracker,
-  html.t-neon .w-call-results,
-  html.t-neon .w-quick-log,
-  html.t-neon .w-funnel,
-  html.t-neon .w-heatmap,
-  html.t-neon .w-deadline-radar,
-  html.t-neon .w-proj-progress,
-  html.t-neon .w-plan-fact,
-  html.t-neon .w-activity {
+  html.t-neon [data-widget-id]:not(.card) {
     box-shadow: 0 0 0 0 transparent, inset 0 0 20px rgba(0,238,255,0.03);
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-  html.t-neon .w-clock:hover,
-  html.t-neon .w-daycalls:hover,
-  html.t-neon .w-focus:hover,
-  html.t-neon .w-stats:hover,
-  html.t-neon .w-timer:hover,
-  html.t-neon .w-call-tracker:hover,
-  html.t-neon .w-call-results:hover,
-  html.t-neon .w-quick-log:hover,
-  html.t-neon .w-funnel:hover,
-  html.t-neon .w-heatmap:hover,
-  html.t-neon .w-deadline-radar:hover,
-  html.t-neon .w-proj-progress:hover,
-  html.t-neon .w-plan-fact:hover,
-  html.t-neon .w-activity:hover {
+  html.t-neon [data-widget-id]:not(.card):hover {
     border-color: rgba(0,238,255,0.45);
     box-shadow: 0 0 16px rgba(0,238,255,0.08), inset 0 0 20px rgba(0,238,255,0.05);
   }
@@ -1214,41 +1110,14 @@
 
   /* ── SHARED WIDGET SURFACE ──
      Паттерн: Consistent Surface Behavior.
-     Все standalone-виджеты ведут себя как .card:
-     transition при hover, тень усиливается, border меняется.
-     Это то, что создаёт ощущение "живого" интерфейса. */
-  .w-clock,
-  .w-daycalls,
-  .w-focus,
-  .w-stats,
-  .w-timer,
-  .w-call-tracker,
-  .w-call-results,
-  .w-quick-log,
-  .w-funnel,
-  .w-heatmap,
-  .w-deadline-radar,
-  .w-proj-progress,
-  .w-plan-fact,
-  .w-activity {
+     [data-widget-id]:not(.card) — универсальный селектор для
+     всех standalone виджетов (не card-обёрток). */
+  [data-widget-id]:not(.card) {
     transition: box-shadow var(--duration-normal, 0.25s) var(--ease-out, ease),
                 border-color var(--duration-fast, 0.15s) ease,
                 transform var(--duration-normal, 0.25s) var(--ease-out, ease);
   }
-  .w-clock:hover,
-  .w-daycalls:hover,
-  .w-focus:hover,
-  .w-stats:hover,
-  .w-timer:hover,
-  .w-call-tracker:hover,
-  .w-call-results:hover,
-  .w-quick-log:hover,
-  .w-funnel:hover,
-  .w-heatmap:hover,
-  .w-deadline-radar:hover,
-  .w-proj-progress:hover,
-  .w-plan-fact:hover,
-  .w-activity:hover {
+  [data-widget-id]:not(.card):hover {
     box-shadow: var(--shadow-md);
     border-color: var(--border2);
   }
@@ -5020,6 +4889,137 @@
     border-top: 2px solid var(--accent) !important;
   }
 
+  /* ══════════════════════════════════════════
+     SMART ALERTS
+     Паттерн: Notification Badge (Linear, Slack).
+     Pill-badges под greeting в хедере.
+  ══════════════════════════════════════════ */
+  .smart-alerts {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-top: 2px;
+  }
+  .smart-alert {
+    font-size: var(--text-2xs, 9px);
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .smart-alert:hover { opacity: 0.8; }
+  .smart-alert.warn {
+    background: color-mix(in srgb, var(--yellow) 15%, transparent);
+    color: var(--yellow);
+    border: 1px solid color-mix(in srgb, var(--yellow) 25%, transparent);
+  }
+  .smart-alert.danger {
+    background: color-mix(in srgb, var(--red) 12%, transparent);
+    color: var(--red);
+    border: 1px solid color-mix(in srgb, var(--red) 25%, transparent);
+  }
+  .smart-alert.info {
+    background: color-mix(in srgb, var(--blue) 12%, transparent);
+    color: var(--blue);
+    border: 1px solid color-mix(in srgb, var(--blue) 20%, transparent);
+  }
+  @supports not (background: color-mix(in srgb, red 10%, white)) {
+    .smart-alert.warn   { background: rgba(200,160,50,0.12); border: 1px solid rgba(200,160,50,0.25); }
+    .smart-alert.danger { background: rgba(200,60,60,0.10); border: 1px solid rgba(200,60,60,0.22); }
+    .smart-alert.info   { background: rgba(60,120,200,0.10); border: 1px solid rgba(60,120,200,0.18); }
+  }
+
+  /* ══════════════════════════════════════════
+     CLIENT HEALTH SCORE
+     Паттерн: Status Indicator (Salesforce, HubSpot).
+     Цветной dot в project-card: green/yellow/red.
+  ══════════════════════════════════════════ */
+  .health-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+    margin-right: 4px;
+  }
+  .health-dot.healthy { background: var(--green); }
+  .health-dot.warning { background: var(--yellow); }
+  .health-dot.critical { background: var(--red); }
+
+  /* ══════════════════════════════════════════
+     WIP LIMITS
+     Паттерн: Kanban WIP Limit (Jira, Linear).
+     Лейн "Сейчас" краснеет при превышении лимита.
+  ══════════════════════════════════════════ */
+  .lane-header.now.wip-over {
+    color: var(--red) !important;
+    animation: wipPulse 2s infinite;
+  }
+  .lane-header.now.wip-over .badge {
+    background: var(--red-l, rgba(200,60,60,0.15));
+    color: var(--red);
+  }
+  @keyframes wipPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .wip-limit-label {
+    font-size: var(--text-2xs, 9px);
+    color: var(--text-mute);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     DASHBOARD VIEWS (3 режима)
+     Паттерн: View Switcher (Notion, Linear).
+  ══════════════════════════════════════════ */
+  .view-switcher {
+    display: flex;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    padding: 2px;
+    gap: 1px;
+  }
+  .view-btn {
+    padding: 4px 10px;
+    border: none;
+    border-radius: calc(var(--radius-s) - 2px);
+    background: transparent;
+    color: var(--text-mute);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .view-btn:hover { color: var(--text); }
+  .view-btn.active {
+    background: var(--surface);
+    color: var(--accent);
+    box-shadow: var(--shadow-xs);
+  }
+  @media (max-width: 600px) {
+    .view-switcher { display: none; }
+  }
+
+  /* View modes — CSS-driven layout changes */
+  body.view-sales .main { grid-template-columns: 1fr !important; max-width: 1200px !important; }
+  body.view-sales .tasks-block { display: none !important; }
+  body.view-sales .right-col { grid-column: 1 !important; }
+
+  body.view-analytics .main { grid-template-columns: 1fr !important; max-width: 1100px !important; }
+  body.view-analytics .tasks-block,
+  body.view-analytics .projects-block,
+  body.view-analytics .calls-block { display: none !important; }
+  body.view-analytics .right-col {
+    grid-column: 1 !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 18px !important;
+  }
+
   #confetti-canvas {
     position: fixed;
     inset: 0;
@@ -5092,11 +5092,7 @@
     }
 
     /* Карточки — без теней, тонкий border */
-    .card, .w-clock, .w-stats, .w-timer, .w-focus,
-    .w-heatmap, .w-call-tracker, .w-call-results,
-    .w-funnel, .w-deadline-radar, .w-proj-progress,
-    .w-plan-fact, .w-quick-log, .w-daycalls, .w-activity,
-    .project-card, .call-card {
+    .card, [data-widget-id], .project-card, .call-card {
       box-shadow: none !important;
       border: 1px solid #ddd !important;
       break-inside: avoid;
@@ -5397,6 +5393,7 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
     <div class="header-logo">ОП</div>
     <span class="header-title" id="header-greeting">Рабочий дашборд</span>
     <span class="header-sub">БИТ.IIOT · Маркировка</span>
+    <div class="smart-alerts" id="smart-alerts"></div>
   </div>
   <div style="display:flex;align-items:center;gap:14px;">
     <div class="sync-indicator" id="sync-indicator" title="Статус синхронизации">
@@ -5409,6 +5406,12 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Установить
     </button>
+    <!-- VIEW SWITCHER -->
+    <div class="view-switcher" id="view-switcher">
+      <button class="view-btn active" onclick="setView('default')" data-view="default">Всё</button>
+      <button class="view-btn" onclick="setView('sales')" data-view="sales">Продажи</button>
+      <button class="view-btn" onclick="setView('analytics')" data-view="analytics">Аналитика</button>
+    </div>
     <!-- STREAK COUNTER -->
     <span class="streak-badge" id="streak-badge" title="Дней подряд">
       <span class="streak-fire">🔥</span>
@@ -5511,9 +5514,10 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
     <div class="task-lanes">
       <!-- СЕЙЧАС -->
       <div class="task-lane" id="lane-now" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'now')">
-        <div class="lane-header now">
+        <div class="lane-header now" id="lane-header-now">
           Сейчас
           <span class="badge" id="cnt-now">0</span>
+          <span class="wip-limit-label" id="wip-label"></span>
         </div>
         <div id="tasks-now"></div>
         <div class="add-task-row">
@@ -6255,6 +6259,26 @@ const LS = {
 };
 
 /* ═══════════════════════════════════════════
+   STUB REGISTRY — заглушки для функций,
+   определённых в поздних script-блоках.
+   Паттерн: Progressive Enhancement Stubs.
+   Поздний блок перезаписывает эти no-op функции
+   реальными реализациями. Избавляет от 30+ typeof guards.
+═══════════════════════════════════════════ */
+var checkCelebration = function() {};
+var logActivity = function() {};
+var updateStreak = function() {};
+var updateSparklines = function() {};
+var updateDLIcon = function() {};
+var playSound = function() {};
+var searchData = function() { return []; };
+var checkWipLimit = function() {};
+var updateSmartAlerts = function() {};
+var emptyState = function(iconKey, text, hint) {
+  return '<div class="empty-msg">' + (text || '') + (hint ? '<br><span class="empty-hint">' + hint + '</span>' : '') + '</div>';
+};
+
+/* ═══════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════ */
 let tasks    = LS.get('wdb_tasks',    []);
@@ -6372,6 +6396,9 @@ function renderTasks() {
       showCtx(e);
     });
   });
+  /* WIP Limit check + Smart Alerts refresh */
+  checkWipLimit();
+  updateSmartAlerts();
 }
 
 function taskHTML(t) {
@@ -6414,13 +6441,13 @@ function toggleTask(id) {
   renderTasks();
   /* Celebration при завершении задачи */
   if (!wasDone && t.lane === 'done') {
-    if (typeof checkCelebration === 'function') checkCelebration('task-done');
-    if (typeof logActivity === 'function') logActivity('target', 'Выполнил задачу: ' + t.text);
-    if (typeof updateStreak === 'function') updateStreak();
+    checkCelebration('task-done');
+    logActivity('target', 'Выполнил задачу: ' + t.text);
+    updateStreak();
     /* Проверяем: все задачи "Сейчас" выполнены? */
     var nowTasks = tasks.filter(function(x) { return x.lane === 'now'; });
     if (nowTasks.length === 0 && tasks.filter(function(x) { return x.lane === 'done'; }).length > 0) {
-      setTimeout(function() { if (typeof checkCelebration === 'function') checkCelebration('all-tasks-done'); }, 600);
+      setTimeout(function() { checkCelebration('all-tasks-done'); }, 600);
     }
   }
 }
@@ -6516,7 +6543,7 @@ function saveTask() {
   closeModal('task-modal');
   renderTasks();
   toast(id ? 'Задача обновлена' : 'Задача создана', 'success');
-  if (typeof logActivity === 'function') logActivity('clipboard', (id ? 'Обновил' : 'Создал') + ' задачу: ' + text);
+  logActivity('clipboard', (id ? 'Обновил' : 'Создал') + ' задачу: ' + text);
 }
 
 /* drag-drop */
@@ -6643,8 +6670,8 @@ function saveLossModal() {
   if (expandedProject === id) expandedProject = null;
   closeLossModal();
   renderProjects();
-  if (typeof renderProjProgress === 'function') renderProjProgress();
-  if (typeof renderDeadlineRadar === 'function') renderDeadlineRadar();
+  renderProjProgress();
+  renderDeadlineRadar();
 }
 
 function saveLastContact(id, text) {
@@ -6683,13 +6710,38 @@ function renderProjects() {
 
   el.innerHTML = sorted.length
     ? sorted.map(p => projectHTML(p)).join('')
-    : (typeof emptyState==='function' ? emptyState('folder', 'Проектов пока нет', 'Нажми «+ Проект» чтобы добавить первый') : '<div class="empty-msg">Проектов пока нет</div>');
+    : emptyState('folder', 'Проектов пока нет', 'Нажми «+ Проект» чтобы добавить первый');
 
   if (lostEl) {
     lostEl.innerHTML = lost.length
       ? lost.map(p => lostProjectHTML(p)).join('')
       : '<div class="empty-msg" style="padding:8px 0;border:none;background:none;"><span class="empty-hint">Проигранных сделок нет</span></div>';
   }
+}
+
+/* ── CLIENT HEALTH SCORE ──
+   Паттерн: Health Indicator (Salesforce, HubSpot).
+   Green: всё ок. Yellow: давно нет контакта или нет nextStep.
+   Red: просрочен дедлайн + давно нет контакта. */
+function getHealthClass(p) {
+  if (p.stage === 'lost') return '';
+  var score = 3; /* 3=healthy, 2=warning, 1=critical */
+  /* Дни без контакта */
+  if (p.lastContactDate) {
+    var daysSince = Math.floor((Date.now() - new Date(p.lastContactDate).getTime()) / 86400000);
+    if (daysSince > 7) score--;
+    if (daysSince > 14) score--;
+  } else { score--; }
+  /* Нет следующего шага */
+  if (!p.nextStep) score--;
+  /* Просроченный дедлайн */
+  if (p.deadline) {
+    var diff = Math.floor((new Date(p.deadline + 'T00:00:00') - new Date()) / 86400000);
+    if (diff < 0) score--;
+  }
+  if (score >= 3) return 'healthy';
+  if (score >= 2) return 'warning';
+  return 'critical';
 }
 
 function projectHTML(p) {
@@ -6725,7 +6777,7 @@ function projectHTML(p) {
        oncontextmenu="event.preventDefault();openProjectModal('${p.id}')">
     <div class="project-top">
       <div style="flex:1;min-width:0;">
-        <div class="project-name">${esc(p.name)}</div>
+        <div class="project-name"><span class="health-dot ${getHealthClass(p)}"></span>${esc(p.name)}</div>
         <div class="project-client">${esc(p.client||'')}${p.contact?' · '+esc(p.contact):''}</div>
         ${nextStepPreview}
       </div>
@@ -6975,7 +7027,7 @@ function saveProject() {
   closeModal('project-modal');
   renderProjects();
   toast(id ? 'Проект обновлён' : 'Проект создан', 'success');
-  if (typeof logActivity === 'function') logActivity('folder', (id ? 'Обновил' : 'Создал') + ' проект: ' + data.name);
+  logActivity('folder', (id ? 'Обновил' : 'Создал') + ' проект: ' + data.name);
 }
 
 function deleteProject(id) {
@@ -7007,7 +7059,7 @@ function renderMeetings() {
     .filter(m => m.date >= today && m.date <= weekEnd)
     .sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
   if(!week.length) {
-    el.innerHTML = (typeof emptyState==='function') ? emptyState('users', 'Встреч на неделе нет', 'Добавь встречу через «+» выше') : '<div class="empty-msg">Встреч на неделе нет</div>';
+    el.innerHTML = emptyState('users', 'Встреч на неделе нет', 'Добавь встречу через «+» выше');
     return;
   }
   el.innerHTML = week.map(m => `
@@ -7054,7 +7106,7 @@ function saveMeeting() {
   closeModal('meeting-modal');
   renderMeetings();
   toast(id ? 'Встреча обновлена' : 'Встреча добавлена', 'success');
-  if (typeof logActivity === 'function') logActivity('users', (id ? 'Обновил' : 'Добавил') + ' встречу: ' + data.title);
+  logActivity('users', (id ? 'Обновил' : 'Добавил') + ' встречу: ' + data.title);
 }
 
 function deleteMeeting(id) {
@@ -7270,8 +7322,8 @@ function renderKPI() {
     if (el) { el.style.width = pct + '%'; el.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
   });
   /* Celebration при достижении 100% */
-  if (weekTotal >= KPI_GOAL) { if (typeof checkCelebration === 'function') checkCelebration('kpi-100'); }
-  else { if (typeof checkCelebration === 'function') checkCelebration('kpi-reset'); }
+  if (weekTotal >= KPI_GOAL) { checkCelebration('kpi-100'); }
+  else { checkCelebration('kpi-reset'); }
   ['kpi-progress-pct','kpi-modal-progress-pct'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.textContent = pct + '%';
   });
@@ -7359,7 +7411,7 @@ function setTheme(t) {
   });
   closeThemeMenu();
   /* Обновляем иконку Dark/Light toggle */
-  if (typeof updateDLIcon === 'function') updateDLIcon();
+  updateDLIcon();
 }
 
 function toggleThemeMenu() {
@@ -7392,7 +7444,7 @@ function renderCalls() {
   const el = document.getElementById('calls-list');
   document.getElementById('calls-count').textContent = calls.length;
   if (!calls.length) {
-    el.innerHTML = (typeof emptyState==='function') ? emptyState('phone', 'Звонков пока нет', 'Запиши первый звонок через «+ Звонок»') : '<div class="empty-msg">Звонков пока нет</div>';
+    el.innerHTML = emptyState('phone', 'Звонков пока нет', 'Запиши первый звонок через «+ Звонок»');
     return;
   }
   // сортируем: сначала новые
@@ -7482,8 +7534,8 @@ function saveCall() {
   renderCalls();
   closeCallModal();
   toast(editCallId ? 'Звонок обновлён' : 'Звонок записан', 'success');
-  if (typeof logActivity === 'function') logActivity('phone', 'Записал звонок: ' + company);
-  if (typeof updateStreak === 'function') updateStreak();
+  logActivity('phone', 'Записал звонок: ' + company);
+  updateStreak();
 }
 
 function deleteCall(id) {
@@ -7548,7 +7600,7 @@ function callTrackerAdd(delta) {
   saveCTData(ct);
   renderCallTracker();
   updateStats();
-  if (typeof updateStreak === 'function' && actualDelta > 0) updateStreak();
+  if (actualDelta > 0) updateStreak();
   return actualDelta;
 }
 
@@ -8035,14 +8087,14 @@ function updateStats() {
 }
 updateStats();
 /* Спарклайны инициализируются после первого updateStats */
-setTimeout(function() { if (typeof updateSparklines === 'function') updateSparklines(); }, 500);
+setTimeout(function() { updateSparklines(); }, 500);
 
 // Обновляем статистику при любом изменении localStorage
 const _origLSset = LS.set.bind(LS);
 LS.set = function(k, v) {
   _origLSset(k, v);
   updateStats();
-  if (typeof updateSparklines === 'function') updateSparklines();
+  updateSparklines();
   // Перерисовываем новые виджеты при изменении данных
   if (k === 'wdb_projects' || k === 'wdb_tasks') {
     renderDeadlineRadar();
@@ -8430,7 +8482,7 @@ function timerDone() {
   if (timerMode === 'work') {
     timerSessions++;
     LS.set('wdb_timer_sessions', timerSessions);
-    if (typeof checkCelebration === 'function') checkCelebration('pomodoro');
+    checkCelebration('pomodoro');
   }
   renderTimer();
   // Уведомление
@@ -8600,7 +8652,20 @@ renderTimer();
 ═══════════════════════════════════════════════════ */
 const SB_SYNC_KEYS  = ['wdb_tasks','wdb_projects','wdb_meetings','wdb_comms',
                        'wdb_notes','wdb_calls','wdb_focus','wdb_kpi'];
-const SB_LOCAL_ONLY = ['wdb_theme','wdb_timer_sessions'];
+const SB_LOCAL_ONLY = ['wdb_theme','wdb_timer_sessions','wdb_sounds',
+                       'wdb_tour_done','wdb_widget_visibility','wdb_widget_order',
+                       'wdb_dr_dismissed'];
+/* Префиксы daily/weekly ключей которые тоже синхронизируются */
+const SB_SYNC_PREFIXES = ['wdb_call_tracker_','wdb_call_results_','wdb_daycalls_',
+                          'wdb_heatmap_','wdb_funnel_','wdb_pf_plans_',
+                          'wdb_quicklog','wdb_streak'];
+
+/* Универсальная проверка: должен ли ключ синхронизироваться? */
+function shouldSync(key) {
+  if (SB_LOCAL_ONLY.includes(key)) return false;
+  if (SB_SYNC_KEYS.includes(key)) return true;
+  return SB_SYNC_PREFIXES.some(function(p) { return key.startsWith(p); });
+}
 
 let sbUserId     = null;  // заполняется после авторизации
 let suppressSync = false;
@@ -8634,14 +8699,20 @@ function sbApplyIncoming(key, incoming) {
       const fi = document.getElementById('w-focus-input');
       if (fi && incoming.date === new Date().toDateString()) fi.value = incoming.text || '';
     }
+    /* Daily виджеты — перерисовываем при получении данных */
+    if (key.startsWith('wdb_call_tracker_') && typeof renderCallTracker === 'function') renderCallTracker();
+    if (key.startsWith('wdb_call_results_') && typeof renderCallResults === 'function') renderCallResults();
+    if (key.startsWith('wdb_daycalls_') && typeof dcRender === 'function') dcRender();
+    if (key.startsWith('wdb_heatmap_') && typeof renderHeatmap === 'function') renderHeatmap();
+    if (key.startsWith('wdb_funnel_') && typeof renderFunnel === 'function') renderFunnel();
+    if (key.startsWith('wdb_pf_plans_')) renderPlanFact();
     updateStats();
-    /* Виджеты которые зависят от проектов/задач */
     if (key === 'wdb_projects' || key === 'wdb_tasks') {
-      if (typeof renderDeadlineRadar === 'function') renderDeadlineRadar();
-      if (typeof renderProjProgress === 'function') renderProjProgress();
+      renderDeadlineRadar();
+      renderProjProgress();
     }
-    if (typeof renderPlanFact === 'function') renderPlanFact();
-    if (typeof updateSparklines === 'function') updateSparklines();
+    renderPlanFact();
+    updateSparklines();
   } catch(e) {}
   suppressSync = false;
 }
@@ -8683,7 +8754,7 @@ async function sbLoadAll() {
   (data || []).forEach(row => {
     const key      = row.id;
     const incoming = row.data;
-    if (!SB_SYNC_KEYS.includes(key)) return;
+    if (!shouldSync(key)) return;
     const local = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } })();
     const localEmpty = !local || (Array.isArray(local) && local.length === 0);
     if (localEmpty) {
@@ -8711,7 +8782,7 @@ function sbSubscribe() {
           const key      = payload.new?.id;
           const incoming = payload.new?.data;
           if (!key || incoming === undefined) return;
-          if (!SB_SYNC_KEYS.includes(key)) return;
+          if (!shouldSync(key)) return;
           const local = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } })();
           if (JSON.stringify(incoming) === JSON.stringify(local)) return;
           setSyncStatus('syncing', 'обновление...');
@@ -8738,7 +8809,7 @@ const _lsSetOrigSb = LS.set.bind(LS);
 LS.set = function(key, value) {
   _lsSetOrigSb(key, value);
   if (suppressSync) return;
-  if (SB_LOCAL_ONLY.includes(key)) return;
+  if (!shouldSync(key)) return;
   if (sbUserId) sbWrite(key, value);
 };
 </script>
@@ -9586,6 +9657,16 @@ if (document.readyState === 'loading') {
         <button class="btn btn-primary" onclick="exportData()" style="width:100%;">Скачать backup (.json)</button>
       </div>
       <div class="export-section">
+        <div class="export-section-title">Экспорт в CSV (для Excel)</div>
+        <div class="export-info">Скачай таблицы для отчётности или анализа. Кириллица поддерживается.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn" onclick="exportTasksCSV()" style="flex:1;">Задачи</button>
+          <button class="btn" onclick="exportProjectsCSV()" style="flex:1;">Проекты</button>
+          <button class="btn" onclick="exportCallsCSV()" style="flex:1;">Звонки</button>
+        </div>
+        <button class="btn" onclick="exportAllCSV()" style="width:100%;margin-top:6px;">Скачать всё (3 файла)</button>
+      </div>
+      <div class="export-section">
         <div class="export-section-title">Импорт</div>
         <div class="export-info">Загрузи ранее сохранённый JSON-файл. Текущие данные будут заменены.</div>
         <input type="file" class="export-file-input" id="import-file" accept=".json" onchange="importData(this)">
@@ -10034,11 +10115,11 @@ function checkCelebration(type, data) {
   switch (type) {
     case 'task-done':
       celebrate('small');
-      if (typeof playSound === 'function') playSound('tick');
+      playSound('tick');
       break;
     case 'pomodoro':
       celebrate('medium');
-      if (typeof playSound === 'function') playSound('chime');
+      playSound('chime');
       if (focusModeActive) {
         setTimeout(function() {
           exitFocusMode();
@@ -10050,7 +10131,7 @@ function checkCelebration(type, data) {
       if (!_lastCelebratedKPI) {
         _lastCelebratedKPI = true;
         celebrate('big');
-        if (typeof playSound === 'function') playSound('success');
+        playSound('success');
         toast('KPI выполнен на 100%!', 'success', 4000);
       }
       break;
@@ -10059,7 +10140,7 @@ function checkCelebration(type, data) {
       break;
     case 'all-tasks-done':
       celebrate('big');
-      if (typeof playSound === 'function') playSound('success');
+      playSound('success');
       toast('Все задачи "Сейчас" выполнены!', 'success', 3000);
       break;
   }
@@ -10396,6 +10477,83 @@ function copyReview() {
 
 
 /* ══════════════════════════════════════════
+   CSV EXPORT
+   Паттерн: Data Export (Notion CSV, Linear Export).
+   Экспортирует задачи, проекты, звонки в CSV-файлы
+   для отчётности руководству или анализа в Excel.
+══════════════════════════════════════════ */
+function csvEscape(val) {
+  if (val === null || val === undefined) return '';
+  var s = String(val);
+  if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+function downloadCSV(filename, headers, rows) {
+  var bom = '\uFEFF'; /* BOM для корректного отображения кириллицы в Excel */
+  var csv = bom + headers.map(csvEscape).join(',') + '\n' +
+    rows.map(function(row) {
+      return row.map(csvEscape).join(',');
+    }).join('\n');
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportTasksCSV() {
+  var tasks = LS.get('wdb_tasks', []);
+  var headers = ['Задача', 'Статус', 'Приоритет', 'Проект', 'Дедлайн', 'Время', 'Создана'];
+  var rows = tasks.map(function(t) {
+    var lane = t.lane === 'now' ? 'Сейчас' : t.lane === 'next' ? 'Следующие' : t.lane === 'wait' ? 'Отложено' : 'Выполнено';
+    var prio = t.priority === 'critical' ? 'Критичный' : t.priority === 'important' ? 'Важный' : 'Обычный';
+    return [t.text, lane, prio, t.project || '', t.deadline || '', t.time || '', t.doneAt ? new Date(t.doneAt).toLocaleDateString('ru') : ''];
+  });
+  var date = new Date().toISOString().split('T')[0];
+  downloadCSV('tasks-' + date + '.csv', headers, rows);
+  toast('Задачи экспортированы', 'success', 2000);
+  logActivity('chart', 'Экспортировал задачи в CSV');
+}
+
+function exportProjectsCSV() {
+  var projects = LS.get('wdb_projects', []);
+  var headers = ['Проект', 'Клиент', 'Контакт', 'Стадия', 'Бюджет', 'Ответственный', 'Дедлайн', 'Следующий шаг'];
+  var rows = projects.map(function(p) {
+    var stageIdx = parseInt(p.stage) || 0;
+    var stageName = p.stage === 'lost' ? 'Проиграна' : (FUNNEL[stageIdx] || '');
+    return [p.name, p.client || '', p.contact || '', stageName, p.budget || '', p.owner || '', p.deadline || '', p.nextStep || ''];
+  });
+  var date = new Date().toISOString().split('T')[0];
+  downloadCSV('projects-' + date + '.csv', headers, rows);
+  toast('Проекты экспортированы', 'success', 2000);
+  logActivity('chart', 'Экспортировал проекты в CSV');
+}
+
+function exportCallsCSV() {
+  var calls = LS.get('wdb_calls', []);
+  var headers = ['Компания', 'Контакт', 'Статус', 'Дата', 'Длительность', 'Договорённости', 'Следующий шаг'];
+  var rows = calls.map(function(c) {
+    return [c.company || '', c.contact || '', c.status || '', c.date || '', c.duration || '', c.agreements || '', c.nextStep || ''];
+  });
+  var date = new Date().toISOString().split('T')[0];
+  downloadCSV('calls-' + date + '.csv', headers, rows);
+  toast('Звонки экспортированы', 'success', 2000);
+  logActivity('chart', 'Экспортировал звонки в CSV');
+}
+
+function exportAllCSV() {
+  exportTasksCSV();
+  setTimeout(exportProjectsCSV, 300);
+  setTimeout(exportCallsCSV, 600);
+}
+
+
+/* ══════════════════════════════════════════
    ACTIVITY TIMELINE
    Паттерн: Activity Feed (GitHub, Notion, Slack).
    Хронологическая лента действий за сегодня.
@@ -10638,7 +10796,7 @@ function exportData() {
   URL.revokeObjectURL(url);
 
   toast('Backup скачан', 'success', 2000);
-  if (typeof logActivity === 'function') logActivity('chart', 'Экспортировал backup данных');
+  logActivity('chart', 'Экспортировал backup данных');
 }
 
 function importData(input) {
@@ -10663,7 +10821,7 @@ function importData(input) {
       });
 
       toast('Импортировано ' + count + ' ключей. Перезагрузка...', 'success', 2000);
-      if (typeof logActivity === 'function') logActivity('chart', 'Импортировал backup (' + count + ' ключей)');
+      logActivity('chart', 'Импортировал backup (' + count + ' ключей)');
 
       /* Перезагрузка через 1.5 сек чтобы toast успел показаться */
       setTimeout(function() { location.reload(); }, 1500);
@@ -10931,6 +11089,193 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+/* ══════════════════════════════════════════
+   SMART ALERTS
+   Паттерн: Proactive Notifications (Linear, Notion).
+   Анализирует данные и показывает pill-badges
+   под greeting с actionable подсказками.
+══════════════════════════════════════════ */
+function updateSmartAlerts() {
+  var el = document.getElementById('smart-alerts');
+  if (!el) return;
+  var alerts = [];
+  var today = new Date();
+  today.setHours(0,0,0,0);
+
+  /* 1. Просроченные задачи */
+  var overdueTasks = (LS.get('wdb_tasks', [])).filter(function(t) {
+    if (!t.deadline || t.lane === 'done') return false;
+    return new Date(t.deadline + 'T00:00:00') < today;
+  });
+  if (overdueTasks.length > 0) {
+    alerts.push({ cls: 'danger', text: overdueTasks.length + ' просроч. задач', action: function() { scrollToWidget('.tasks-block'); } });
+  }
+
+  /* 2. Проекты без обновлений > 5 дней */
+  (LS.get('wdb_projects', [])).forEach(function(p) {
+    if (p.stage === 'lost') return;
+    if (!p.lastContactDate) {
+      alerts.push({ cls: 'warn', text: p.name + ': нет контакта', action: function() { scrollToWidget('.projects-block'); toggleProject(p.id); } });
+      return;
+    }
+    var daysSince = Math.floor((Date.now() - new Date(p.lastContactDate).getTime()) / 86400000);
+    if (daysSince >= 5) {
+      alerts.push({ cls: 'warn', text: p.name + ': ' + daysSince + ' дн без контакта', action: function() { scrollToWidget('.projects-block'); toggleProject(p.id); } });
+    }
+  });
+
+  /* 3. Звонки: 0 за сегодня при плане > 0 */
+  var d = new Date();
+  var ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+  var ct = LS.get(ctKey, null);
+  var todayCalls = ct ? (ct.done || 0) : 0;
+  var todayPlan = ct ? (ct.plan || 40) : 40;
+  if (todayCalls === 0 && d.getHours() >= 10) {
+    alerts.push({ cls: 'info', text: '0 звонков — план ' + todayPlan, action: function() { scrollToWidget('[data-widget-id="call-tracker"]'); } });
+  }
+
+  /* 4. WIP лимит превышен */
+  var nowCount = (LS.get('wdb_tasks', [])).filter(function(t) { return t.lane === 'now'; }).length;
+  var WIP_LIMIT = 7;
+  if (nowCount > WIP_LIMIT) {
+    alerts.push({ cls: 'warn', text: 'WIP: ' + nowCount + '/' + WIP_LIMIT + ' задач', action: function() { scrollToWidget('.tasks-block'); } });
+  }
+
+  /* Максимум 4 alerts чтобы не перегружать */
+  el.innerHTML = alerts.slice(0, 4).map(function(a, i) {
+    return '<span class="smart-alert ' + a.cls + '" onclick="smartAlertAction(' + i + ')">' + a.text + '</span>';
+  }).join('');
+
+  /* Сохраняем actions для onclick */
+  window._smartAlertActions = alerts.slice(0, 4).map(function(a) { return a.action; });
+}
+
+function smartAlertAction(idx) {
+  if (window._smartAlertActions && window._smartAlertActions[idx]) {
+    window._smartAlertActions[idx]();
+  }
+}
+
+/* Обновляем alerts при загрузке и каждые 5 минут */
+document.addEventListener('DOMContentLoaded', function() { setTimeout(updateSmartAlerts, 2000); });
+setInterval(updateSmartAlerts, 300000);
+
+
+/* ══════════════════════════════════════════
+   WIP LIMITS
+   Паттерн: Kanban WIP Limit (Jira, Linear).
+   Максимум задач в "Сейчас". При превышении —
+   header краснеет, badge пульсирует.
+══════════════════════════════════════════ */
+var WIP_LIMIT = 7;
+
+function checkWipLimit() {
+  var header = document.getElementById('lane-header-now');
+  var label = document.getElementById('wip-label');
+  if (!header) return;
+  var nowCount = tasks.filter(function(t) { return t.lane === 'now'; }).length;
+  var isOver = nowCount > WIP_LIMIT;
+  header.classList.toggle('wip-over', isOver);
+  if (label) label.textContent = isOver ? '(лимит ' + WIP_LIMIT + ')' : '';
+}
+
+/* Хукаем в renderTasks — вызывается после каждого render */
+var _origRenderTasks = typeof renderTasks === 'function' ? renderTasks : null;
+
+
+/* ══════════════════════════════════════════
+   DASHBOARD VIEWS
+   Паттерн: View Switcher (Notion Board/List/Calendar).
+   3 режима отображения: Default, Sales, Analytics.
+══════════════════════════════════════════ */
+function setView(mode) {
+  document.body.classList.remove('view-sales', 'view-analytics');
+  if (mode !== 'default') document.body.classList.add('view-' + mode);
+  /* Обновляем кнопки */
+  document.querySelectorAll('.view-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute('data-view') === mode);
+  });
+  localStorage.setItem('wdb_view_mode', mode);
+  playSound('click');
+}
+/* Восстанавливаем при загрузке */
+document.addEventListener('DOMContentLoaded', function() {
+  var saved = localStorage.getItem('wdb_view_mode');
+  if (saved && saved !== 'default') setView(saved);
+});
+
+
+/* ══════════════════════════════════════════
+   DAILY STANDUP GENERATOR
+   Паттерн: Auto-Report (RescueTime, Clockify).
+   Генерирует текст для отправки руководству
+   на основе вчерашних действий и текущего состояния.
+══════════════════════════════════════════ */
+function generateStandup() {
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  var yKey = 'wdb_activity_' + yesterday.toISOString().split('T')[0];
+  var yActions = LS.get(yKey, []);
+  var today = new Date();
+
+  /* Вчерашние звонки */
+  var yCtKey = 'wdb_call_tracker_' + yesterday.getFullYear() + '_' + yesterday.getMonth() + '_' + yesterday.getDate();
+  var yCt = LS.get(yCtKey, null);
+  var yCalls = yCt ? (yCt.done || 0) : 0;
+
+  /* Текущие задачи */
+  var allTasks = LS.get('wdb_tasks', []);
+  var nowTasks = allTasks.filter(function(t) { return t.lane === 'now'; });
+  var doneTasks = allTasks.filter(function(t) {
+    return t.lane === 'done' && t.doneAt &&
+      new Date(t.doneAt).toDateString() === yesterday.toDateString();
+  });
+
+  /* Проекты с обновлениями вчера */
+  var updatedProjects = (LS.get('wdb_projects', [])).filter(function(p) {
+    return p.lastContactDate === yesterday.toISOString().split('T')[0];
+  });
+
+  /* Формируем текст */
+  var lines = [];
+  lines.push('📋 ОТЧЁТ ЗА ' + yesterday.toLocaleDateString('ru', { day: 'numeric', month: 'long', weekday: 'long' }).toUpperCase());
+  lines.push('');
+
+  if (yCalls > 0) lines.push('Звонков: ' + yCalls);
+  if (doneTasks.length > 0) {
+    lines.push('Выполнено задач: ' + doneTasks.length);
+    doneTasks.forEach(function(t) { lines.push('  • ' + t.text); });
+  }
+  if (updatedProjects.length > 0) {
+    lines.push('Обновлены проекты:');
+    updatedProjects.forEach(function(p) { lines.push('  • ' + p.name + ' (' + FUNNEL[parseInt(p.stage)||0] + ')'); });
+  }
+  if (yActions.length > 0 && !doneTasks.length && !yCalls) {
+    lines.push('Действия: ' + yActions.length);
+  }
+
+  lines.push('');
+  lines.push('ПЛАН НА СЕГОДНЯ:');
+  if (nowTasks.length > 0) {
+    nowTasks.slice(0, 5).forEach(function(t) {
+      var prio = t.priority === 'critical' ? ' ⚠️' : t.priority === 'important' ? ' ⭐' : '';
+      lines.push('  • ' + t.text + prio);
+    });
+    if (nowTasks.length > 5) lines.push('  ...и ещё ' + (nowTasks.length - 5));
+  } else {
+    lines.push('  (нет задач в "Сейчас")');
+  }
+
+  var text = lines.join('\n');
+
+  navigator.clipboard.writeText(text).then(function() {
+    toast('Отчёт скопирован в буфер', 'success', 3000);
+  });
+  logActivity('chart', 'Сгенерировал daily standup');
+  return text;
+}
+
+
 function initGreeting() {
   var el = document.getElementById('header-greeting');
   if (!el) return;
@@ -10988,7 +11333,7 @@ function updateDLIcon() {
 }
 
 /* Обновляем иконку при загрузке и при смене темы */
-var _origSetTheme = typeof setTheme === 'function' ? setTheme : null;
+/* Stub registry eliminates typeof guards */
 document.addEventListener('DOMContentLoaded', updateDLIcon);
 /* Хук на setTheme добавляется после определения функции — ниже */
 
@@ -11025,7 +11370,14 @@ var cmdActions = [
   { group: 'Настройки',    icon: ICON.target,    label: 'Пройти тур',          hint: '?',  action: function(){ cmdClose(); localStorage.removeItem('wdb_tour_done'); tourStart(); } },
   { group: 'Настройки',    icon: ICON.chart,     label: 'Итоги недели',        hint: 'W',  action: function(){ cmdClose(); openReview(); } },
   { group: 'Настройки',    icon: ICON.folder,    label: 'Экспорт / Импорт',                action: function(){ cmdClose(); openExport(); } },
+  { group: 'Настройки',    icon: ICON.chart,     label: 'Экспорт CSV (всё)',               action: function(){ cmdClose(); exportAllCSV(); } },
   { group: 'Настройки',    icon: ICON.zap,       label: 'Звуки вкл/выкл',                  action: function(){ cmdClose(); toggleSounds(); } },
+  { group: 'Настройки',    icon: ICON.clipboard, label: 'Daily Standup отчёт',              action: function(){ cmdClose(); generateStandup(); } },
+
+  /* Виды */
+  { group: 'Вид',          icon: ICON.grid,      label: 'Всё (по умолчанию)',              action: function(){ cmdClose(); setView('default'); } },
+  { group: 'Вид',          icon: ICON.folder,    label: 'Продажи',                         action: function(){ cmdClose(); setView('sales'); } },
+  { group: 'Вид',          icon: ICON.chart,     label: 'Аналитика',                       action: function(){ cmdClose(); setView('analytics'); } },
 
   /* Темы */
   { group: 'Тема',         icon: ICON.palette,   label: 'Claude',              action: function(){ cmdClose(); setTheme('t-claude'); toast('Тема: Claude', 'success'); } },
@@ -11066,7 +11418,7 @@ function cmdRender(query) {
     : cmdActions;
 
   /* Данные (задачи, проекты, звонки, встречи) — только при ≥2 символах */
-  var dataResults = (typeof searchData === 'function') ? searchData(query) : [];
+  var dataResults = searchData(query);
 
   /* Объединяем: сначала команды, потом данные */
   cmdFiltered = cmdResults.concat(dataResults);
