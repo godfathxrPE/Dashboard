@@ -5019,6 +5019,41 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
     gap: 18px !important;
   }
+  /* Analytics Charts — видны только в analytics mode */
+  .analytics-charts { display: none; }
+  body.view-analytics .analytics-charts {
+    display: grid !important;
+    grid-column: 1 !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .chart-card-title {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .chart-canvas {
+    width: 100%;
+    height: 180px;
+    display: block;
+  }
+  @media (max-width: 700px) {
+    body.view-analytics .analytics-charts {
+      grid-template-columns: 1fr !important;
+    }
+  }
 
   #confetti-canvas {
     position: fixed;
@@ -5966,6 +6001,26 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
     </div>
   </div>
 
+  <!-- ══ ANALYTICS CHARTS — видны только в Analytics Mode ══ -->
+  <div class="analytics-charts" id="analytics-charts">
+    <div class="chart-card">
+      <div class="chart-card-title">Звонки за 7 дней</div>
+      <canvas class="chart-canvas" id="chart-calls-week"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Успешность звонков</div>
+      <canvas class="chart-canvas" id="chart-call-results"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Задачи по статусам</div>
+      <canvas class="chart-canvas" id="chart-tasks-dist"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Проекты по стадиям</div>
+      <canvas class="chart-canvas" id="chart-project-pipeline"></canvas>
+    </div>
+  </div>
+
 </div><!-- /main -->
 
 <!-- ══ KPI MODAL OVERLAY ══ -->
@@ -6274,6 +6329,7 @@ var playSound = function() {};
 var searchData = function() { return []; };
 var checkWipLimit = function() {};
 var updateSmartAlerts = function() {};
+var renderAnalyticsCharts = function() {};
 var emptyState = function(iconKey, text, hint) {
   return '<div class="empty-msg">' + (text || '') + (hint ? '<br><span class="empty-hint">' + hint + '</span>' : '') + '</div>';
 };
@@ -11197,6 +11253,8 @@ function setView(mode) {
   });
   localStorage.setItem('wdb_view_mode', mode);
   playSound('click');
+  /* Рендерим графики при входе в Analytics */
+  if (mode === 'analytics') renderAnalyticsCharts();
 }
 /* Восстанавливаем при загрузке */
 document.addEventListener('DOMContentLoaded', function() {
@@ -11211,6 +11269,331 @@ document.addEventListener('DOMContentLoaded', function() {
    Генерирует текст для отправки руководству
    на основе вчерашних действий и текущего состояния.
 ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   ANALYTICS CHARTS
+   Паттерн: Canvas Dashboard Charts (Stripe, Linear Insights).
+   4 графика на Canvas 2D, адаптируются к теме через CSS vars.
+   Рендерятся при переключении в Analytics Mode.
+══════════════════════════════════════════ */
+/* Polyfill: roundRect для Safari < 16 и старых браузеров */
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
+    var r = typeof radii === 'number' ? [radii,radii,radii,radii] : (Array.isArray(radii) ? radii : [0,0,0,0]);
+    while (r.length < 4) r.push(r[0] || 0);
+    this.moveTo(x + r[0], y);
+    this.lineTo(x + w - r[1], y);
+    this.quadraticCurveTo(x + w, y, x + w, y + r[1]);
+    this.lineTo(x + w, y + h - r[2]);
+    this.quadraticCurveTo(x + w, y + h, x + w - r[2], y + h);
+    this.lineTo(x + r[3], y + h);
+    this.quadraticCurveTo(x, y + h, x, y + h - r[3]);
+    this.lineTo(x, y + r[0]);
+    this.quadraticCurveTo(x, y, x + r[0], y);
+    this.closePath();
+    return this;
+  };
+}
+
+function getThemeColors() {
+  var s = getComputedStyle(document.documentElement);
+  return {
+    accent: s.getPropertyValue('--accent').trim() || '#b5622a',
+    green:  s.getPropertyValue('--green').trim() || '#2e7d52',
+    blue:   s.getPropertyValue('--blue').trim() || '#2d6ab4',
+    red:    s.getPropertyValue('--red').trim() || '#c03030',
+    yellow: s.getPropertyValue('--yellow').trim() || '#a07020',
+    text:   s.getPropertyValue('--text').trim() || '#333',
+    mute:   s.getPropertyValue('--text-mute').trim() || '#999',
+    border: s.getPropertyValue('--border').trim() || '#ddd',
+    surface2: s.getPropertyValue('--surface2').trim() || '#f5f4ef',
+  };
+}
+
+function setupCanvas(id) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return null;
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  var ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, rect.width, rect.height);
+  return { ctx: ctx, w: rect.width, h: rect.height };
+}
+
+/* ── Chart 1: Звонки за 7 дней (Bar Chart) ── */
+function renderChartCallsWeek() {
+  var c = setupCanvas('chart-calls-week');
+  if (!c) return;
+  var ctx = c.ctx, w = c.w, h = c.h;
+  var clr = getThemeColors();
+
+  var data = [];
+  var labels = [];
+  var days = ['вс','пн','вт','ср','чт','пт','сб'];
+  for (var i = 6; i >= 0; i--) {
+    var d = new Date();
+    d.setDate(d.getDate() - i);
+    var key = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+    var ct = LS.get(key, null);
+    data.push(ct ? (ct.done || 0) : 0);
+    labels.push(days[d.getDay()]);
+  }
+
+  var max = Math.max.apply(null, data) || 1;
+  var pad = { top: 10, right: 10, bottom: 28, left: 36 };
+  var chartW = w - pad.left - pad.right;
+  var chartH = h - pad.top - pad.bottom;
+  var barW = (chartW / data.length) * 0.6;
+  var gap = (chartW / data.length) * 0.4;
+
+  /* Grid lines */
+  ctx.strokeStyle = clr.border;
+  ctx.lineWidth = 0.5;
+  for (var g = 0; g <= 4; g++) {
+    var gy = pad.top + chartH - (chartH * g / 4);
+    ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
+    ctx.fillStyle = clr.mute;
+    ctx.font = '9px Manrope, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(Math.round(max * g / 4), pad.left - 4, gy + 3);
+  }
+
+  /* Bars */
+  data.forEach(function(v, i) {
+    var x = pad.left + i * (barW + gap) + gap / 2;
+    var barH = (v / max) * chartH;
+    var y = pad.top + chartH - barH;
+
+    /* Bar fill */
+    ctx.fillStyle = i === data.length - 1 ? clr.accent : clr.blue;
+    ctx.globalAlpha = i === data.length - 1 ? 1 : 0.6;
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH, 3);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    /* Value on top */
+    if (v > 0) {
+      ctx.fillStyle = clr.text;
+      ctx.font = '10px Manrope, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(v, x + barW / 2, y - 4);
+    }
+
+    /* Label */
+    ctx.fillStyle = clr.mute;
+    ctx.font = '9px Manrope, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(labels[i], x + barW / 2, h - 6);
+  });
+}
+
+/* ── Chart 2: Успешность звонков (Stacked Bar) ── */
+function renderChartCallResults() {
+  var c = setupCanvas('chart-call-results');
+  if (!c) return;
+  var ctx = c.ctx, w = c.w, h = c.h;
+  var clr = getThemeColors();
+
+  var success = [], fail = [], labels = [];
+  var days = ['вс','пн','вт','ср','чт','пт','сб'];
+  for (var i = 6; i >= 0; i--) {
+    var d = new Date();
+    d.setDate(d.getDate() - i);
+    var key = 'wdb_call_results_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+    var cr = LS.get(key, { success: 0, fail: 0 });
+    success.push(cr.success || 0);
+    fail.push(cr.fail || 0);
+    labels.push(days[d.getDay()]);
+  }
+
+  var max = Math.max.apply(null, success.map(function(s, i) { return s + fail[i]; })) || 1;
+  var pad = { top: 10, right: 10, bottom: 28, left: 36 };
+  var chartW = w - pad.left - pad.right;
+  var chartH = h - pad.top - pad.bottom;
+  var barW = (chartW / 7) * 0.55;
+  var gap = (chartW / 7) * 0.45;
+
+  /* Grid */
+  ctx.strokeStyle = clr.border; ctx.lineWidth = 0.5;
+  for (var g = 0; g <= 4; g++) {
+    var gy = pad.top + chartH - (chartH * g / 4);
+    ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
+    ctx.fillStyle = clr.mute; ctx.font = '9px Manrope, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(Math.round(max * g / 4), pad.left - 4, gy + 3);
+  }
+
+  success.forEach(function(sv, i) {
+    var fv = fail[i];
+    var total = sv + fv;
+    var x = pad.left + i * (barW + gap) + gap / 2;
+
+    /* Success bar */
+    var sH = (sv / max) * chartH;
+    var sY = pad.top + chartH - (total / max) * chartH;
+    ctx.fillStyle = clr.green; ctx.globalAlpha = 0.8;
+    ctx.beginPath(); ctx.roundRect(x, sY, barW, sH, [3,3,0,0]); ctx.fill();
+
+    /* Fail bar (stacked on top) */
+    var fH = (fv / max) * chartH;
+    ctx.fillStyle = clr.red; ctx.globalAlpha = 0.7;
+    ctx.beginPath(); ctx.roundRect(x, sY + sH, barW, fH, [0,0,3,3]); ctx.fill();
+    ctx.globalAlpha = 1;
+
+    /* Label */
+    ctx.fillStyle = clr.mute; ctx.font = '9px Manrope, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(labels[i], x + barW / 2, h - 6);
+  });
+
+  /* Legend */
+  ctx.fillStyle = clr.green; ctx.fillRect(w - 100, 4, 8, 8);
+  ctx.fillStyle = clr.mute; ctx.font = '9px Manrope, sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('успех', w - 88, 12);
+  ctx.fillStyle = clr.red; ctx.fillRect(w - 50, 4, 8, 8);
+  ctx.fillStyle = clr.mute; ctx.fillText('неуд.', w - 38, 12);
+}
+
+/* ── Chart 3: Задачи по статусам (Donut) ── */
+function renderChartTasksDist() {
+  var c = setupCanvas('chart-tasks-dist');
+  if (!c) return;
+  var ctx = c.ctx, w = c.w, h = c.h;
+  var clr = getThemeColors();
+
+  var allTasks = LS.get('wdb_tasks', []);
+  var counts = {
+    now:  allTasks.filter(function(t) { return t.lane === 'now'; }).length,
+    next: allTasks.filter(function(t) { return t.lane === 'next'; }).length,
+    wait: allTasks.filter(function(t) { return t.lane === 'wait'; }).length,
+    done: allTasks.filter(function(t) { return t.lane === 'done'; }).length,
+  };
+  var total = counts.now + counts.next + counts.wait + counts.done;
+  if (total === 0) {
+    ctx.fillStyle = clr.mute; ctx.font = '12px Manrope, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Нет задач', w / 2, h / 2);
+    return;
+  }
+
+  var segments = [
+    { label: 'Сейчас', val: counts.now, color: clr.accent },
+    { label: 'Следующие', val: counts.next, color: clr.blue },
+    { label: 'Отложено', val: counts.wait, color: clr.yellow },
+    { label: 'Готово', val: counts.done, color: clr.green },
+  ];
+
+  var cx = w * 0.38, cy = h / 2, radius = Math.min(cx, cy) - 16;
+  var innerRadius = radius * 0.6;
+  var startAngle = -Math.PI / 2;
+
+  segments.forEach(function(seg) {
+    if (seg.val === 0) return;
+    var sliceAngle = (seg.val / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx + innerRadius * Math.cos(startAngle), cy + innerRadius * Math.sin(startAngle));
+    ctx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
+    ctx.arc(cx, cy, innerRadius, startAngle + sliceAngle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    startAngle += sliceAngle;
+  });
+
+  /* Center number */
+  ctx.fillStyle = clr.text; ctx.font = '600 22px Manrope, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(total, cx, cy + 2);
+  ctx.fillStyle = clr.mute; ctx.font = '9px Manrope, sans-serif';
+  ctx.fillText('задач', cx, cy + 14);
+
+  /* Legend */
+  var lx = w * 0.68, ly = 20;
+  segments.forEach(function(seg) {
+    if (seg.val === 0) return;
+    ctx.fillStyle = seg.color; ctx.fillRect(lx, ly, 8, 8);
+    ctx.fillStyle = clr.text; ctx.font = '11px Manrope, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(seg.label + ' (' + seg.val + ')', lx + 14, ly + 8);
+    ly += 20;
+  });
+}
+
+/* ── Chart 4: Проекты по стадиям (Horizontal Bar) ── */
+function renderChartProjectPipeline() {
+  var c = setupCanvas('chart-project-pipeline');
+  if (!c) return;
+  var ctx = c.ctx, w = c.w, h = c.h;
+  var clr = getThemeColors();
+
+  var projects = LS.get('wdb_projects', []).filter(function(p) { return p.stage !== 'lost'; });
+  if (projects.length === 0) {
+    ctx.fillStyle = clr.mute; ctx.font = '12px Manrope, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Нет проектов', w / 2, h / 2);
+    return;
+  }
+
+  /* Group by stage bucket */
+  var buckets = [
+    { label: 'Лид / Квалификация', stages: [0,1,2], color: clr.mute, count: 0 },
+    { label: 'Подготовка КП', stages: [3,4,5], color: clr.blue, count: 0 },
+    { label: 'Согласование', stages: [6,7,8], color: clr.accent, count: 0 },
+    { label: 'Закрытие', stages: [9,10,11], color: clr.green, count: 0 },
+  ];
+  projects.forEach(function(p) {
+    var s = parseInt(p.stage) || 0;
+    buckets.forEach(function(b) { if (b.stages.indexOf(s) !== -1) b.count++; });
+  });
+
+  var maxCount = Math.max.apply(null, buckets.map(function(b) { return b.count; })) || 1;
+  var pad = { top: 8, right: 16, bottom: 8, left: 110 };
+  var rowH = (h - pad.top - pad.bottom) / buckets.length;
+
+  buckets.forEach(function(b, i) {
+    var y = pad.top + i * rowH;
+    var barMaxW = w - pad.left - pad.right;
+    var barW = (b.count / maxCount) * barMaxW;
+
+    /* Label */
+    ctx.fillStyle = clr.text; ctx.font = '11px Manrope, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(b.label, pad.left - 8, y + rowH / 2 + 4);
+
+    /* Bar bg */
+    ctx.fillStyle = clr.surface2;
+    ctx.beginPath(); ctx.roundRect(pad.left, y + 8, barMaxW, rowH - 16, 4); ctx.fill();
+
+    /* Bar fill */
+    if (b.count > 0) {
+      ctx.fillStyle = b.color; ctx.globalAlpha = 0.8;
+      ctx.beginPath(); ctx.roundRect(pad.left, y + 8, Math.max(barW, 6), rowH - 16, 4); ctx.fill();
+      ctx.globalAlpha = 1;
+
+      /* Count */
+      ctx.fillStyle = clr.text; ctx.font = '600 12px Manrope, sans-serif'; ctx.textAlign = 'left';
+      ctx.fillText(b.count, pad.left + barW + 6, y + rowH / 2 + 4);
+    }
+  });
+}
+
+/* ── Master render: all 4 charts ── */
+function renderAnalyticsCharts() {
+  if (!document.body.classList.contains('view-analytics')) return;
+  /* Timeout чтобы CSS grid успел перестроиться */
+  setTimeout(function() {
+    renderChartCallsWeek();
+    renderChartCallResults();
+    renderChartTasksDist();
+    renderChartProjectPipeline();
+  }, 100);
+}
+/* Перерисовка при resize окна */
+var _chartResizeTimer = null;
+window.addEventListener('resize', function() {
+  clearTimeout(_chartResizeTimer);
+  _chartResizeTimer = setTimeout(renderAnalyticsCharts, 200);
+});
+
+
 function generateStandup() {
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
