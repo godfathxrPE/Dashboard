@@ -8110,7 +8110,7 @@ function saveFocus() {
 /* ── МИНИ-СТАТИСТИКА ── */
 function updateStats() {
   // Проекты активные (не закрытые)
-  const closedStages = ['closed','cancelled'];
+  const closedStages = ['closed','cancelled','lost'];
   const activeProjects = (LS.get('wdb_projects',[])).filter(p => !closedStages.includes(p.stage)).length;
   const el1 = document.getElementById('ws-projects');
   if (el1) animateValue(el1, activeProjects);
@@ -8254,7 +8254,7 @@ renderDeadlineRadar();
 function renderProjProgress() {
   const el = document.getElementById('wpp-list');
   if (!el) return;
-  const projs = LS.get('wdb_projects', []);
+  const projs = LS.get('wdb_projects', []).filter(p => p.stage !== 'lost');
   if (!projs.length) {
     el.innerHTML = '<div class="w-pp-empty" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 0;"><span style="opacity:0.4;">' + ICON.trending + '</span><span>Добавь проект — прогресс появится</span></div>';
     return;
