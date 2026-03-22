@@ -2738,6 +2738,7 @@
   .header-date { display: none; }
   .theme-btn span:first-child { display: none; } /* прячем текст "Тема" */
   [onclick="cmdOpen()"] { display: none !important; } /* Cmd+K бесполезен на мобиле */
+  .focus-btn-label { display: none; } /* Только иконка на мобиле */
 
   /* Основная сетка */
   .main {
@@ -4459,8 +4460,16 @@
   .cmd-item.active .cmd-item-icon { color: var(--accent); }
   .cmd-item-label { flex: 1; }
   .cmd-item-hint {
-    font-size: var(--text-xs);
+    font-size: var(--text-2xs, 9px);
     color: var(--text-mute);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: inherit;
+    font-weight: 500;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
   }
   .cmd-empty {
     text-align: center;
@@ -4499,7 +4508,8 @@
   ══════════════════════════════════════════ */
   .tour-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.55);
+    /* Прозрачный — затемнение делает box-shadow на highlight */
+    background: transparent;
     z-index: 8000;
     opacity: 0;
     pointer-events: none;
@@ -4510,9 +4520,11 @@
     pointer-events: all;
   }
   .tour-highlight {
-    position: relative;
+    position: relative !important;
     z-index: 8001 !important;
-    box-shadow: 0 0 0 4px var(--accent), 0 0 0 9999px rgba(0,0,0,0.55) !important;
+    /* 4px accent рамка + 9999px тень = затемнение всего вокруг */
+    box-shadow: 0 0 0 4px var(--accent),
+                0 0 0 9999px rgba(0,0,0,0.55) !important;
     border-radius: var(--radius) !important;
     transition: box-shadow 0.3s ease;
   }
@@ -4525,7 +4537,7 @@
     padding: 16px 18px;
     box-shadow: var(--shadow-lg);
     max-width: 320px;
-    animation: modalIn 0.25s var(--ease-out, ease) both;
+    transition: opacity 0.2s ease, top 0.25s ease, left 0.25s ease;
   }
   .tour-tooltip-title {
     font-weight: 600;
@@ -4578,6 +4590,86 @@
      Убирает интерактивные элементы, тени, фоны.
      Оставляет чистые данные для отчётов.
   ══════════════════════════════════════════ */
+  /* ══════════════════════════════════════════
+     FOCUS MODE (ZEN MODE)
+     Паттерн: Distraction-Free Mode (Linear, Bear, iA Writer).
+     Скрывает всё кроме задач + таймер Pomodoro.
+     Плавная анимация схлопывания через max-height + opacity.
+  ══════════════════════════════════════════ */
+  body.focus-mode .main {
+    grid-template-columns: 1fr !important;
+    max-width: 900px !important;
+  }
+  body.focus-mode .projects-block,
+  body.focus-mode .calls-block,
+  body.focus-mode .right-col > *:not(.w-timer):not(.w-focus) {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none;
+    transition: max-height 0.5s var(--ease-out, ease),
+                opacity 0.3s ease,
+                padding 0.4s ease,
+                margin 0.4s ease;
+  }
+  body.focus-mode .tasks-block {
+    grid-column: 1 !important;
+  }
+  body.focus-mode .right-col {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 18px !important;
+  }
+  body.focus-mode .right-col .w-timer,
+  body.focus-mode .right-col .w-focus {
+    flex: 1;
+    max-height: 300px;
+    opacity: 1;
+  }
+  /* Header focus indicator */
+  body.focus-mode header {
+    border-bottom-color: var(--accent) !important;
+  }
+  body.focus-mode .header-sub { display: none; }
+
+  /* Focus toggle button */
+  #focus-mode-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-s);
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  #focus-mode-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+  body.focus-mode #focus-mode-btn {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ══════════════════════════════════════════
+     CELEBRATION CONFETTI
+     Паттерн: Achievement Celebration (Asana, Stripe, GitHub).
+     Canvas overlay для конфетти. z-index выше всего.
+  ══════════════════════════════════════════ */
+  #confetti-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
   @media print {
     /* Сбрасываем темы — всё чёрно-белое */
     :root, html[class*="t-"] {
@@ -4627,7 +4719,9 @@
     .kpi-modal-backdrop,
     .sync-indicator,
     #bg-orbs,
-    #splash { display: none !important; }
+    #splash,
+    #confetti-canvas,
+    #focus-mode-btn { display: none !important; }
 
     /* Сетка — одна колонка для бумаги */
     .main {
@@ -4957,6 +5051,11 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
     <!-- DARK/LIGHT TOGGLE -->
     <button id="dl-toggle" onclick="toggleDarkLight()" title="Светлая / Тёмная тема" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:1px solid var(--border2);border-radius:var(--radius-s);background:var(--surface2);color:var(--text-dim);cursor:pointer;transition:all 0.15s;">
       <span id="dl-icon"></span>
+    </button>
+    <!-- FOCUS MODE BUTTON -->
+    <button id="focus-mode-btn" onclick="toggleFocusMode()" title="Режим фокуса (F)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span class="focus-btn-label">Фокус</span>
     </button>
     <!-- TOUR HELP BUTTON -->
     <button onclick="tourStart()" title="Обзор дашборда" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:1px solid var(--border);border-radius:50%;background:var(--surface2);color:var(--text-mute);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;transition:all 0.15s;">?</button>
@@ -5899,9 +5998,19 @@ function taskHTML(t) {
 function toggleTask(id) {
   const t = tasks.find(t => t.id === id);
   if(!t) return;
+  var wasDone = (t.lane === 'done');
   if (t.lane === 'done') { t.lane = 'now'; delete t.doneAt; } else { t.lane = 'done'; t.doneAt = Date.now(); }
   LS.set('wdb_tasks', tasks);
   renderTasks();
+  /* Celebration при завершении задачи */
+  if (!wasDone && t.lane === 'done') {
+    checkCelebration('task-done');
+    /* Проверяем: все задачи "Сейчас" выполнены? */
+    var nowTasks = tasks.filter(function(x) { return x.lane === 'now'; });
+    if (nowTasks.length === 0 && tasks.filter(function(x) { return x.lane === 'done'; }).length > 0) {
+      setTimeout(function() { checkCelebration('all-tasks-done'); }, 600);
+    }
+  }
 }
 
 // Удалить задачу вручную
@@ -6673,6 +6782,9 @@ function renderKPI() {
     var el = document.getElementById(id);
     if (el) { el.style.width = pct + '%'; el.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
   });
+  /* Celebration при достижении 100% */
+  if (weekTotal >= KPI_GOAL) { checkCelebration('kpi-100'); }
+  else { checkCelebration('kpi-reset'); }
   ['kpi-progress-pct','kpi-modal-progress-pct'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.textContent = pct + '%';
   });
@@ -7828,6 +7940,7 @@ function timerDone() {
   if (timerMode === 'work') {
     timerSessions++;
     LS.set('wdb_timer_sessions', timerSessions);
+    checkCelebration('pomodoro');
   }
   renderTimer();
   // Уведомление
@@ -8918,6 +9031,9 @@ if (document.readyState === 'loading') {
 </script>
 
 <!-- ══ TOAST CONTAINER ══ -->
+<!-- ══ CONFETTI CANVAS ══ -->
+<canvas id="confetti-canvas"></canvas>
+
 <div id="toast-container"></div>
 
 <!-- ══ WEEKLY REVIEW MODAL ══ -->
@@ -9226,6 +9342,160 @@ function hideSkeletons() {
   });
 }
 
+/* ══════════════════════════════════════════
+   FOCUS MODE (ZEN MODE)
+   Паттерн: Distraction-Free Mode (Linear, Bear, iA Writer).
+   Скрывает всё кроме задач + таймер + фокус дня.
+   Клавиша F. Автовыход при завершении Pomodoro.
+══════════════════════════════════════════ */
+var focusModeActive = false;
+
+function toggleFocusMode() {
+  focusModeActive = !focusModeActive;
+  document.body.classList.toggle('focus-mode', focusModeActive);
+
+  if (focusModeActive) {
+    toast('Режим фокуса включён', 'info', 2000);
+    /* Скроллим к задачам */
+    var tasks = document.querySelector('.tasks-block');
+    if (tasks) tasks.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    toast('Режим фокуса выключен', 'info', 1500);
+  }
+}
+
+function exitFocusMode() {
+  if (!focusModeActive) return;
+  focusModeActive = false;
+  document.body.classList.remove('focus-mode');
+}
+
+
+/* ══════════════════════════════════════════
+   CELEBRATION SYSTEM — Canvas Confetti
+   Паттерн: Achievement Celebration (Asana, Stripe).
+   Лёгкий canvas-based конфетти. Без библиотек.
+   Триггеры: задача выполнена, KPI 100%, Pomodoro done.
+══════════════════════════════════════════ */
+function celebrate(intensity) {
+  /* intensity: 'small' (задача), 'medium' (pomodoro), 'big' (KPI 100%) */
+  intensity = intensity || 'small';
+  var canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  /* Resize canvas */
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  var counts = { small: 30, medium: 60, big: 120 };
+  var count = counts[intensity] || 30;
+
+  /* Получаем accent цвет из текущей темы */
+  var style = getComputedStyle(document.documentElement);
+  var accentColor = style.getPropertyValue('--accent').trim() || '#b5622a';
+  var greenColor = style.getPropertyValue('--green').trim() || '#2e7d52';
+  var blueColor = style.getPropertyValue('--blue').trim() || '#2d6ab4';
+  var yellowColor = style.getPropertyValue('--yellow').trim() || '#a07020';
+
+  var colors = [accentColor, greenColor, blueColor, yellowColor, '#fff'];
+
+  /* Создаём частицы */
+  var particles = [];
+  for (var i = 0; i < count; i++) {
+    particles.push({
+      x: canvas.width * 0.5 + (Math.random() - 0.5) * canvas.width * 0.4,
+      y: canvas.height * 0.4,
+      vx: (Math.random() - 0.5) * (intensity === 'big' ? 16 : 10),
+      vy: -(Math.random() * 12 + 4),
+      color: colors[Math.floor(Math.random() * colors.length)],
+      size: Math.random() * 6 + 2,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 12,
+      gravity: 0.15 + Math.random() * 0.1,
+      opacity: 1,
+      decay: 0.008 + Math.random() * 0.008,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle',
+    });
+  }
+
+  var startTime = performance.now();
+  var duration = intensity === 'big' ? 3000 : intensity === 'medium' ? 2000 : 1200;
+
+  function frame(now) {
+    var elapsed = now - startTime;
+    if (elapsed > duration) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(function(p) {
+      p.x += p.vx;
+      p.vy += p.gravity;
+      p.y += p.vy;
+      p.rotation += p.rotSpeed;
+      p.opacity -= p.decay;
+      if (p.opacity <= 0) return;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.fillStyle = p.color;
+
+      if (p.shape === 'rect') {
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ── Celebration triggers ──
+   Функции-обёртки для вызова из разных мест. */
+var _lastCelebratedKPI = false; /* Чтобы не спамить при каждом renderKPI */
+
+function checkCelebration(type, data) {
+  switch (type) {
+    case 'task-done':
+      celebrate('small');
+      break;
+    case 'pomodoro':
+      celebrate('medium');
+      if (focusModeActive) {
+        setTimeout(function() {
+          exitFocusMode();
+          toast('Pomodoro завершён! Время отдохнуть.', 'success', 3000);
+        }, 1000);
+      }
+      break;
+    case 'kpi-100':
+      if (!_lastCelebratedKPI) {
+        _lastCelebratedKPI = true;
+        celebrate('big');
+        toast('KPI выполнен на 100%!', 'success', 4000);
+      }
+      break;
+    case 'kpi-reset':
+      _lastCelebratedKPI = false;
+      break;
+    case 'all-tasks-done':
+      celebrate('big');
+      toast('Все задачи "Сейчас" выполнены!', 'success', 3000);
+      break;
+  }
+}
+
+
 /* Вызываем скелетоны и замену эмодзи при загрузке страницы */
 document.addEventListener('DOMContentLoaded', function() {
   showSkeletons();
@@ -9248,20 +9518,39 @@ document.addEventListener('DOMContentLoaded', function() {
    localStorage хранит флаг прохождения.
 ══════════════════════════════════════════ */
 var TOUR_STEPS = [
-  { selector: '.tasks-block',        title: 'Текущие дела',      body: 'Kanban-доска с колонками: Сейчас, Следующие, Ожидание, Готово. Перетаскивай задачи между колонками.' },
-  { selector: '.projects-block',     title: 'Проекты',           body: 'CRM-карточки с воронкой продаж. Каждый проект проходит 12 этапов от лида до подписания.' },
-  { selector: '.calls-block',        title: 'Журнал звонков',    body: 'Запись звонков с договорённостями и следующими шагами. Раскрой карточку для деталей.' },
-  { selector: '.right-col',          title: 'Виджеты',           body: 'Часы, фокус дня, статистика, таймер Pomodoro. Настрой набор через кнопку «Виджеты» в хедере.' },
-  { selector: '[onclick="cmdOpen()"]', title: 'Быстрый поиск',   body: 'Нажми ⌘K (Ctrl+K) чтобы открыть палитру команд. Поиск действий, навигация, смена темы — всё здесь.' },
-  { selector: '.theme-switcher',     title: 'Темы',              body: '8 тем на любой вкус. Кнопка ☀/☽ быстро переключает светлую и тёмную версию.' },
+  { selector: '.tasks-block',         title: 'Текущие дела',        body: 'Kanban-доска с колонками: Сейчас, Следующие, Ожидание, Готово. Перетаскивай задачи между колонками.' },
+  { selector: '.projects-block',      title: 'Проекты',             body: 'CRM-карточки с воронкой продаж. Каждый проект проходит 12 этапов от лида до подписания. Перетаскивай проект на нужный этап.' },
+  { selector: '.calls-block',         title: 'Журнал звонков',      body: 'Запись звонков с договорённостями и следующими шагами. Раскрой карточку для деталей.' },
+  { selector: '.w-clock',             title: 'Часы и дата',         body: 'Живое время, день недели, номер недели. Всегда перед глазами.' },
+  { selector: '.w-focus',             title: 'Фокус дня',           body: 'Одно главное дело на сегодня. Запиши утром — видишь весь день.' },
+  { selector: '.w-stats',             title: 'Мини-статистика',     body: 'Ключевые числа с трендовыми sparkline-графиками за 7 дней.' },
+  { selector: '.w-timer',             title: 'Pomodoro таймер',     body: 'Фокус-сессии 25/5/15 минут. Помогает работать блоками.' },
+  { selector: '[onclick="cmdOpen()"]', title: 'Быстрый поиск ⌘K',  body: 'Нажми Cmd+K (Ctrl+K) — палитра команд. Любое действие за пару нажатий.' },
+  { selector: '#dl-toggle',           title: 'Светлая / Тёмная',   body: 'Мгновенное переключение между светлой и тёмной версией текущей темы.' },
+  { selector: '.theme-switcher',      title: '8 тем',               body: 'От минимализма Claude до киберпанка Neon. Выбирай по настроению.' },
 ];
 
 var tourStep = 0;
 var tourOverlay = null;
 var tourTooltip = null;
 
+function tourCleanup() {
+  /* Гарантированная очистка — убирает всё от предыдущего тура */
+  document.querySelectorAll('.tour-highlight').forEach(function(el) {
+    el.classList.remove('tour-highlight');
+    el.style.removeProperty('z-index');
+    el.style.removeProperty('position');
+  });
+  document.querySelectorAll('.tour-overlay').forEach(function(el) { el.remove(); });
+  document.querySelectorAll('.tour-tooltip').forEach(function(el) { el.remove(); });
+  tourOverlay = null;
+  tourTooltip = null;
+}
+
 function tourStart() {
-  if (document.querySelector('.tour-overlay')) return;
+  /* Всегда чистим перед запуском — решает баг повторного открытия */
+  tourCleanup();
+
   tourStep = 0;
   tourOverlay = document.createElement('div');
   tourOverlay.className = 'tour-overlay active';
@@ -9270,6 +9559,7 @@ function tourStart() {
 
   tourTooltip = document.createElement('div');
   tourTooltip.className = 'tour-tooltip';
+  tourTooltip.style.opacity = '0';
   document.body.appendChild(tourTooltip);
 
   tourShow(0);
@@ -9281,14 +9571,25 @@ function tourShow(idx) {
   if (!step) { tourEnd(); return; }
 
   /* Убираем highlight с предыдущего */
-  document.querySelectorAll('.tour-highlight').forEach(function(el) { el.classList.remove('tour-highlight'); });
+  document.querySelectorAll('.tour-highlight').forEach(function(el) {
+    el.classList.remove('tour-highlight');
+  });
 
   /* Подсвечиваем текущий элемент */
   var target = document.querySelector(step.selector);
-  if (target) {
-    target.classList.add('tour-highlight');
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  /* Если элемент не найден — пропускаем шаг */
+  if (!target) {
+    if (idx < TOUR_STEPS.length - 1) { tourShow(idx + 1); }
+    else { tourEnd(); }
+    return;
   }
+
+  target.classList.add('tour-highlight');
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  /* Скрываем overlay фон пока highlight виден (box-shadow 9999px делает своё) */
+  if (tourOverlay) tourOverlay.style.background = 'transparent';
 
   /* Рендерим tooltip */
   var dots = TOUR_STEPS.map(function(_, i) {
@@ -9304,33 +9605,42 @@ function tourShow(idx) {
         '<button class="tour-skip" onclick="tourEnd()">Пропустить</button>' +
         (idx > 0 ? '<button class="btn" onclick="tourShow(' + (idx-1) + ')">Назад</button>' : '') +
         '<button class="btn btn-primary" onclick="' + (idx < TOUR_STEPS.length - 1 ? 'tourShow(' + (idx+1) + ')' : 'tourEnd()') + '">' +
-          (idx < TOUR_STEPS.length - 1 ? 'Далее' : 'Готово') +
+          (idx < TOUR_STEPS.length - 1 ? 'Далее (' + (idx+1) + '/' + TOUR_STEPS.length + ')' : 'Готово!') +
         '</button>' +
       '</div>' +
     '</div>';
 
-  /* Позиционируем tooltip под target */
-  if (target) {
-    setTimeout(function() {
-      var rect = target.getBoundingClientRect();
-      var ttRect = tourTooltip.getBoundingClientRect();
-      var top = rect.bottom + 12;
-      var left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+  /* Позиционируем tooltip — с задержкой на scrollIntoView */
+  tourTooltip.style.opacity = '0';
+  setTimeout(function() {
+    if (!tourTooltip) return;
+    var rect = target.getBoundingClientRect();
+    var ttRect = tourTooltip.getBoundingClientRect();
 
-      /* Не выходим за экран */
-      left = Math.max(12, Math.min(left, window.innerWidth - ttRect.width - 12));
-      if (top + ttRect.height > window.innerHeight - 20) top = rect.top - ttRect.height - 12;
+    /* Пробуем разместить под элементом */
+    var top = rect.bottom + 14;
+    var left = rect.left + (rect.width / 2) - (ttRect.width / 2);
 
-      tourTooltip.style.top = top + 'px';
-      tourTooltip.style.left = left + 'px';
-    }, 350);
-  }
+    /* Clamp по горизонтали */
+    left = Math.max(12, Math.min(left, window.innerWidth - ttRect.width - 12));
+
+    /* Если не влезает снизу — показываем сверху */
+    if (top + ttRect.height > window.innerHeight - 20) {
+      top = rect.top - ttRect.height - 14;
+    }
+    /* Если и сверху не влезает — показываем по центру экрана */
+    if (top < 12) {
+      top = Math.max(12, (window.innerHeight - ttRect.height) / 2);
+    }
+
+    tourTooltip.style.top = top + 'px';
+    tourTooltip.style.left = left + 'px';
+    tourTooltip.style.opacity = '1';
+  }, 450);
 }
 
 function tourEnd() {
-  document.querySelectorAll('.tour-highlight').forEach(function(el) { el.classList.remove('tour-highlight'); });
-  if (tourOverlay) { tourOverlay.remove(); tourOverlay = null; }
-  if (tourTooltip) { tourTooltip.remove(); tourTooltip = null; }
+  tourCleanup();
   localStorage.setItem('wdb_tour_done', '1');
 }
 
@@ -9552,12 +9862,12 @@ var THEME_PAIRS = {
 var DARK_THEMES = ['t-frost', 't-midnight', 't-aurora', 't-neon'];
 
 function isDarkTheme() {
-  var current = localStorage.getItem('dashboard-theme') || 't-claude';
+  var current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
   return DARK_THEMES.indexOf(current) !== -1;
 }
 
 function toggleDarkLight() {
-  var current = localStorage.getItem('dashboard-theme') || 't-claude';
+  var current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
   var paired = THEME_PAIRS[current] || 't-midnight';
   setTheme(paired);
   updateDLIcon();
@@ -9583,17 +9893,17 @@ document.addEventListener('DOMContentLoaded', updateDLIcon);
 ══════════════════════════════════════════ */
 var cmdActions = [
   /* Навигация */
-  { group: 'Навигация',    icon: ICON.clipboard, label: 'Задачи',              action: function(){ scrollToWidget('.tasks-block'); } },
-  { group: 'Навигация',    icon: ICON.folder,    label: 'Проекты',             action: function(){ scrollToWidget('.projects-block'); } },
-  { group: 'Навигация',    icon: ICON.phone,     label: 'Звонки',              action: function(){ scrollToWidget('.calls-block'); } },
-  { group: 'Навигация',    icon: ICON.arrowUp,   label: 'Наверх',              action: function(){ cmdClose(); window.scrollTo({top:0, behavior:'smooth'}); } },
+  { group: 'Навигация',    icon: ICON.clipboard, label: 'Задачи',              hint: '1',  action: function(){ scrollToWidget('.tasks-block'); } },
+  { group: 'Навигация',    icon: ICON.folder,    label: 'Проекты',             hint: '2',  action: function(){ scrollToWidget('.projects-block'); } },
+  { group: 'Навигация',    icon: ICON.phone,     label: 'Звонки',              hint: '3',  action: function(){ scrollToWidget('.calls-block'); } },
+  { group: 'Навигация',    icon: ICON.arrowUp,   label: 'Наверх',              hint: 'T',  action: function(){ cmdClose(); window.scrollTo({top:0, behavior:'smooth'}); } },
 
   /* Быстрые действия */
-  { group: 'Действия',     icon: ICON.plus,      label: 'Новая задача',         action: function(){ cmdClose(); openTaskModal(null); } },
-  { group: 'Действия',     icon: ICON.folder,    label: 'Новый проект',        action: function(){ cmdClose(); openProjectModal(); } },
-  { group: 'Действия',     icon: ICON.phone,     label: 'Записать звонок',     action: function(){ cmdClose(); openCallModal(); } },
-  { group: 'Действия',     icon: ICON.calendar,  label: 'Запланировать звонок', action: function(){ cmdClose(); if(typeof dcOpenModal==='function') dcOpenModal(); } },
-  { group: 'Действия',     icon: ICON.users,     label: 'Новая встреча',       action: function(){ cmdClose(); openMeetingModal(); } },
+  { group: 'Действия',     icon: ICON.plus,      label: 'Новая задача',         hint: 'N',  action: function(){ cmdClose(); openTaskModal(null); } },
+  { group: 'Действия',     icon: ICON.folder,    label: 'Новый проект',         hint: 'P',  action: function(){ cmdClose(); openProjectModal(); } },
+  { group: 'Действия',     icon: ICON.phone,     label: 'Записать звонок',      hint: 'C',  action: function(){ cmdClose(); openCallModal(); } },
+  { group: 'Действия',     icon: ICON.calendar,  label: 'Запланировать звонок',          action: function(){ cmdClose(); if(typeof dcOpenModal==='function') dcOpenModal(); } },
+  { group: 'Действия',     icon: ICON.users,     label: 'Новая встреча',        hint: 'M',  action: function(){ cmdClose(); openMeetingModal(); } },
   { group: 'Действия',     icon: ICON.message,   label: 'Новое напоминание',   action: function(){ cmdClose(); openCommModal(); } },
 
   /* Сбросы */
@@ -9604,15 +9914,16 @@ var cmdActions = [
 
   /* Настройки */
   { group: 'Настройки',    icon: ICON.settings,  label: 'Настроить виджеты',   action: function(){ cmdClose(); wcToggle(); } },
-  { group: 'Настройки',    icon: ICON.target,    label: 'Пройти тур',          action: function(){ cmdClose(); localStorage.removeItem('wdb_tour_done'); tourStart(); } },
-  { group: 'Настройки',    icon: ICON.chart,     label: 'Итоги недели',        action: function(){ cmdClose(); openReview(); } },
+  { group: 'Настройки',    icon: ICON.target,    label: 'Режим фокуса',        hint: 'F',  action: function(){ cmdClose(); toggleFocusMode(); } },
+  { group: 'Настройки',    icon: ICON.target,    label: 'Пройти тур',          hint: '?',  action: function(){ cmdClose(); localStorage.removeItem('wdb_tour_done'); tourStart(); } },
+  { group: 'Настройки',    icon: ICON.chart,     label: 'Итоги недели',        hint: 'W',  action: function(){ cmdClose(); openReview(); } },
 
   /* Темы */
   { group: 'Тема',         icon: ICON.palette,   label: 'Claude',              action: function(){ cmdClose(); setTheme('t-claude'); toast('Тема: Claude', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Frost',               action: function(){ cmdClose(); setTheme('t-frost'); toast('Тема: Frost', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Paper',               action: function(){ cmdClose(); setTheme('t-paper'); toast('Тема: Paper', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Sand',                action: function(){ cmdClose(); setTheme('t-sand'); toast('Тема: Sand', 'success'); } },
-  { group: 'Тема',         icon: ICON.moon,      label: 'Midnight',            action: function(){ cmdClose(); setTheme('t-midnight'); toast('Тема: Midnight', 'success'); } },
+  { group: 'Тема',         icon: ICON.moon,      label: 'Midnight',            hint: 'D',  action: function(){ cmdClose(); setTheme('t-midnight'); toast('Тема: Midnight', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Forest',              action: function(){ cmdClose(); setTheme('t-forest'); toast('Тема: Forest', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Aurora',              action: function(){ cmdClose(); setTheme('t-aurora'); toast('Тема: Aurora', 'success'); } },
   { group: 'Тема',         icon: ICON.zap,       label: 'Neon',                action: function(){ cmdClose(); setTheme('t-neon'); toast('Тема: Neon', 'success'); } },
@@ -9664,6 +9975,7 @@ function cmdRender(query) {
       html += '<div class="cmd-item' + (globalIdx === cmdIdx ? ' active' : '') + '" data-idx="' + globalIdx + '" onclick="cmdExec(' + globalIdx + ')" onmouseenter="cmdHover(' + globalIdx + ')">' +
         '<span class="cmd-item-icon">' + a.icon + '</span>' +
         '<span class="cmd-item-label">' + a.label + '</span>' +
+        (a.hint ? '<span class="cmd-item-hint">' + a.hint + '</span>' : '') +
       '</div>';
     });
   });
@@ -9699,13 +10011,95 @@ document.addEventListener('keydown', function(e) {
   var bd = document.getElementById('cmd-backdrop');
   var isOpen = bd && bd.classList.contains('open');
 
-  /* Cmd+K / Ctrl+K — открыть палитру */
+  /* Игнорируем шорткаты когда фокус в input/textarea */
+  var tag = (document.activeElement || {}).tagName;
+  var inInput = (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+
+  /* Cmd+K / Ctrl+K — открыть палитру (работает всегда) */
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     if (isOpen) { cmdClose(); } else { cmdOpen(); }
     return;
   }
 
+  /* ── GLOBAL SHORTCUTS (когда палитра закрыта и не в input) ──
+     Паттерн: Gmail / Linear keyboard shortcuts.
+     Одиночные клавиши — быстрый доступ к действиям. */
+  if (!isOpen && !inInput) {
+
+    /* N — новая задача */
+    if (e.key === 'n' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      openTaskModal(null);
+      toast('Новая задача', 'info', 1500);
+      return;
+    }
+
+    /* P — новый проект */
+    if (e.key === 'p' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      openProjectModal();
+      toast('Новый проект', 'info', 1500);
+      return;
+    }
+
+    /* C — записать звонок */
+    if (e.key === 'c' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      openCallModal();
+      toast('Новый звонок', 'info', 1500);
+      return;
+    }
+
+    /* M — новая встреча */
+    if (e.key === 'm' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      openMeetingModal();
+      toast('Новая встреча', 'info', 1500);
+      return;
+    }
+
+    /* D — Dark/Light toggle */
+    if (e.key === 'd' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      toggleDarkLight();
+      return;
+    }
+
+    /* W — Итоги недели */
+    if (e.key === 'w' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      openReview();
+      return;
+    }
+
+    /* ? — Тур */
+    if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+      e.preventDefault();
+      tourStart();
+      return;
+    }
+
+    /* 1-3 — навигация к блокам */
+    if (e.key === '1') { scrollToWidget('.tasks-block'); return; }
+    if (e.key === '2') { scrollToWidget('.projects-block'); return; }
+    if (e.key === '3') { scrollToWidget('.calls-block'); return; }
+
+    /* T — наверх */
+    if (e.key === 't' && !e.metaKey && !e.ctrlKey) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    /* F — Focus Mode */
+    if (e.key === 'f' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      toggleFocusMode();
+      return;
+    }
+  }
+
+  /* ── CMD PALETTE NAVIGATION (когда палитра открыта) ── */
   if (!isOpen) return;
 
   /* Escape — закрыть */
