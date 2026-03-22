@@ -355,8 +355,8 @@
   html.t-frost .w-heatmap,
   html.t-frost .w-deadline-radar,
   html.t-frost .w-proj-progress,
-  html.t-frost &
-  .w-activity {
+  html.t-frost .w-plan-fact,
+  html.t-frost .w-activity {
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
     border: 1px solid rgba(255,255,255,0.11);
@@ -545,8 +545,8 @@
   html.t-paper .w-heatmap,
   html.t-paper .w-deadline-radar,
   html.t-paper .w-proj-progress,
-  html.t-paper &
-  .w-activity {
+  html.t-paper .w-plan-fact,
+  html.t-paper .w-activity {
     border-radius: 0;
     border-top: 2px solid var(--text);
     box-shadow: none;
@@ -656,8 +656,8 @@
   html.t-sand .w-heatmap,
   html.t-sand .w-deadline-radar,
   html.t-sand .w-proj-progress,
-  html.t-sand &
-  .w-activity {
+  html.t-sand .w-plan-fact,
+  html.t-sand .w-activity {
     border-radius: 0;
     border-left: 3px solid var(--border2);
   }
@@ -780,8 +780,8 @@
   html.t-aurora .w-heatmap,
   html.t-aurora .w-deadline-radar,
   html.t-aurora .w-proj-progress,
-  html.t-aurora &
-  .w-activity {
+  html.t-aurora .w-plan-fact,
+  html.t-aurora .w-activity {
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
   }
   @keyframes aurora-drift {
@@ -1070,8 +1070,8 @@
   html.t-neon .w-heatmap,
   html.t-neon .w-deadline-radar,
   html.t-neon .w-proj-progress,
-  html.t-neon &
-  .w-activity {
+  html.t-neon .w-plan-fact,
+  html.t-neon .w-activity {
     box-shadow: 0 0 0 0 transparent, inset 0 0 20px rgba(0,238,255,0.03);
     transition: border-color 0.2s, box-shadow 0.2s;
   }
@@ -1420,6 +1420,92 @@
   }
   .task-text { font-size: var(--text-base); flex: 1; color: var(--text); line-height: 1.4; }
   .task-meta { font-size: var(--text-xs); color: var(--text-mute); margin-top: 2px; }
+  .task-time-badge {
+    font-size: var(--text-2xs, 9px);
+    color: var(--accent);
+    background: var(--accent-l);
+    border-radius: 3px;
+    padding: 0 4px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    margin-right: 4px;
+  }
+
+  /* ── PRIORITY MARKERS ──
+     Паттерн: Color-coded Urgency (Linear, Todoist).
+     Левый border + tinted background. */
+  .task-item.priority-important {
+    border-left: 3px solid var(--yellow, #c09030);
+    background: color-mix(in srgb, var(--yellow, #c09030) 6%, var(--surface));
+  }
+  .task-item.priority-critical {
+    border-left: 3px solid var(--red, #c03030);
+    background: color-mix(in srgb, var(--red, #c03030) 6%, var(--surface));
+  }
+  /* Fallback для браузеров без color-mix */
+  @supports not (background: color-mix(in srgb, red 10%, white)) {
+    .task-item.priority-important { background: rgba(200,160,50,0.08); }
+    .task-item.priority-critical  { background: rgba(200,60,60,0.08); }
+  }
+
+  /* ── LINKED TASKS / CALLS IN PROJECT ── */
+  .proj-linked {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .proj-linked-title {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .proj-linked-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 0;
+    font-size: var(--text-sm);
+    color: var(--text-dim);
+  }
+  .proj-linked-item .linked-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .proj-linked-item .linked-dot.task { background: var(--accent); }
+  .proj-linked-item .linked-dot.call { background: var(--green); }
+  .proj-linked-empty {
+    font-size: var(--text-xs);
+    color: var(--text-mute);
+    font-style: italic;
+    padding: 2px 0;
+  }
+
+  /* ── PRIORITY SELECTOR IN MODAL ── */
+  .priority-selector {
+    display: flex; gap: 6px;
+  }
+  .priority-opt {
+    flex: 1;
+    padding: 6px 0;
+    text-align: center;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .priority-opt:hover { border-color: var(--border2); }
+  .priority-opt.active-none { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
+  .priority-opt.active-important { border-color: var(--yellow, #c09030); color: var(--yellow, #c09030); background: rgba(200,160,50,0.12); }
+  .priority-opt.active-critical { border-color: var(--red); color: var(--red); background: var(--red-l); }
 
   .task-actions {
     display: none;
@@ -3226,7 +3312,7 @@
     transition: background 0.1s;
   }
   .fail-reason-opt:hover { background: var(--red-l); color: var(--red); }
-  .fail-reason-opt .icon { font-size: 14px; width: 18px; text-align: center; }
+  .fail-reason-opt .icon { width: 18px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
   /* Статистика причин */
   .w-cr-reasons {
@@ -3760,8 +3846,7 @@
   /* ══════════════════════════════════════════
      ВИДЖЕТ 3: ПЛАН vs ФАКТ НЕДЕЛИ
   ══════════════════════════════════════════ */
-  &
-  .w-activity {
+  .w-plan-fact {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -5607,12 +5692,12 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       <div class="w-cr-label">🎯 Результат звонков (сегодня)</div>
       <div class="w-cr-btns">
         <button class="w-cr-btn success" onclick="callResultAdd('success')" title="Дозвонился, поговорил">
-          <span class="w-cr-btn-icon">✅</span>
+          <span class="w-cr-btn-icon" style="color:var(--green)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
           <span class="w-cr-btn-num" id="wcr-success">0</span>
           <span class="w-cr-btn-label">Успешных</span>
         </button>
         <button class="w-cr-btn fail" onclick="openFailReason(event)" title="Недозвон / не нашёл">
-          <span class="w-cr-btn-icon">📵</span>
+          <span class="w-cr-btn-icon" style="color:var(--red)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>
           <span class="w-cr-btn-num" id="wcr-fail">0</span>
           <span class="w-cr-btn-label">Неуспешных</span>
         </button>
@@ -5727,7 +5812,7 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
           <input class="w-pf-input" id="wpf-plan-meets" type="number" min="0" value="5" oninput="savePFPlans();renderPlanFact()">
         </div>
         <div class="w-pf-input-row">
-          <label class="w-pf-input-label">📄 План КП</label>
+          <label class="w-pf-input-label">План КП</label>
           <input class="w-pf-input" id="wpf-plan-kp" type="number" min="0" value="3" oninput="savePFPlans();renderPlanFact()">
         </div>
         <div class="w-pf-input-row">
@@ -5921,14 +6006,14 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
 
 <!-- ══ CONTEXT MENU ══ -->
 <div class="ctx-menu" id="ctx-menu">
-  <div class="ctx-item" onclick="ctxEdit()">✏️ Редактировать</div>
+  <div class="ctx-item" onclick="ctxEdit()">Редактировать</div>
   <div class="ctx-sep"></div>
   <div class="ctx-item" onclick="ctxMoveTo('now')">▶ → Сейчас</div>
   <div class="ctx-item" onclick="ctxMoveTo('next')">→ Следующие</div>
   <div class="ctx-item" onclick="ctxMoveTo('wait')">→ Отложено</div>
   <div class="ctx-item" onclick="ctxMoveTo('done')">✓ → Выполнено</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item danger" onclick="ctxDelete()">🗑 Удалить</div>
+  <div class="ctx-item danger" onclick="ctxDelete()">Удалить</div>
 </div>
 
 <!-- ══ MODAL: ЗАДАЧА ══ -->
@@ -5952,12 +6037,38 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       </select>
     </div>
     <div class="modal-field">
-      <label>Проект (опционально)</label>
-      <input class="modal-input" id="task-proj-in" placeholder="Название проекта или тема">
+      <label>Приоритет</label>
+      <div class="priority-selector" id="task-priority-sel">
+        <button type="button" class="priority-opt active-none" onclick="selectPriority('')">Обычный</button>
+        <button type="button" class="priority-opt" onclick="selectPriority('important')">Важный</button>
+        <button type="button" class="priority-opt" onclick="selectPriority('critical')">Критичный</button>
+      </div>
+      <input type="hidden" id="task-priority-in" value="">
     </div>
     <div class="modal-field">
-      <label>Дедлайн (опционально)</label>
-      <input type="date" class="modal-input" id="task-date-in">
+      <label>Проект (опционально)</label>
+      <select class="modal-select" id="task-proj-in">
+        <option value="">— без проекта —</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="modal-field" style="flex:1;">
+        <label>Дедлайн</label>
+        <input type="date" class="modal-input" id="task-date-in">
+      </div>
+      <div class="modal-field" style="flex:0 0 120px;">
+        <label>Время</label>
+        <input type="time" class="modal-input" id="task-time-in">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Напомнить до дедлайна (мин)</label>
+      <select class="modal-select" id="task-remind-in">
+        <option value="">Не напоминать</option>
+        <option value="15">За 15 минут</option>
+        <option value="60">За 1 час</option>
+        <option value="1440">За 1 день</option>
+      </select>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('task-modal')">Отмена</button>
@@ -6011,7 +6122,7 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
         <option value="9">Оформление эксперимента</option>
         <option value="10">Согласование договора</option>
         <option value="11">Подписание договора</option>
-        <option value="lost">❌ Сделка проиграна</option>
+        <option value="lost">Сделка проиграна</option>
       </select>
     </div>
     <div class="modal-field" id="proj-loss-block" style="display:none;">
@@ -6019,10 +6130,10 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       <div class="loss-reason-grid">
         <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Цена')" data-r="Цена">💰 Цена</button>
         <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Конкурент')" data-r="Конкурент">🏁 Конкурент</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Нет бюджета')" data-r="Нет бюджета">🚫 Нет бюджета</button>
+        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Нет бюджета')" data-r="Нет бюджета">Нет бюджета</button>
         <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Отложили')" data-r="Отложили">⏸ Отложили</button>
         <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Не наш продукт')" data-r="Не наш продукт">❓ Не наш продукт</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Другое')" data-r="Другое">💬 Другое</button>
+        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Другое')" data-r="Другое">Другое</button>
       </div>
       <input class="modal-input" id="proj-loss-detail-in" placeholder="Уточнение (опционально)" style="margin-top:8px;">
       <input type="hidden" id="proj-loss-reason-in">
@@ -6046,17 +6157,17 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
 <div class="loss-modal-overlay" id="loss-modal" onclick="if(event.target===this)closeLossModal()">
   <div class="loss-modal-win">
     <div class="loss-modal-title">
-      <span>❌ Почему проиграли сделку?</span>
+      <span>Почему проиграли сделку?</span>
       <button class="btn btn-ghost btn-icon" onclick="closeLossModal()">✕</button>
     </div>
     <input type="hidden" id="loss-proj-id">
     <div class="loss-reason-grid">
       <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Цена')" data-r="Цена">💰 Цена</button>
       <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Конкурент')" data-r="Конкурент">🏁 Конкурент</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Нет бюджета')" data-r="Нет бюджета">🚫 Нет бюджета</button>
+      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Нет бюджета')" data-r="Нет бюджета">Нет бюджета</button>
       <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Отложили')" data-r="Отложили">⏸ Отложили</button>
       <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Не наш продукт')" data-r="Не наш продукт">❓ Не наш продукт</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Другое')" data-r="Другое">💬 Другое</button>
+      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Другое')" data-r="Другое">Другое</button>
     </div>
     <div class="modal-field" style="margin-top:12px;">
       <label>Уточнение (опционально)</label>
@@ -6187,6 +6298,10 @@ const ICON = {
   moon:      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>',
   sun:       '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
   search:    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+  check:     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  xCircle:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+  edit:      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+  ban:       '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>',
 };
 /* Helper: получить иконку по ключу */
 function icon(name, size) {
@@ -6261,9 +6376,11 @@ function renderTasks() {
 
 function taskHTML(t) {
   const done = t.lane === 'done';
-  const dateStr = t.deadline ? `<div class="task-meta">${fmtDate(t.deadline)}${t.project ? ' · ' + t.project : ''}</div>` :
-                  t.project  ? `<div class="task-meta">${t.project}</div>` : '';
-  // Для выполненных — показываем сколько дней назад и кнопку удалить
+  const prioClass = t.priority ? ' priority-' + t.priority : '';
+  const timeBadge = t.time ? '<span class="task-time-badge">' + t.time + '</span>' : '';
+  const projName = t.project || '';
+  const dateStr = t.deadline ? `<div class="task-meta">${timeBadge}${fmtDate(t.deadline)}${projName ? ' · ' + projName : ''}</div>` :
+                  (t.time || projName)  ? `<div class="task-meta">${timeBadge}${projName}</div>` : '';
   let doneInfo = '';
   if (done && t.doneAt) {
     const days = Math.floor((Date.now() - t.doneAt) / 86400000);
@@ -6271,10 +6388,10 @@ function taskHTML(t) {
     doneInfo = `<div class="task-meta" style="color:var(--text-mute)">${label}</div>`;
   }
   const deleteBtn = done
-    ? `<button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();deleteTask('${t.id}')" title="Удалить">🗑️</button>`
+    ? `<button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();deleteTask('${t.id}')" title="Удалить"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'><polyline points='3 6 5 6 21 6'/><path d='M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2'/></svg></button>`
     : '';
   return `
-    <div class="task-card-item task-item ${done?'is-done':''}" data-id="${t.id}" draggable="true"
+    <div class="task-card-item task-item ${done?'is-done':''}${prioClass}" data-id="${t.id}" draggable="true"
          onclick="toggleTask('${t.id}')">
       <div class="task-check">${done?'✓':''}</div>
       <div style="flex:1;min-width:0">
@@ -6282,7 +6399,7 @@ function taskHTML(t) {
         ${dateStr}${doneInfo}
       </div>
       <div class="task-actions">
-        <button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();openTaskModal('${t.id}')" title="Редактировать">✏️</button>
+        <button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();openTaskModal('${t.id}')" title="Редактировать"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z'/></svg></button>
         ${deleteBtn}
       </div>
     </div>`;
@@ -6338,14 +6455,40 @@ function quickAdd(lane, input) {
   renderTasks();
 }
 
+function selectPriority(val) {
+  document.getElementById('task-priority-in').value = val;
+  document.querySelectorAll('#task-priority-sel .priority-opt').forEach(function(btn) {
+    btn.className = 'priority-opt';
+  });
+  var btns = document.querySelectorAll('#task-priority-sel .priority-opt');
+  if (val === 'important') btns[1].classList.add('active-important');
+  else if (val === 'critical') btns[2].classList.add('active-critical');
+  else btns[0].classList.add('active-none');
+}
+
+function populateProjectDropdown() {
+  var sel = document.getElementById('task-proj-in');
+  if (!sel) return;
+  var html = '<option value="">— без проекта —</option>';
+  (LS.get('wdb_projects', [])).forEach(function(p) {
+    if (p.stage === 'lost') return;
+    html += '<option value="' + p.id + '">' + esc(p.name) + '</option>';
+  });
+  sel.innerHTML = html;
+}
+
 function openTaskModal(id) {
   const t = id ? tasks.find(x => x.id === id) : null;
+  populateProjectDropdown();
   document.getElementById('task-modal-title').textContent = t ? 'Редактировать задачу' : 'Новая задача';
   document.getElementById('task-edit-id').value  = t?.id || '';
   document.getElementById('task-text-in').value  = t?.text || '';
   document.getElementById('task-lane-in').value  = t?.lane || 'now';
-  document.getElementById('task-proj-in').value  = t?.project || '';
+  document.getElementById('task-proj-in').value  = t?.projectId || t?.project || '';
   document.getElementById('task-date-in').value  = t?.deadline || '';
+  document.getElementById('task-time-in').value  = t?.time || '';
+  document.getElementById('task-remind-in').value = t?.remind || '';
+  selectPriority(t?.priority || '');
   document.getElementById('task-modal').classList.add('open');
   setTimeout(() => document.getElementById('task-text-in').focus(), 80);
 }
@@ -6354,14 +6497,20 @@ function saveTask() {
   const id    = document.getElementById('task-edit-id').value;
   const text  = document.getElementById('task-text-in').value.trim();
   const lane  = document.getElementById('task-lane-in').value;
-  const proj  = document.getElementById('task-proj-in').value.trim();
+  const projId = document.getElementById('task-proj-in').value;
   const date  = document.getElementById('task-date-in').value;
+  const time  = document.getElementById('task-time-in').value;
+  const priority = document.getElementById('task-priority-in').value;
+  const remind = document.getElementById('task-remind-in').value;
+  /* Resolve project name for display */
+  const projObj = projId ? (LS.get('wdb_projects', [])).find(function(p) { return p.id === projId; }) : null;
+  const projName = projObj ? projObj.name : '';
   if(!text) return;
   if(id) {
     const t = tasks.find(t => t.id === id);
-    if(t) Object.assign(t, {text, lane, project:proj, deadline:date});
+    if(t) Object.assign(t, {text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind});
   } else {
-    tasks.push({ id: uid(), text, lane, project:proj, deadline:date });
+    tasks.push({ id: uid(), text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind });
   }
   LS.set('wdb_tasks', tasks);
   closeModal('task-modal');
@@ -6615,7 +6764,7 @@ function projectHTML(p) {
           onchange="saveNextStep('${p.id}',this.value)">
       </div>
       <div class="proj-last-contact">
-        <div class="proj-last-contact-label">💬 Последний контакт</div>
+        <div class="proj-last-contact-label">Последний контакт</div>
         <textarea class="proj-last-contact-input"
           placeholder="Что обсудили, договорённости, настроение клиента..."
           onclick="event.stopPropagation()"
@@ -6626,10 +6775,11 @@ function projectHTML(p) {
         </div>
       </div>
       <div class="project-actions-row">
-        <button class="btn" onclick="event.stopPropagation();openProjectModal('${p.id}')">✏️ Редактировать</button>
-        <button class="btn" style="color:var(--red)" onclick="event.stopPropagation();openLossModal('${p.id}')">❌ Проиграть</button>
-        <button class="btn danger" style="color:var(--red)" onclick="event.stopPropagation();deleteProject('${p.id}')">🗑 Удалить</button>
+        <button class="btn" onclick="event.stopPropagation();openProjectModal('${p.id}')"><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
+        <button class="btn" style="color:var(--red)" onclick="event.stopPropagation();openLossModal('${p.id}')">Проиграть</button>
+        <button class="btn danger" style="color:var(--red)" onclick="event.stopPropagation();deleteProject('${p.id}')">Удалить</button>
       </div>
+      ${getLinkedItemsHTML(p.id)}
     </div>
   </div>`;
 }
@@ -6645,12 +6795,51 @@ function lostProjectHTML(p) {
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
         ${p.budget ? '<span style="font-size:10px;color:var(--text-mute)">' + fmtBudget(p.budget) + '</span>' : ''}
-        <span class="proj-loss-badge">❌ ${esc(p.lossReason||'Проиграна')}${p.lostDate ? ' · ' + fmtDate(p.lostDate) : ''}</span>
+        <span class="proj-loss-badge">${esc(p.lossReason||'Проиграна')}${p.lostDate ? ' · ' + fmtDate(p.lostDate) : ''}</span>
         <button class="btn" style="font-size:10px;padding:2px 8px;" onclick="restoreProject('${p.id}')">↩ Вернуть</button>
-        <button class="btn" style="font-size:10px;padding:2px 8px;color:var(--red)" onclick="deleteProject('${p.id}')">🗑</button>
+        <button class="btn" style="font-size:10px;padding:2px 8px;color:var(--red)" onclick="deleteProject('${p.id}')">Удалить</button>
       </div>
     </div>
   </div>`;
+}
+
+/* ── Связанные задачи и звонки в проекте ──
+   Паттерн: Linked Items (Notion Relations, Linear Sub-issues). */
+function getLinkedItemsHTML(projectId) {
+  var linkedTasks = tasks.filter(function(t) { return t.projectId === projectId && t.lane !== 'done'; });
+  var doneTasks = tasks.filter(function(t) { return t.projectId === projectId && t.lane === 'done'; });
+  /* Запланированные звонки — ищем по projectId */
+  var dcList = LS.get('wdb_daycalls_' + new Date().toISOString().split('T')[0], []);
+  var linkedCalls = dcList.filter(function(c) { return c.projectId === projectId; });
+
+  if (!linkedTasks.length && !doneTasks.length && !linkedCalls.length) return '';
+
+  var html = '<div class="proj-linked" onclick="event.stopPropagation()">';
+
+  if (linkedTasks.length || doneTasks.length) {
+    html += '<div class="proj-linked-title">' + ICON.clipboard + ' Задачи (' + linkedTasks.length + ' активных)</div>';
+    linkedTasks.forEach(function(t) {
+      var prioMark = t.priority === 'critical' ? ' style="color:var(--red)"' : t.priority === 'important' ? ' style="color:var(--yellow)"' : '';
+      html += '<div class="proj-linked-item"><span class="linked-dot task"' + prioMark + '></span>' + esc(t.text) +
+        (t.deadline ? '<span style="font-size:9px;color:var(--text-mute);margin-left:auto;flex-shrink:0;">' + fmtDate(t.deadline) + '</span>' : '') +
+        '</div>';
+    });
+    if (doneTasks.length) {
+      html += '<div style="font-size:9px;color:var(--text-mute);margin-top:2px;">' + doneTasks.length + ' выполнено</div>';
+    }
+  }
+
+  if (linkedCalls.length) {
+    html += '<div class="proj-linked-title" style="margin-top:8px;">' + ICON.phone + ' Запланированные звонки</div>';
+    linkedCalls.forEach(function(c) {
+      html += '<div class="proj-linked-item"><span class="linked-dot call"></span>' +
+        (c.time || '') + ' ' + esc(c.company || '') + (c.contact ? ' · ' + esc(c.contact) : '') +
+        '</div>';
+    });
+  }
+
+  html += '</div>';
+  return html;
 }
 
 function toggleProject(id) {
@@ -7237,8 +7426,8 @@ function callHTML(c) {
         </div>` : ''}
       ${!c.agreements && !c.nextStep ? '<div class="call-field-value" style="margin-top:8px;color:var(--text-mute)">Нет записей</div>' : ''}
       <div class="call-actions">
-        <button class="btn" onclick="openCallModal('${c.id}')">✏️ Редактировать</button>
-        <button class="btn danger" onclick="deleteCall('${c.id}')">🗑 Удалить</button>
+        <button class="btn" onclick="openCallModal('${c.id}')"><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
+        <button class="btn danger" onclick="deleteCall('${c.id}')">Удалить</button>
       </div>
     </div>
   </div>`;
@@ -7256,7 +7445,7 @@ function toggleCall(id) {
 function openCallModal(id) {
   editCallId = id;
   const c = id ? calls.find(x => x.id === id) : null;
-  document.getElementById('call-modal-title').textContent = c ? '✏️ Редактировать звонок' : '📞 Новый звонок';
+  document.getElementById('call-modal-title').textContent = c ? 'Редактировать звонок' : 'Новый звонок';
   document.getElementById('cf-company').value    = c ? c.company    : '';
   document.getElementById('cf-status').value     = c ? c.status     : 'done';
   document.getElementById('cf-date').value       = c ? (c.date||'') : new Date().toISOString().slice(0,16);
@@ -7517,7 +7706,7 @@ function renderCallResults() {
     const reasons = cr.reasons || {};
     const total_r = Object.values(reasons).reduce((a,b) => a+b, 0);
     if (total_r === 0) {
-      barsEl.innerHTML = '<div style="font-size:10px;color:var(--text-mute);padding:4px 0">Нажми 📵 и выбери причину</div>';
+      barsEl.innerHTML = '<div style="font-size:10px;color:var(--text-mute);padding:4px 0">Нажми ✕ и выбери причину</div>';
     } else {
       const order = ['Недозвон','Занято','Нет нужного','Отказ','Другое'];
       barsEl.innerHTML = order.filter(r => reasons[r] > 0).map(r => {
@@ -8088,7 +8277,7 @@ function renderPlanFact() {
     const done = metrics.filter(m => m.fact >= m.plan).length;
     const total = metrics.length;
     summaryEl.style.display = '';
-    summaryEl.innerHTML = `Выполнено показателей: <b>${done} / ${total}</b> — ${done === total ? '🎉 отличная неделя!' : done >= 2 ? '👍 хороший темп' : '⚡ нужно ускориться'}`;
+    summaryEl.innerHTML = `Выполнено показателей: <b>${done} / ${total}</b> — ${done === total ? 'отличная неделя!' : done >= 2 ? 'хороший темп' : 'нужно ускориться'}`;
   }
 }
 loadPFPlans();
@@ -8265,7 +8454,7 @@ renderTimer();
 
     <!-- Шапка -->
     <div class="call-modal-top">
-      <div class="call-modal-top-title" id="call-modal-title">📞 Новый звонок</div>
+      <div class="call-modal-top-title" id="call-modal-title">Новый звонок</div>
       <button class="call-modal-close" onclick="closeCallModal()">✕</button>
     </div>
 
@@ -8317,7 +8506,7 @@ renderTimer();
 <div class="dc-modal-backdrop" id="dc-modal" onclick="if(event.target===this)dcCloseModal()">
   <div class="dc-modal">
     <div class="dc-modal-header">
-      <span id="dc-modal-title">📅 Запланировать звонок</span>
+      <span id="dc-modal-title">Запланировать звонок</span>
       <button class="dc-modal-close" onclick="dcCloseModal()">×</button>
     </div>
     <div class="dc-modal-body">
@@ -8347,6 +8536,12 @@ renderTimer();
         <label>Заметка</label>
         <input id="dc-f-note" placeholder="Обсудить КП, уточнить бюджет...">
       </div>
+      <div class="dc-modal-field">
+        <label>Привязать к проекту</label>
+        <select id="dc-f-project" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;">
+          <option value="">— без проекта —</option>
+        </select>
+      </div>
     </div>
     <div class="dc-modal-footer">
       <button class="btn" onclick="dcCloseModal()">Отмена</button>
@@ -8359,7 +8554,7 @@ renderTimer();
 <div class="dc-alert-overlay" id="dc-alert" onclick="if(event.target===this)dcDismissAlert()">
   <div class="dc-alert-card">
     <div class="dc-alert-header">
-      <span class="dc-alert-icon">🔔</span>
+      <span class="dc-alert-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
       <span>Звонок через <span id="dc-alert-mins">2</span> мин!</span>
     </div>
     <div class="dc-alert-body">
@@ -8440,6 +8635,13 @@ function sbApplyIncoming(key, incoming) {
       if (fi && incoming.date === new Date().toDateString()) fi.value = incoming.text || '';
     }
     updateStats();
+    /* Виджеты которые зависят от проектов/задач */
+    if (key === 'wdb_projects' || key === 'wdb_tasks') {
+      if (typeof renderDeadlineRadar === 'function') renderDeadlineRadar();
+      if (typeof renderProjProgress === 'function') renderProjProgress();
+    }
+    if (typeof renderPlanFact === 'function') renderPlanFact();
+    if (typeof updateSparklines === 'function') updateSparklines();
   } catch(e) {}
   suppressSync = false;
 }
@@ -8589,11 +8791,11 @@ setTimeout(hideSplash, 2500);
 <!-- ══ ПОПАП: ПРИЧИНА НЕУСПЕХА (вне всех контейнеров!) ══ -->
 <div class="fail-reason-popup" id="fail-reason-popup">
   <div class="fail-reason-title">Почему не получилось?</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Недозвон')"><span class="icon">📵</span>Недозвон</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Занято')"><span class="icon">🔔</span>Занято</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Нет нужного')"><span class="icon">🚫</span>Нет нужного</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Отказ')"><span class="icon">✋</span>Отказ</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Другое')"><span class="icon">💬</span>Другое</div>
+  <div class="fail-reason-opt" onclick="pickFailReason('Недозвон')"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>Недозвон</div>
+  <div class="fail-reason-opt" onclick="pickFailReason('Занято')"><span class="icon" style="color:var(--yellow)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Занято</div>
+  <div class="fail-reason-opt" onclick="pickFailReason('Нет нужного')"><span class="icon" style="color:var(--text-mute)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>Нет нужного</div>
+  <div class="fail-reason-opt" onclick="pickFailReason('Отказ')"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Отказ</div>
+  <div class="fail-reason-opt" onclick="pickFailReason('Другое')"><span class="icon" style="color:var(--text-dim)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>Другое</div>
 </div>
 
 <!-- ══ АНИМАЦИИ: SCROLL PROGRESS + STAGGER + MICRO-INTERACTIONS ══ -->
@@ -8827,7 +9029,7 @@ function dcRender() {
       '<td class="dc-phone">' + phoneFmt + '</td>' +
       '<td class="dc-actions">' +
         '<button class="' + doneCls + '" onclick="dcToggleDone(\'' + c.id + '\')" title="Выполнено">' + doneMark + '</button>' +
-        '<button class="' + bellCls + '" onclick="dcToggleBell(\'' + c.id + '\')" title="Оповещение">🔔</button>' +
+        '<button class="' + bellCls + '" onclick="dcToggleBell(\'' + c.id + '\')" title="Оповещение"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></button>' +
         '<button class="dc-btn-sm del" onclick="dcDelete(\'' + c.id + '\')" title="Удалить">✕</button>' +
       '</td>' +
     '</tr>';
@@ -8841,13 +9043,24 @@ function dcRender() {
 function dcOpenModal(id) {
   dcEditId = id || null;
   var c = id ? dcLoad().find(function(x){ return x.id === id; }) : null;
-  document.getElementById('dc-modal-title').textContent = c ? '✏️ Редактировать' : '📅 Запланировать звонок';
+  document.getElementById('dc-modal-title').textContent = c ? 'Редактировать' : 'Запланировать звонок';
   document.getElementById('dc-f-time').value = c ? (c.time||'') : '';
   document.getElementById('dc-f-company').value = c ? (c.company||'') : '';
   document.getElementById('dc-f-contact').value = c ? (c.contact||'') : '';
   document.getElementById('dc-f-phone').value = c ? (c.phone||'') : '';
   document.getElementById('dc-f-note').value = c ? (c.note||'') : '';
   document.getElementById('dc-f-remind').value = c && c.remind >= 0 ? c.remind : 2;
+  /* Заполняем dropdown проектов */
+  var projSel = document.getElementById('dc-f-project');
+  if (projSel) {
+    var html = '<option value="">— без проекта —</option>';
+    (LS.get('wdb_projects', [])).forEach(function(p) {
+      if (p.stage === 'lost') return;
+      html += '<option value="' + p.id + '">' + esc(p.name) + '</option>';
+    });
+    projSel.innerHTML = html;
+    projSel.value = c ? (c.projectId || '') : '';
+  }
   document.getElementById('dc-modal').classList.add('open');
   setTimeout(function(){ document.getElementById('dc-f-time').focus(); }, 80);
 }
@@ -8864,6 +9077,7 @@ function dcSave() {
     else document.getElementById('dc-f-company').focus();
     return;
   }
+  var projSel = document.getElementById('dc-f-project');
   var data = {
     time: time,
     company: company,
@@ -8871,6 +9085,7 @@ function dcSave() {
     phone: document.getElementById('dc-f-phone').value.trim(),
     note: document.getElementById('dc-f-note').value.trim(),
     remind: parseInt(document.getElementById('dc-f-remind').value) || 2,
+    projectId: projSel ? projSel.value : '',
     done: false
   };
   var list = dcLoad();
@@ -10663,6 +10878,57 @@ function wrSaveOrder(col) {
 
 /* Инициализация при загрузке */
 document.addEventListener('DOMContentLoaded', wrInit);
+
+
+/* ══════════════════════════════════════════
+   DEADLINE NOTIFICATIONS
+   Паттерн: Time-based Alerts (Google Calendar, Todoist).
+   Проверяет задачи каждые 60 сек. Если задача имеет
+   deadline + time + remind — показывает toast-уведомление.
+══════════════════════════════════════════ */
+var _notifiedTasks = {}; /* Чтобы не спамить */
+
+function checkDeadlineNotifications() {
+  var now = new Date();
+  var nowMs = now.getTime();
+  var today = now.toISOString().split('T')[0];
+
+  (LS.get('wdb_tasks', [])).forEach(function(t) {
+    if (!t.deadline || !t.time || !t.remind || t.lane === 'done') return;
+    if (_notifiedTasks[t.id]) return;
+
+    /* Собираем дату-время дедлайна */
+    var deadlineMs = new Date(t.deadline + 'T' + t.time + ':00').getTime();
+    var remindMs = parseInt(t.remind) * 60 * 1000;
+    var alertMs = deadlineMs - remindMs;
+
+    /* Если сейчас в окне [alertMs, deadlineMs] — уведомляем */
+    if (nowMs >= alertMs && nowMs <= deadlineMs) {
+      _notifiedTasks[t.id] = true;
+      var minsLeft = Math.round((deadlineMs - nowMs) / 60000);
+      var label = minsLeft <= 0 ? 'Дедлайн сейчас!' : 'Через ' + minsLeft + ' мин';
+
+      toast(label + ': ' + t.text, 'warning', 8000);
+
+      /* Браузерное уведомление */
+      try {
+        if (Notification.permission === 'granted') {
+          new Notification('Дедлайн: ' + t.text, {
+            body: label + (t.project ? ' · ' + t.project : ''),
+            icon: './icon-192.png'
+          });
+        }
+      } catch(e) {}
+    }
+  });
+}
+
+/* Запускаем проверку каждые 60 секунд */
+setInterval(checkDeadlineNotifications, 60000);
+/* И сразу при загрузке */
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(checkDeadlineNotifications, 3000);
+});
 
 
 function initGreeting() {
