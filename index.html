@@ -1026,14 +1026,15 @@
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
-    padding: 14px 24px;
+    padding: 10px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
     position: sticky;
     top: 0;
     z-index: 100;
-    /* overflow: visible — нужно для выпадающего меню тем */
   }
 
   /* ── SCROLL PROGRESS BAR ──
@@ -1077,7 +1078,7 @@
   }
   .header-title { font-weight: 600; font-size: var(--text-md); }
   .header-sub { color: var(--text-dim); font-size: var(--text-sm); margin-left: 6px; }
-  .header-date { color: var(--text-dim); font-size: var(--text-base); }
+
 
   /* ── LAYOUT ── */
   .main {
@@ -4895,8 +4896,11 @@
      Pill-badges под greeting в хедере.
   ══════════════════════════════════════════ */
   .smart-alerts {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    margin-top: 2px;
+    display: flex; gap: 5px; flex-wrap: wrap;
+    flex: 1;
+    justify-content: flex-start;
+    padding: 0 16px;
+    min-width: 0;
   }
   .smart-alert {
     font-size: var(--text-2xs, 9px);
@@ -5422,24 +5426,24 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
 
 <!-- HEADER -->
 <header>
-  <!-- Scroll Progress Bar — линия прокрутки внизу хедера -->
+  <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
   <div class="header-left">
     <div class="header-logo">ОП</div>
-    <span class="header-title" id="header-greeting">Рабочий дашборд</span>
-    <span class="header-sub">БИТ.IIOT · Маркировка</span>
-    <div class="smart-alerts" id="smart-alerts"></div>
-  </div>
-  <div style="display:flex;align-items:center;gap:14px;">
-    <div class="sync-indicator" id="sync-indicator" title="Статус синхронизации">
-      <div class="sync-dot"></div>
-      <span class="sync-label" id="sync-label">подключение...</span>
+    <div>
+      <span class="header-title" id="header-greeting">Рабочий дашборд</span>
+      <span class="header-sub">БИТ.IIOT · Маркировка</span>
     </div>
-    <div class="header-date" id="header-date"></div>
+    <div class="sync-indicator" id="sync-indicator" title="Статус синхронизации" style="margin-left:4px;">
+      <div class="sync-dot"></div>
+    </div>
+  </div>
+  <!-- Smart Alerts — отдельная линия под greeting -->
+  <div class="smart-alerts" id="smart-alerts"></div>
+  <div style="display:flex;align-items:center;gap:8px;">
     <!-- PWA INSTALL BUTTON -->
     <button id="pwa-install-btn" onclick="installPWA()" title="Установить приложение" style="display:none;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface);color:var(--text-dim);font-size:12px;cursor:pointer;font-family:inherit;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Установить
     </button>
     <!-- VIEW SWITCHER -->
     <div class="view-switcher" id="view-switcher">
@@ -5453,37 +5457,37 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
       <span class="streak-num" id="streak-num">0</span>
       <span>дн</span>
     </span>
-    <!-- DARK/LIGHT TOGGLE -->
-    <button id="dl-toggle" onclick="toggleDarkLight()" title="Светлая / Тёмная тема" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:1px solid var(--border2);border-radius:var(--radius-s);background:var(--surface2);color:var(--text-dim);cursor:pointer;transition:all 0.15s;">
-      <span id="dl-icon"></span>
+    <!-- ICON BUTTONS GROUP -->
+    <div style="display:flex;align-items:center;gap:2px;">
+      <!-- DARK/LIGHT TOGGLE -->
+      <button id="dl-toggle" onclick="toggleDarkLight()" title="Светлая / Тёмная тема" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--border);border-radius:var(--radius-s);background:transparent;color:var(--text-dim);cursor:pointer;transition:all 0.15s;">
+        <span id="dl-icon"></span>
+      </button>
+      <!-- FOCUS MODE -->
+      <button id="focus-mode-btn" onclick="toggleFocusMode()" title="Режим фокуса (F)" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--border);border-radius:var(--radius-s);background:transparent;color:var(--text-dim);cursor:pointer;transition:all 0.15s;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      </button>
+      <!-- TOUR -->
+      <button onclick="tourStart()" title="Обзор дашборда (?)" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--border);border-radius:var(--radius-s);background:transparent;color:var(--text-mute);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;transition:all 0.15s;">?</button>
+    </div>
+    <!-- SEARCH -->
+    <button onclick="cmdOpen()" title="Поиск команд (⌘K)" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border:1px solid var(--border);border-radius:var(--radius-s);background:transparent;color:var(--text-dim);font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span style="font-size:9px;padding:1px 4px;border:1px solid var(--border);border-radius:3px;color:var(--text-mute);">⌘K</span>
     </button>
-    <!-- FOCUS MODE BUTTON -->
-    <button id="focus-mode-btn" onclick="toggleFocusMode()" title="Режим фокуса (F)">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-      <span class="focus-btn-label">Фокус</span>
-    </button>
-    <!-- TOUR HELP BUTTON -->
-    <button onclick="tourStart()" title="Обзор дашборда" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:1px solid var(--border);border-radius:50%;background:var(--surface2);color:var(--text-mute);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;transition:all 0.15s;">?</button>
-    <!-- COMMAND PALETTE BUTTON -->
-    <button onclick="cmdOpen()" title="Поиск команд (⌘K)" style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border2);border-radius:var(--radius-s);background:var(--surface2);color:var(--text-dim);font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.15s;">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span class="cmd-kbd" style="font-size:9px;padding:1px 5px;">⌘K</span>
-    </button>
-    <!-- WIDGET CONSTRUCTOR BUTTON -->
-    <button id="wc-open-btn" onclick="wcToggle()" title="Настроить виджеты">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+    <!-- WIDGETS -->
+    <button id="wc-open-btn" onclick="wcToggle()" title="Настроить виджеты" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--border);border-radius:var(--radius-s);background:transparent;color:var(--text-dim);cursor:pointer;transition:all 0.15s;">
+      <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
         <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
         <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
       </svg>
-      Виджеты
     </button>
     <!-- THEME SWITCHER -->
     <div class="theme-switcher" id="theme-switcher">
-      <button class="theme-btn" onclick="toggleThemeMenu()" title="Сменить тему">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <button class="theme-btn" onclick="toggleThemeMenu()" title="Сменить тему" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--border);border-radius:var(--radius-s);background:transparent;color:var(--text-dim);cursor:pointer;transition:all 0.15s;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
         </svg>
-        Тема
       </button>
       <div class="theme-menu" id="theme-menu">
         <div class="theme-item" onclick="setTheme('t-claude')">
@@ -6418,8 +6422,8 @@ function updateHeaderDate() {
   const months = ['января','февраля','марта','апреля','мая','июня',
                   'июля','августа','сентября','октября','ноября','декабря'];
   const days = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-  document.getElementById('header-date').textContent =
-    `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  var hdEl = document.getElementById('header-date');
+  if (hdEl) hdEl.textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 updateHeaderDate();
 
