@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="./manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
@@ -19,7 +19,7 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js');
+      navigator.serviceWorker.register('./sw.js');
     });
   }
 </script>
@@ -6297,13 +6297,13 @@ function toggleTask(id) {
   renderTasks();
   /* Celebration при завершении задачи */
   if (!wasDone && t.lane === 'done') {
-    checkCelebration('task-done');
+    if (typeof checkCelebration === 'function') checkCelebration('task-done');
     if (typeof logActivity === 'function') logActivity('target', 'Выполнил задачу: ' + t.text);
     if (typeof updateStreak === 'function') updateStreak();
     /* Проверяем: все задачи "Сейчас" выполнены? */
     var nowTasks = tasks.filter(function(x) { return x.lane === 'now'; });
     if (nowTasks.length === 0 && tasks.filter(function(x) { return x.lane === 'done'; }).length > 0) {
-      setTimeout(function() { checkCelebration('all-tasks-done'); }, 600);
+      setTimeout(function() { if (typeof checkCelebration === 'function') checkCelebration('all-tasks-done'); }, 600);
     }
   }
 }
@@ -6534,7 +6534,7 @@ function renderProjects() {
 
   el.innerHTML = sorted.length
     ? sorted.map(p => projectHTML(p)).join('')
-    : emptyState('folder', 'Проектов пока нет', 'Нажми «+ Проект» чтобы добавить первый');
+    : (typeof emptyState==='function' ? emptyState('folder', 'Проектов пока нет', 'Нажми «+ Проект» чтобы добавить первый') : '<div class="empty-msg">Проектов пока нет</div>');
 
   if (lostEl) {
     lostEl.innerHTML = lost.length
@@ -6818,7 +6818,7 @@ function renderMeetings() {
     .filter(m => m.date >= today && m.date <= weekEnd)
     .sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
   if(!week.length) {
-    el.innerHTML = emptyState('users', 'Встреч на неделе нет', 'Добавь встречу через «+» выше');
+    el.innerHTML = (typeof emptyState==='function') ? emptyState('users', 'Встреч на неделе нет', 'Добавь встречу через «+» выше') : '<div class="empty-msg">Встреч на неделе нет</div>';
     return;
   }
   el.innerHTML = week.map(m => `
@@ -7081,8 +7081,8 @@ function renderKPI() {
     if (el) { el.style.width = pct + '%'; el.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
   });
   /* Celebration при достижении 100% */
-  if (weekTotal >= KPI_GOAL) { checkCelebration('kpi-100'); }
-  else { checkCelebration('kpi-reset'); }
+  if (weekTotal >= KPI_GOAL) { if (typeof checkCelebration === 'function') checkCelebration('kpi-100'); }
+  else { if (typeof checkCelebration === 'function') checkCelebration('kpi-reset'); }
   ['kpi-progress-pct','kpi-modal-progress-pct'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.textContent = pct + '%';
   });
@@ -7203,7 +7203,7 @@ function renderCalls() {
   const el = document.getElementById('calls-list');
   document.getElementById('calls-count').textContent = calls.length;
   if (!calls.length) {
-    el.innerHTML = emptyState('phone', 'Звонков пока нет', 'Запиши первый звонок через «+ Звонок»');
+    el.innerHTML = (typeof emptyState==='function') ? emptyState('phone', 'Звонков пока нет', 'Запиши первый звонок через «+ Звонок»') : '<div class="empty-msg">Звонков пока нет</div>';
     return;
   }
   // сортируем: сначала новые
@@ -8241,7 +8241,7 @@ function timerDone() {
   if (timerMode === 'work') {
     timerSessions++;
     LS.set('wdb_timer_sessions', timerSessions);
-    checkCelebration('pomodoro');
+    if (typeof checkCelebration === 'function') checkCelebration('pomodoro');
   }
   renderTimer();
   // Уведомление
