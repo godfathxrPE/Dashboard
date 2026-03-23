@@ -24,48 +24,134 @@
   }
 </script>
 <style>
-/* ══ SPLASH ══ */
+/* ══ SPLASH v2 — Ambient Gradient Mesh + Contextual Greeting ══
+   Паттерн: Arc Browser New Tab / macOS Lock Screen.
+   Canvas рисует drifting orbs, CSS — grain + typography.
+   Цвета читаются из CSS-переменных текущей темы. */
 #splash {
   position: fixed; inset: 0; z-index: 9999;
-  background-image: url('splash-bg.jpg');
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 1;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #splash.hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-}@keyframes splash-pulse {
-  0%, 100% { box-shadow: 0 8px 32px rgba(181,98,42,0.35); transform: scale(1); }
-  50%       { box-shadow: 0 12px 48px rgba(181,98,42,0.55); transform: scale(1.04); }
 }
+#splash-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+/* Grain overlay — SVG turbulence как текстура.
+   Паттерн: Film Grain (Apple TV+, Stripe). */
+#splash-grain {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+/* Grain opacity по яркости темы */
+.t-claude #splash-grain,
+.t-paper  #splash-grain,
+.t-sand   #splash-grain,
+.t-forest #splash-grain  { opacity: 0.04; }
+.t-frost    #splash-grain,
+.t-midnight #splash-grain,
+.t-aurora   #splash-grain,
+.t-neon     #splash-grain { opacity: 0.025; }
 
-#splash-title {
-  font-family: 'Manrope', sans-serif;
-  font-weight: 600; font-size: 18px;
-  color: #1a1916; letter-spacing: 0.01em;
+#splash-card {
+  position: relative; z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+  max-width: 600px;
 }
-
-#splash-sub {
-  font-family: 'Manrope', sans-serif;
-  font-size: 12px; color: #6b6860;
+/* Приветствие — light weight, крупный размер.
+   Паттерн: Oversized Headlines (Awwwards 2025+). */
+#splash-greeting {
+  font-weight: 300;
+  font-size: clamp(28px, 6vw, 48px);
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: splash-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
-
-#splash-dots {
-  display: flex; gap: 6px; margin-top: 4px;
+/* Часы — гигантские, tabular-nums */
+#splash-clock {
+  font-weight: 300;
+  font-size: clamp(56px, 12vw, 96px);
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: splash-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
 }
-#splash-dots span {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #b5622a; opacity: 0.3;
-  animation: splash-dot 1.2s ease-in-out infinite;
+#splash-clock-sep {
+  display: inline-block;
+  animation: splash-blink 2s ease-in-out infinite;
 }
-#splash-dots span:nth-child(2) { animation-delay: 0.2s; }
-#splash-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes splash-dot {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.3); }
+@keyframes splash-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+#splash-date {
+  font-weight: 400;
+  font-size: clamp(13px, 2vw, 16px);
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: splash-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+}
+@keyframes splash-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#splash-progress-track {
+  width: 140px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+  opacity: 0;
+  animation: splash-in 0.4s ease 1.1s both;
+}
+#splash-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+  animation: splash-fill 5.5s cubic-bezier(0.65, 0, 0.35, 1) 1s both;
+}
+@keyframes splash-fill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+#splash-footer {
+  position: absolute;
+  bottom: 28px;
+  left: 0; right: 0;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: splash-in 0.4s ease 1.4s both;
+  z-index: 2;
 }
 
   /* ══ KPI TRACKER ══ */
@@ -5422,7 +5508,20 @@ html.t-aurora #auth-footer { border-top-color: rgba(255,255,255,0.07); }
   <div class="bg-orb orb-3"></div>
 </div>
 
-<div id="splash"></div>
+<!-- ══ SPLASH v2 — Ambient Gradient Mesh + Contextual Greeting ══ -->
+<div id="splash">
+  <canvas id="splash-canvas"></canvas>
+  <div id="splash-grain"></div>
+  <div id="splash-card">
+    <div id="splash-greeting"></div>
+    <div id="splash-clock"></div>
+    <div id="splash-date"></div>
+    <div id="splash-progress-track">
+      <div id="splash-progress-fill"></div>
+    </div>
+  </div>
+  <div id="splash-footer">БИТ.IIOT · v3.0</div>
+</div>
 
 <!-- HEADER -->
 <header>
@@ -8905,19 +9004,178 @@ window.addEventListener('appinstalled', function() {
 });
 </script>
 
-<!-- ══ SPLASH LOGIC ══ -->
+<!-- ══ SPLASH v2 LOGIC — Canvas + Greeting ══ -->
 <script>
-// Сплэш с фото пустыни — показываем 2.5 сек, потом убираем
-var splashHidden = false;
+(function() {
+  'use strict';
 
-function hideSplash() {
+  /* ── Canvas setup ── */
+  var canvas = document.getElementById('splash-canvas');
+  if (!canvas) return;
+  var ctx    = canvas.getContext('2d');
+  var dpr    = Math.min(window.devicePixelRatio || 1, 2);
+  var W, H;
+  var animId = null;
+  var startTime = performance.now();
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* ── Чтение цветов из CSS-переменных темы ── */
+  function getThemeColors() {
+    var s = getComputedStyle(document.documentElement);
+    return {
+      bg:     s.getPropertyValue('--bg').trim()      || '#f5f4ef',
+      accent: s.getPropertyValue('--accent').trim()   || '#b5622a',
+      green:  s.getPropertyValue('--green').trim()    || '#2e7d52',
+      blue:   s.getPropertyValue('--blue').trim()     || '#2d6ab4',
+      red:    s.getPropertyValue('--red').trim()      || '#c0392b',
+      mute:   s.getPropertyValue('--text-mute').trim()|| '#a8a59e'
+    };
+  }
+
+  function parseColor(str) {
+    if (str.charAt(0) === '#') {
+      var hex = str.slice(1);
+      if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+      return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16) };
+    }
+    var m = str.match(/[\d.]+/g);
+    if (m && m.length >= 3) return { r: parseInt(m[0]), g: parseInt(m[1]), b: parseInt(m[2]) };
+    return { r: 180, g: 100, b: 40 };
+  }
+
+  function isDark(bgColor) {
+    var c = parseColor(bgColor);
+    return (0.299 * c.r + 0.587 * c.g + 0.114 * c.b) / 255 < 0.45;
+  }
+
+  var colors = getThemeColors();
+  var dark   = isDark(colors.bg);
+
+  /* ── Орбы — конфигурация ──
+     Светлые темы: multiply compositing + повышенная alpha.
+     Тёмные темы: lighter compositing + стандартная alpha. */
+  var orbs = [
+    { x:0.15, y:0.25, r:0.50, color:parseColor(colors.accent), alpha: dark?0.35:0.45, sx:0.13, sy:0.10, px:0,   py:0.5  },
+    { x:0.80, y:0.18, r:0.42, color:parseColor(colors.blue),   alpha: dark?0.28:0.35, sx:0.10, sy:0.15, px:1.2, py:0    },
+    { x:0.50, y:0.78, r:0.48, color:parseColor(colors.green),  alpha: dark?0.25:0.30, sx:0.16, sy:0.09, px:2.4, py:1.8  },
+    { x:0.12, y:0.68, r:0.32, color:parseColor(colors.red),    alpha: dark?0.18:0.22, sx:0.09, sy:0.14, px:3.6, py:3.0  },
+    { x:0.82, y:0.62, r:0.38, color:parseColor(colors.accent), alpha: dark?0.20:0.28, sx:0.12, sy:0.11, px:4.8, py:2.2  },
+    { x:0.50, y:0.12, r:0.30, color:parseColor(colors.mute),   alpha: dark?0.15:0.20, sx:0.14, sy:0.10, px:0.8, py:4.0  },
+  ];
+  var AMP_X = 0.12, AMP_Y = 0.10;
+
+  /* ── Render loop ── */
+  function draw(t) {
+    var elapsed = (t - startTime) / 1000;
+    var bgC = parseColor(colors.bg);
+
+    ctx.fillStyle = 'rgb(' + bgC.r + ',' + bgC.g + ',' + bgC.b + ')';
+    ctx.fillRect(0, 0, W, H);
+
+    /* Compositing: lighter (тёмные) / multiply (светлые) */
+    ctx.globalCompositeOperation = dark ? 'lighter' : 'multiply';
+
+    for (var i = 0; i < orbs.length; i++) {
+      var o = orbs[i];
+      var cx = (o.x + Math.sin(elapsed * o.sx + o.px) * AMP_X) * W;
+      var cy = (o.y + Math.cos(elapsed * o.sy + o.py) * AMP_Y) * H;
+      var radius = o.r * Math.min(W, H) * (1 + Math.sin(elapsed * 0.3 + i * 1.1) * 0.06);
+
+      var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      var c = o.color;
+
+      if (dark) {
+        grad.addColorStop(0,   'rgba('+c.r+','+c.g+','+c.b+','+o.alpha+')');
+        grad.addColorStop(0.4, 'rgba('+c.r+','+c.g+','+c.b+','+(o.alpha*0.6)+')');
+        grad.addColorStop(1,   'rgba('+c.r+','+c.g+','+c.b+',0)');
+      } else {
+        /* multiply: непрозрачные цвета, смешанные с белым */
+        var a = o.alpha;
+        var mr = Math.round(c.r + (255 - c.r) * (1 - a));
+        var mg = Math.round(c.g + (255 - c.g) * (1 - a));
+        var mb = Math.round(c.b + (255 - c.b) * (1 - a));
+        grad.addColorStop(0,   'rgb('+mr+','+mg+','+mb+')');
+        var mr2 = Math.round(c.r + (255 - c.r) * (1 - a * 0.4));
+        var mg2 = Math.round(c.g + (255 - c.g) * (1 - a * 0.4));
+        var mb2 = Math.round(c.b + (255 - c.b) * (1 - a * 0.4));
+        grad.addColorStop(0.5, 'rgb('+mr2+','+mg2+','+mb2+')');
+        grad.addColorStop(1,   'rgb(255,255,255)');
+      }
+
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    ctx.globalCompositeOperation = 'source-over';
+
+    /* Виньетка — направляет взгляд к центру */
+    var vign = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.25, W/2, H/2, Math.max(W,H)*0.72);
+    vign.addColorStop(0, 'rgba('+bgC.r+','+bgC.g+','+bgC.b+',0)');
+    vign.addColorStop(1, 'rgba('+bgC.r+','+bgC.g+','+bgC.b+','+(dark?0.55:0.45)+')');
+    ctx.fillStyle = vign;
+    ctx.fillRect(0, 0, W, H);
+
+    animId = requestAnimationFrame(draw);
+  }
+  animId = requestAnimationFrame(draw);
+
+  /* ── Приветствие по времени суток ── */
+  var greetEl = document.getElementById('splash-greeting');
+  if (greetEl) {
+    var h = new Date().getHours();
+    greetEl.textContent = h >= 5 && h < 12 ? 'Доброе утро'
+                        : h >= 12 && h < 17 ? 'Добрый день'
+                        : h >= 17 && h < 22 ? 'Добрый вечер'
+                        : 'Доброй ночи';
+  }
+
+  /* ── Часы с пульсирующим двоеточием ── */
+  function splashClock() {
+    var now = new Date();
+    var hh = String(now.getHours()).padStart(2, '0');
+    var mm = String(now.getMinutes()).padStart(2, '0');
+    var el = document.getElementById('splash-clock');
+    if (el) el.innerHTML = hh + '<span id="splash-clock-sep">:</span>' + mm;
+  }
+  splashClock();
+  var clockInt = setInterval(splashClock, 1000);
+
+  /* ── Дата ── */
+  var dateEl = document.getElementById('splash-date');
+  if (dateEl) {
+    var now = new Date();
+    var days   = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+    var months = ['января','февраля','марта','апреля','мая','июня',
+                  'июля','августа','сентября','октября','ноября','декабря'];
+    dateEl.textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
+  }
+
+  /* ── Скрытие: 6.5 сек до fade, 1.2 сек fade-out ── */
+  var splashHidden = false;
+  function hideSplash() {
     if (splashHidden) return;
     splashHidden = true;
     var splash = document.getElementById('splash');
     if (splash) splash.classList.add('hidden');
-}
-
-setTimeout(hideSplash, 2500);
+    /* Через 1.5с — убиваем canvas для экономии ресурсов */
+    setTimeout(function() {
+      cancelAnimationFrame(animId);
+      clearInterval(clockInt);
+    }, 1500);
+  }
+  setTimeout(hideSplash, 6500);
+})();
 </script>
 <!-- ══ ПОПАП: ПРИЧИНА НЕУСПЕХА (вне всех контейнеров!) ══ -->
 <div class="fail-reason-popup" id="fail-reason-popup">
