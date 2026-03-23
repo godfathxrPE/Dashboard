@@ -11,7 +11,7 @@
 <!-- Применяем тему до рендера — убирает flash дефолтной темы -->
 <script>
   (function(){
-    var t = localStorage.getItem('dashboard-theme') || 't-claude';
+    let t = localStorage.getItem('dashboard-theme') || 't-claude';
     document.documentElement.classList.add(t);
   })();
 </script>
@@ -41,7 +41,7 @@
   .kpi-metric-name { color: var(--text); font-size: var(--text-base); display: flex; align-items: center; gap: 6px; }
   .kpi-pts { font-size: var(--text-xs); color: var(--text-mute); background: var(--surface2); border-radius: 4px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
   .kpi-cell { display: flex; align-items: center; justify-content: center; gap: 3px; }
-  .kpi-btn { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); font-size: 14px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.15s; flex-shrink: 0; }
+  .kpi-btn { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); font-size: 0.875rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.15s; flex-shrink: 0; }
   .kpi-btn:hover { background: var(--accent-l); color: var(--accent); border-color: var(--accent); }
   .kpi-btn:active { transform: scale(0.92); }
   .kpi-input { width: 30px; text-align: center; font-size: var(--text-base); font-weight: 600; color: var(--text); background: transparent; border: none; outline: none; font-family: inherit; padding: 0; -moz-appearance: textfield; }
@@ -77,7 +77,7 @@
     border: 1px solid var(--border);
     background: var(--surface2);
     color: var(--text-dim);
-    font-size: 12px;
+    font-size: 0.75rem;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.12s;
@@ -130,7 +130,7 @@
   }
   .kpi-modal-title {
     display: flex; align-items: center; gap: 10px;
-    font-weight: 600; font-size: 14px;
+    font-weight: 600; font-size: 0.875rem;
   }
 
   /* Кнопка закрытия */
@@ -140,7 +140,7 @@
     border: 1px solid var(--border);
     background: var(--surface2);
     color: var(--text-dim);
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.12s;
@@ -157,10 +157,10 @@
   }
 
   /* В модалке таблица шире, шрифт чуть крупнее */
-  .kpi-modal-body .kpi-table { font-size: 13px; }
-  .kpi-modal-body .kpi-metric-name { font-size: 13px; }
-  .kpi-modal-body .kpi-btn { width: 24px; height: 24px; font-size: 15px; }
-  .kpi-modal-body .kpi-input { width: 32px; font-size: 14px; }
+  .kpi-modal-body .kpi-table { font-size: var(--text-base); }
+  .kpi-modal-body .kpi-metric-name { font-size: var(--text-base); }
+  .kpi-modal-body .kpi-btn { width: 24px; height: 24px; font-size: var(--text-md); }
+  .kpi-modal-body .kpi-input { width: 32px; font-size: 0.875rem; }
   .kpi-modal-body .kpi-progress-wrap { margin-bottom: 6px; }
 
   /* Тема Aurora — стеклянная панель */
@@ -426,7 +426,7 @@
   html.t-paper .card-title {
     font-family: var(--font-editorial);
     font-style: italic;
-    font-size: 13px;
+    font-size: var(--text-base);
     letter-spacing: 0;
   }
   /* Точки-индикаторы — прямоугольники вместо кружков */
@@ -527,7 +527,7 @@
   html.t-sand .card-title {
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 700;
   }
   /* Точки — прямоугольники */
@@ -544,7 +544,7 @@
     border-radius: 0;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 600;
   }
   html.t-sand .btn-primary { border-radius: 0; }
@@ -553,7 +553,7 @@
   html.t-sand #scroll-progress { background: var(--accent); height: 3px; }
   /* Статусы — острые */
   html.t-sand .status-pill { border-radius: 0 !important; font-weight: 700; letter-spacing: 0.05em; }
-  html.t-sand .funnel-step { border-radius: 0; text-transform: uppercase; font-size: 8px; letter-spacing: 0.06em; }
+  html.t-sand .funnel-step { border-radius: 0; text-transform: uppercase; font-size: 0.5rem; letter-spacing: 0.06em; }
   html.t-sand .funnel-step.active { background: var(--text); border-color: var(--text); color: var(--surface); }
   html.t-sand .project-card { border-radius: 0; border-left: 3px solid var(--border2); }
   html.t-sand .project-card:hover { border-left-color: var(--accent); }
@@ -967,7 +967,7 @@
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    font-size: 13px;
+    font-size: var(--text-base);
     line-height: 1.5;
   }
 
@@ -1131,7 +1131,7 @@
     background: var(--logo-bg);
     border-radius: var(--radius-s);
     display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 12px; color: var(--logo-color);
+    font-weight: 600; font-size: 0.75rem; color: var(--logo-color);
     transition: background 0.3s;
   }
   .header-title { font-weight: 600; font-size: var(--text-md); }
@@ -1245,7 +1245,7 @@
     padding: 0;
     display: inline-flex; align-items: center; justify-content: center;
     border-radius: var(--radius-s);
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1;
   }
   .btn-ghost { border-color: transparent; }
@@ -1347,6 +1347,53 @@
     box-shadow: none;
   }
   .task-text { font-size: var(--text-base); flex: 1; color: var(--text); line-height: 1.4; }
+
+  /* ── Task Micro-animations ──
+     Паттерн: Staggered Entry + Highlight Pulse (Linear, Things 3).
+     Каждая задача появляется с лёгким slide-up + fade.
+     Перемещённая задача получает accent glow pulse. */
+  @keyframes task-enter {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .task-card-item {
+    animation: task-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* Stagger: каждый следующий элемент появляется чуть позже.
+     nth-child(1) = 0ms, (2) = 30ms, ... (10) = 270ms */
+  .task-card-item:nth-child(1)  { animation-delay: 0ms; }
+  .task-card-item:nth-child(2)  { animation-delay: 30ms; }
+  .task-card-item:nth-child(3)  { animation-delay: 60ms; }
+  .task-card-item:nth-child(4)  { animation-delay: 90ms; }
+  .task-card-item:nth-child(5)  { animation-delay: 120ms; }
+  .task-card-item:nth-child(6)  { animation-delay: 150ms; }
+  .task-card-item:nth-child(7)  { animation-delay: 180ms; }
+  .task-card-item:nth-child(8)  { animation-delay: 210ms; }
+  .task-card-item:nth-child(9)  { animation-delay: 240ms; }
+  .task-card-item:nth-child(10) { animation-delay: 270ms; }
+
+  /* Highlight pulse — задача которая только что переместилась.
+     Кратковременный accent glow + увеличение. */
+  @keyframes task-highlight {
+    0%   { box-shadow: 0 0 0 0 var(--accent-l); }
+    40%  { box-shadow: 0 0 0 4px var(--accent-l2); transform: scale(1.01); }
+    100% { box-shadow: 0 0 0 0 transparent; transform: scale(1); }
+  }
+  .task-card-item.task-just-moved {
+    animation: task-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) both,
+               task-highlight 0.6s ease 0.25s both;
+    border-radius: var(--radius-s);
+  }
+
+  /* Delete animation — задача сжимается и исчезает */
+  @keyframes task-exit {
+    to { opacity: 0; transform: scale(0.95) translateX(-8px); max-height: 0; padding: 0; margin: 0; }
+  }
+  .task-card-item.task-exiting {
+    animation: task-exit 0.25s cubic-bezier(0.4, 0, 1, 1) both;
+    overflow: hidden;
+    pointer-events: none;
+  }
   .task-meta { font-size: var(--text-xs); color: var(--text-mute); margin-top: 2px; }
   .task-time-badge {
     font-size: var(--text-2xs, 9px);
@@ -1454,7 +1501,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px 10px;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -1569,7 +1616,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px 8px;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -1771,7 +1818,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-base);
     padding: 8px 12px;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -1784,7 +1831,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-base);
     padding: 7px 10px;
     outline: none;
     cursor: pointer;
@@ -1920,7 +1967,7 @@
     display: flex; align-items: center; gap: 6px;
     background: none; border: 1px solid var(--border2);
     border-radius: var(--radius-s); color: var(--text-dim);
-    font-size: 11px; font-family: inherit;
+    font-size: var(--text-sm); font-family: inherit;
     padding: 5px 10px; cursor: pointer;
     transition: all 0.15s;
   }
@@ -1991,7 +2038,7 @@
   }
   .call-modal-close {
     background: none; border: none; cursor: pointer;
-    color: var(--text-mute); font-size: 16px; line-height: 1;
+    color: var(--text-mute); font-size: 1rem; line-height: 1;
     padding: 4px 8px; border-radius: var(--radius-s);
     transition: color 0.1s;
   }
@@ -2013,7 +2060,7 @@
   }
   .call-modal-field.wide { flex: 2; }
   .call-modal-label {
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 600;
     color: var(--text-mute);
     text-transform: uppercase;
@@ -2025,7 +2072,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-base);
     padding: 8px 10px;
     outline: none;
     transition: border-color 0.12s;
@@ -2048,7 +2095,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-base);
     line-height: 1.65;
     padding: 12px 14px;
     outline: none;
@@ -2112,25 +2159,25 @@
 
   .call-company {
     font-weight: 600;
-    font-size: 13px;
+    font-size: var(--text-base);
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .call-contact-inline {
-    font-size: 11px;
+    font-size: var(--text-sm);
     color: var(--text-dim);
     white-space: nowrap;
   }
   .call-date {
-    font-size: 11px;
+    font-size: var(--text-sm);
     color: var(--text-mute);
     white-space: nowrap;
     margin-left: 4px;
   }
   .call-status-pill {
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 500;
     padding: 2px 8px;
     border-radius: 10px;
@@ -2206,7 +2253,7 @@
     padding-top: 10px;
     border-top: 1px solid var(--border);
   }
-  .call-actions .btn { font-size: 11px; padding: 4px 10px; }
+  .call-actions .btn { font-size: var(--text-sm); padding: 4px 10px; }
 
 
   /* ══════════════════════════════════════════
@@ -2268,19 +2315,19 @@
     background: var(--accent-l); border-radius: 8px; padding: 1px 7px;
   }
   .w-daycalls-add {
-    font-size: 11px; padding: 3px 10px; border-radius: var(--radius-s);
+    font-size: var(--text-sm); padding: 3px 10px; border-radius: var(--radius-s);
     border: 1px solid var(--border); background: var(--surface2);
     color: var(--text-dim); cursor: pointer; transition: all 0.12s;
   }
   .w-daycalls-add:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
   .w-daycalls-empty {
-    font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0;
+    font-size: var(--text-sm); color: var(--text-mute); text-align: center; padding: 10px 0;
   }
   .w-daycalls-table {
-    width: 100%; border-collapse: collapse; font-size: 11px;
+    width: 100%; border-collapse: collapse; font-size: var(--text-sm);
   }
   .w-daycalls-table th {
-    text-align: left; padding: 4px 6px; font-size: 9px; font-weight: 600;
+    text-align: left; padding: 4px 6px; font-size: var(--text-2xs); font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.05em;
     color: var(--text-mute); border-bottom: 1px solid var(--border);
   }
@@ -2304,7 +2351,7 @@
   .dc-btn-sm {
     width: 20px; height: 20px; border-radius: var(--radius-s);
     border: 1px solid var(--border); background: var(--surface);
-    color: var(--text-mute); font-size: 11px; cursor: pointer;
+    color: var(--text-mute); font-size: var(--text-sm); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     padding: 0; transition: all 0.12s; flex-shrink: 0;
   }
@@ -2335,12 +2382,12 @@
   .dc-modal-header {
     padding: 14px 18px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
-    font-weight: 600; font-size: 14px;
+    font-weight: 600; font-size: 0.875rem;
   }
   .dc-modal-close {
     width: 26px; height: 26px; border-radius: var(--radius-s);
     border: 1px solid var(--border); background: var(--surface2);
-    color: var(--text-dim); font-size: 16px; cursor: pointer;
+    color: var(--text-dim); font-size: 1rem; cursor: pointer;
     display: flex; align-items: center; justify-content: center; padding: 0;
     transition: all 0.12s;
   }
@@ -2348,9 +2395,9 @@
   .dc-modal-body { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 10px; }
   .dc-modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .dc-modal-field { display: flex; flex-direction: column; gap: 3px; }
-  .dc-modal-field label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.04em; }
+  .dc-modal-field label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.04em; }
   .dc-modal-field input {
-    padding: 7px 10px; font-size: 13px; border-radius: var(--radius-s);
+    padding: 7px 10px; font-size: var(--text-base); border-radius: var(--radius-s);
     border: 1px solid var(--border); background: var(--surface);
     color: var(--text); font-family: inherit; outline: none;
     transition: border-color 0.15s;
@@ -2388,9 +2435,9 @@
   .dc-alert-header {
     background: var(--accent); color: #fff; padding: 14px 18px;
     display: flex; align-items: center; gap: 10px;
-    font-weight: 700; font-size: 15px;
+    font-weight: 700; font-size: var(--text-md);
   }
-  .dc-alert-icon { font-size: 22px; animation: dc-ring 0.6s ease-in-out infinite alternate; }
+  .dc-alert-icon { font-size: 1.375rem; animation: dc-ring 0.6s ease-in-out infinite alternate; }
   @keyframes dc-ring {
     0%   { transform: rotate(-15deg); }
     100% { transform: rotate(15deg); }
@@ -2398,9 +2445,9 @@
   .dc-alert-body { padding: 18px; }
   .dc-alert-info { display: flex; flex-direction: column; gap: 10px; }
   .dc-alert-row { display: flex; align-items: baseline; gap: 8px; }
-  .dc-alert-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-mute); min-width: 70px; letter-spacing: 0.04em; }
-  .dc-alert-value { font-size: 14px; font-weight: 500; color: var(--text); }
-  .dc-alert-value.big { font-size: 20px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .dc-alert-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; color: var(--text-mute); min-width: 70px; letter-spacing: 0.04em; }
+  .dc-alert-value { font-size: 0.875rem; font-weight: 500; color: var(--text); }
+  .dc-alert-value.big { font-size: 1.25rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
   .dc-alert-phone-link { color: var(--accent); text-decoration: none; font-weight: 600; }
   .dc-alert-phone-link:hover { text-decoration: underline; }
   .dc-alert-footer {
@@ -2409,7 +2456,7 @@
   }
   .dc-alert-btn {
     padding: 8px 18px; border-radius: var(--radius-s);
-    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-size: var(--text-base); font-weight: 600; cursor: pointer;
     border: 1px solid var(--border); background: var(--surface2);
     color: var(--text); transition: all 0.15s;
   }
@@ -2421,7 +2468,7 @@
   .w-dr-dismiss {
     width: 20px; height: 20px; border-radius: var(--radius-s);
     border: 1px solid var(--border); background: var(--surface);
-    color: var(--text-mute); font-size: 11px; cursor: pointer;
+    color: var(--text-mute); font-size: var(--text-sm); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     padding: 0; flex-shrink: 0; opacity: 0; transition: all 0.15s;
   }
@@ -2440,7 +2487,7 @@
   }
   .w-focus:focus-within { box-shadow: var(--shadow-md); }
   .w-focus-label {
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
@@ -2458,7 +2505,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-base);
     font-weight: 500;
     padding: 8px 12px;
     outline: none;
@@ -2467,7 +2514,7 @@
   .w-focus-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-l); }
   .w-focus-input::placeholder { color: var(--text-mute); font-weight: 400; }
   .w-focus-saved {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--green);
     margin-top: 5px;
     min-height: 14px;
@@ -2659,7 +2706,7 @@
     gap: 4px;
   }
   .w-timer-mode-btn {
-    font-size: 10px;
+    font-size: var(--text-xs);
     padding: 2px 7px;
     border-radius: 8px;
     border: 1px solid var(--border2);
@@ -2679,7 +2726,7 @@
     margin: 4px 0 12px;
   }
   .w-timer-digits {
-    font-size: 42px;
+    font-size: 2.625rem;
     font-weight: 700;
     letter-spacing: -1px;
     font-variant-numeric: tabular-nums;
@@ -2690,7 +2737,7 @@
   .w-timer-digits.running { color: var(--accent); }
   .w-timer-digits.alert   { color: var(--red); }
   .w-timer-task {
-    font-size: 11px;
+    font-size: var(--text-sm);
     color: var(--text-mute);
     text-align: center;
     margin-top: 4px;
@@ -2725,7 +2772,7 @@
     background: var(--surface2);
     color: var(--text);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s;
@@ -2851,36 +2898,36 @@
     content: '← свайп →';
     display: block;
     text-align: center;
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     padding: 4px 0 6px;
   }
 
   /* ── Задачи — увеличиваем touch targets ── */
   .task-item { padding: 8px 10px; }
-  .task-check { width: 18px; height: 18px; font-size: 11px; }
-  .task-text { font-size: 13px; }
-  .add-task-input { font-size: 14px; padding: 8px 10px; }
+  .task-check { width: 18px; height: 18px; font-size: var(--text-sm); }
+  .task-text { font-size: var(--text-base); }
+  .add-task-input { font-size: 0.875rem; padding: 8px 10px; }
   /* Кнопки действий всегда видны на мобиле */
   .task-actions { display: flex !important; }
 
   /* ── Кнопки — минимум 44px для пальца ── */
-  .btn { min-height: 36px; padding: 6px 12px; font-size: 12px; }
+  .btn { min-height: 36px; padding: 6px 12px; font-size: 0.75rem; }
   .btn-primary { min-height: 36px; }
 
   /* ── Проекты — карточки ── */
   .project-card { padding: 12px; }
   .funnel-stages { flex-wrap: wrap; gap: 4px; }
-  .funnel-step { padding: 3px 6px; font-size: 10px; }
+  .funnel-step { padding: 3px 6px; font-size: var(--text-xs); }
 
   /* ── Звонки ── */
   .call-head { flex-wrap: wrap; gap: 6px; }
   .call-date { margin-left: 0; }
 
   /* ── Виджеты ── */
-  .w-clock-time { font-size: 28px; }
+  .w-clock-time { font-size: 1.75rem; }
   .w-stats-grid { grid-template-columns: 1fr 1fr; }
-  .w-timer-digits { font-size: 36px; }
+  .w-timer-digits { font-size: 2.25rem; }
   .w-timer-mode-btns { flex-wrap: wrap; gap: 3px; }
 
   /* ── Модалки — на весь экран снизу ── */
@@ -2927,7 +2974,7 @@
   /* ── Встречи / Коммуникации / Заметки ── */
   .card-header { padding: 12px 14px; }
   .card-body { padding: 10px 14px !important; }
-  .notes-area { min-height: 100px; font-size: 14px; }
+  .notes-area { min-height: 100px; font-size: 0.875rem; }
 
   /* ── Переключатель тем — компактный ── */
   .theme-menu {
@@ -2939,8 +2986,8 @@
 
 /* ── ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (≤380px) ── */
 @media (max-width: 380px) {
-  .w-clock-time { font-size: 24px; }
-  .w-stat-num   { font-size: 18px; }
+  .w-clock-time { font-size: 1.5rem; }
+  .w-stat-num   { font-size: 1.125rem; }
   .task-lane { min-width: 85vw; max-width: 85vw; }
 }
 
@@ -3009,7 +3056,7 @@
     margin-top: 2px;
   }
   .w-ct-slash {
-    font-size: 28px;
+    font-size: 1.75rem;
     color: var(--border2);
     font-weight: 300;
   }
@@ -3025,7 +3072,7 @@
     border-radius: var(--radius-s);
     background: var(--surface2);
     color: var(--text);
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.15s;
@@ -3042,7 +3089,7 @@
     margin-bottom: 10px;
   }
   .w-ct-plan-label {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     white-space: nowrap;
   }
@@ -3053,7 +3100,7 @@
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-base);
     font-weight: 600;
     padding: 4px 8px;
     outline: none;
@@ -3062,7 +3109,7 @@
   }
   .w-ct-plan-input:focus { border-color: var(--accent); }
   .w-ct-plan-badge {
-    font-size: 10px;
+    font-size: var(--text-xs);
     padding: 3px 8px;
     border-radius: 20px;
     font-weight: 600;
@@ -3076,7 +3123,7 @@
     margin-top: 8px;
   }
   .w-ct-hourly-title {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     font-weight: 600;
     text-transform: uppercase;
@@ -3118,13 +3165,13 @@
   .w-ct-hour-bar.bar-empty { background: transparent; height: 0 !important; }
   .w-ct-hour-bar.bar-future { background: var(--border2); height: 3px !important; }
   .w-ct-hour-label {
-    font-size: 8px;
+    font-size: 0.5rem;
     color: var(--text-mute);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
   .w-ct-hour-count {
-    font-size: 9px;
+    font-size: var(--text-2xs);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     color: var(--text-dim);
@@ -3137,13 +3184,13 @@
     background: var(--accent-l);
     border: 1px solid var(--accent);
     border-radius: var(--radius-s);
-    font-size: 11px;
+    font-size: var(--text-sm);
     display: none;
   }
   .w-ct-report.show { display: block; }
   .w-ct-report-title {
     font-weight: 700;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--accent);
     margin-bottom: 8px;
   }
@@ -3152,7 +3199,7 @@
     justify-content: space-between;
     padding: 3px 0;
     border-bottom: 1px solid var(--border);
-    font-size: 11px;
+    font-size: var(--text-sm);
     color: var(--text-dim);
   }
   .w-ct-report-row:last-child { border: none; }
@@ -3204,16 +3251,16 @@
     background: var(--red-l);
     border-color: var(--red);
   }
-  .w-cr-btn-icon { font-size: 20px; line-height: 1; }
+  .w-cr-btn-icon { font-size: 1.25rem; line-height: 1; }
   .w-cr-btn-num {
-    font-size: 22px;
+    font-size: 1.375rem;
     font-weight: 700;
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
   .w-cr-btn.success .w-cr-btn-num { color: var(--green); }
   .w-cr-btn.fail    .w-cr-btn-num { color: var(--red); }
-  .w-cr-btn-label { font-size: 10px; color: var(--text-mute); font-weight: 500; text-align: center; }
+  .w-cr-btn-label { font-size: var(--text-xs); color: var(--text-mute); font-weight: 500; text-align: center; }
   .w-cr-rate-bar {
     height: 6px;
     background: var(--surface2);
@@ -3229,13 +3276,13 @@
     transition: width 0.5s ease;
   }
   .w-cr-rate-label {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     display: flex;
     justify-content: space-between;
   }
   .w-cr-reset {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     background: none;
     border: none;
@@ -3265,7 +3312,7 @@
   }
   .fail-reason-popup.open { display: block; }
   .fail-reason-title {
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 700;
     color: var(--text-mute);
     text-transform: uppercase;
@@ -3281,7 +3328,7 @@
     padding: 7px 9px;
     border-radius: var(--radius-s);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--text-dim);
     transition: background 0.1s;
   }
@@ -3295,7 +3342,7 @@
     border-top: 1px solid var(--border);
   }
   .w-cr-reasons-title {
-    font-size: 10px;
+    font-size: var(--text-xs);
     font-weight: 600;
     color: var(--text-mute);
     text-transform: uppercase;
@@ -3308,7 +3355,7 @@
     gap: 6px;
     margin-bottom: 4px;
   }
-  .w-cr-reason-label { font-size: 10px; color: var(--text-dim); width: 90px; flex-shrink: 0; }
+  .w-cr-reason-label { font-size: var(--text-xs); color: var(--text-dim); width: 90px; flex-shrink: 0; }
   .w-cr-reason-bar-wrap {
     flex: 1;
     height: 5px;
@@ -3317,7 +3364,7 @@
     overflow: hidden;
   }
   .w-cr-reason-bar { height: 100%; background: var(--red); border-radius: 3px; transition: width 0.4s; }
-  .w-cr-reason-count { font-size: 10px; color: var(--text-mute); width: 18px; text-align: right; flex-shrink: 0; }
+  .w-cr-reason-count { font-size: var(--text-xs); color: var(--text-mute); width: 18px; text-align: right; flex-shrink: 0; }
 
   /* ══════════════════════════════════════════
      ВИДЖЕТ: ТЕПЛОВАЯ КАРТА НЕДЕЛИ
@@ -3355,17 +3402,17 @@
     display: grid;
     grid-template-columns: 28px repeat(9, 1fr);
     gap: 2px;
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .w-hm-header {
     color: var(--text-mute);
     text-align: center;
     padding: 2px 0;
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .w-hm-day-label {
     color: var(--text-mute);
-    font-size: 9px;
+    font-size: var(--text-2xs);
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -3399,7 +3446,7 @@
     transform: translateX(-50%);
     background: var(--text);
     color: var(--surface);
-    font-size: 9px;
+    font-size: var(--text-2xs);
     padding: 2px 6px;
     border-radius: 4px;
     white-space: nowrap;
@@ -3438,8 +3485,8 @@
     align-items: center;
     gap: 8px;
   }
-  .w-fn-step-icon { font-size: 13px; width: 20px; text-align: center; flex-shrink: 0; }
-  .w-fn-step-label { font-size: 11px; color: var(--text-dim); width: 90px; flex-shrink: 0; }
+  .w-fn-step-icon { font-size: var(--text-base); width: 20px; text-align: center; flex-shrink: 0; }
+  .w-fn-step-label { font-size: var(--text-sm); color: var(--text-dim); width: 90px; flex-shrink: 0; }
   .w-fn-bar-wrap {
     flex: 1;
     height: 8px;
@@ -3453,7 +3500,7 @@
   .w-fn-bar.meetings { background: var(--accent); }
   .w-fn-bar.kp       { background: var(--green); }
   .w-fn-step-num {
-    font-size: 13px;
+    font-size: var(--text-base);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     width: 28px;
@@ -3473,7 +3520,7 @@
     flex-wrap: wrap;
   }
   .w-fn-conv-item {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -3494,14 +3541,14 @@
     flex-direction: column;
     gap: 3px;
   }
-  .w-fn-input-label { font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; }
+  .w-fn-input-label { font-size: var(--text-2xs); color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; }
   .w-fn-input {
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: var(--radius-s);
     color: var(--text);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     padding: 5px 8px;
     outline: none;
@@ -3512,7 +3559,7 @@
   .w-fn-input:focus { border-color: var(--accent); }
 
   .w-fn-week-label {
-    font-size: 10px;
+    font-size: var(--text-xs);
     color: var(--text-mute);
     text-align: center;
     margin-top: 4px;
@@ -3523,7 +3570,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 11px;
+    font-size: var(--text-sm);
     color: var(--text-mute);
     transition: color 0.3s;
   }
@@ -3758,7 +3805,7 @@
     text-transform: uppercase; letter-spacing: 0.07em;
     margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
   }
-  .w-dr-empty { font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0; }
+  .w-dr-empty { font-size: var(--text-sm); color: var(--text-mute); text-align: center; padding: 10px 0; }
   .w-dr-item {
     display: flex; align-items: center; gap: 8px;
     padding: 6px 0; border-bottom: 1px solid var(--border);
@@ -3771,10 +3818,10 @@
   .w-dr-dot.today    { background: var(--red); }
   .w-dr-dot.tomorrow { background: var(--yellow); }
   .w-dr-dot.soon     { background: var(--accent); }
-  .w-dr-name { font-size: 12px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .w-dr-type { font-size: 9px; color: var(--text-mute); background: var(--surface2); border-radius: 3px; padding: 1px 5px; flex-shrink: 0; }
+  .w-dr-name { font-size: 0.75rem; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .w-dr-type { font-size: var(--text-2xs); color: var(--text-mute); background: var(--surface2); border-radius: 3px; padding: 1px 5px; flex-shrink: 0; }
   .w-dr-days {
-    font-size: 11px; font-weight: 700; flex-shrink: 0; min-width: 36px; text-align: right;
+    font-size: var(--text-sm); font-weight: 700; flex-shrink: 0; min-width: 36px; text-align: right;
     font-variant-numeric: tabular-nums;
   }
   .w-dr-days.overdue  { color: var(--red); }
@@ -3796,15 +3843,15 @@
     font-size: var(--text-xs); font-weight: 700; color: var(--text-mute);
     text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px;
   }
-  .w-pp-empty { font-size: 11px; color: var(--text-mute); text-align: center; padding: 10px 0; }
+  .w-pp-empty { font-size: var(--text-sm); color: var(--text-mute); text-align: center; padding: 10px 0; }
   .w-pp-item { margin-bottom: 10px; }
   .w-pp-item:last-child { margin-bottom: 0; }
   .w-pp-top {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 4px; gap: 8px;
   }
-  .w-pp-name { font-size: 12px; font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .w-pp-pct { font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .w-pp-name { font-size: 0.75rem; font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .w-pp-pct { font-size: var(--text-sm); font-weight: 700; color: var(--accent); flex-shrink: 0; font-variant-numeric: tabular-nums; }
   .w-pp-track {
     height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden;
     border: 1px solid var(--border);
@@ -3815,7 +3862,7 @@
     transition: width 0.5s ease;
   }
   .w-pp-fill.done { background: var(--green); }
-  .w-pp-stage { font-size: 9px; color: var(--text-mute); margin-top: 2px; }
+  .w-pp-stage { font-size: var(--text-2xs); color: var(--text-mute); margin-top: 2px; }
 
   /* ══════════════════════════════════════════
      ВИДЖЕТ 3: ПЛАН vs ФАКТ НЕДЕЛИ
@@ -3832,25 +3879,25 @@
     text-transform: uppercase; letter-spacing: 0.07em;
     margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
   }
-  .w-pf-week { font-size: 10px; color: var(--text-mute); font-weight: 400; }
+  .w-pf-week { font-size: var(--text-xs); color: var(--text-mute); font-weight: 400; }
   .w-pf-row {
     display: flex; align-items: center; gap: 8px;
     padding: 5px 0; border-bottom: 1px solid var(--border);
   }
   .w-pf-row:last-child { border-bottom: none; }
-  .w-pf-metric { font-size: 11px; color: var(--text-dim); width: 100px; flex-shrink: 0; }
+  .w-pf-metric { font-size: var(--text-sm); color: var(--text-dim); width: 100px; flex-shrink: 0; }
   .w-pf-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
   .w-pf-bar-row { display: flex; align-items: center; gap: 5px; }
-  .w-pf-bar-label { font-size: 9px; color: var(--text-mute); width: 24px; flex-shrink: 0; }
+  .w-pf-bar-label { font-size: var(--text-2xs); color: var(--text-mute); width: 24px; flex-shrink: 0; }
   .w-pf-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
   .w-pf-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
   .w-pf-bar-fill.plan { background: var(--border2); }
   .w-pf-bar-fill.fact { background: var(--accent); }
   .w-pf-bar-fill.fact.over  { background: var(--green); }
   .w-pf-bar-fill.fact.under { background: var(--red); }
-  .w-pf-num { font-size: 11px; font-weight: 700; width: 28px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; color: var(--text); }
+  .w-pf-num { font-size: var(--text-sm); font-weight: 700; width: 28px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; color: var(--text); }
   .w-pf-delta {
-    font-size: 10px; font-weight: 600; flex-shrink: 0; min-width: 30px; text-align: right;
+    font-size: var(--text-xs); font-weight: 600; flex-shrink: 0; min-width: 30px; text-align: right;
     font-variant-numeric: tabular-nums;
   }
   .w-pf-delta.pos { color: var(--green); }
@@ -3862,11 +3909,11 @@
     gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border);
   }
   .w-pf-input-row { display: flex; flex-direction: column; gap: 3px; }
-  .w-pf-input-label { font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; }
+  .w-pf-input-label { font-size: var(--text-2xs); color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; }
   .w-pf-input {
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: var(--radius-s); color: var(--text); font-family: inherit;
-    font-size: 12px; font-weight: 600; padding: 4px 7px; outline: none;
+    font-size: 0.75rem; font-weight: 600; padding: 4px 7px; outline: none;
     width: 100%; text-align: center; transition: border-color 0.12s;
     -moz-appearance: textfield;
   }
@@ -3875,7 +3922,7 @@
   .w-pf-summary {
     margin-top: 8px; padding: 7px 10px;
     background: var(--accent-l); border: 1px solid var(--accent);
-    border-radius: var(--radius-s); font-size: 11px; color: var(--text);
+    border-radius: var(--radius-s); font-size: var(--text-sm); color: var(--text);
     display: flex; justify-content: space-between; align-items: center;
   }
   .w-pf-summary b { color: var(--accent); }
@@ -3899,7 +3946,7 @@
     display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px;
   }
   .w-ql-type {
-    font-size: 10px; padding: 3px 9px; border-radius: 20px;
+    font-size: var(--text-xs); padding: 3px 9px; border-radius: 20px;
     border: 1px solid var(--border2); cursor: pointer; color: var(--text-mute);
     background: var(--surface2); transition: all 0.12s; font-family: inherit;
   }
@@ -3910,24 +3957,24 @@
   .w-ql-input {
     flex: 1; background: var(--surface2); border: 1px solid var(--border);
     border-radius: var(--radius-s); color: var(--text); font-family: inherit;
-    font-size: 12px; padding: 6px 9px; outline: none; transition: border-color 0.12s;
+    font-size: 0.75rem; padding: 6px 9px; outline: none; transition: border-color 0.12s;
   }
   .w-ql-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-l); }
   .w-ql-input::placeholder { color: var(--text-mute); }
   .w-ql-add {
     padding: 6px 12px; border-radius: var(--radius-s); border: 1px solid var(--accent);
-    background: var(--accent); color: #fff; font-family: inherit; font-size: 11px;
+    background: var(--accent); color: #fff; font-family: inherit; font-size: var(--text-sm);
     font-weight: 500; cursor: pointer; transition: filter 0.15s; flex-shrink: 0;
   }
   .w-ql-add:hover { filter: brightness(1.1); }
   .w-ql-history { max-height: 130px; overflow-y: auto; }
   .w-ql-entry {
     display: flex; align-items: flex-start; gap: 7px; padding: 5px 0;
-    border-bottom: 1px solid var(--border); font-size: 11px;
+    border-bottom: 1px solid var(--border); font-size: var(--text-sm);
   }
   .w-ql-entry:last-child { border-bottom: none; }
   .w-ql-entry-type {
-    font-size: 9px; padding: 2px 6px; border-radius: 10px; flex-shrink: 0;
+    font-size: var(--text-2xs); padding: 2px 6px; border-radius: 10px; flex-shrink: 0;
     font-weight: 600; white-space: nowrap;
   }
   .ql-call  { background: var(--blue-l);   color: var(--blue);   }
@@ -3936,10 +3983,10 @@
   .ql-deal  { background: var(--green-l);  color: var(--green);  box-shadow: 0 0 6px rgba(46,125,82,0.3); }
   .ql-other { background: var(--surface2); color: var(--text-mute); }
   .w-ql-entry-text { flex: 1; color: var(--text-dim); line-height: 1.4; }
-  .w-ql-entry-time { font-size: 9px; color: var(--text-mute); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .w-ql-entry-time { font-size: var(--text-2xs); color: var(--text-mute); flex-shrink: 0; font-variant-numeric: tabular-nums; }
   .w-ql-entry-del {
     background: none; border: none; cursor: pointer; color: var(--text-mute);
-    font-size: 11px; padding: 0 2px; line-height: 1; transition: color 0.1s;
+    font-size: var(--text-sm); padding: 0 2px; line-height: 1; transition: color 0.1s;
     flex-shrink: 0;
   }
   .w-ql-entry-del:hover { color: var(--red); }
@@ -3994,7 +4041,7 @@
   }
   .wc-header-left {
     display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600;
+    font-size: var(--text-base); font-weight: 600;
   }
   .wc-header-icon {
     width: 22px; height: 22px;
@@ -4009,7 +4056,7 @@
     border: 1px solid var(--border);
     background: var(--surface2);
     color: var(--text-dim);
-    font-size: 16px; line-height: 1;
+    font-size: 1rem; line-height: 1;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.12s;
@@ -4020,7 +4067,7 @@
   /* Подзаголовок-подсказка */
   .wc-sub {
     padding: 7px 16px;
-    font-size: 10px; color: var(--text-mute);
+    font-size: var(--text-xs); color: var(--text-mute);
     background: var(--surface2);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
@@ -4035,7 +4082,7 @@
   /* Метка секции */
   .wc-section-label {
     padding: 10px 16px 3px;
-    font-size: 9px; font-weight: 600;
+    font-size: var(--text-2xs); font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--text-mute);
   }
@@ -4066,8 +4113,8 @@
   }
 
   .wc-row-info { flex: 1; min-width: 0; }
-  .wc-row-name { font-size: 12px; font-weight: 500; color: var(--text); }
-  .wc-row-desc { font-size: 10px; color: var(--text-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wc-row-name { font-size: 0.75rem; font-weight: 500; color: var(--text); }
+  .wc-row-desc { font-size: var(--text-xs); color: var(--text-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Toggle-переключатель */
   .wc-toggle {
@@ -4099,7 +4146,7 @@
     flex-shrink: 0;
   }
   .wc-counter {
-    font-size: 10px; color: var(--text-mute);
+    font-size: var(--text-xs); color: var(--text-mute);
     text-align: center; margin-bottom: 8px;
   }
   .wc-counter b { color: var(--accent); }
@@ -4108,7 +4155,7 @@
     background: none;
     border: 1px solid var(--border2);
     border-radius: var(--radius-s);
-    font-size: 11px; color: var(--text-dim);
+    font-size: var(--text-sm); color: var(--text-dim);
     cursor: pointer; font-family: inherit;
     transition: all 0.15s;
   }
@@ -4133,9 +4180,9 @@
     display: flex; align-items: center; gap: 6px;
     padding: 8px 16px 4px; flex-wrap: wrap;
   }
-  .proj-sort-label { font-size: 10px; color: var(--text-mute); }
+  .proj-sort-label { font-size: var(--text-xs); color: var(--text-mute); }
   .proj-sort-btn {
-    font-size: 10px; padding: 2px 9px; border-radius: 20px;
+    font-size: var(--text-xs); padding: 2px 9px; border-radius: 20px;
     border: 1px solid var(--border2); background: none;
     color: var(--text-mute); cursor: pointer; font-family: inherit; transition: all 0.12s;
   }
@@ -4146,32 +4193,32 @@
     border-radius: 0 var(--radius-s) var(--radius-s) 0;
   }
   .proj-next-step-label {
-    font-size: 9px; font-weight: 700; color: var(--accent);
+    font-size: var(--text-2xs); font-weight: 700; color: var(--accent);
     text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px;
   }
   .proj-next-step-input {
     width: 100%; box-sizing: border-box; background: transparent;
-    border: none; outline: none; color: var(--text); font-family: inherit; font-size: 12px;
+    border: none; outline: none; color: var(--text); font-family: inherit; font-size: 0.75rem;
   }
   .proj-last-contact {
     margin-top: 6px; padding: 7px 10px;
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-s);
   }
   .proj-last-contact-label {
-    font-size: 9px; font-weight: 700; color: var(--text-mute);
+    font-size: var(--text-2xs); font-weight: 700; color: var(--text-mute);
     text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
   }
   .proj-last-contact-input {
     width: 100%; box-sizing: border-box; background: transparent;
     border: none; outline: none; color: var(--text);
-    font-family: inherit; font-size: 12px; line-height: 1.5; resize: none; min-height: 34px;
+    font-family: inherit; font-size: 0.75rem; line-height: 1.5; resize: none; min-height: 34px;
   }
   .proj-last-contact-meta {
-    font-size: 9px; color: var(--text-mute); margin-top: 2px;
+    font-size: var(--text-2xs); color: var(--text-mute); margin-top: 2px;
     display: flex; justify-content: space-between;
   }
   .proj-deadline-days {
-    font-size: 10px; font-weight: 700; padding: 1px 6px;
+    font-size: var(--text-xs); font-weight: 700; padding: 1px 6px;
     border-radius: 10px; flex-shrink: 0;
   }
   .proj-deadline-days.overdue { background: var(--red-l);    color: var(--red); }
@@ -4184,18 +4231,18 @@
   }
   .projects-divider-line { flex: 1; height: 1px; background: var(--border2); }
   .projects-divider-label {
-    font-size: 11px; font-weight: 600; color: var(--text-mute);
+    font-size: var(--text-sm); font-weight: 600; color: var(--text-mute);
     display: flex; align-items: center; gap: 6px;
   }
-  .projects-divider-chevron { font-size: 9px; color: var(--text-mute); transition: transform 0.2s; }
+  .projects-divider-chevron { font-size: var(--text-2xs); color: var(--text-mute); transition: transform 0.2s; }
   .projects-divider-chevron.open { transform: rotate(180deg); }
   .projects-lost-grid { padding: 0 16px 12px; display: none; flex-direction: column; gap: 6px; }
   .projects-lost-grid.open { display: flex; }
   .project-card.lost { opacity: 0.78; border-left: 3px solid var(--red); background: var(--surface2); }
   .project-card.lost .project-name { color: var(--text-dim); text-decoration: line-through; text-decoration-color: var(--text-mute); }
-  .proj-lost-reason { font-size: 10px; color: var(--red); margin-top: 2px; font-style: italic; }
+  .proj-lost-reason { font-size: var(--text-xs); color: var(--red); margin-top: 2px; font-style: italic; }
   .proj-loss-badge {
-    font-size: 9px; padding: 2px 7px; border-radius: 10px;
+    font-size: var(--text-2xs); padding: 2px 7px; border-radius: 10px;
     background: var(--red-l); color: var(--red);
     border: 1px solid rgba(192,57,43,0.25); white-space: nowrap; flex-shrink: 0;
   }
@@ -4203,7 +4250,7 @@
   .loss-reason-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
   .loss-reason-opt {
     padding: 8px 10px; border: 1px solid var(--border2); border-radius: var(--radius-s);
-    cursor: pointer; font-size: 11px; color: var(--text-dim); background: var(--surface2);
+    cursor: pointer; font-size: var(--text-sm); color: var(--text-dim); background: var(--surface2);
     transition: all 0.12s; text-align: center; font-family: inherit;
   }
   .loss-reason-opt.active { background: var(--red-l); border-color: var(--red); color: var(--red); font-weight: 500; }
@@ -4221,7 +4268,7 @@
     animation: fadeIn 0.15s ease;
   }
   .loss-modal-title {
-    font-size: 14px; font-weight: 600; margin-bottom: 14px;
+    font-size: 0.875rem; font-weight: 600; margin-bottom: 14px;
     display: flex; align-items: center; justify-content: space-between;
   }
 
@@ -4229,39 +4276,39 @@
      ДОРАБОТКИ БЛОКА ПРОЕКТОВ
   ══════════════════════════════════════════ */
   .proj-sort-bar { display:flex;align-items:center;gap:6px;padding:8px 16px 4px;flex-wrap:wrap; }
-  .proj-sort-label { font-size:10px;color:var(--text-mute); }
-  .proj-sort-btn { font-size:10px;padding:2px 9px;border-radius:20px;border:1px solid var(--border2);background:none;color:var(--text-mute);cursor:pointer;font-family:inherit;transition:all 0.12s; }
+  .proj-sort-label { font-size: var(--text-xs);color:var(--text-mute); }
+  .proj-sort-btn { font-size: var(--text-xs);padding:2px 9px;border-radius:20px;border:1px solid var(--border2);background:none;color:var(--text-mute);cursor:pointer;font-family:inherit;transition:all 0.12s; }
   .proj-sort-btn.active { background:var(--accent-l);border-color:var(--accent);color:var(--accent); }
   .proj-next-step { margin-top:8px;padding:7px 10px;background:var(--accent-l);border-left:3px solid var(--accent);border-radius:0 var(--radius-s) var(--radius-s) 0; }
-  .proj-next-step-label { font-size:9px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px; }
-  .proj-next-step-input { width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:12px; }
+  .proj-next-step-label { font-size:var(--text-2xs);font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px; }
+  .proj-next-step-input { width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size: 0.75rem; }
   .proj-last-contact { margin-top:6px;padding:7px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-s); }
-  .proj-last-contact-label { font-size:9px;font-weight:700;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px; }
-  .proj-last-contact-input { width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:12px;line-height:1.5;resize:none;min-height:34px; }
-  .proj-last-contact-meta { font-size:9px;color:var(--text-mute);margin-top:2px;display:flex;justify-content:space-between; }
-  .proj-deadline-days { font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;flex-shrink:0; }
+  .proj-last-contact-label { font-size: var(--text-2xs);font-weight:700;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px; }
+  .proj-last-contact-input { width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size: 0.75rem;line-height:1.5;resize:none;min-height:34px; }
+  .proj-last-contact-meta { font-size: var(--text-2xs);color:var(--text-mute);margin-top:2px;display:flex;justify-content:space-between; }
+  .proj-deadline-days { font-size:var(--text-xs);font-weight:700;padding:1px 6px;border-radius:10px;flex-shrink:0; }
   .proj-deadline-days.overdue { background:var(--red-l);color:var(--red); }
   .proj-deadline-days.urgent  { background:var(--red-l);color:var(--red); }
   .proj-deadline-days.soon    { background:var(--yellow-l);color:var(--yellow); }
   .proj-deadline-days.ok      { background:var(--surface2);color:var(--text-mute); }
   .projects-divider { display:flex;align-items:center;gap:10px;padding:12px 16px 4px;cursor:pointer;user-select:none; }
   .projects-divider-line { flex:1;height:1px;background:var(--border2); }
-  .projects-divider-label { font-size:11px;font-weight:600;color:var(--text-mute);display:flex;align-items:center;gap:6px; }
-  .projects-divider-chevron { font-size:9px;color:var(--text-mute);transition:transform 0.2s; }
+  .projects-divider-label { font-size:var(--text-sm);font-weight:600;color:var(--text-mute);display:flex;align-items:center;gap:6px; }
+  .projects-divider-chevron { font-size: var(--text-2xs);color:var(--text-mute);transition:transform 0.2s; }
   .projects-divider-chevron.open { transform:rotate(180deg); }
   .projects-lost-grid { padding:0 16px 12px;display:none;flex-direction:column;gap:6px; }
   .projects-lost-grid.open { display:flex; }
   .project-card.lost { opacity:0.78;border-left:3px solid var(--red);background:var(--surface2); }
   .project-card.lost .project-name { color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-mute); }
-  .proj-lost-reason { font-size:10px;color:var(--red);margin-top:2px;font-style:italic; }
-  .proj-loss-badge { font-size:9px;padding:2px 7px;border-radius:10px;background:var(--red-l);color:var(--red);border:1px solid rgba(192,57,43,0.25);white-space:nowrap;flex-shrink:0; }
+  .proj-lost-reason { font-size:var(--text-xs);color:var(--red);margin-top:2px;font-style:italic; }
+  .proj-loss-badge { font-size:var(--text-2xs);padding:2px 7px;border-radius:10px;background:var(--red-l);color:var(--red);border:1px solid rgba(192,57,43,0.25);white-space:nowrap;flex-shrink:0; }
   .loss-reason-grid { display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px; }
-  .loss-reason-opt { padding:8px 10px;border:1px solid var(--border2);border-radius:var(--radius-s);cursor:pointer;font-size:11px;color:var(--text-dim);background:var(--surface2);transition:all 0.12s;text-align:center;font-family:inherit; }
+  .loss-reason-opt { padding:8px 10px;border:1px solid var(--border2);border-radius:var(--radius-s);cursor:pointer;font-size:var(--text-sm);color:var(--text-dim);background:var(--surface2);transition:all 0.12s;text-align:center;font-family:inherit; }
   .loss-reason-opt.active { background:var(--red-l);border-color:var(--red);color:var(--red);font-weight:500; }
   .loss-modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);z-index:550;display:none;align-items:center;justify-content:center; }
   .loss-modal-overlay.open { display:flex; }
   .loss-modal-win { background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:20px;width:420px;max-width:calc(100vw - 32px);box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:fadeIn 0.15s ease; }
-  .loss-modal-title { font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between; }
+  .loss-modal-title { font-size:0.875rem;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between; }
   /* ══════════════════════════════════════════
      SKELETON LOADING STATES
      Паттерн: Content Placeholder (Facebook, Linear).
@@ -4349,7 +4396,7 @@
     animation: toastOut 0.25s ease both;
   }
   .toast-icon {
-    font-size: 16px;
+    font-size: 1rem;
     flex-shrink: 0;
     line-height: 1.2;
   }
@@ -4368,7 +4415,7 @@
     border: none;
     color: var(--text-mute);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.875rem;
     padding: 0 2px;
     line-height: 1;
     transition: color 0.12s;
@@ -4446,7 +4493,7 @@
   }
   .cmd-search-icon {
     color: var(--text-mute);
-    font-size: 16px;
+    font-size: 1rem;
     flex-shrink: 0;
     display: flex; align-items: center;
   }
@@ -4706,7 +4753,7 @@
   .tour-btns .btn,
   .tour-btns .btn-primary {
     white-space: nowrap;
-    font-size: 11px;
+    font-size: var(--text-sm);
     padding: 5px 12px;
   }
   .tour-skip {
@@ -4802,7 +4849,7 @@
     display: inline-flex; align-items: center; gap: 4px;
     padding: 3px 8px;
     border-radius: 99px;
-    font-size: 11px;
+    font-size: var(--text-sm);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     color: var(--text-dim);
@@ -4816,7 +4863,7 @@
     border-color: rgba(255,120,30,0.35);
     color: #e06020;
   }
-  .streak-badge .streak-fire { font-size: 13px; line-height: 1; }
+  .streak-badge .streak-fire { font-size: var(--text-base); line-height: 1; }
   .streak-badge .streak-num { font-weight: 700; }
 
   /* ══════════════════════════════════════════
@@ -4913,7 +4960,7 @@
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s var(--ease-out, ease), box-shadow 0.2s;
-      font-size: 24px;
+      font-size: 1.5rem;
     }
     .fab-main:active { transform: scale(0.92); }
     .fab-container.open .fab-main { transform: rotate(45deg); }
@@ -4939,7 +4986,7 @@
       border: 1px solid var(--border2);
       border-radius: 99px;
       box-shadow: var(--shadow-md);
-      font-size: 12px; font-weight: 500;
+      font-size: 0.75rem; font-weight: 500;
       color: var(--text);
       cursor: pointer;
       font-family: inherit;
@@ -5243,8 +5290,8 @@
 
     /* Типографика — чёткая для печати */
     * { color: #111 !important; }
-    .card-title { font-size: 11px !important; }
-    .w-stat-num { font-size: 20px !important; }
+    .card-title { font-size: var(--text-sm) !important; }
+    .w-stat-num { font-size: 1.25rem !important; }
 
     /* Sparklines — скрываем (не переносятся на бумагу) */
     .sparkline { display: none !important; }
@@ -5423,12 +5470,12 @@
 
 .auth-title {
   font-weight: 400;
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: var(--text);
   margin-bottom: 6px;
 }
 .auth-sub {
-  font-size: 13px;
+  font-size: var(--text-base);
   color: var(--text-mute);
   line-height: 1.5;
   margin-bottom: 24px;
@@ -5444,7 +5491,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--text);
-  font-size: 15px;
+  font-size: var(--text-md);
   font-family: 'Manrope', sans-serif;
   outline: none;
   margin-bottom: 12px;
@@ -5480,7 +5527,7 @@
   border-radius: 12px;
   background: var(--accent);
   color: #fff;
-  font-size: 15px;
+  font-size: var(--text-md);
   font-weight: 500;
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
@@ -5500,7 +5547,7 @@
 #login-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 #login-msg {
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 14px;
   min-height: 18px;
   line-height: 1.5;
@@ -5513,7 +5560,7 @@
   bottom: 28px;
   left: 0; right: 0;
   text-align: center;
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--text-mute);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -5864,7 +5911,7 @@
       <div class="w-ct-hourly">
         <div class="w-ct-hourly-title">
           <span>По часам (норма 5/час)</span>
-          <span id="wct-hour-now" style="font-weight:400;font-size:9px;color:var(--text-mute)"></span>
+          <span id="wct-hour-now" style="font-weight:400;font-size: var(--text-2xs);color:var(--text-mute)"></span>
         </div>
         <div class="w-ct-hours-grid" id="wct-hours-grid"></div>
       </div>
@@ -5972,7 +6019,7 @@
     <div class="w-deadline-radar" data-widget-id="deadlines">
       <div class="w-dr-label">
         <span>🔴 Дедлайн-радар</span>
-        <span id="wdr-count" style="font-size:10px;font-weight:400;"></span>
+        <span id="wdr-count" style="font-size:var(--text-xs);font-weight:400;"></span>
       </div>
       <div id="wdr-list"><div class="w-dr-empty">Нет срочных дедлайнов</div></div>
     </div>
@@ -6069,7 +6116,7 @@
     <div class="w-activity" data-widget-id="activity">
       <div class="w-act-label">
         <span>Лента действий</span>
-        <button class="btn" onclick="clearActivity()" style="font-size:9px;padding:2px 6px;">Очистить</button>
+        <button class="btn" onclick="clearActivity()" style="font-size:var(--text-2xs);padding:2px 6px;">Очистить</button>
       </div>
       <div class="w-act-list" id="act-list">
         <div class="w-act-empty">Действия появятся здесь</div>
@@ -6182,9 +6229,9 @@
       <div class="kpi-modal-title">
         <span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;display:inline-block;"></span>
         KPI недели
-        <span style="font-size:13px;font-weight:400;color:var(--text-dim)">—</span>
-        <span id="kpi-modal-week-num" style="font-size:22px;font-weight:700;color:var(--accent)">0</span>
-        <span style="font-size:12px;color:var(--text-dim)">/ 50 б</span>
+        <span style="font-size: var(--text-base);font-weight:400;color:var(--text-dim)">—</span>
+        <span id="kpi-modal-week-num" style="font-size:1.375rem;font-weight:700;color:var(--accent)">0</span>
+        <span style="font-size: 0.75rem;color:var(--text-dim)">/ 50 б</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="kpi-reset-btn" onclick="kpiReset()">↺ Сброс</button>
@@ -6538,7 +6585,7 @@ const ICON = {
 };
 /* Helper: получить иконку по ключу */
 function icon(name, size) {
-  var s = ICON[name] || '';
+  let s = ICON[name] || '';
   if (size && s) s = s.replace(/width="\d+"/, 'width="'+size+'"').replace(/height="\d+"/, 'height="'+size+'"');
   return s;
 }
@@ -6571,7 +6618,7 @@ function updateHeaderDate() {
   const months = ['января','февраля','марта','апреля','мая','июня',
                   'июля','августа','сентября','октября','ноября','декабря'];
   const days = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-  var hdEl = document.getElementById('header-date');
+  let hdEl = document.getElementById('header-date');
   if (hdEl) hdEl.textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 updateHeaderDate();
@@ -6581,6 +6628,9 @@ updateHeaderDate();
 ═══════════════════════════════════════════ */
 let draggingId = null;
 let ctxTaskId  = null;
+/* Трекер: ID задачи которая только что переместилась.
+   renderTasks() подсветит её highlight-пульсом. */
+let _lastMovedTaskId = null;
 
 function renderTasks() {
   const lanes = ['now','next','wait','done'];
@@ -6608,6 +6658,13 @@ function renderTasks() {
   /* WIP Limit check + Smart Alerts refresh */
   checkWipLimit();
   updateSmartAlerts();
+
+  /* Highlight перемещённой задачи — accent glow pulse */
+  if (_lastMovedTaskId) {
+    let movedEl = document.querySelector('.task-card-item[data-id="' + _lastMovedTaskId + '"]');
+    if (movedEl) movedEl.classList.add('task-just-moved');
+    _lastMovedTaskId = null;
+  }
 }
 
 function taskHTML(t) {
@@ -6644,9 +6701,10 @@ function taskHTML(t) {
 function toggleTask(id) {
   const t = tasks.find(t => t.id === id);
   if(!t) return;
-  var wasDone = (t.lane === 'done');
+  let wasDone = (t.lane === 'done');
   if (t.lane === 'done') { t.lane = 'now'; delete t.doneAt; } else { t.lane = 'done'; t.doneAt = Date.now(); }
   LS.set('wdb_tasks', tasks);
+  _lastMovedTaskId = id;
   renderTasks();
   /* Celebration при завершении задачи */
   if (!wasDone && t.lane === 'done') {
@@ -6654,18 +6712,28 @@ function toggleTask(id) {
     logActivity('target', 'Выполнил задачу: ' + t.text);
     updateStreak();
     /* Проверяем: все задачи "Сейчас" выполнены? */
-    var nowTasks = tasks.filter(function(x) { return x.lane === 'now'; });
+    let nowTasks = tasks.filter(function(x) { return x.lane === 'now'; });
     if (nowTasks.length === 0 && tasks.filter(function(x) { return x.lane === 'done'; }).length > 0) {
       setTimeout(function() { checkCelebration('all-tasks-done'); }, 600);
     }
   }
 }
 
-// Удалить задачу вручную
+// Удалить задачу вручную — с exit-анимацией
 function deleteTask(id) {
-  tasks = tasks.filter(t => t.id !== id);
-  LS.set('wdb_tasks', tasks);
-  renderTasks();
+  let el = document.querySelector('.task-card-item[data-id="' + id + '"]');
+  if (el) {
+    el.classList.add('task-exiting');
+    setTimeout(function() {
+      tasks = tasks.filter(t => t.id !== id);
+      LS.set('wdb_tasks', tasks);
+      renderTasks();
+    }, 250); /* Длительность совпадает с task-exit animation */
+  } else {
+    tasks = tasks.filter(t => t.id !== id);
+    LS.set('wdb_tasks', tasks);
+    renderTasks();
+  }
 }
 
 // Автоудаление выполненных задач старше 10 дней
@@ -6685,9 +6753,11 @@ function cleanOldDoneTasks() {
 function quickAdd(lane, input) {
   const text = input.value.trim();
   if(!text) return;
-  tasks.push({ id: uid(), text, lane, project:'', deadline:'' });
+  let newId = uid();
+  tasks.push({ id: newId, text, lane, project:'', deadline:'' });
   LS.set('wdb_tasks', tasks);
   input.value = '';
+  _lastMovedTaskId = newId;
   renderTasks();
 }
 
@@ -6696,16 +6766,16 @@ function selectPriority(val) {
   document.querySelectorAll('#task-priority-sel .priority-opt').forEach(function(btn) {
     btn.className = 'priority-opt';
   });
-  var btns = document.querySelectorAll('#task-priority-sel .priority-opt');
+  let btns = document.querySelectorAll('#task-priority-sel .priority-opt');
   if (val === 'important') btns[1].classList.add('active-important');
   else if (val === 'critical') btns[2].classList.add('active-critical');
   else btns[0].classList.add('active-none');
 }
 
 function populateProjectDropdown() {
-  var sel = document.getElementById('task-proj-in');
+  let sel = document.getElementById('task-proj-in');
   if (!sel) return;
-  var html = '<option value="">— без проекта —</option>';
+  let html = '<option value="">— без проекта —</option>';
   (LS.get('wdb_projects', [])).forEach(function(p) {
     if (p.stage === 'lost') return;
     html += '<option value="' + p.id + '">' + esc(p.name) + '</option>';
@@ -6742,14 +6812,17 @@ function saveTask() {
   const projObj = projId ? (LS.get('wdb_projects', [])).find(function(p) { return p.id === projId; }) : null;
   const projName = projObj ? projObj.name : '';
   if(!text) return;
+  let taskId = id;
   if(id) {
     const t = tasks.find(t => t.id === id);
     if(t) Object.assign(t, {text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind});
   } else {
-    tasks.push({ id: uid(), text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind });
+    taskId = uid();
+    tasks.push({ id: taskId, text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind });
   }
   LS.set('wdb_tasks', tasks);
   closeModal('task-modal');
+  _lastMovedTaskId = taskId;
   renderTasks();
   toast(id ? 'Задача обновлена' : 'Задача создана', 'success');
   logActivity('clipboard', (id ? 'Обновил' : 'Создал') + ' задачу: ' + text);
@@ -6763,7 +6836,7 @@ function onDrop(e, lane) {
   e.currentTarget.classList.remove('drag-over');
   if(!draggingId) return;
   const t = tasks.find(t => t.id === draggingId);
-  if(t) { t.lane = lane; LS.set('wdb_tasks', tasks); renderTasks(); }
+  if(t) { t.lane = lane; LS.set('wdb_tasks', tasks); _lastMovedTaskId = t.id; renderTasks(); }
   draggingId = null;
 }
 
@@ -6771,7 +6844,7 @@ function onDrop(e, lane) {
 function ctxMoveTo(lane) {
   if(!ctxTaskId) return;
   const t = tasks.find(x => x.id === ctxTaskId);
-  if(t) { t.lane = lane; LS.set('wdb_tasks', tasks); renderTasks(); }
+  if(t) { t.lane = lane; LS.set('wdb_tasks', tasks); _lastMovedTaskId = t.id; renderTasks(); }
   closeCtx();
 }
 function ctxEdit() {
@@ -6780,10 +6853,10 @@ function ctxEdit() {
 }
 function ctxDelete() {
   if(!ctxTaskId) return;
-  var deleted = tasks.find(t => t.id === ctxTaskId);
+  let deleted = tasks.find(t => t.id === ctxTaskId);
   if (!deleted) return;
-  var idx = tasks.indexOf(deleted);
-  var delId = ctxTaskId;
+  let idx = tasks.indexOf(deleted);
+  let delId = ctxTaskId;
   tasks = tasks.filter(t => t.id !== delId);
   LS.set('wdb_tasks', tasks);
   renderTasks();
@@ -6934,10 +7007,10 @@ function renderProjects() {
    Red: просрочен дедлайн + давно нет контакта. */
 function getHealthClass(p) {
   if (p.stage === 'lost') return '';
-  var score = 3; /* 3=healthy, 2=warning, 1=critical */
+  let score = 3; /* 3=healthy, 2=warning, 1=critical */
   /* Дни без контакта */
   if (p.lastContactDate) {
-    var daysSince = Math.floor((Date.now() - new Date(p.lastContactDate).getTime()) / 86400000);
+    let daysSince = Math.floor((Date.now() - new Date(p.lastContactDate).getTime()) / 86400000);
     if (daysSince > 7) score--;
     if (daysSince > 14) score--;
   } else { score--; }
@@ -6945,7 +7018,7 @@ function getHealthClass(p) {
   if (!p.nextStep) score--;
   /* Просроченный дедлайн */
   if (p.deadline) {
-    var diff = Math.floor((new Date(p.deadline + 'T00:00:00') - new Date()) / 86400000);
+    let diff = Math.floor((new Date(p.deadline + 'T00:00:00') - new Date()) / 86400000);
     if (diff < 0) score--;
   }
   if (score >= 3) return 'healthy';
@@ -6959,7 +7032,7 @@ function projectHTML(p) {
   const dd = deadlineDays(p.deadline);
 
   const deadlineHtml = p.deadline ? (
-    '<span style="font-size:11px;color:' + (dd.cls==='overdue'||dd.cls==='urgent'?'var(--red)':'var(--text-mute)') + '">📅 ' + fmtDate(p.deadline) + '</span>' +
+    '<span style="font-size:var(--text-sm);color:' + (dd.cls==='overdue'||dd.cls==='urgent'?'var(--red)':'var(--text-mute)') + '">📅 ' + fmtDate(p.deadline) + '</span>' +
     '<span class="proj-deadline-days ' + dd.cls + '">' + dd.text + '</span>'
   ) : '';
 
@@ -6974,7 +7047,7 @@ function projectHTML(p) {
   }).join('');
 
   const nextStepPreview = p.nextStep
-    ? '<div style="font-size:10px;color:var(--accent);margin-top:2px;">→ ' + esc(p.nextStep) + '</div>'
+    ? '<div style="font-size:var(--text-xs);color:var(--accent);margin-top:2px;">→ ' + esc(p.nextStep) + '</div>'
     : '';
 
   return `
@@ -7055,10 +7128,10 @@ function lostProjectHTML(p) {
         ${p.lossDetail ? '<div class="proj-lost-reason">' + esc(p.lossDetail) + '</div>' : ''}
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
-        ${p.budget ? '<span style="font-size:10px;color:var(--text-mute)">' + fmtBudget(p.budget) + '</span>' : ''}
+        ${p.budget ? '<span style="font-size:var(--text-xs);color:var(--text-mute)">' + fmtBudget(p.budget) + '</span>' : ''}
         <span class="proj-loss-badge">${esc(p.lossReason||'Проиграна')}${p.lostDate ? ' · ' + fmtDate(p.lostDate) : ''}</span>
-        <button class="btn" style="font-size:10px;padding:2px 8px;" onclick="restoreProject('${p.id}')">↩ Вернуть</button>
-        <button class="btn" style="font-size:10px;padding:2px 8px;color:var(--red)" onclick="deleteProject('${p.id}')">Удалить</button>
+        <button class="btn" style="font-size:var(--text-xs);padding:2px 8px;" onclick="restoreProject('${p.id}')">↩ Вернуть</button>
+        <button class="btn" style="font-size:var(--text-xs);padding:2px 8px;color:var(--red)" onclick="deleteProject('${p.id}')">Удалить</button>
       </div>
     </div>
   </div>`;
@@ -7067,26 +7140,26 @@ function lostProjectHTML(p) {
 /* ── Связанные задачи и звонки в проекте ──
    Паттерн: Linked Items (Notion Relations, Linear Sub-issues). */
 function getLinkedItemsHTML(projectId) {
-  var linkedTasks = tasks.filter(function(t) { return t.projectId === projectId && t.lane !== 'done'; });
-  var doneTasks = tasks.filter(function(t) { return t.projectId === projectId && t.lane === 'done'; });
+  let linkedTasks = tasks.filter(function(t) { return t.projectId === projectId && t.lane !== 'done'; });
+  let doneTasks = tasks.filter(function(t) { return t.projectId === projectId && t.lane === 'done'; });
   /* Запланированные звонки — ищем по projectId */
-  var dcList = LS.get('wdb_daycalls_' + new Date().toISOString().split('T')[0], []);
-  var linkedCalls = dcList.filter(function(c) { return c.projectId === projectId; });
+  let dcList = LS.get('wdb_daycalls_' + new Date().toISOString().split('T')[0], []);
+  let linkedCalls = dcList.filter(function(c) { return c.projectId === projectId; });
 
   if (!linkedTasks.length && !doneTasks.length && !linkedCalls.length) return '';
 
-  var html = '<div class="proj-linked" onclick="event.stopPropagation()">';
+  let html = '<div class="proj-linked" onclick="event.stopPropagation()">';
 
   if (linkedTasks.length || doneTasks.length) {
     html += '<div class="proj-linked-title">' + ICON.clipboard + ' Задачи (' + linkedTasks.length + ' активных)</div>';
     linkedTasks.forEach(function(t) {
-      var prioMark = t.priority === 'critical' ? ' style="color:var(--red)"' : t.priority === 'important' ? ' style="color:var(--yellow)"' : '';
+      let prioMark = t.priority === 'critical' ? ' style="color:var(--red)"' : t.priority === 'important' ? ' style="color:var(--yellow)"' : '';
       html += '<div class="proj-linked-item"><span class="linked-dot task"' + prioMark + '></span>' + esc(t.text) +
-        (t.deadline ? '<span style="font-size:9px;color:var(--text-mute);margin-left:auto;flex-shrink:0;">' + fmtDate(t.deadline) + '</span>' : '') +
+        (t.deadline ? '<span style="font-size: var(--text-2xs);color:var(--text-mute);margin-left:auto;flex-shrink:0;">' + fmtDate(t.deadline) + '</span>' : '') +
         '</div>';
     });
     if (doneTasks.length) {
-      html += '<div style="font-size:9px;color:var(--text-mute);margin-top:2px;">' + doneTasks.length + ' выполнено</div>';
+      html += '<div style="font-size: var(--text-2xs);color:var(--text-mute);margin-top:2px;">' + doneTasks.length + ' выполнено</div>';
     }
   }
 
@@ -7111,7 +7184,7 @@ function toggleProject(id) {
 function setProjectStage(id, stage) {
   const p = projects.find(x => x.id === id);
   if(p) {
-    var oldStage = p.stage;
+    let oldStage = p.stage;
     p.stage = stage;
     LS.set('wdb_projects', projects);
     renderProjects();
@@ -7124,7 +7197,7 @@ function setProjectStage(id, stage) {
    Проект перетаскивается → бросается на этап воронки.
    Также поддерживает перетаскивание между карточками проектов
    для изменения порядка. */
-var projDraggingId = null;
+let projDraggingId = null;
 
 function projDragStart(e, id) {
   projDraggingId = id;
@@ -7132,7 +7205,7 @@ function projDragStart(e, id) {
   e.dataTransfer.setData('text/plain', id);
   /* Задержка чтобы dragging-класс не мешал snapshot */
   setTimeout(function() {
-    var card = document.querySelector('.project-card[data-id="' + id + '"]');
+    let card = document.querySelector('.project-card[data-id="' + id + '"]');
     if (card) card.classList.add('dragging');
   }, 0);
 }
@@ -7162,7 +7235,7 @@ function projFunnelDrop(e, projId, stageIdx) {
   e.stopPropagation();
   e.currentTarget.classList.remove('drop-target');
   /* Используем id перетаскиваемого проекта если бросили на чужую воронку */
-  var id = projDraggingId || projId;
+  let id = projDraggingId || projId;
   setProjectStage(id, stageIdx);
 }
 
@@ -7240,9 +7313,9 @@ function saveProject() {
 }
 
 function deleteProject(id) {
-  var deleted = projects.find(x => x.id === id);
+  let deleted = projects.find(x => x.id === id);
   if (!deleted) return;
-  var idx = projects.indexOf(deleted);
+  let idx = projects.indexOf(deleted);
   projects = projects.filter(x => x.id !== id);
   LS.set('wdb_projects', projects);
   if(expandedProject === id) expandedProject = null;
@@ -7319,9 +7392,9 @@ function saveMeeting() {
 }
 
 function deleteMeeting(id) {
-  var deleted = meetings.find(x => x.id === id);
+  let deleted = meetings.find(x => x.id === id);
   if (!deleted) return;
-  var idx = meetings.indexOf(deleted);
+  let idx = meetings.indexOf(deleted);
   meetings = meetings.filter(x => x.id !== id);
   LS.set('wdb_meetings', meetings);
   renderMeetings();
@@ -7393,9 +7466,9 @@ function saveComm() {
 }
 
 function deleteComm(id) {
-  var deleted = comms.find(x => x.id === id);
+  let deleted = comms.find(x => x.id === id);
   if (!deleted) return;
-  var idx = comms.indexOf(deleted);
+  let idx = comms.indexOf(deleted);
   comms = comms.filter(x => x.id !== id);
   LS.set('wdb_comms', comms);
   renderComms();
@@ -7510,35 +7583,35 @@ function kpiReset() {
 }
 
 function renderKPI() {
-  var table = document.getElementById('kpi-table');
+  let table = document.getElementById('kpi-table');
   if (!table) return;
-  var today = kpiTodayIdx();
-  var dayTotals = [0,0,0,0,0];
+  let today = kpiTodayIdx();
+  let dayTotals = [0,0,0,0,0];
   KPI_METRICS.forEach(function(m) {
-    for (var di = 0; di < 5; di++) {
+    for (let di = 0; di < 5; di++) {
       dayTotals[di] += (kpiData.counts[m.id][di] || 0) * m.pts;
     }
   });
-  var weekTotal = dayTotals.reduce(function(a,b){return a+b;}, 0);
+  let weekTotal = dayTotals.reduce(function(a,b){return a+b;}, 0);
 
   // Синхронизируем числа в обоих местах: виджет + модалка
   ['kpi-week-num', 'kpi-modal-week-num'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) animateValue(el, weekTotal, 400);
+    let el = document.getElementById(id); if (el) animateValue(el, weekTotal, 400);
   });
-  var pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
+  let pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
   ['kpi-progress-fill','kpi-modal-progress-fill'].forEach(function(id) {
-    var el = document.getElementById(id);
+    let el = document.getElementById(id);
     if (el) { el.style.width = pct + '%'; el.className = 'kpi-progress-fill' + (weekTotal >= KPI_GOAL ? ' done' : ''); }
   });
   /* Celebration при достижении 100% */
   if (weekTotal >= KPI_GOAL) { checkCelebration('kpi-100'); }
   else { checkCelebration('kpi-reset'); }
   ['kpi-progress-pct','kpi-modal-progress-pct'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.textContent = pct + '%';
+    let el = document.getElementById(id); if (el) el.textContent = pct + '%';
   });
 
   // Генерируем HTML таблицы один раз — ставим в оба контейнера
-  var html = '<thead><tr><th class="kpi-metric-head">Показатель</th>';
+  let html = '<thead><tr><th class="kpi-metric-head">Показатель</th>';
   KPI_DAYS.forEach(function(d, di) {
     html += '<th class="' + (di===today?'kpi-today-col':'') + '">' + d + '</th>';
   });
@@ -7546,10 +7619,10 @@ function renderKPI() {
   KPI_METRICS.forEach(function(m) {
     html += '<tr><td><div class="kpi-metric-name">' + m.name + '<span class="kpi-pts">' + m.pts + '&nbsp;б</span></div></td>';
     KPI_DAYS.forEach(function(_, di) {
-      var val = kpiData.counts[m.id][di] || 0;
-      var tdCls = di===today ? 'kpi-today-col' : '';
-      var inCls = val===0 ? ' zero' : '';
-      var mid = m.id;
+      let val = kpiData.counts[m.id][di] || 0;
+      let tdCls = di===today ? 'kpi-today-col' : '';
+      let inCls = val===0 ? ' zero' : '';
+      let mid = m.id;
       html += '<td class="' + tdCls + '"><div class="kpi-cell">'
         + '<button class="kpi-btn" onclick="kpiChange(\'' + mid + '\',' + di + ',-1)">−</button>'
         + '<input class="kpi-input' + inCls + '" type="number" min="0" value="' + (val===0?'':val) + '" placeholder="·"'
@@ -7562,21 +7635,21 @@ function renderKPI() {
   });
   html += '<tr class="kpi-total-row"><td><span class="kpi-total-label">Баллы за день</span></td>';
   KPI_DAYS.forEach(function(_, di) {
-    var tdCls = di===today ? 'kpi-today-col' : '';
-    var vCls = dayTotals[di]===0 ? ' zero' : '';
+    let tdCls = di===today ? 'kpi-today-col' : '';
+    let vCls = dayTotals[di]===0 ? ' zero' : '';
     html += '<td class="'+tdCls+'"><div class="kpi-total-val'+vCls+'">'+(dayTotals[di]||'—')+'</div></td>';
   });
   html += '</tr></tbody>';
 
   table.innerHTML = html;
-  var modalTable = document.getElementById('kpi-modal-table');
+  let modalTable = document.getElementById('kpi-modal-table');
   if (modalTable) modalTable.innerHTML = html;
 }
 
 /* ── KPI MODAL: открытие / закрытие ── */
 function kpiModalOpen() {
   renderKPI(); // актуализируем данные перед показом
-  var bd = document.getElementById('kpi-modal-backdrop');
+  let bd = document.getElementById('kpi-modal-backdrop');
   bd.classList.add('open');
   // Блокируем прокрутку страницы пока модалка открыта
   document.body.style.overflow = 'hidden';
@@ -7748,9 +7821,9 @@ function saveCall() {
 }
 
 function deleteCall(id) {
-  var deleted = calls.find(x => x.id === id);
+  let deleted = calls.find(x => x.id === id);
   if (!deleted) return;
-  var idx = calls.indexOf(deleted);
+  let idx = calls.indexOf(deleted);
   calls = calls.filter(x => x.id !== id);
   LS.set('wdb_calls', calls);
   renderCalls();
@@ -7967,7 +8040,7 @@ function renderCallResults() {
     const reasons = cr.reasons || {};
     const total_r = Object.values(reasons).reduce((a,b) => a+b, 0);
     if (total_r === 0) {
-      barsEl.innerHTML = '<div style="font-size:10px;color:var(--text-mute);padding:4px 0">Нажми ✕ и выбери причину</div>';
+      barsEl.innerHTML = '<div style="font-size: var(--text-xs);color:var(--text-mute);padding:4px 0">Нажми ✕ и выбери причину</div>';
     } else {
       const order = ['Недозвон','Занято','Нет нужного','Отказ','Другое'];
       barsEl.innerHTML = order.filter(r => reasons[r] > 0).map(r => {
@@ -8605,7 +8678,7 @@ function renderQL() {
   if (!el) return;
   const entries = qlGetData();
   if (!entries.length) {
-    el.innerHTML = '<div style="font-size:11px;color:var(--text-mute);padding:6px 0;text-align:center">Лог пуст — фиксируй итоги за день</div>';
+    el.innerHTML = '<div style="font-size:var(--text-sm);color:var(--text-mute);padding:6px 0;text-align:center">Лог пуст — фиксируй итоги за день</div>';
     return;
   }
   el.innerHTML = entries.map(e => `
@@ -8799,7 +8872,7 @@ renderTimer();
       </div>
       <div class="dc-modal-field">
         <label>Привязать к проекту</label>
-        <select id="dc-f-project" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;">
+        <select id="dc-f-project" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface2);color:var(--text);font-family:inherit;font-size: 0.75rem;">
           <option value="">— без проекта —</option>
         </select>
       </div>
@@ -9024,13 +9097,13 @@ LS.set = function(key, value) {
 </script>
 <!-- ══ PWA INSTALL ══ -->
 <script>
-var pwaInstallPrompt = null;
+let pwaInstallPrompt = null;
 
 // Браузер говорит "можно установить" — показываем кнопку
 window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
   pwaInstallPrompt = e;
-  var btn = document.getElementById('pwa-install-btn');
+  let btn = document.getElementById('pwa-install-btn');
   if (btn) btn.style.display = 'flex';
 });
 
@@ -9040,7 +9113,7 @@ function installPWA() {
   pwaInstallPrompt.prompt();
   pwaInstallPrompt.userChoice.then(function(result) {
     if (result.outcome === 'accepted') {
-      var btn = document.getElementById('pwa-install-btn');
+      let btn = document.getElementById('pwa-install-btn');
       if (btn) btn.style.display = 'none';
     }
     pwaInstallPrompt = null;
@@ -9049,7 +9122,7 @@ function installPWA() {
 
 // Уже установлено — прячем кнопку
 window.addEventListener('appinstalled', function() {
-  var btn = document.getElementById('pwa-install-btn');
+  let btn = document.getElementById('pwa-install-btn');
   if (btn) btn.style.display = 'none';
 });
 </script>
@@ -9060,13 +9133,13 @@ window.addEventListener('appinstalled', function() {
   'use strict';
 
   /* ── Canvas setup ── */
-  var canvas = document.getElementById('screen-canvas');
+  let canvas = document.getElementById('screen-canvas');
   if (!canvas) return;
-  var ctx    = canvas.getContext('2d');
-  var dpr    = Math.min(window.devicePixelRatio || 1, 2);
-  var W, H;
-  var animId = null;
-  var startTime = performance.now();
+  let ctx    = canvas.getContext('2d');
+  let dpr    = Math.min(window.devicePixelRatio || 1, 2);
+  let W, H;
+  let animId = null;
+  let startTime = performance.now();
 
   function resize() {
     W = window.innerWidth;
@@ -9082,7 +9155,7 @@ window.addEventListener('appinstalled', function() {
 
   /* ── Theme colors ── */
   function getThemeColors() {
-    var s = getComputedStyle(document.documentElement);
+    let s = getComputedStyle(document.documentElement);
     return {
       bg:     s.getPropertyValue('--bg').trim()      || '#f5f4ef',
       accent: s.getPropertyValue('--accent').trim()   || '#b5622a',
@@ -9094,24 +9167,24 @@ window.addEventListener('appinstalled', function() {
   }
   function parseColor(str) {
     if (str.charAt(0) === '#') {
-      var hex = str.slice(1);
+      let hex = str.slice(1);
       if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
       return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16) };
     }
-    var m = str.match(/[\d.]+/g);
+    let m = str.match(/[\d.]+/g);
     if (m && m.length >= 3) return { r: parseInt(m[0]), g: parseInt(m[1]), b: parseInt(m[2]) };
     return { r: 180, g: 100, b: 40 };
   }
   function isDark(bgColor) {
-    var c = parseColor(bgColor);
+    let c = parseColor(bgColor);
     return (0.299 * c.r + 0.587 * c.g + 0.114 * c.b) / 255 < 0.45;
   }
 
-  var colors = getThemeColors();
-  var dark   = isDark(colors.bg);
+  let colors = getThemeColors();
+  let dark   = isDark(colors.bg);
 
   /* ── Орбы ── */
-  var orbs = [
+  let orbs = [
     { x:0.15, y:0.25, r:0.50, color:parseColor(colors.accent), alpha: dark?0.35:0.45, sx:0.13, sy:0.10, px:0,   py:0.5  },
     { x:0.80, y:0.18, r:0.42, color:parseColor(colors.blue),   alpha: dark?0.28:0.35, sx:0.10, sy:0.15, px:1.2, py:0    },
     { x:0.50, y:0.78, r:0.48, color:parseColor(colors.green),  alpha: dark?0.25:0.30, sx:0.16, sy:0.09, px:2.4, py:1.8  },
@@ -9119,40 +9192,40 @@ window.addEventListener('appinstalled', function() {
     { x:0.82, y:0.62, r:0.38, color:parseColor(colors.accent), alpha: dark?0.20:0.28, sx:0.12, sy:0.11, px:4.8, py:2.2  },
     { x:0.50, y:0.12, r:0.30, color:parseColor(colors.mute),   alpha: dark?0.15:0.20, sx:0.14, sy:0.10, px:0.8, py:4.0  },
   ];
-  var AMP_X = 0.12, AMP_Y = 0.10;
+  let AMP_X = 0.12, AMP_Y = 0.10;
 
   /* ── Render loop ── */
   function draw(t) {
-    var elapsed = (t - startTime) / 1000;
-    var bgC = parseColor(colors.bg);
+    let elapsed = (t - startTime) / 1000;
+    let bgC = parseColor(colors.bg);
 
     ctx.fillStyle = 'rgb(' + bgC.r + ',' + bgC.g + ',' + bgC.b + ')';
     ctx.fillRect(0, 0, W, H);
 
     ctx.globalCompositeOperation = dark ? 'lighter' : 'multiply';
 
-    for (var i = 0; i < orbs.length; i++) {
-      var o = orbs[i];
-      var cx = (o.x + Math.sin(elapsed * o.sx + o.px) * AMP_X) * W;
-      var cy = (o.y + Math.cos(elapsed * o.sy + o.py) * AMP_Y) * H;
-      var radius = o.r * Math.min(W, H) * (1 + Math.sin(elapsed * 0.3 + i * 1.1) * 0.06);
+    for (let i = 0; i < orbs.length; i++) {
+      let o = orbs[i];
+      let cx = (o.x + Math.sin(elapsed * o.sx + o.px) * AMP_X) * W;
+      let cy = (o.y + Math.cos(elapsed * o.sy + o.py) * AMP_Y) * H;
+      let radius = o.r * Math.min(W, H) * (1 + Math.sin(elapsed * 0.3 + i * 1.1) * 0.06);
 
-      var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-      var c = o.color;
+      let grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      let c = o.color;
 
       if (dark) {
         grad.addColorStop(0,   'rgba('+c.r+','+c.g+','+c.b+','+o.alpha+')');
         grad.addColorStop(0.4, 'rgba('+c.r+','+c.g+','+c.b+','+(o.alpha*0.6)+')');
         grad.addColorStop(1,   'rgba('+c.r+','+c.g+','+c.b+',0)');
       } else {
-        var a = o.alpha;
-        var mr = Math.round(c.r + (255 - c.r) * (1 - a));
-        var mg = Math.round(c.g + (255 - c.g) * (1 - a));
-        var mb = Math.round(c.b + (255 - c.b) * (1 - a));
+        let a = o.alpha;
+        let mr = Math.round(c.r + (255 - c.r) * (1 - a));
+        let mg = Math.round(c.g + (255 - c.g) * (1 - a));
+        let mb = Math.round(c.b + (255 - c.b) * (1 - a));
         grad.addColorStop(0,   'rgb('+mr+','+mg+','+mb+')');
-        var mr2 = Math.round(c.r + (255 - c.r) * (1 - a * 0.4));
-        var mg2 = Math.round(c.g + (255 - c.g) * (1 - a * 0.4));
-        var mb2 = Math.round(c.b + (255 - c.b) * (1 - a * 0.4));
+        let mr2 = Math.round(c.r + (255 - c.r) * (1 - a * 0.4));
+        let mg2 = Math.round(c.g + (255 - c.g) * (1 - a * 0.4));
+        let mb2 = Math.round(c.b + (255 - c.b) * (1 - a * 0.4));
         grad.addColorStop(0.5, 'rgb('+mr2+','+mg2+','+mb2+')');
         grad.addColorStop(1,   'rgb(255,255,255)');
       }
@@ -9162,7 +9235,7 @@ window.addEventListener('appinstalled', function() {
 
     ctx.globalCompositeOperation = 'source-over';
 
-    var vign = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.25, W/2, H/2, Math.max(W,H)*0.72);
+    let vign = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.25, W/2, H/2, Math.max(W,H)*0.72);
     vign.addColorStop(0, 'rgba('+bgC.r+','+bgC.g+','+bgC.b+',0)');
     vign.addColorStop(1, 'rgba('+bgC.r+','+bgC.g+','+bgC.b+','+(dark?0.55:0.45)+')');
     ctx.fillStyle = vign;
@@ -9173,9 +9246,9 @@ window.addEventListener('appinstalled', function() {
   animId = requestAnimationFrame(draw);
 
   /* ── Splash content: greeting + clock + date ── */
-  var greetEl = document.getElementById('sp-greeting');
+  let greetEl = document.getElementById('sp-greeting');
   if (greetEl) {
-    var h = new Date().getHours();
+    let h = new Date().getHours();
     greetEl.textContent = h >= 5 && h < 12 ? 'Доброе утро'
                         : h >= 12 && h < 17 ? 'Добрый день'
                         : h >= 17 && h < 22 ? 'Добрый вечер'
@@ -9183,20 +9256,20 @@ window.addEventListener('appinstalled', function() {
   }
 
   function screenClock() {
-    var now = new Date();
-    var hh = String(now.getHours()).padStart(2, '0');
-    var mm = String(now.getMinutes()).padStart(2, '0');
-    var el = document.getElementById('sp-clock');
+    let now = new Date();
+    let hh = String(now.getHours()).padStart(2, '0');
+    let mm = String(now.getMinutes()).padStart(2, '0');
+    let el = document.getElementById('sp-clock');
     if (el) el.innerHTML = hh + '<span class="clock-sep">:</span>' + mm;
   }
   screenClock();
-  var clockInt = setInterval(screenClock, 1000);
+  let clockInt = setInterval(screenClock, 1000);
 
-  var dateEl = document.getElementById('sp-date');
+  let dateEl = document.getElementById('sp-date');
   if (dateEl) {
-    var now = new Date();
-    var days   = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-    var months = ['января','февраля','марта','апреля','мая','июня',
+    let now = new Date();
+    let days   = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+    let months = ['января','февраля','марта','апреля','мая','июня',
                   'июля','августа','сентября','октября','ноября','декабря'];
     dateEl.textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
   }
@@ -9218,30 +9291,30 @@ window.addEventListener('appinstalled', function() {
 
   /* Скрывает весь экран (для перехода к дашборду) */
   window.screenHide = function() {
-    var screen = document.getElementById('screen');
+    let screen = document.getElementById('screen');
     if (screen) screen.classList.add('hidden');
     setTimeout(killCanvas, 1500);
   };
 
   /* Переключает splash → auth form */
   function showAuthPhase() {
-    var splashPhase = document.getElementById('splash-phase');
+    let splashPhase = document.getElementById('splash-phase');
     if (splashPhase) splashPhase.classList.add('exit');
-    var authPhase = document.getElementById('auth-phase');
+    let authPhase = document.getElementById('auth-phase');
     if (authPhase) authPhase.classList.add('enter');
     setTimeout(function() {
-      var emailInput = document.getElementById('login-email');
+      let emailInput = document.getElementById('login-email');
       if (emailInput) emailInput.focus();
     }, 900);
   }
 
   /* Таймер: после progress bar решаем что делать */
-  var SPLASH_DURATION = 4200; // 0.8s delay + 3.2s fill + buffer
+  let SPLASH_DURATION = 4200; // 0.8s delay + 3.2s fill + buffer
 
   setTimeout(function() {
     /* Если auth ещё не определился — ждём */
     if (!window._screenAuthResolved) {
-      var waitInt = setInterval(function() {
+      let waitInt = setInterval(function() {
         if (window._screenAuthResolved) {
           clearInterval(waitInt);
           if (window._screenNeedsAuth) {
@@ -9279,12 +9352,12 @@ window.addEventListener('appinstalled', function() {
    passive:true — не блокирует прокрутку на мобиле.
 ──────────────────────────────────────────────*/
 (function() {
-  var bar = document.getElementById('scroll-progress');
+  let bar = document.getElementById('scroll-progress');
   if (!bar) return;
 
   function updateBar() {
-    var doc = document.documentElement;
-    var scrollable = doc.scrollHeight - doc.clientHeight;
+    let doc = document.documentElement;
+    let scrollable = doc.scrollHeight - doc.clientHeight;
     if (scrollable <= 0) { bar.style.width = '0%'; return; }
     bar.style.width = ((window.scrollY / scrollable) * 100) + '%';
   }
@@ -9300,9 +9373,9 @@ window.addEventListener('appinstalled', function() {
    opacity:0 до того как добавить reveal-done.
 ──────────────────────────────────────────────*/
 function runStaggerReveal() {
-  var els = document.querySelectorAll('.will-reveal');
+  let els = document.querySelectorAll('.will-reveal');
   els.forEach(function(el, i) {
-    var delay = 80 + i * 90;
+    let delay = 80 + i * 90;
     el.style.transition =
       'opacity 0.5s ease ' + delay + 'ms, ' +
       'transform 0.5s cubic-bezier(.22,.68,0,1.15) ' + delay + 'ms, ' +
@@ -9322,9 +9395,9 @@ window.addEventListener('load', function() { setTimeout(runStaggerReveal, 50); }
    поэтому оригинальный toggleTask вызываем
    с задержкой 160ms.
 ──────────────────────────────────────────────*/
-var _origToggleTask = toggleTask;
+let _origToggleTask = toggleTask;
 window.toggleTask = function(id) {
-  var el = document.querySelector('.task-card-item[data-id="' + id + '"] .task-check');
+  let el = document.querySelector('.task-card-item[data-id="' + id + '"] .task-check');
   if (el) {
     el.classList.remove('bouncing');
     void el.offsetWidth; // форс-рефлоу для перезапуска анимации
@@ -9344,7 +9417,7 @@ window.toggleTask = function(id) {
 ──────────────────────────────────────────────*/
 function animateNewTasks() {
   requestAnimationFrame(function() {
-    var items = document.querySelectorAll('.task-card-item');
+    let items = document.querySelectorAll('.task-card-item');
     items.forEach(function(item) {
       if (!item.dataset.animated) {
         item.dataset.animated = '1';
@@ -9355,15 +9428,15 @@ function animateNewTasks() {
   });
 }
 
-var _origQuickAdd = quickAdd;
+let _origQuickAdd = quickAdd;
 window.quickAdd = function(lane, input) {
   _origQuickAdd(lane, input);
   animateNewTasks();
 };
 
-var _origSaveTask = saveTask;
+let _origSaveTask = saveTask;
 window.saveTask = function() {
-  var isNew = !document.getElementById('task-edit-id').value;
+  let isNew = !document.getElementById('task-edit-id').value;
   _origSaveTask();
   if (isNew) animateNewTasks();
 };
@@ -9373,9 +9446,9 @@ window.saveTask = function() {
    max-height:60px → 0 — стандартный паттерн,
    потому что height:auto нельзя анимировать в CSS.
 ──────────────────────────────────────────────*/
-var _origDeleteTask = deleteTask;
+let _origDeleteTask = deleteTask;
 window.deleteTask = function(id) {
-  var el = document.querySelector('.task-card-item[data-id="' + id + '"]');
+  let el = document.querySelector('.task-card-item[data-id="' + id + '"]');
   if (el) {
     el.classList.add('task-removing');
     setTimeout(function() { _origDeleteTask(id); }, 280);
@@ -9384,11 +9457,11 @@ window.deleteTask = function(id) {
   }
 };
 
-var _origCtxDelete = ctxDelete;
+let _origCtxDelete = ctxDelete;
 window.ctxDelete = function() {
   if (!ctxTaskId) return;
-  var id = ctxTaskId;
-  var el = document.querySelector('.task-card-item[data-id="' + id + '"]');
+  let id = ctxTaskId;
+  let el = document.querySelector('.task-card-item[data-id="' + id + '"]');
   closeCtx();
   if (el) {
     el.classList.add('task-removing');
@@ -9449,24 +9522,24 @@ window.ctxDelete = function() {
    ЗАПЛАНИРОВАННЫЕ ЗВОНКИ — виджет + оповещения
 ═══════════════════════════════════════════ */
 function dcKey() {
-  var d = new Date();
+  let d = new Date();
   return 'wdb_daycalls_' + d.getFullYear() + '_' + (d.getMonth()+1) + '_' + d.getDate();
 }
 function dcLoad() { return LS.get(dcKey(), []); }
 function dcSaveData(arr) { LS.set(dcKey(), arr); }
 
-var dcEditId = null;
-var dcAlertCurrentId = null;
-var dcTimerHandle = null;
-var dcFiredAlerts = {};
+let dcEditId = null;
+let dcAlertCurrentId = null;
+let dcTimerHandle = null;
+let dcFiredAlerts = {};
 
 function dcRender() {
-  var list = dcLoad();
-  var el = document.getElementById('dc-list');
-  var countEl = document.getElementById('dc-count');
+  let list = dcLoad();
+  let el = document.getElementById('dc-list');
+  let countEl = document.getElementById('dc-count');
   if (!el) return;
 
-  var active = list.filter(function(x){ return !x.done; });
+  let active = list.filter(function(x){ return !x.done; });
   if (countEl) countEl.textContent = active.length;
 
   if (list.length === 0) {
@@ -9474,25 +9547,25 @@ function dcRender() {
     return;
   }
 
-  var sorted = list.slice().sort(function(a,b){ return (a.time||'').localeCompare(b.time||''); });
-  var now = new Date();
-  var nowMins = now.getHours() * 60 + now.getMinutes();
+  let sorted = list.slice().sort(function(a,b){ return (a.time||'').localeCompare(b.time||''); });
+  let now = new Date();
+  let nowMins = now.getHours() * 60 + now.getMinutes();
 
-  var rows = sorted.map(function(c) {
-    var parts = (c.time||'00:00').split(':');
-    var callMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-    var diff = callMins - nowMins;
-    var timeCls = 'dc-time';
+  let rows = sorted.map(function(c) {
+    let parts = (c.time||'00:00').split(':');
+    let callMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    let diff = callMins - nowMins;
+    let timeCls = 'dc-time';
     if (c.done) { /* row class handles it */ }
     else if (diff < 0) timeCls += ' past';
     else if (diff <= 5) timeCls += ' soon';
     else timeCls += ' upcoming';
 
-    var bellCls = 'dc-btn-sm' + (c.remind !== false && c.remind >= 0 ? ' bell-on' : '');
-    var rowCls = c.done ? 'dc-row-done' : '';
-    var phoneFmt = c.phone ? '<a href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a>' : '—';
-    var doneMark = c.done ? '✓' : '○';
-    var doneCls = 'dc-btn-sm' + (c.done ? ' done-on' : '');
+    let bellCls = 'dc-btn-sm' + (c.remind !== false && c.remind >= 0 ? ' bell-on' : '');
+    let rowCls = c.done ? 'dc-row-done' : '';
+    let phoneFmt = c.phone ? '<a href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a>' : '—';
+    let doneMark = c.done ? '✓' : '○';
+    let doneCls = 'dc-btn-sm' + (c.done ? ' done-on' : '');
 
     return '<tr class="' + rowCls + '">' +
       '<td class="' + timeCls + '">' + esc(c.time || '--:--') + '</td>' +
@@ -9514,7 +9587,7 @@ function dcRender() {
 
 function dcOpenModal(id) {
   dcEditId = id || null;
-  var c = id ? dcLoad().find(function(x){ return x.id === id; }) : null;
+  let c = id ? dcLoad().find(function(x){ return x.id === id; }) : null;
   document.getElementById('dc-modal-title').textContent = c ? 'Редактировать' : 'Запланировать звонок';
   document.getElementById('dc-f-time').value = c ? (c.time||'') : '';
   document.getElementById('dc-f-company').value = c ? (c.company||'') : '';
@@ -9523,9 +9596,9 @@ function dcOpenModal(id) {
   document.getElementById('dc-f-note').value = c ? (c.note||'') : '';
   document.getElementById('dc-f-remind').value = c && c.remind >= 0 ? c.remind : 2;
   /* Заполняем dropdown проектов */
-  var projSel = document.getElementById('dc-f-project');
+  let projSel = document.getElementById('dc-f-project');
   if (projSel) {
-    var html = '<option value="">— без проекта —</option>';
+    let html = '<option value="">— без проекта —</option>';
     (LS.get('wdb_projects', [])).forEach(function(p) {
       if (p.stage === 'lost') return;
       html += '<option value="' + p.id + '">' + esc(p.name) + '</option>';
@@ -9542,15 +9615,15 @@ function dcCloseModal() {
 }
 
 function dcSave() {
-  var time = document.getElementById('dc-f-time').value;
-  var company = document.getElementById('dc-f-company').value.trim();
+  let time = document.getElementById('dc-f-time').value;
+  let company = document.getElementById('dc-f-company').value.trim();
   if (!time || !company) {
     if (!time) document.getElementById('dc-f-time').focus();
     else document.getElementById('dc-f-company').focus();
     return;
   }
-  var projSel = document.getElementById('dc-f-project');
-  var data = {
+  let projSel = document.getElementById('dc-f-project');
+  let data = {
     time: time,
     company: company,
     contact: document.getElementById('dc-f-contact').value.trim(),
@@ -9560,9 +9633,9 @@ function dcSave() {
     projectId: projSel ? projSel.value : '',
     done: false
   };
-  var list = dcLoad();
+  let list = dcLoad();
   if (dcEditId) {
-    var idx = list.findIndex(function(x){ return x.id === dcEditId; });
+    let idx = list.findIndex(function(x){ return x.id === dcEditId; });
     if (idx >= 0) { data.id = dcEditId; data.done = list[idx].done; list[idx] = data; }
   } else {
     data.id = uid();
@@ -9575,15 +9648,15 @@ function dcSave() {
 }
 
 function dcDelete(id) {
-  var list = dcLoad();
-  var deleted = list.find(function(x){ return x.id === id; });
+  let list = dcLoad();
+  let deleted = list.find(function(x){ return x.id === id; });
   if (!deleted) return;
-  var idx = list.indexOf(deleted);
-  var newList = list.filter(function(x){ return x.id !== id; });
+  let idx = list.indexOf(deleted);
+  let newList = list.filter(function(x){ return x.id !== id; });
   dcSaveData(newList);
   dcRender();
   toastUndo('Звонок удалён', function() {
-    var restored = dcLoad();
+    let restored = dcLoad();
     restored.splice(idx, 0, deleted);
     dcSaveData(restored);
     dcRender();
@@ -9591,8 +9664,8 @@ function dcDelete(id) {
 }
 
 function dcToggleBell(id) {
-  var list = dcLoad();
-  var c = list.find(function(x){ return x.id === id; });
+  let list = dcLoad();
+  let c = list.find(function(x){ return x.id === id; });
   if (!c) return;
   c.remind = (c.remind !== false && c.remind >= 0) ? false : 2;
   dcSaveData(list);
@@ -9600,8 +9673,8 @@ function dcToggleBell(id) {
 }
 
 function dcToggleDone(id) {
-  var list = dcLoad();
-  var c = list.find(function(x){ return x.id === id; });
+  let list = dcLoad();
+  let c = list.find(function(x){ return x.id === id; });
   if (!c) return;
   c.done = !c.done;
   dcSaveData(list);
@@ -9616,17 +9689,17 @@ function dcScheduleAlerts() {
 }
 
 function dcCheckAlerts() {
-  var list = dcLoad();
-  var now = new Date();
-  var nowMins = now.getHours() * 60 + now.getMinutes();
+  let list = dcLoad();
+  let now = new Date();
+  let nowMins = now.getHours() * 60 + now.getMinutes();
 
   list.forEach(function(c) {
     if (c.done) return;
     if (c.remind === false || c.remind < 0) return;
-    var parts = (c.time||'').split(':');
-    var callMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-    var alertAt = callMins - (c.remind || 2);
-    var alertKey = c.id + '_' + c.time;
+    let parts = (c.time||'').split(':');
+    let callMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    let alertAt = callMins - (c.remind || 2);
+    let alertKey = c.id + '_' + c.time;
 
     if (nowMins >= alertAt && nowMins <= callMins + 1 && !dcFiredAlerts[alertKey]) {
       dcFiredAlerts[alertKey] = true;
@@ -9637,20 +9710,20 @@ function dcCheckAlerts() {
 
 function dcShowAlert(c, minsLeft) {
   dcAlertCurrentId = c.id;
-  var mins = Math.max(0, minsLeft);
+  let mins = Math.max(0, minsLeft);
   document.getElementById('dc-alert-mins').textContent = mins <= 0 ? '< 1' : mins;
   document.getElementById('dc-alert-time').textContent = c.time || '--:--';
   document.getElementById('dc-alert-company').textContent = c.company || '—';
   document.getElementById('dc-alert-contact').textContent = c.contact || '—';
 
-  var phoneEl = document.getElementById('dc-alert-phone');
+  let phoneEl = document.getElementById('dc-alert-phone');
   if (c.phone) {
     phoneEl.innerHTML = '<a class="dc-alert-phone-link" href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a>';
   } else {
     phoneEl.textContent = '—';
   }
 
-  var noteRow = document.getElementById('dc-alert-note-row');
+  let noteRow = document.getElementById('dc-alert-note-row');
   if (c.note) {
     noteRow.style.display = '';
     document.getElementById('dc-alert-note').textContent = c.note;
@@ -9662,9 +9735,9 @@ function dcShowAlert(c, minsLeft) {
 
   // Звуковой сигнал
   try {
-    var actx = new (window.AudioContext || window.webkitAudioContext)();
-    var osc = actx.createOscillator();
-    var gain = actx.createGain();
+    let actx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc = actx.createOscillator();
+    let gain = actx.createGain();
     osc.connect(gain); gain.connect(actx.destination);
     osc.frequency.value = 880; osc.type = 'sine';
     gain.gain.setValueAtTime(0.15, actx.currentTime);
@@ -9672,7 +9745,7 @@ function dcShowAlert(c, minsLeft) {
     osc.start(actx.currentTime); osc.stop(actx.currentTime + 0.8);
     setTimeout(function(){
       try {
-        var o2 = actx.createOscillator(); var g2 = actx.createGain();
+        let o2 = actx.createOscillator(); let g2 = actx.createGain();
         o2.connect(g2); g2.connect(actx.destination);
         o2.frequency.value = 1100; o2.type = 'sine';
         g2.gain.setValueAtTime(0.12, actx.currentTime);
@@ -9698,11 +9771,11 @@ function dcDismissAlert() {
 
 function dcSnooze() {
   if (!dcAlertCurrentId) { dcDismissAlert(); return; }
-  var list = dcLoad();
-  var c = list.find(function(x){ return x.id === dcAlertCurrentId; });
+  let list = dcLoad();
+  let c = list.find(function(x){ return x.id === dcAlertCurrentId; });
   if (c) {
-    var parts = (c.time||'00:00').split(':');
-    var h = parseInt(parts[0]), m = parseInt(parts[1]) + 5;
+    let parts = (c.time||'00:00').split(':');
+    let h = parseInt(parts[0]), m = parseInt(parts[1]) + 5;
     if (m >= 60) { h++; m -= 60; }
     c.time = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
     delete dcFiredAlerts[dcAlertCurrentId + '_' + parts.join(':')];
@@ -9727,7 +9800,7 @@ dcScheduleAlerts();
 setInterval(function(){ dcRender(); dcCheckAlerts(); }, 60000);
 
 
-var WC_REGISTRY = [
+let WC_REGISTRY = [
   { id: 'clock',        icon: ICON.clock,     name: 'Дата и время',        desc: 'Живые часы + день недели',       section: 'Ориентация' },
   { id: 'daycalls',     icon: ICON.calendar,  name: 'Заплан. звонки',      desc: 'План звонков + оповещения',      section: 'Ориентация' },
   { id: 'focus',        icon: ICON.target,    name: 'Фокус дня',           desc: 'Одно главное дело на сегодня',   section: 'Ориентация' },
@@ -9752,15 +9825,15 @@ var WC_REGISTRY = [
    Загружаем из localStorage — если нет, все включены.
    Ключ хранения: wdb_widget_visibility
 ───────────────────────────────────────────────────── */
-var WC_STORAGE_KEY = 'wdb_widget_visibility';
+let WC_STORAGE_KEY = 'wdb_widget_visibility';
 
 function wcLoadState() {
   try {
-    var saved = localStorage.getItem(WC_STORAGE_KEY);
+    let saved = localStorage.getItem(WC_STORAGE_KEY);
     if (saved) return JSON.parse(saved);
   } catch(e) {}
   // По умолчанию — все включены
-  var def = {};
+  let def = {};
   WC_REGISTRY.forEach(function(w) { def[w.id] = true; });
   return def;
 }
@@ -9769,7 +9842,7 @@ function wcSaveState(state) {
   try { localStorage.setItem(WC_STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
 }
 
-var wcState = wcLoadState();
+let wcState = wcLoadState();
 
 /* ─────────────────────────────────────────────────────
    ПРИМЕНЕНИЕ СОСТОЯНИЯ К DOM
@@ -9779,7 +9852,7 @@ var wcState = wcLoadState();
 ───────────────────────────────────────────────────── */
 function wcApplyAll() {
   WC_REGISTRY.forEach(function(w) {
-    var el = document.querySelector('[data-widget-id="' + w.id + '"]');
+    let el = document.querySelector('[data-widget-id="' + w.id + '"]');
     if (!el) return;
     if (wcState[w.id]) {
       el.classList.remove('wc-hidden');
@@ -9794,20 +9867,20 @@ function wcApplyAll() {
    Группируем по секциям, рендерим section-label + rows.
 ───────────────────────────────────────────────────── */
 function wcRenderPanel() {
-  var body = document.getElementById('wc-body');
+  let body = document.getElementById('wc-body');
   if (!body) return;
 
   // Собираем уникальные секции в нужном порядке
-  var sections = [];
+  let sections = [];
   WC_REGISTRY.forEach(function(w) {
     if (sections.indexOf(w.section) === -1) sections.push(w.section);
   });
 
-  var html = '';
+  let html = '';
   sections.forEach(function(sec) {
     html += '<div class="wc-section-label">' + sec + '</div>';
     WC_REGISTRY.filter(function(w) { return w.section === sec; }).forEach(function(w) {
-      var isOn = wcState[w.id] !== false;
+      let isOn = wcState[w.id] !== false;
       html +=
         '<div class="wc-row' + (isOn ? ' is-on' : '') + '" id="wc-row-' + w.id + '" onclick="wcToggleRow(\'' + w.id + '\')">' +
           '<div class="wc-row-icon">' + w.icon + '</div>' +
@@ -9837,15 +9910,15 @@ function wcToggleById(id, val) {
   wcSaveState(wcState);
 
   // Обновляем класс строки
-  var row = document.getElementById('wc-row-' + id);
+  let row = document.getElementById('wc-row-' + id);
   if (row) {
     row.className = 'wc-row' + (val ? ' is-on' : '');
-    var cb = row.querySelector('input[type=checkbox]');
+    let cb = row.querySelector('input[type=checkbox]');
     if (cb) cb.checked = val;
   }
 
   // Показываем/скрываем виджет
-  var el = document.querySelector('[data-widget-id="' + id + '"]');
+  let el = document.querySelector('[data-widget-id="' + id + '"]');
   if (el) {
     if (val) el.classList.remove('wc-hidden');
     else el.classList.add('wc-hidden');
@@ -9873,10 +9946,10 @@ function wcResetAll() {
    СЧЁТЧИК в подвале панели
 ───────────────────────────────────────────────────── */
 function wcUpdateCounter() {
-  var on = WC_REGISTRY.filter(function(w) { return wcState[w.id] !== false; }).length;
-  var total = WC_REGISTRY.length;
-  var elOn = document.getElementById('wc-on-count');
-  var elTotal = document.getElementById('wc-total-count');
+  let on = WC_REGISTRY.filter(function(w) { return wcState[w.id] !== false; }).length;
+  let total = WC_REGISTRY.length;
+  let elOn = document.getElementById('wc-on-count');
+  let elTotal = document.getElementById('wc-total-count');
   if (elOn) elOn.textContent = on;
   if (elTotal) elTotal.textContent = total;
 }
@@ -9887,7 +9960,7 @@ function wcUpdateCounter() {
    body overflow:hidden — убирает скролл страницы
    пока панель открыта.
 ───────────────────────────────────────────────────── */
-var wcIsOpen = false;
+let wcIsOpen = false;
 
 function wcToggle() {
   if (wcIsOpen) wcClose(); else wcOpen();
@@ -9998,7 +10071,7 @@ function showDashboard(user) {
   document.getElementById('app').style.display = 'block';
   /* Скрываем unified screen (canvas + splash/auth) */
   if (window.screenHide) window.screenHide();
-  var badge = document.getElementById('user-badge');
+  let badge = document.getElementById('user-badge');
   if (badge) badge.textContent = user.email.split('@')[0];
   // Запускаем Supabase Realtime синхронизацию после входа
   sbSyncInit(user);
@@ -10010,14 +10083,14 @@ function showLoginScreen() {
   window._screenNeedsAuth    = true;
   /* Прячем app, показываем screen */
   document.getElementById('app').style.display = 'none';
-  var screen = document.getElementById('screen');
+  let screen = document.getElementById('screen');
   if (screen) {
     screen.classList.remove('hidden');
     screen.style.display = 'flex';
   }
   /* Если splash уже прошёл — сразу показываем auth phase */
-  var splashPhase = document.getElementById('splash-phase');
-  var authPhase   = document.getElementById('auth-phase');
+  let splashPhase = document.getElementById('splash-phase');
+  let authPhase   = document.getElementById('auth-phase');
   if (splashPhase && splashPhase.classList.contains('exit')) {
     /* Splash уже ушёл — auth phase должен быть виден */
     if (authPhase) authPhase.classList.add('enter');
@@ -10149,11 +10222,11 @@ function toast(message, type, duration) {
   type = type || 'info';
   duration = duration || 4000;
 
-  var icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' };
-  var container = document.getElementById('toast-container');
+  let icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' };
+  let container = document.getElementById('toast-container');
   if (!container) return;
 
-  var el = document.createElement('div');
+  let el = document.createElement('div');
   el.className = 'toast ' + type;
   el.style.setProperty('--toast-duration', duration + 'ms');
   el.innerHTML =
@@ -10167,11 +10240,11 @@ function toast(message, type, duration) {
   container.appendChild(el);
 
   /* Автоудаление */
-  var timer = setTimeout(function() { dismissToast(el); }, duration);
+  let timer = setTimeout(function() { dismissToast(el); }, duration);
   el._timer = timer;
 
   /* Максимум 4 тоста одновременно */
-  var toasts = container.querySelectorAll('.toast:not(.leaving)');
+  let toasts = container.querySelectorAll('.toast:not(.leaving)');
   if (toasts.length > 4) dismissToast(toasts[0]);
 }
 
@@ -10184,10 +10257,10 @@ function dismissToast(el) {
 
 /* Тост с подтверждением (замена confirm()) */
 function toastConfirm(message, onConfirm) {
-  var container = document.getElementById('toast-container');
+  let container = document.getElementById('toast-container');
   if (!container) { if (confirm(message)) onConfirm(); return; }
 
-  var el = document.createElement('div');
+  let el = document.createElement('div');
   el.className = 'toast warning';
   el.style.setProperty('--toast-duration', '10s');
   el.innerHTML =
@@ -10195,8 +10268,8 @@ function toastConfirm(message, onConfirm) {
     '<div class="toast-body">' +
       '<div class="toast-msg">' + message + '</div>' +
       '<div style="display:flex;gap:6px;margin-top:8px;">' +
-        '<button class="btn btn-primary" style="font-size:11px;padding:4px 12px;" id="tc-yes">Да</button>' +
-        '<button class="btn" style="font-size:11px;padding:4px 12px;" id="tc-no">Отмена</button>' +
+        '<button class="btn btn-primary" style="font-size:var(--text-sm);padding:4px 12px;" id="tc-yes">Да</button>' +
+        '<button class="btn" style="font-size:var(--text-sm);padding:4px 12px;" id="tc-no">Отмена</button>' +
       '</div>' +
     '</div>' +
     '<div class="toast-progress"></div>';
@@ -10206,7 +10279,7 @@ function toastConfirm(message, onConfirm) {
   el.querySelector('#tc-yes').onclick = function() { dismissToast(el); onConfirm(); };
   el.querySelector('#tc-no').onclick  = function() { dismissToast(el); };
 
-  var timer = setTimeout(function() { dismissToast(el); }, 10000);
+  let timer = setTimeout(function() { dismissToast(el); }, 10000);
   el._timer = timer;
 }
 
@@ -10216,10 +10289,10 @@ function toastConfirm(message, onConfirm) {
    в течение 6 секунд. Быстрее чем confirm, безопаснее чем без подтверждения. */
 function toastUndo(message, onUndo, duration) {
   duration = duration || 6000;
-  var container = document.getElementById('toast-container');
+  let container = document.getElementById('toast-container');
   if (!container) return;
 
-  var el = document.createElement('div');
+  let el = document.createElement('div');
   el.className = 'toast success';
   el.style.setProperty('--toast-duration', duration + 'ms');
   el.innerHTML =
@@ -10227,12 +10300,12 @@ function toastUndo(message, onUndo, duration) {
     '<div class="toast-body">' +
       '<div class="toast-msg">' + message + '</div>' +
     '</div>' +
-    '<button class="btn" style="font-size:11px;padding:3px 10px;margin-left:4px;white-space:nowrap;flex-shrink:0;" onclick="event.stopPropagation()">Отменить</button>' +
+    '<button class="btn" style="font-size:var(--text-sm);padding:3px 10px;margin-left:4px;white-space:nowrap;flex-shrink:0;" onclick="event.stopPropagation()">Отменить</button>' +
     '<div class="toast-progress"></div>';
 
   container.appendChild(el);
 
-  var undoBtn = el.querySelector('.btn');
+  let undoBtn = el.querySelector('.btn');
   undoBtn.onclick = function(e) {
     e.stopPropagation();
     dismissToast(el);
@@ -10240,7 +10313,7 @@ function toastUndo(message, onUndo, duration) {
     toast('Действие отменено', 'info', 2000);
   };
 
-  var timer = setTimeout(function() { dismissToast(el); }, duration);
+  let timer = setTimeout(function() { dismissToast(el); }, duration);
   el._timer = timer;
 }
 
@@ -10259,19 +10332,19 @@ function toastUndo(message, onUndo, duration) {
    easeOutQuart: быстро стартует, плавно тормозит. */
 function animateValue(el, to, duration) {
   if (!el) return;
-  var from = parseInt(el.textContent) || 0;
+  let from = parseInt(el.textContent) || 0;
   if (from === to) return;
   duration = duration || 400;
-  var start = null;
-  var diff = to - from;
+  let start = null;
+  let diff = to - from;
 
   /* Pop-эффект: убираем старый, добавляем новый */
   el.classList.remove('counter-pop');
 
   function step(ts) {
     if (!start) start = ts;
-    var progress = Math.min((ts - start) / duration, 1);
-    var eased = 1 - Math.pow(1 - progress, 4);
+    let progress = Math.min((ts - start) / duration, 1);
+    let eased = 1 - Math.pow(1 - progress, 4);
     el.textContent = Math.round(from + diff * eased);
     if (progress < 1) {
       requestAnimationFrame(step);
@@ -10296,7 +10369,7 @@ function animateValue(el, to, duration) {
    Заменяет inline эмодзи на монохромные SVG
    после загрузки DOM. Иконки наследуют currentColor.
 ══════════════════════════════════════════ */
-var EMOJI_MAP = {
+let EMOJI_MAP = {
   '📅': ICON.calendar,
   '🎯': ICON.target,
   '📊': ICON.chart,
@@ -10325,7 +10398,7 @@ var EMOJI_MAP = {
    Каждая иллюстрация — составная SVG-сцена из 3-5 элементов.
    Не «иконка ошибки», а «мини-история» приглашающая к действию.
    currentColor — адаптируется к теме через CSS .empty-illust. */
-var EMPTY_ILLUST = {
+let EMPTY_ILLUST = {
   /* Проекты — стопка карточек с «+» */
   folder: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="28" height="22" rx="3" opacity="0.3"/><rect x="11" y="10" width="28" height="22" rx="3" opacity="0.5"/><rect x="14" y="6" width="28" height="22" rx="3"/><line x1="28" y1="13" x2="28" y2="21"/><line x1="24" y1="17" x2="32" y2="17"/></svg>',
 
@@ -10352,10 +10425,10 @@ var EMPTY_ILLUST = {
 };
 
 function emptyState(iconKey, text, hint) {
-  var illust = EMPTY_ILLUST[iconKey] || '';
+  let illust = EMPTY_ILLUST[iconKey] || '';
   /* Fallback: если нет иллюстрации, пробуем ICON */
   if (!illust && ICON[iconKey]) {
-    var ic = ICON[iconKey];
+    let ic = ICON[iconKey];
     illust = ic.replace(/width="\d+"/, 'width="40"').replace(/height="\d+"/, 'height="40"');
   }
   return '<div class="empty-msg">' +
@@ -10367,16 +10440,16 @@ function emptyState(iconKey, text, hint) {
 
 function replaceEmoji() {
   /* Обходим текстовые узлы и заменяем эмодзи на span с SVG */
-  var walker = document.createTreeWalker(
+  let walker = document.createTreeWalker(
     document.body,
     NodeFilter.SHOW_TEXT,
     null,
     false
   );
-  var nodesToProcess = [];
+  let nodesToProcess = [];
   while (walker.nextNode()) {
-    var text = walker.currentNode.textContent;
-    for (var emoji in EMOJI_MAP) {
+    let text = walker.currentNode.textContent;
+    for (let emoji in EMOJI_MAP) {
       if (text.indexOf(emoji) !== -1) {
         nodesToProcess.push(walker.currentNode);
         break;
@@ -10384,16 +10457,16 @@ function replaceEmoji() {
     }
   }
   nodesToProcess.forEach(function(node) {
-    var html = node.textContent;
-    var changed = false;
-    for (var emoji in EMOJI_MAP) {
+    let html = node.textContent;
+    let changed = false;
+    for (let emoji in EMOJI_MAP) {
       if (html.indexOf(emoji) !== -1) {
         html = html.split(emoji).join('<span class="inline-icon">' + EMOJI_MAP[emoji] + '</span>');
         changed = true;
       }
     }
     if (changed) {
-      var span = document.createElement('span');
+      let span = document.createElement('span');
       span.innerHTML = html;
       node.parentNode.replaceChild(span, node);
     }
@@ -10402,7 +10475,7 @@ function replaceEmoji() {
 
 function showSkeletons() {
   /* Задачи — 3 скелетона в первой лейне */
-  var tasksNow = document.getElementById('tasks-now');
+  let tasksNow = document.getElementById('tasks-now');
   if (tasksNow && tasksNow.children.length === 0) {
     tasksNow.innerHTML =
       '<div class="skeleton-group" id="sk-tasks">' +
@@ -10412,7 +10485,7 @@ function showSkeletons() {
       '</div>';
   }
   /* Проекты */
-  var projGrid = document.querySelector('.projects-grid');
+  let projGrid = document.querySelector('.projects-grid');
   if (projGrid && projGrid.children.length === 0) {
     projGrid.innerHTML =
       '<div id="sk-projects">' +
@@ -10421,7 +10494,7 @@ function showSkeletons() {
       '</div>';
   }
   /* Встречи */
-  var meetList = document.getElementById('meetings-list');
+  let meetList = document.getElementById('meetings-list');
   if (meetList && meetList.querySelector('.empty-msg')) {
     meetList.innerHTML =
       '<div id="sk-meetings" style="padding:4px 0;">' +
@@ -10430,7 +10503,7 @@ function showSkeletons() {
       '</div>';
   }
   /* Коммуникации */
-  var commList = document.getElementById('comms-list');
+  let commList = document.getElementById('comms-list');
   if (commList && commList.children.length === 0) {
     commList.innerHTML =
       '<div id="sk-comms" style="padding:4px 0;">' +
@@ -10439,7 +10512,7 @@ function showSkeletons() {
       '</div>';
   }
   /* Звонки */
-  var callList = document.getElementById('calls-list');
+  let callList = document.getElementById('calls-list');
   if (callList && callList.children.length === 0) {
     callList.innerHTML =
       '<div id="sk-calls">' +
@@ -10451,9 +10524,9 @@ function showSkeletons() {
 }
 
 function hideSkeletons() {
-  var ids = ['sk-tasks', 'sk-projects', 'sk-meetings', 'sk-comms', 'sk-calls'];
+  let ids = ['sk-tasks', 'sk-projects', 'sk-meetings', 'sk-comms', 'sk-calls'];
   ids.forEach(function(id) {
-    var el = document.getElementById(id);
+    let el = document.getElementById(id);
     if (el) el.remove();
   });
 }
@@ -10464,7 +10537,7 @@ function hideSkeletons() {
    Скрывает всё кроме задач + таймер + фокус дня.
    Клавиша F. Автовыход при завершении Pomodoro.
 ══════════════════════════════════════════ */
-var focusModeActive = false;
+let focusModeActive = false;
 
 function toggleFocusMode() {
   focusModeActive = !focusModeActive;
@@ -10473,7 +10546,7 @@ function toggleFocusMode() {
   if (focusModeActive) {
     toast('Режим фокуса включён', 'info', 2000);
     /* Скроллим к задачам */
-    var tasks = document.querySelector('.tasks-block');
+    let tasks = document.querySelector('.tasks-block');
     if (tasks) tasks.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else {
     toast('Режим фокуса выключен', 'info', 1500);
@@ -10496,29 +10569,29 @@ function exitFocusMode() {
 function celebrate(intensity) {
   /* intensity: 'small' (задача), 'medium' (pomodoro), 'big' (KPI 100%) */
   intensity = intensity || 'small';
-  var canvas = document.getElementById('confetti-canvas');
+  let canvas = document.getElementById('confetti-canvas');
   if (!canvas) return;
-  var ctx = canvas.getContext('2d');
+  let ctx = canvas.getContext('2d');
 
   /* Resize canvas */
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  var counts = { small: 30, medium: 60, big: 120 };
-  var count = counts[intensity] || 30;
+  let counts = { small: 30, medium: 60, big: 120 };
+  let count = counts[intensity] || 30;
 
   /* Получаем accent цвет из текущей темы */
-  var style = getComputedStyle(document.documentElement);
-  var accentColor = style.getPropertyValue('--accent').trim() || '#b5622a';
-  var greenColor = style.getPropertyValue('--green').trim() || '#2e7d52';
-  var blueColor = style.getPropertyValue('--blue').trim() || '#2d6ab4';
-  var yellowColor = style.getPropertyValue('--yellow').trim() || '#a07020';
+  let style = getComputedStyle(document.documentElement);
+  let accentColor = style.getPropertyValue('--accent').trim() || '#b5622a';
+  let greenColor = style.getPropertyValue('--green').trim() || '#2e7d52';
+  let blueColor = style.getPropertyValue('--blue').trim() || '#2d6ab4';
+  let yellowColor = style.getPropertyValue('--yellow').trim() || '#a07020';
 
-  var colors = [accentColor, greenColor, blueColor, yellowColor, '#fff'];
+  let colors = [accentColor, greenColor, blueColor, yellowColor, '#fff'];
 
   /* Создаём частицы */
-  var particles = [];
-  for (var i = 0; i < count; i++) {
+  let particles = [];
+  for (let i = 0; i < count; i++) {
     particles.push({
       x: canvas.width * 0.5 + (Math.random() - 0.5) * canvas.width * 0.4,
       y: canvas.height * 0.4,
@@ -10535,11 +10608,11 @@ function celebrate(intensity) {
     });
   }
 
-  var startTime = performance.now();
-  var duration = intensity === 'big' ? 3000 : intensity === 'medium' ? 2000 : 1200;
+  let startTime = performance.now();
+  let duration = intensity === 'big' ? 3000 : intensity === 'medium' ? 2000 : 1200;
 
   function frame(now) {
-    var elapsed = now - startTime;
+    let elapsed = now - startTime;
     if (elapsed > duration) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
@@ -10578,7 +10651,7 @@ function celebrate(intensity) {
 
 /* ── Celebration triggers ──
    Функции-обёртки для вызова из разных мест. */
-var _lastCelebratedKPI = false; /* Чтобы не спамить при каждом renderKPI */
+let _lastCelebratedKPI = false; /* Чтобы не спамить при каждом renderKPI */
 
 function checkCelebration(type, data) {
   switch (type) {
@@ -10638,7 +10711,7 @@ document.addEventListener('DOMContentLoaded', function() {
    Показывает 6 шагов при первом входе или по "?".
    localStorage хранит флаг прохождения.
 ══════════════════════════════════════════ */
-var TOUR_STEPS = [
+let TOUR_STEPS = [
   { selector: '.tasks-block',         title: 'Текущие дела',        body: 'Kanban-доска с колонками: Сейчас, Следующие, Ожидание, Готово. Перетаскивай задачи между колонками.' },
   { selector: '.projects-block',      title: 'Проекты',             body: 'CRM-карточки с воронкой продаж. Каждый проект проходит 12 этапов от лида до подписания. Перетаскивай проект на нужный этап.' },
   { selector: '.calls-block',         title: 'Журнал звонков',      body: 'Запись звонков с договорённостями и следующими шагами. Раскрой карточку для деталей.' },
@@ -10651,9 +10724,9 @@ var TOUR_STEPS = [
   { selector: '.theme-switcher',      title: '8 тем',               body: 'От минимализма Claude до киберпанка Neon. Выбирай по настроению.' },
 ];
 
-var tourStep = 0;
-var tourOverlay = null;
-var tourTooltip = null;
+let tourStep = 0;
+let tourOverlay = null;
+let tourTooltip = null;
 
 function tourCleanup() {
   /* Гарантированная очистка — убирает всё от предыдущего тура */
@@ -10688,7 +10761,7 @@ function tourStart() {
 
 function tourShow(idx) {
   tourStep = idx;
-  var step = TOUR_STEPS[idx];
+  let step = TOUR_STEPS[idx];
   if (!step) { tourEnd(); return; }
 
   /* Убираем highlight с предыдущего */
@@ -10697,7 +10770,7 @@ function tourShow(idx) {
   });
 
   /* Подсвечиваем текущий элемент */
-  var target = document.querySelector(step.selector);
+  let target = document.querySelector(step.selector);
 
   /* Если элемент не найден — пропускаем шаг */
   if (!target) {
@@ -10713,7 +10786,7 @@ function tourShow(idx) {
   if (tourOverlay) tourOverlay.style.background = 'transparent';
 
   /* Рендерим tooltip */
-  var dots = TOUR_STEPS.map(function(_, i) {
+  let dots = TOUR_STEPS.map(function(_, i) {
     return '<span class="tour-dot' + (i === idx ? ' active' : '') + '"></span>';
   }).join('');
 
@@ -10735,12 +10808,12 @@ function tourShow(idx) {
   tourTooltip.style.opacity = '0';
   setTimeout(function() {
     if (!tourTooltip) return;
-    var rect = target.getBoundingClientRect();
-    var ttRect = tourTooltip.getBoundingClientRect();
+    let rect = target.getBoundingClientRect();
+    let ttRect = tourTooltip.getBoundingClientRect();
 
     /* Пробуем разместить под элементом */
-    var top = rect.bottom + 14;
-    var left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+    let top = rect.bottom + 14;
+    let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
 
     /* Clamp по горизонтали */
     left = Math.max(12, Math.min(left, window.innerWidth - ttRect.width - 12));
@@ -10781,32 +10854,32 @@ function tourAutoStart() {
    SVG polyline за 7 дней. Данные из localStorage.
 ══════════════════════════════════════════ */
 function getHistoricalData(keyTemplate, days, extractor) {
-  var data = [];
-  for (var i = days - 1; i >= 0; i--) {
-    var d = new Date();
+  let data = [];
+  for (let i = days - 1; i >= 0; i--) {
+    let d = new Date();
     d.setDate(d.getDate() - i);
-    var key = keyTemplate(d);
-    var raw = LS.get(key, null);
+    let key = keyTemplate(d);
+    let raw = LS.get(key, null);
     data.push(extractor(raw, d));
   }
   return data;
 }
 
 function renderSparkline(svgId, data, color) {
-  var svg = document.getElementById(svgId);
+  let svg = document.getElementById(svgId);
   if (!svg || !data.length) return;
-  var max = Math.max.apply(null, data) || 1;
-  var w = 60, h = 18, pad = 1;
-  var step = (w - pad * 2) / (data.length - 1 || 1);
+  let max = Math.max.apply(null, data) || 1;
+  let w = 60, h = 18, pad = 1;
+  let step = (w - pad * 2) / (data.length - 1 || 1);
 
-  var points = data.map(function(v, i) {
-    var x = pad + i * step;
-    var y = h - pad - ((v / max) * (h - pad * 2));
+  let points = data.map(function(v, i) {
+    let x = pad + i * step;
+    let y = h - pad - ((v / max) * (h - pad * 2));
     return x.toFixed(1) + ',' + y.toFixed(1);
   });
 
   /* Область под линией */
-  var areaPoints = points.join(' ') + ' ' + (pad + (data.length-1)*step) + ',' + h + ' ' + pad + ',' + h;
+  let areaPoints = points.join(' ') + ' ' + (pad + (data.length-1)*step) + ',' + h + ' ' + pad + ',' + h;
 
   svg.innerHTML =
     '<polygon class="spark-area" points="' + areaPoints + '" fill="currentColor"/>' +
@@ -10815,7 +10888,7 @@ function renderSparkline(svgId, data, color) {
 
 function updateSparklines() {
   /* Звонки за последние 7 дней */
-  var callData = getHistoricalData(
+  let callData = getHistoricalData(
     function(d) { return 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate(); },
     7,
     function(raw) { return raw ? (raw.done || 0) : 0; }
@@ -10823,21 +10896,21 @@ function updateSparklines() {
   renderSparkline('spark-calls', callData);
 
   /* Задачи выполненные — считаем из wdb_tasks сколько done */
-  var tasks = LS.get('wdb_tasks', []);
-  var now = tasks.filter(function(t) { return t.lane === 'now'; }).length;
+  let tasks = LS.get('wdb_tasks', []);
+  let now = tasks.filter(function(t) { return t.lane === 'now'; }).length;
   /* Для спарклайна задач "в работе" — генерируем мини-тренд из имеющихся данных */
-  var taskTrend = callData.map(function(_, i) { return Math.max(0, now + Math.round((Math.random()-0.5) * 2)); });
+  let taskTrend = callData.map(function(_, i) { return Math.max(0, now + Math.round((Math.random()-0.5) * 2)); });
   taskTrend[taskTrend.length - 1] = now;
   renderSparkline('spark-tasks', taskTrend);
 
   /* Проекты — стабильное число, показываем плоскую линию с текущим значением */
-  var projCount = parseInt(document.getElementById('ws-projects')?.textContent) || 0;
-  var projTrend = [projCount, projCount, projCount, projCount, projCount, projCount, projCount];
+  let projCount = parseInt(document.getElementById('ws-projects')?.textContent) || 0;
+  let projTrend = [projCount, projCount, projCount, projCount, projCount, projCount, projCount];
   renderSparkline('spark-projects', projTrend);
 
   /* Задачи выполненные — аппроксимируем из call data ритм */
-  var doneTasks = tasks.filter(function(t) { return t.lane === 'done'; }).length;
-  var doneTrend = callData.map(function(v) { return Math.round(v * 0.3) || 0; });
+  let doneTasks = tasks.filter(function(t) { return t.lane === 'done'; }).length;
+  let doneTrend = callData.map(function(v) { return Math.round(v * 0.3) || 0; });
   doneTrend[doneTrend.length - 1] = doneTasks;
   renderSparkline('spark-done', doneTrend);
 }
@@ -10850,17 +10923,17 @@ function updateSparklines() {
    сравнивает с предыдущей, показывает дельту.
 ══════════════════════════════════════════ */
 function getWeekData(weeksAgo) {
-  var total = { calls: 0, tasksCreated: 0, tasksDone: 0, meetings: 0, projects: 0 };
-  for (var i = 0; i < 7; i++) {
-    var d = new Date();
+  let total = { calls: 0, tasksCreated: 0, tasksDone: 0, meetings: 0, projects: 0 };
+  for (let i = 0; i < 7; i++) {
+    let d = new Date();
     d.setDate(d.getDate() - i - (weeksAgo * 7));
-    var ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
-    var ct = LS.get(ctKey, null);
+    let ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+    let ct = LS.get(ctKey, null);
     if (ct) total.calls += (ct.done || 0);
   }
   /* Задачи, проекты, встречи — из текущего массива (snapshot) */
   if (weeksAgo === 0) {
-    var tasks = LS.get('wdb_tasks', []);
+    let tasks = LS.get('wdb_tasks', []);
     total.tasksDone = tasks.filter(function(t) { return t.lane === 'done'; }).length;
     total.tasksCreated = tasks.length;
     total.projects = LS.get('wdb_projects', []).filter(function(p) { return p.stage !== 'lost'; }).length;
@@ -10872,24 +10945,24 @@ function getWeekData(weeksAgo) {
 function deltaHTML(current, previous, suffix) {
   suffix = suffix || '';
   if (previous === 0) return '<span class="review-stat-delta same">—</span>';
-  var diff = current - previous;
-  var pct = Math.round((diff / previous) * 100);
+  let diff = current - previous;
+  let pct = Math.round((diff / previous) * 100);
   if (diff > 0) return '<span class="review-stat-delta up">+' + diff + suffix + ' (' + pct + '%)</span>';
   if (diff < 0) return '<span class="review-stat-delta down">' + diff + suffix + ' (' + pct + '%)</span>';
   return '<span class="review-stat-delta same">без изменений</span>';
 }
 
 function openReview() {
-  var thisWeek = getWeekData(0);
-  var lastWeek = getWeekData(1);
+  let thisWeek = getWeekData(0);
+  let lastWeek = getWeekData(1);
 
-  var body = document.getElementById('review-body');
+  let body = document.getElementById('review-body');
   if (!body) return;
 
-  var today = new Date();
-  var weekStart = new Date(today);
+  let today = new Date();
+  let weekStart = new Date(today);
   weekStart.setDate(today.getDate() - today.getDay() + 1);
-  var dateRange = weekStart.getDate() + '.' + String(weekStart.getMonth()+1).padStart(2,'0') +
+  let dateRange = weekStart.getDate() + '.' + String(weekStart.getMonth()+1).padStart(2,'0') +
     ' — ' + today.getDate() + '.' + String(today.getMonth()+1).padStart(2,'0');
 
   body.innerHTML =
@@ -10933,8 +11006,8 @@ function closeReview() {
 }
 
 function copyReview() {
-  var thisWeek = getWeekData(0);
-  var text = 'Итоги недели\n' +
+  let thisWeek = getWeekData(0);
+  let text = 'Итоги недели\n' +
     'Звонков: ' + thisWeek.calls + '\n' +
     'Задач выполнено: ' + thisWeek.tasksDone + '\n' +
     'Активных проектов: ' + thisWeek.projects + '\n' +
@@ -10953,7 +11026,7 @@ function copyReview() {
 ══════════════════════════════════════════ */
 function csvEscape(val) {
   if (val === null || val === undefined) return '';
-  var s = String(val);
+  let s = String(val);
   if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
     return '"' + s.replace(/"/g, '""') + '"';
   }
@@ -10961,14 +11034,14 @@ function csvEscape(val) {
 }
 
 function downloadCSV(filename, headers, rows) {
-  var bom = '\uFEFF'; /* BOM для корректного отображения кириллицы в Excel */
-  var csv = bom + headers.map(csvEscape).join(',') + '\n' +
+  let bom = '\uFEFF'; /* BOM для корректного отображения кириллицы в Excel */
+  let csv = bom + headers.map(csvEscape).join(',') + '\n' +
     rows.map(function(row) {
       return row.map(csvEscape).join(',');
     }).join('\n');
-  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
+  let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
   a.href = url;
   a.download = filename;
   a.click();
@@ -10976,40 +11049,40 @@ function downloadCSV(filename, headers, rows) {
 }
 
 function exportTasksCSV() {
-  var tasks = LS.get('wdb_tasks', []);
-  var headers = ['Задача', 'Статус', 'Приоритет', 'Проект', 'Дедлайн', 'Время', 'Создана'];
-  var rows = tasks.map(function(t) {
-    var lane = t.lane === 'now' ? 'Сейчас' : t.lane === 'next' ? 'Следующие' : t.lane === 'wait' ? 'Отложено' : 'Выполнено';
-    var prio = t.priority === 'critical' ? 'Критичный' : t.priority === 'important' ? 'Важный' : 'Обычный';
+  let tasks = LS.get('wdb_tasks', []);
+  let headers = ['Задача', 'Статус', 'Приоритет', 'Проект', 'Дедлайн', 'Время', 'Создана'];
+  let rows = tasks.map(function(t) {
+    let lane = t.lane === 'now' ? 'Сейчас' : t.lane === 'next' ? 'Следующие' : t.lane === 'wait' ? 'Отложено' : 'Выполнено';
+    let prio = t.priority === 'critical' ? 'Критичный' : t.priority === 'important' ? 'Важный' : 'Обычный';
     return [t.text, lane, prio, t.project || '', t.deadline || '', t.time || '', t.doneAt ? new Date(t.doneAt).toLocaleDateString('ru') : ''];
   });
-  var date = new Date().toISOString().split('T')[0];
+  let date = new Date().toISOString().split('T')[0];
   downloadCSV('tasks-' + date + '.csv', headers, rows);
   toast('Задачи экспортированы', 'success', 2000);
   logActivity('chart', 'Экспортировал задачи в CSV');
 }
 
 function exportProjectsCSV() {
-  var projects = LS.get('wdb_projects', []);
-  var headers = ['Проект', 'Клиент', 'Контакт', 'Стадия', 'Бюджет', 'Ответственный', 'Дедлайн', 'Следующий шаг'];
-  var rows = projects.map(function(p) {
-    var stageIdx = parseInt(p.stage) || 0;
-    var stageName = p.stage === 'lost' ? 'Проиграна' : (FUNNEL[stageIdx] || '');
+  let projects = LS.get('wdb_projects', []);
+  let headers = ['Проект', 'Клиент', 'Контакт', 'Стадия', 'Бюджет', 'Ответственный', 'Дедлайн', 'Следующий шаг'];
+  let rows = projects.map(function(p) {
+    let stageIdx = parseInt(p.stage) || 0;
+    let stageName = p.stage === 'lost' ? 'Проиграна' : (FUNNEL[stageIdx] || '');
     return [p.name, p.client || '', p.contact || '', stageName, p.budget || '', p.owner || '', p.deadline || '', p.nextStep || ''];
   });
-  var date = new Date().toISOString().split('T')[0];
+  let date = new Date().toISOString().split('T')[0];
   downloadCSV('projects-' + date + '.csv', headers, rows);
   toast('Проекты экспортированы', 'success', 2000);
   logActivity('chart', 'Экспортировал проекты в CSV');
 }
 
 function exportCallsCSV() {
-  var calls = LS.get('wdb_calls', []);
-  var headers = ['Компания', 'Контакт', 'Статус', 'Дата', 'Длительность', 'Договорённости', 'Следующий шаг'];
-  var rows = calls.map(function(c) {
+  let calls = LS.get('wdb_calls', []);
+  let headers = ['Компания', 'Контакт', 'Статус', 'Дата', 'Длительность', 'Договорённости', 'Следующий шаг'];
+  let rows = calls.map(function(c) {
     return [c.company || '', c.contact || '', c.status || '', c.date || '', c.duration || '', c.agreements || '', c.nextStep || ''];
   });
-  var date = new Date().toISOString().split('T')[0];
+  let date = new Date().toISOString().split('T')[0];
   downloadCSV('calls-' + date + '.csv', headers, rows);
   toast('Звонки экспортированы', 'success', 2000);
   logActivity('chart', 'Экспортировал звонки в CSV');
@@ -11028,7 +11101,7 @@ function exportAllCSV() {
    Хронологическая лента действий за сегодня.
    Формируется автоматически из хука на LS.set.
 ══════════════════════════════════════════ */
-var ACT_KEY = 'wdb_activity_' + new Date().toISOString().split('T')[0];
+let ACT_KEY = 'wdb_activity_' + new Date().toISOString().split('T')[0];
 
 function getActivity() { return LS.get(ACT_KEY, []); }
 function saveActivity(list) {
@@ -11037,9 +11110,9 @@ function saveActivity(list) {
 }
 
 function logActivity(iconKey, text) {
-  var list = getActivity();
-  var now = new Date();
-  var time = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  let list = getActivity();
+  let now = new Date();
+  let time = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   list.unshift({ time: time, icon: iconKey, text: text, ts: now.getTime() });
   /* Максимум 50 записей за день */
   if (list.length > 50) list = list.slice(0, 50);
@@ -11048,16 +11121,16 @@ function logActivity(iconKey, text) {
 }
 
 function renderActivity() {
-  var el = document.getElementById('act-list');
+  let el = document.getElementById('act-list');
   if (!el) return;
-  var list = getActivity();
+  let list = getActivity();
   if (list.length === 0) {
     el.innerHTML = emptyState('chart', 'Действия появятся здесь', 'Создай задачу или запиши звонок');
     return;
   }
   el.innerHTML = list.map(function(a) {
-    var ic = ICON[a.icon] || '';
-    var svg = ic ? ic.replace(/width="\d+"/, 'width="14"').replace(/height="\d+"/, 'height="14"') : '';
+    let ic = ICON[a.icon] || '';
+    let svg = ic ? ic.replace(/width="\d+"/, 'width="14"').replace(/height="\d+"/, 'height="14"') : '';
     return '<div class="w-act-item">' +
       '<span class="w-act-time">' + a.time + '</span>' +
       '<span class="w-act-icon">' + svg + '</span>' +
@@ -11084,8 +11157,8 @@ document.addEventListener('DOMContentLoaded', renderActivity);
 ══════════════════════════════════════════ */
 function searchData(query) {
   if (!query || query.length < 2) return [];
-  var q = query.toLowerCase();
-  var results = [];
+  let q = query.toLowerCase();
+  let results = [];
 
   /* Задачи */
   (LS.get('wdb_tasks', [])).forEach(function(t) {
@@ -11103,7 +11176,7 @@ function searchData(query) {
 
   /* Проекты */
   (LS.get('wdb_projects', [])).forEach(function(p) {
-    var match = (p.name && p.name.toLowerCase().indexOf(q) !== -1) ||
+    let match = (p.name && p.name.toLowerCase().indexOf(q) !== -1) ||
                 (p.client && p.client.toLowerCase().indexOf(q) !== -1) ||
                 (p.contact && p.contact.toLowerCase().indexOf(q) !== -1);
     if (match) {
@@ -11120,7 +11193,7 @@ function searchData(query) {
 
   /* Звонки */
   (LS.get('wdb_calls', [])).forEach(function(c) {
-    var match = (c.company && c.company.toLowerCase().indexOf(q) !== -1) ||
+    let match = (c.company && c.company.toLowerCase().indexOf(q) !== -1) ||
                 (c.contact && c.contact.toLowerCase().indexOf(q) !== -1) ||
                 (c.agreements && c.agreements.toLowerCase().indexOf(q) !== -1);
     if (match) {
@@ -11165,8 +11238,8 @@ function getStreakData() {
 }
 
 function updateStreak() {
-  var data = getStreakData();
-  var today = new Date().toISOString().split('T')[0];
+  let data = getStreakData();
+  let today = new Date().toISOString().split('T')[0];
 
   /* Если сегодня уже отмечено — просто рендерим */
   if (data.dates.indexOf(today) !== -1) {
@@ -11175,11 +11248,11 @@ function updateStreak() {
   }
 
   /* Проверяем активность: есть ли звонки или завершённые задачи сегодня */
-  var d = new Date();
-  var ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
-  var ct = LS.get(ctKey, null);
-  var hasCalls = ct && ct.done > 0;
-  var hasDoneTasks = (LS.get('wdb_tasks', [])).some(function(t) {
+  let d = new Date();
+  let ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+  let ct = LS.get(ctKey, null);
+  let hasCalls = ct && ct.done > 0;
+  let hasDoneTasks = (LS.get('wdb_tasks', [])).some(function(t) {
     return t.lane === 'done' && t.doneAt && new Date(t.doneAt).toISOString().split('T')[0] === today;
   });
 
@@ -11190,11 +11263,11 @@ function updateStreak() {
     data.dates.sort();
 
     /* Считаем текущий streak */
-    var streak = 1;
-    for (var i = data.dates.length - 1; i > 0; i--) {
-      var curr = new Date(data.dates[i]);
-      var prev = new Date(data.dates[i - 1]);
-      var diff = (curr - prev) / 86400000;
+    let streak = 1;
+    for (let i = data.dates.length - 1; i > 0; i--) {
+      let curr = new Date(data.dates[i]);
+      let prev = new Date(data.dates[i - 1]);
+      let diff = (curr - prev) / 86400000;
       if (diff === 1) streak++;
       else break;
     }
@@ -11209,8 +11282,8 @@ function updateStreak() {
 }
 
 function renderStreak(data) {
-  var badge = document.getElementById('streak-badge');
-  var num = document.getElementById('streak-num');
+  let badge = document.getElementById('streak-badge');
+  let num = document.getElementById('streak-num');
   if (!badge || !num) return;
   animateValue(num, data.current || 0, 500);
   badge.classList.toggle('hot', data.current >= 3);
@@ -11224,7 +11297,7 @@ function renderStreak(data) {
    Экспортирует все wdb_* ключи в JSON-файл.
    Импортирует обратно, перезаписывая текущие данные.
 ══════════════════════════════════════════ */
-var EXPORT_KEYS = [
+let EXPORT_KEYS = [
   'wdb_tasks', 'wdb_projects', 'wdb_meetings', 'wdb_comms', 'wdb_calls',
   'wdb_notes', 'wdb_focus', 'wdb_kpi', 'wdb_quicklog', 'wdb_streak',
   'wdb_widget_visibility', 'wdb_timer_sessions', 'wdb_theme'
@@ -11238,27 +11311,27 @@ function closeExport() {
 }
 
 function exportData() {
-  var data = { _meta: { version: '1.0', date: new Date().toISOString(), source: 'wdb-dashboard' } };
+  let data = { _meta: { version: '1.0', date: new Date().toISOString(), source: 'wdb-dashboard' } };
 
   /* Собираем все wdb_* ключи */
   EXPORT_KEYS.forEach(function(key) {
-    var val = localStorage.getItem(key);
+    let val = localStorage.getItem(key);
     if (val !== null) data[key] = JSON.parse(val);
   });
 
   /* Также собираем daily ключи (call_tracker, heatmap, activity и т.д.) */
-  for (var i = 0; i < localStorage.length; i++) {
-    var k = localStorage.key(i);
+  for (let i = 0; i < localStorage.length; i++) {
+    let k = localStorage.key(i);
     if (k && k.startsWith('wdb_') && !EXPORT_KEYS.includes(k)) {
       try { data[k] = JSON.parse(localStorage.getItem(k)); } catch(e) { data[k] = localStorage.getItem(k); }
     }
   }
 
   /* Скачиваем JSON */
-  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  var date = new Date().toISOString().split('T')[0];
+  let blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  let date = new Date().toISOString().split('T')[0];
   a.href = url;
   a.download = 'dashboard-backup-' + date + '.json';
   a.click();
@@ -11270,19 +11343,19 @@ function exportData() {
 
 function importData(input) {
   if (!input.files || !input.files[0]) return;
-  var file = input.files[0];
+  let file = input.files[0];
 
-  var reader = new FileReader();
+  let reader = new FileReader();
   reader.onload = function(e) {
     try {
-      var data = JSON.parse(e.target.result);
+      let data = JSON.parse(e.target.result);
       if (!data._meta || data._meta.source !== 'wdb-dashboard') {
         toast('Неверный формат файла', 'error', 3000);
         return;
       }
 
       /* Записываем все ключи */
-      var count = 0;
+      let count = 0;
       Object.keys(data).forEach(function(key) {
         if (key === '_meta') return;
         localStorage.setItem(key, JSON.stringify(data[key]));
@@ -11308,15 +11381,15 @@ function importData(input) {
    Кнопка "+" внизу-справа, раскрывается в веер.
 ══════════════════════════════════════════ */
 function fabToggle() {
-  var c = document.getElementById('fab-container');
-  var b = document.getElementById('fab-backdrop');
+  let c = document.getElementById('fab-container');
+  let b = document.getElementById('fab-backdrop');
   if (!c) return;
-  var open = c.classList.toggle('open');
+  let open = c.classList.toggle('open');
   if (b) b.classList.toggle('open', open);
 }
 function fabClose() {
-  var c = document.getElementById('fab-container');
-  var b = document.getElementById('fab-backdrop');
+  let c = document.getElementById('fab-container');
+  let b = document.getElementById('fab-backdrop');
   if (c) c.classList.remove('open');
   if (b) b.classList.remove('open');
 }
@@ -11328,7 +11401,7 @@ function fabClose() {
    Web Audio API синтезированные звуки. Без файлов.
    Toggle через localStorage 'wdb_sounds'.
 ══════════════════════════════════════════ */
-var _audioCtx = null;
+let _audioCtx = null;
 function getAudioCtx() {
   if (!_audioCtx) {
     try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
@@ -11342,13 +11415,13 @@ function soundEnabled() {
 
 function playSound(type) {
   if (!soundEnabled()) return;
-  var ctx = getAudioCtx();
+  let ctx = getAudioCtx();
   if (!ctx) return;
   /* Разблокируем AudioContext если suspended (требование Chrome) */
   if (ctx.state === 'suspended') ctx.resume();
 
-  var osc = ctx.createOscillator();
-  var gain = ctx.createGain();
+  let osc = ctx.createOscillator();
+  let gain = ctx.createGain();
   osc.connect(gain);
   gain.connect(ctx.destination);
 
@@ -11373,8 +11446,8 @@ function playSound(type) {
       osc.stop(ctx.currentTime + 0.4);
       /* Второй тон */
       setTimeout(function() {
-        var o2 = ctx.createOscillator();
-        var g2 = ctx.createGain();
+        let o2 = ctx.createOscillator();
+        let g2 = ctx.createGain();
         o2.connect(g2); g2.connect(ctx.destination);
         o2.frequency.value = 1320;
         o2.type = 'sine';
@@ -11404,7 +11477,7 @@ function playSound(type) {
       osc.start(ctx.currentTime);
       osc.stop(ctx.currentTime + 0.3);
       setTimeout(function() {
-        var o2 = ctx.createOscillator(); var g2 = ctx.createGain();
+        let o2 = ctx.createOscillator(); let g2 = ctx.createGain();
         o2.connect(g2); g2.connect(ctx.destination);
         o2.frequency.value = 659; o2.type = 'sine';
         g2.gain.setValueAtTime(0.07, ctx.currentTime);
@@ -11412,7 +11485,7 @@ function playSound(type) {
         o2.start(ctx.currentTime); o2.stop(ctx.currentTime + 0.3);
       }, 120);
       setTimeout(function() {
-        var o3 = ctx.createOscillator(); var g3 = ctx.createGain();
+        let o3 = ctx.createOscillator(); let g3 = ctx.createGain();
         o3.connect(g3); g3.connect(ctx.destination);
         o3.frequency.value = 784; o3.type = 'sine';
         g3.gain.setValueAtTime(0.06, ctx.currentTime);
@@ -11424,7 +11497,7 @@ function playSound(type) {
 }
 
 function toggleSounds() {
-  var on = soundEnabled();
+  let on = soundEnabled();
   localStorage.setItem('wdb_sounds', on ? 'off' : 'on');
   toast(on ? 'Звуки выключены' : 'Звуки включены', 'info', 1500);
   if (!on) playSound('click');
@@ -11437,17 +11510,17 @@ function toggleSounds() {
    Виджеты в правой колонке перетаскиваются.
    Порядок сохраняется в localStorage.
 ══════════════════════════════════════════ */
-var WR_KEY = 'wdb_widget_order';
+let WR_KEY = 'wdb_widget_order';
 
 function wrInit() {
-  var col = document.querySelector('.right-col');
+  let col = document.querySelector('.right-col');
   if (!col) return;
 
   /* Загружаем сохранённый порядок */
-  var order = LS.get(WR_KEY, null);
+  let order = LS.get(WR_KEY, null);
   if (order && Array.isArray(order)) {
     order.forEach(function(id) {
-      var el = col.querySelector('[data-widget-id="' + id + '"]');
+      let el = col.querySelector('[data-widget-id="' + id + '"]');
       if (el) col.appendChild(el);
     });
   }
@@ -11470,7 +11543,7 @@ function wrInit() {
     el.addEventListener('dragover', function(e) {
       e.preventDefault();
       /* Только если над другим виджетом */
-      var draggingId = e.dataTransfer.types.includes('text/plain');
+      let draggingId = e.dataTransfer.types.includes('text/plain');
       if (draggingId && !el.classList.contains('widget-dragging')) {
         el.classList.add('widget-drop-target');
       }
@@ -11483,8 +11556,8 @@ function wrInit() {
     el.addEventListener('drop', function(e) {
       e.preventDefault();
       el.classList.remove('widget-drop-target');
-      var draggedId = e.dataTransfer.getData('text/plain');
-      var draggedEl = col.querySelector('[data-widget-id="' + draggedId + '"]');
+      let draggedId = e.dataTransfer.getData('text/plain');
+      let draggedEl = col.querySelector('[data-widget-id="' + draggedId + '"]');
       if (draggedEl && draggedEl !== el) {
         /* Вставляем перед целевым элементом */
         col.insertBefore(draggedEl, el);
@@ -11496,7 +11569,7 @@ function wrInit() {
 }
 
 function wrSaveOrder(col) {
-  var order = [];
+  let order = [];
   col.querySelectorAll('[data-widget-id]').forEach(function(el) {
     order.push(el.getAttribute('data-widget-id'));
   });
@@ -11513,27 +11586,27 @@ document.addEventListener('DOMContentLoaded', wrInit);
    Проверяет задачи каждые 60 сек. Если задача имеет
    deadline + time + remind — показывает toast-уведомление.
 ══════════════════════════════════════════ */
-var _notifiedTasks = {}; /* Чтобы не спамить */
+let _notifiedTasks = {}; /* Чтобы не спамить */
 
 function checkDeadlineNotifications() {
-  var now = new Date();
-  var nowMs = now.getTime();
-  var today = now.toISOString().split('T')[0];
+  let now = new Date();
+  let nowMs = now.getTime();
+  let today = now.toISOString().split('T')[0];
 
   (LS.get('wdb_tasks', [])).forEach(function(t) {
     if (!t.deadline || !t.time || !t.remind || t.lane === 'done') return;
     if (_notifiedTasks[t.id]) return;
 
     /* Собираем дату-время дедлайна */
-    var deadlineMs = new Date(t.deadline + 'T' + t.time + ':00').getTime();
-    var remindMs = parseInt(t.remind) * 60 * 1000;
-    var alertMs = deadlineMs - remindMs;
+    let deadlineMs = new Date(t.deadline + 'T' + t.time + ':00').getTime();
+    let remindMs = parseInt(t.remind) * 60 * 1000;
+    let alertMs = deadlineMs - remindMs;
 
     /* Если сейчас в окне [alertMs, deadlineMs] — уведомляем */
     if (nowMs >= alertMs && nowMs <= deadlineMs) {
       _notifiedTasks[t.id] = true;
-      var minsLeft = Math.round((deadlineMs - nowMs) / 60000);
-      var label = minsLeft <= 0 ? 'Дедлайн сейчас!' : 'Через ' + minsLeft + ' мин';
+      let minsLeft = Math.round((deadlineMs - nowMs) / 60000);
+      let label = minsLeft <= 0 ? 'Дедлайн сейчас!' : 'Через ' + minsLeft + ' мин';
 
       toast(label + ': ' + t.text, 'warning', 8000);
 
@@ -11565,14 +11638,14 @@ document.addEventListener('DOMContentLoaded', function() {
    под greeting с actionable подсказками.
 ══════════════════════════════════════════ */
 function updateSmartAlerts() {
-  var el = document.getElementById('smart-alerts');
+  let el = document.getElementById('smart-alerts');
   if (!el) return;
-  var alerts = [];
-  var today = new Date();
+  let alerts = [];
+  let today = new Date();
   today.setHours(0,0,0,0);
 
   /* 1. Просроченные задачи */
-  var overdueTasks = (LS.get('wdb_tasks', [])).filter(function(t) {
+  let overdueTasks = (LS.get('wdb_tasks', [])).filter(function(t) {
     if (!t.deadline || t.lane === 'done') return false;
     return new Date(t.deadline + 'T00:00:00') < today;
   });
@@ -11587,25 +11660,25 @@ function updateSmartAlerts() {
       alerts.push({ cls: 'warn', text: p.name + ': нет контакта', action: function() { scrollToWidget('.projects-block'); toggleProject(p.id); } });
       return;
     }
-    var daysSince = Math.floor((Date.now() - new Date(p.lastContactDate).getTime()) / 86400000);
+    let daysSince = Math.floor((Date.now() - new Date(p.lastContactDate).getTime()) / 86400000);
     if (daysSince >= 5) {
       alerts.push({ cls: 'warn', text: p.name + ': ' + daysSince + ' дн без контакта', action: function() { scrollToWidget('.projects-block'); toggleProject(p.id); } });
     }
   });
 
   /* 3. Звонки: 0 за сегодня при плане > 0 */
-  var d = new Date();
-  var ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
-  var ct = LS.get(ctKey, null);
-  var todayCalls = ct ? (ct.done || 0) : 0;
-  var todayPlan = ct ? (ct.plan || 40) : 40;
+  let d = new Date();
+  let ctKey = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+  let ct = LS.get(ctKey, null);
+  let todayCalls = ct ? (ct.done || 0) : 0;
+  let todayPlan = ct ? (ct.plan || 40) : 40;
   if (todayCalls === 0 && d.getHours() >= 10) {
     alerts.push({ cls: 'info', text: '0 звонков — план ' + todayPlan, action: function() { scrollToWidget('[data-widget-id="call-tracker"]'); } });
   }
 
   /* 4. WIP лимит превышен */
-  var nowCount = (LS.get('wdb_tasks', [])).filter(function(t) { return t.lane === 'now'; }).length;
-  var WIP_LIMIT = 7;
+  let nowCount = (LS.get('wdb_tasks', [])).filter(function(t) { return t.lane === 'now'; }).length;
+  let WIP_LIMIT = 7;
   if (nowCount > WIP_LIMIT) {
     alerts.push({ cls: 'warn', text: 'WIP: ' + nowCount + '/' + WIP_LIMIT + ' задач', action: function() { scrollToWidget('.tasks-block'); } });
   }
@@ -11636,20 +11709,20 @@ setInterval(updateSmartAlerts, 300000);
    Максимум задач в "Сейчас". При превышении —
    header краснеет, badge пульсирует.
 ══════════════════════════════════════════ */
-var WIP_LIMIT = 7;
+let WIP_LIMIT = 7;
 
 function checkWipLimit() {
-  var header = document.getElementById('lane-header-now');
-  var label = document.getElementById('wip-label');
+  let header = document.getElementById('lane-header-now');
+  let label = document.getElementById('wip-label');
   if (!header) return;
-  var nowCount = tasks.filter(function(t) { return t.lane === 'now'; }).length;
-  var isOver = nowCount > WIP_LIMIT;
+  let nowCount = tasks.filter(function(t) { return t.lane === 'now'; }).length;
+  let isOver = nowCount > WIP_LIMIT;
   header.classList.toggle('wip-over', isOver);
   if (label) label.textContent = isOver ? '(лимит ' + WIP_LIMIT + ')' : '';
 }
 
 /* Хукаем в renderTasks — вызывается после каждого render */
-var _origRenderTasks = typeof renderTasks === 'function' ? renderTasks : null;
+let _origRenderTasks = typeof renderTasks === 'function' ? renderTasks : null;
 
 
 /* ══════════════════════════════════════════
@@ -11671,7 +11744,7 @@ function setView(mode) {
 }
 /* Восстанавливаем при загрузке */
 document.addEventListener('DOMContentLoaded', function() {
-  var saved = localStorage.getItem('wdb_view_mode');
+  let saved = localStorage.getItem('wdb_view_mode');
   if (saved && saved !== 'default') setView(saved);
 });
 
@@ -11691,7 +11764,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Polyfill: roundRect для Safari < 16 и старых браузеров */
 if (!CanvasRenderingContext2D.prototype.roundRect) {
   CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
-    var r = typeof radii === 'number' ? [radii,radii,radii,radii] : (Array.isArray(radii) ? radii : [0,0,0,0]);
+    let r = typeof radii === 'number' ? [radii,radii,radii,radii] : (Array.isArray(radii) ? radii : [0,0,0,0]);
     while (r.length < 4) r.push(r[0] || 0);
     this.moveTo(x + r[0], y);
     this.lineTo(x + w - r[1], y);
@@ -11708,7 +11781,7 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
 }
 
 function getThemeColors() {
-  var s = getComputedStyle(document.documentElement);
+  let s = getComputedStyle(document.documentElement);
   return {
     accent: s.getPropertyValue('--accent').trim() || '#b5622a',
     green:  s.getPropertyValue('--green').trim() || '#2e7d52',
@@ -11723,13 +11796,13 @@ function getThemeColors() {
 }
 
 function setupCanvas(id) {
-  var canvas = document.getElementById(id);
+  let canvas = document.getElementById(id);
   if (!canvas) return null;
-  var dpr = window.devicePixelRatio || 1;
-  var rect = canvas.getBoundingClientRect();
+  let dpr = window.devicePixelRatio || 1;
+  let rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
-  var ctx = canvas.getContext('2d');
+  let ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, rect.width, rect.height);
   return { ctx: ctx, w: rect.width, h: rect.height };
@@ -11737,35 +11810,35 @@ function setupCanvas(id) {
 
 /* ── Chart 1: Звонки за 7 дней (Bar Chart) ── */
 function renderChartCallsWeek() {
-  var c = setupCanvas('chart-calls-week');
+  let c = setupCanvas('chart-calls-week');
   if (!c) return;
-  var ctx = c.ctx, w = c.w, h = c.h;
-  var clr = getThemeColors();
+  let ctx = c.ctx, w = c.w, h = c.h;
+  let clr = getThemeColors();
 
-  var data = [];
-  var labels = [];
-  var days = ['вс','пн','вт','ср','чт','пт','сб'];
-  for (var i = 6; i >= 0; i--) {
-    var d = new Date();
+  let data = [];
+  let labels = [];
+  let days = ['вс','пн','вт','ср','чт','пт','сб'];
+  for (let i = 6; i >= 0; i--) {
+    let d = new Date();
     d.setDate(d.getDate() - i);
-    var key = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
-    var ct = LS.get(key, null);
+    let key = 'wdb_call_tracker_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+    let ct = LS.get(key, null);
     data.push(ct ? (ct.done || 0) : 0);
     labels.push(days[d.getDay()]);
   }
 
-  var max = Math.max.apply(null, data) || 1;
-  var pad = { top: 10, right: 10, bottom: 28, left: 36 };
-  var chartW = w - pad.left - pad.right;
-  var chartH = h - pad.top - pad.bottom;
-  var barW = (chartW / data.length) * 0.6;
-  var gap = (chartW / data.length) * 0.4;
+  let max = Math.max.apply(null, data) || 1;
+  let pad = { top: 10, right: 10, bottom: 28, left: 36 };
+  let chartW = w - pad.left - pad.right;
+  let chartH = h - pad.top - pad.bottom;
+  let barW = (chartW / data.length) * 0.6;
+  let gap = (chartW / data.length) * 0.4;
 
   /* Grid lines */
   ctx.strokeStyle = clr.border;
   ctx.lineWidth = 0.5;
-  for (var g = 0; g <= 4; g++) {
-    var gy = pad.top + chartH - (chartH * g / 4);
+  for (let g = 0; g <= 4; g++) {
+    let gy = pad.top + chartH - (chartH * g / 4);
     ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
     ctx.fillStyle = clr.mute;
     ctx.font = '9px Manrope, sans-serif';
@@ -11775,9 +11848,9 @@ function renderChartCallsWeek() {
 
   /* Bars */
   data.forEach(function(v, i) {
-    var x = pad.left + i * (barW + gap) + gap / 2;
-    var barH = (v / max) * chartH;
-    var y = pad.top + chartH - barH;
+    let x = pad.left + i * (barW + gap) + gap / 2;
+    let barH = (v / max) * chartH;
+    let y = pad.top + chartH - barH;
 
     /* Bar fill */
     ctx.fillStyle = i === data.length - 1 ? clr.accent : clr.blue;
@@ -11805,52 +11878,52 @@ function renderChartCallsWeek() {
 
 /* ── Chart 2: Успешность звонков (Stacked Bar) ── */
 function renderChartCallResults() {
-  var c = setupCanvas('chart-call-results');
+  let c = setupCanvas('chart-call-results');
   if (!c) return;
-  var ctx = c.ctx, w = c.w, h = c.h;
-  var clr = getThemeColors();
+  let ctx = c.ctx, w = c.w, h = c.h;
+  let clr = getThemeColors();
 
-  var success = [], fail = [], labels = [];
-  var days = ['вс','пн','вт','ср','чт','пт','сб'];
-  for (var i = 6; i >= 0; i--) {
-    var d = new Date();
+  let success = [], fail = [], labels = [];
+  let days = ['вс','пн','вт','ср','чт','пт','сб'];
+  for (let i = 6; i >= 0; i--) {
+    let d = new Date();
     d.setDate(d.getDate() - i);
-    var key = 'wdb_call_results_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
-    var cr = LS.get(key, { success: 0, fail: 0 });
+    let key = 'wdb_call_results_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+    let cr = LS.get(key, { success: 0, fail: 0 });
     success.push(cr.success || 0);
     fail.push(cr.fail || 0);
     labels.push(days[d.getDay()]);
   }
 
-  var max = Math.max.apply(null, success.map(function(s, i) { return s + fail[i]; })) || 1;
-  var pad = { top: 10, right: 10, bottom: 28, left: 36 };
-  var chartW = w - pad.left - pad.right;
-  var chartH = h - pad.top - pad.bottom;
-  var barW = (chartW / 7) * 0.55;
-  var gap = (chartW / 7) * 0.45;
+  let max = Math.max.apply(null, success.map(function(s, i) { return s + fail[i]; })) || 1;
+  let pad = { top: 10, right: 10, bottom: 28, left: 36 };
+  let chartW = w - pad.left - pad.right;
+  let chartH = h - pad.top - pad.bottom;
+  let barW = (chartW / 7) * 0.55;
+  let gap = (chartW / 7) * 0.45;
 
   /* Grid */
   ctx.strokeStyle = clr.border; ctx.lineWidth = 0.5;
-  for (var g = 0; g <= 4; g++) {
-    var gy = pad.top + chartH - (chartH * g / 4);
+  for (let g = 0; g <= 4; g++) {
+    let gy = pad.top + chartH - (chartH * g / 4);
     ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
     ctx.fillStyle = clr.mute; ctx.font = '9px Manrope, sans-serif'; ctx.textAlign = 'right';
     ctx.fillText(Math.round(max * g / 4), pad.left - 4, gy + 3);
   }
 
   success.forEach(function(sv, i) {
-    var fv = fail[i];
-    var total = sv + fv;
-    var x = pad.left + i * (barW + gap) + gap / 2;
+    let fv = fail[i];
+    let total = sv + fv;
+    let x = pad.left + i * (barW + gap) + gap / 2;
 
     /* Success bar */
-    var sH = (sv / max) * chartH;
-    var sY = pad.top + chartH - (total / max) * chartH;
+    let sH = (sv / max) * chartH;
+    let sY = pad.top + chartH - (total / max) * chartH;
     ctx.fillStyle = clr.green; ctx.globalAlpha = 0.8;
     ctx.beginPath(); ctx.roundRect(x, sY, barW, sH, [3,3,0,0]); ctx.fill();
 
     /* Fail bar (stacked on top) */
-    var fH = (fv / max) * chartH;
+    let fH = (fv / max) * chartH;
     ctx.fillStyle = clr.red; ctx.globalAlpha = 0.7;
     ctx.beginPath(); ctx.roundRect(x, sY + sH, barW, fH, [0,0,3,3]); ctx.fill();
     ctx.globalAlpha = 1;
@@ -11870,39 +11943,39 @@ function renderChartCallResults() {
 
 /* ── Chart 3: Задачи по статусам (Donut) ── */
 function renderChartTasksDist() {
-  var c = setupCanvas('chart-tasks-dist');
+  let c = setupCanvas('chart-tasks-dist');
   if (!c) return;
-  var ctx = c.ctx, w = c.w, h = c.h;
-  var clr = getThemeColors();
+  let ctx = c.ctx, w = c.w, h = c.h;
+  let clr = getThemeColors();
 
-  var allTasks = LS.get('wdb_tasks', []);
-  var counts = {
+  let allTasks = LS.get('wdb_tasks', []);
+  let counts = {
     now:  allTasks.filter(function(t) { return t.lane === 'now'; }).length,
     next: allTasks.filter(function(t) { return t.lane === 'next'; }).length,
     wait: allTasks.filter(function(t) { return t.lane === 'wait'; }).length,
     done: allTasks.filter(function(t) { return t.lane === 'done'; }).length,
   };
-  var total = counts.now + counts.next + counts.wait + counts.done;
+  let total = counts.now + counts.next + counts.wait + counts.done;
   if (total === 0) {
     ctx.fillStyle = clr.mute; ctx.font = '12px Manrope, sans-serif'; ctx.textAlign = 'center';
     ctx.fillText('Нет задач', w / 2, h / 2);
     return;
   }
 
-  var segments = [
+  let segments = [
     { label: 'Сейчас', val: counts.now, color: clr.accent },
     { label: 'Следующие', val: counts.next, color: clr.blue },
     { label: 'Отложено', val: counts.wait, color: clr.yellow },
     { label: 'Готово', val: counts.done, color: clr.green },
   ];
 
-  var cx = w * 0.38, cy = h / 2, radius = Math.min(cx, cy) - 16;
-  var innerRadius = radius * 0.6;
-  var startAngle = -Math.PI / 2;
+  let cx = w * 0.38, cy = h / 2, radius = Math.min(cx, cy) - 16;
+  let innerRadius = radius * 0.6;
+  let startAngle = -Math.PI / 2;
 
   segments.forEach(function(seg) {
     if (seg.val === 0) return;
-    var sliceAngle = (seg.val / total) * Math.PI * 2;
+    let sliceAngle = (seg.val / total) * Math.PI * 2;
     ctx.beginPath();
     ctx.moveTo(cx + innerRadius * Math.cos(startAngle), cy + innerRadius * Math.sin(startAngle));
     ctx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
@@ -11922,7 +11995,7 @@ function renderChartTasksDist() {
   ctx.fillText('задач', cx, cy + 14);
 
   /* Legend */
-  var lx = w * 0.68, ly = 20;
+  let lx = w * 0.68, ly = 20;
   segments.forEach(function(seg) {
     if (seg.val === 0) return;
     ctx.fillStyle = seg.color; ctx.fillRect(lx, ly, 8, 8);
@@ -11934,12 +12007,12 @@ function renderChartTasksDist() {
 
 /* ── Chart 4: Проекты по стадиям (Horizontal Bar) ── */
 function renderChartProjectPipeline() {
-  var c = setupCanvas('chart-project-pipeline');
+  let c = setupCanvas('chart-project-pipeline');
   if (!c) return;
-  var ctx = c.ctx, w = c.w, h = c.h;
-  var clr = getThemeColors();
+  let ctx = c.ctx, w = c.w, h = c.h;
+  let clr = getThemeColors();
 
-  var projects = LS.get('wdb_projects', []).filter(function(p) { return p.stage !== 'lost'; });
+  let projects = LS.get('wdb_projects', []).filter(function(p) { return p.stage !== 'lost'; });
   if (projects.length === 0) {
     ctx.fillStyle = clr.mute; ctx.font = '12px Manrope, sans-serif'; ctx.textAlign = 'center';
     ctx.fillText('Нет проектов', w / 2, h / 2);
@@ -11947,25 +12020,25 @@ function renderChartProjectPipeline() {
   }
 
   /* Group by stage bucket */
-  var buckets = [
+  let buckets = [
     { label: 'Лид / Квалификация', stages: [0,1,2], color: clr.mute, count: 0 },
     { label: 'Подготовка КП', stages: [3,4,5], color: clr.blue, count: 0 },
     { label: 'Согласование', stages: [6,7,8], color: clr.accent, count: 0 },
     { label: 'Закрытие', stages: [9,10,11], color: clr.green, count: 0 },
   ];
   projects.forEach(function(p) {
-    var s = parseInt(p.stage) || 0;
+    let s = parseInt(p.stage) || 0;
     buckets.forEach(function(b) { if (b.stages.indexOf(s) !== -1) b.count++; });
   });
 
-  var maxCount = Math.max.apply(null, buckets.map(function(b) { return b.count; })) || 1;
-  var pad = { top: 8, right: 16, bottom: 8, left: 110 };
-  var rowH = (h - pad.top - pad.bottom) / buckets.length;
+  let maxCount = Math.max.apply(null, buckets.map(function(b) { return b.count; })) || 1;
+  let pad = { top: 8, right: 16, bottom: 8, left: 110 };
+  let rowH = (h - pad.top - pad.bottom) / buckets.length;
 
   buckets.forEach(function(b, i) {
-    var y = pad.top + i * rowH;
-    var barMaxW = w - pad.left - pad.right;
-    var barW = (b.count / maxCount) * barMaxW;
+    let y = pad.top + i * rowH;
+    let barMaxW = w - pad.left - pad.right;
+    let barW = (b.count / maxCount) * barMaxW;
 
     /* Label */
     ctx.fillStyle = clr.text; ctx.font = '11px Manrope, sans-serif'; ctx.textAlign = 'right';
@@ -12000,7 +12073,7 @@ function renderAnalyticsCharts() {
   }, 100);
 }
 /* Перерисовка при resize окна */
-var _chartResizeTimer = null;
+let _chartResizeTimer = null;
 window.addEventListener('resize', function() {
   clearTimeout(_chartResizeTimer);
   _chartResizeTimer = setTimeout(renderAnalyticsCharts, 200);
@@ -12008,32 +12081,32 @@ window.addEventListener('resize', function() {
 
 
 function generateStandup() {
-  var yesterday = new Date();
+  let yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  var yKey = 'wdb_activity_' + yesterday.toISOString().split('T')[0];
-  var yActions = LS.get(yKey, []);
-  var today = new Date();
+  let yKey = 'wdb_activity_' + yesterday.toISOString().split('T')[0];
+  let yActions = LS.get(yKey, []);
+  let today = new Date();
 
   /* Вчерашние звонки */
-  var yCtKey = 'wdb_call_tracker_' + yesterday.getFullYear() + '_' + yesterday.getMonth() + '_' + yesterday.getDate();
-  var yCt = LS.get(yCtKey, null);
-  var yCalls = yCt ? (yCt.done || 0) : 0;
+  let yCtKey = 'wdb_call_tracker_' + yesterday.getFullYear() + '_' + yesterday.getMonth() + '_' + yesterday.getDate();
+  let yCt = LS.get(yCtKey, null);
+  let yCalls = yCt ? (yCt.done || 0) : 0;
 
   /* Текущие задачи */
-  var allTasks = LS.get('wdb_tasks', []);
-  var nowTasks = allTasks.filter(function(t) { return t.lane === 'now'; });
-  var doneTasks = allTasks.filter(function(t) {
+  let allTasks = LS.get('wdb_tasks', []);
+  let nowTasks = allTasks.filter(function(t) { return t.lane === 'now'; });
+  let doneTasks = allTasks.filter(function(t) {
     return t.lane === 'done' && t.doneAt &&
       new Date(t.doneAt).toDateString() === yesterday.toDateString();
   });
 
   /* Проекты с обновлениями вчера */
-  var updatedProjects = (LS.get('wdb_projects', [])).filter(function(p) {
+  let updatedProjects = (LS.get('wdb_projects', [])).filter(function(p) {
     return p.lastContactDate === yesterday.toISOString().split('T')[0];
   });
 
   /* Формируем текст */
-  var lines = [];
+  let lines = [];
   lines.push('📋 ОТЧЁТ ЗА ' + yesterday.toLocaleDateString('ru', { day: 'numeric', month: 'long', weekday: 'long' }).toUpperCase());
   lines.push('');
 
@@ -12054,7 +12127,7 @@ function generateStandup() {
   lines.push('ПЛАН НА СЕГОДНЯ:');
   if (nowTasks.length > 0) {
     nowTasks.slice(0, 5).forEach(function(t) {
-      var prio = t.priority === 'critical' ? ' ⚠️' : t.priority === 'important' ? ' ⭐' : '';
+      let prio = t.priority === 'critical' ? ' ⚠️' : t.priority === 'important' ? ' ⭐' : '';
       lines.push('  • ' + t.text + prio);
     });
     if (nowTasks.length > 5) lines.push('  ...и ещё ' + (nowTasks.length - 5));
@@ -12062,7 +12135,7 @@ function generateStandup() {
     lines.push('  (нет задач в "Сейчас")');
   }
 
-  var text = lines.join('\n');
+  let text = lines.join('\n');
 
   navigator.clipboard.writeText(text).then(function() {
     toast('Отчёт скопирован в буфер', 'success', 3000);
@@ -12073,17 +12146,17 @@ function generateStandup() {
 
 
 function initGreeting() {
-  var el = document.getElementById('header-greeting');
+  let el = document.getElementById('header-greeting');
   if (!el) return;
-  var h = new Date().getHours();
-  var greeting;
+  let h = new Date().getHours();
+  let greeting;
   if (h >= 5 && h < 12)       greeting = 'Доброе утро';
   else if (h >= 12 && h < 17) greeting = 'Добрый день';
   else if (h >= 17 && h < 22) greeting = 'Добрый вечер';
   else                         greeting = 'Доброй ночи';
 
   /* По пятницам — мотивационная фраза */
-  var day = new Date().getDay();
+  let day = new Date().getDay();
   if (day === 5) greeting += ' — пятница!';
 
   el.textContent = greeting;
@@ -12096,7 +12169,7 @@ function initGreeting() {
    Каждая светлая тема имеет тёмную пару.
    Одна кнопка переключает между ними.
 ══════════════════════════════════════════ */
-var THEME_PAIRS = {
+let THEME_PAIRS = {
   't-claude':   't-midnight',
   't-midnight': 't-claude',
   't-paper':    't-aurora',
@@ -12107,23 +12180,23 @@ var THEME_PAIRS = {
   't-frost':    't-forest',
 };
 
-var DARK_THEMES = ['t-frost', 't-midnight', 't-aurora', 't-neon'];
+let DARK_THEMES = ['t-frost', 't-midnight', 't-aurora', 't-neon'];
 
 function isDarkTheme() {
-  var current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
+  let current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
   return DARK_THEMES.indexOf(current) !== -1;
 }
 
 function toggleDarkLight() {
-  var current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
-  var paired = THEME_PAIRS[current] || 't-midnight';
+  let current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
+  let paired = THEME_PAIRS[current] || 't-midnight';
   setTheme(paired);
   updateDLIcon();
   toast(isDarkTheme() ? 'Тёмная тема' : 'Светлая тема', 'success', 1500);
 }
 
 function updateDLIcon() {
-  var el = document.getElementById('dl-icon');
+  let el = document.getElementById('dl-icon');
   if (!el) return;
   el.innerHTML = isDarkTheme() ? ICON.sun : ICON.moon;
 }
@@ -12139,7 +12212,7 @@ document.addEventListener('DOMContentLoaded', updateDLIcon);
    Паттерн: Spotlight Search (Linear, Raycast, VS Code).
    Быстрый доступ ко всем действиям дашборда.
 ══════════════════════════════════════════ */
-var cmdActions = [
+let cmdActions = [
   /* Навигация */
   { group: 'Навигация',    icon: ICON.clipboard, label: 'Задачи',              hint: '1',  action: function(){ scrollToWidget('.tasks-block'); } },
   { group: 'Навигация',    icon: ICON.folder,    label: 'Проекты',             hint: '2',  action: function(){ scrollToWidget('.projects-block'); } },
@@ -12186,12 +12259,12 @@ var cmdActions = [
   { group: 'Тема',         icon: ICON.zap,       label: 'Neon',                action: function(){ cmdClose(); setTheme('t-neon'); toast('Тема: Neon', 'success'); } },
 ];
 
-var cmdIdx = 0; /* Индекс активного элемента */
-var cmdFiltered = []; /* Отфильтрованный список */
+let cmdIdx = 0; /* Индекс активного элемента */
+let cmdFiltered = []; /* Отфильтрованный список */
 
 function cmdOpen() {
-  var bd = document.getElementById('cmd-backdrop');
-  var inp = document.getElementById('cmd-search');
+  let bd = document.getElementById('cmd-backdrop');
+  let inp = document.getElementById('cmd-search');
   bd.classList.add('open');
   inp.value = '';
   cmdIdx = 0;
@@ -12205,16 +12278,16 @@ function cmdClose() {
 }
 
 function cmdRender(query) {
-  var res = document.getElementById('cmd-results');
+  let res = document.getElementById('cmd-results');
   query = (query || '').toLowerCase().trim();
 
   /* Команды */
-  var cmdResults = query
+  let cmdResults = query
     ? cmdActions.filter(function(a) { return a.label.toLowerCase().indexOf(query) !== -1 || a.group.toLowerCase().indexOf(query) !== -1; })
     : cmdActions;
 
   /* Данные (задачи, проекты, звонки, встречи) — только при ≥2 символах */
-  var dataResults = searchData(query);
+  let dataResults = searchData(query);
 
   /* Объединяем: сначала команды, потом данные */
   cmdFiltered = cmdResults.concat(dataResults);
@@ -12225,17 +12298,17 @@ function cmdRender(query) {
   }
 
   /* Группировка */
-  var groups = {};
+  let groups = {};
   cmdFiltered.forEach(function(a) {
     if (!groups[a.group]) groups[a.group] = [];
     groups[a.group].push(a);
   });
 
-  var html = '';
+  let html = '';
   Object.keys(groups).forEach(function(g) {
     html += '<div class="cmd-group-label">' + esc(g) + '</div>';
     groups[g].forEach(function(a, i) {
-      var globalIdx = cmdFiltered.indexOf(a);
+      let globalIdx = cmdFiltered.indexOf(a);
       html += '<div class="cmd-item' + (globalIdx === cmdIdx ? ' active' : '') + '" data-idx="' + globalIdx + '" onclick="cmdExec(' + globalIdx + ')" onmouseenter="cmdHover(' + globalIdx + ')">' +
         '<span class="cmd-item-icon">' + (a.icon || '') + '</span>' +
         '<span class="cmd-item-label">' + esc(a.label) +
@@ -12249,19 +12322,19 @@ function cmdRender(query) {
   res.innerHTML = html;
 
   /* Прокрутка к активному */
-  var active = res.querySelector('.cmd-item.active');
+  let active = res.querySelector('.cmd-item.active');
   if (active) active.scrollIntoView({ block: 'nearest' });
 }
 
 function cmdExec(idx) {
-  var a = cmdFiltered[idx];
+  let a = cmdFiltered[idx];
   if (a && a.action) a.action();
 }
 
 function cmdHover(idx) {
   cmdIdx = idx;
   /* Обновляем active класс без полного ре-рендера */
-  var items = document.querySelectorAll('.cmd-item');
+  let items = document.querySelectorAll('.cmd-item');
   items.forEach(function(el) {
     el.classList.toggle('active', parseInt(el.dataset.idx) === idx);
   });
@@ -12269,18 +12342,18 @@ function cmdHover(idx) {
 
 function scrollToWidget(selector) {
   cmdClose();
-  var el = document.querySelector(selector);
+  let el = document.querySelector(selector);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* Keyboard handler */
 document.addEventListener('keydown', function(e) {
-  var bd = document.getElementById('cmd-backdrop');
-  var isOpen = bd && bd.classList.contains('open');
+  let bd = document.getElementById('cmd-backdrop');
+  let isOpen = bd && bd.classList.contains('open');
 
   /* Игнорируем шорткаты когда фокус в input/textarea */
-  var tag = (document.activeElement || {}).tagName;
-  var inInput = (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+  let tag = (document.activeElement || {}).tagName;
+  let inInput = (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
 
   /* Cmd+K / Ctrl+K — открыть палитру (работает всегда) */
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -12422,7 +12495,7 @@ document.addEventListener('keydown', function(e) {
 
 /* Search input handler */
 document.addEventListener('DOMContentLoaded', function() {
-  var inp = document.getElementById('cmd-search');
+  let inp = document.getElementById('cmd-search');
   if (inp) {
     inp.addEventListener('input', function() {
       cmdIdx = 0;
