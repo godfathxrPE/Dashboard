@@ -2790,9 +2790,26 @@
   .header-date { display: none; }
   .theme-btn span:first-child { display: none; }
   .hdr-search-btn { display: none !important; }
-  .hdr-sep { display: none; } /* Разделители не нужны при wrap */
+  .hdr-sep { display: none; }
   .focus-btn-label { display: none; }
   .streak-badge span:last-child { display: none; }
+
+  /* ── Header компакт на мобиле ──
+     Кнопки 26px вместо 30px, tour скрыт,
+     actions разрешён wrap чтобы не вылезал за экран */
+  .hdr-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .hdr-group { gap: 4px; }
+  .hdr-icon-group { gap: 1px; }
+  .hdr-icon-btn {
+    width: 26px; height: 26px;
+  }
+  .hdr-icon-btn svg { width: 12px; height: 12px; }
+  /* Tour — бесполезен на мобиле (нет клавиатуры) */
+  .hdr-icon-btn[title*="Обзор"] { display: none; }
 
   /* Основная сетка */
   .main {
