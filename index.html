@@ -6433,6 +6433,9 @@ const LS = {
 var checkCelebration = function() {};
 var logActivity = function() {};
 var updateStreak = function() {};
+/* animateValue — заглушка: просто ставит число.
+   Реальная реализация с анимацией перезаписывает позже. */
+var animateValue = function(el, to) { if (el) el.textContent = to; };
 var updateSparklines = function() {};
 var updateDLIcon = function() {};
 var playSound = function() {};
