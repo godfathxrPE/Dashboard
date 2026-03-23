@@ -1810,8 +1810,12 @@
   /* ── UTILS ── */
   /* ── CONTEXT-AWARE EMPTY STATES ──
      Паттерн: Intentional Empty State (Notion, Linear).
-     Каждый пустой виджет имеет уникальную иконку, текст и hint.
+     Каждый пустой виджет имеет уникальную иллюстрацию, текст и hint.
      Не "ошибка данных", а "приглашение к действию". */
+  /* ── EMPTY STATES ──
+     Паттерн: Intentional Empty State (Notion, Linear, Raycast).
+     Иллюстрация (составная SVG-сцена) + текст + hint.
+     Не «ошибка данных», а «приглашение к действию». */
   .empty-msg {
     color: var(--text-mute);
     font-size: var(--text-sm);
@@ -1825,18 +1829,42 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
+  .empty-msg .empty-illust {
+    color: var(--accent);
+    opacity: 0.25;
+    margin-bottom: 2px;
+    transition: opacity 0.3s;
+  }
+  .empty-msg:hover .empty-illust {
+    opacity: 0.4;
+  }
+  .empty-msg .empty-illust svg { width: 48px; height: 48px; }
+  /* Fallback для старых вызовов с .empty-icon */
   .empty-msg .empty-icon {
     color: var(--border2);
-    opacity: 0.7;
+    opacity: 0.5;
     margin-bottom: 2px;
   }
-  .empty-msg .empty-icon svg { width: 28px; height: 28px; }
+  .empty-msg .empty-icon svg { width: 40px; height: 40px; stroke-width: 1.2; }
   .empty-msg .empty-hint {
     font-size: var(--text-xs);
     color: var(--text-mute);
     opacity: 0.7;
+  }
+
+  /* ── ANIMATED COUNTER POP ──
+     Паттерн: Value Change Feedback (Stripe Dashboard, Linear).
+     Когда число меняется — лёгкий scale pulse + цветовая вспышка.
+     CSS-анимация, добавляется/убирается через JS. */
+  @keyframes counter-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .counter-pop {
+    animation: counter-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .tag-select {
@@ -6517,10 +6545,10 @@ function renderTasks() {
     const el = document.getElementById('tasks-'+l);
     const lt = tasks.filter(t => t.lane === l);
     el.innerHTML = lt.length ? lt.map(t => taskHTML(t)).join('') : '';
-    document.getElementById('cnt-'+l).textContent = lt.length;
+    animateValue(document.getElementById('cnt-'+l), lt.length, 250);
   });
   const active = tasks.filter(t => t.lane !== 'done').length;
-  document.getElementById('tasks-count').textContent = active;
+  animateValue(document.getElementById('tasks-count'), active, 300);
   // bind drag
   document.querySelectorAll('.task-card-item').forEach(el => {
     el.addEventListener('dragstart', e => {
@@ -7452,7 +7480,7 @@ function renderKPI() {
 
   // Синхронизируем числа в обоих местах: виджет + модалка
   ['kpi-week-num', 'kpi-modal-week-num'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.textContent = weekTotal;
+    var el = document.getElementById(id); if (el) animateValue(el, weekTotal, 400);
   });
   var pct = Math.min(100, Math.round(weekTotal / KPI_GOAL * 100));
   ['kpi-progress-fill','kpi-modal-progress-fill'].forEach(function(id) {
@@ -7763,7 +7791,7 @@ function renderCallTracker() {
   const planInput = document.getElementById('wct-plan-input');
   const badge = document.getElementById('wct-day-badge');
   if (doneEl) {
-    doneEl.textContent = done;
+    animateValue(doneEl, done, 350);
     doneEl.className = 'w-ct-num ' + (done >= plan ? 'green' : (done > 0 ? 'normal' : 'normal'));
   }
   if (planEl) planEl.textContent = plan;
@@ -7885,8 +7913,8 @@ function renderCallResults() {
   const fEl = document.getElementById('wcr-fail');
   const rEl = document.getElementById('wcr-rate');
   const fill = document.getElementById('wcr-rate-fill');
-  if (sEl) sEl.textContent = s;
-  if (fEl) fEl.textContent = f;
+  if (sEl) animateValue(sEl, s, 300);
+  if (fEl) animateValue(fEl, f, 300);
   if (rEl) rEl.textContent = rate + '%';
   if (fill) fill.style.width = rate + '%';
 
@@ -8300,7 +8328,7 @@ function renderDeadlineRadar() {
   if (countEl) countEl.textContent = items.length ? items.length + ' пунктов' : '';
 
   if (!items.length) {
-    el.innerHTML = '<div class="w-dr-empty" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 0;"><span style="opacity:0.4;">' + ICON.target + '</span><span>Срочных дедлайнов нет</span></div>';
+    el.innerHTML = emptyState('target', 'Срочных дедлайнов нет', 'Всё под контролем');
     return;
   }
 
@@ -8338,7 +8366,7 @@ function renderProjProgress() {
   if (!el) return;
   const projs = LS.get('wdb_projects', []).filter(p => p.stage !== 'lost');
   if (!projs.length) {
-    el.innerHTML = '<div class="w-pp-empty" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 0;"><span style="opacity:0.4;">' + ICON.trending + '</span><span>Добавь проект — прогресс появится</span></div>';
+    el.innerHTML = emptyState('trending', 'Добавь проект — прогресс появится', 'Воронка оживёт');
     return;
   }
 
@@ -9399,7 +9427,7 @@ function dcRender() {
   if (countEl) countEl.textContent = active.length;
 
   if (list.length === 0) {
-    el.innerHTML = '<div class="w-daycalls-empty" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 0;"><span style="opacity:0.4;">' + ICON.calendar + '</span><span>Нет запланированных звонков</span><span style="font-size:9px;opacity:0.6;">Добавь через «+» выше</span></div>';
+    el.innerHTML = emptyState('calendar', 'Нет запланированных звонков', 'Добавь через «+» выше');
     return;
   }
 
@@ -10181,21 +10209,34 @@ function toastUndo(message, onUndo, duration) {
    вместо мгновенной подмены — создаёт ощущение
    живых данных.
 ══════════════════════════════════════════ */
+/* ── animateValue — плавный счёт + pop-эффект ──
+   Паттерн: Animated Counter (Stripe Dashboard, Linear).
+   Число плавно считает от текущего к целевому.
+   По завершении — лёгкий scale pulse (CSS .counter-pop).
+   easeOutQuart: быстро стартует, плавно тормозит. */
 function animateValue(el, to, duration) {
   if (!el) return;
   var from = parseInt(el.textContent) || 0;
   if (from === to) return;
-  duration = duration || 500;
+  duration = duration || 400;
   var start = null;
   var diff = to - from;
+
+  /* Pop-эффект: убираем старый, добавляем новый */
+  el.classList.remove('counter-pop');
 
   function step(ts) {
     if (!start) start = ts;
     var progress = Math.min((ts - start) / duration, 1);
-    /* easeOutQuart — быстро стартует, плавно тормозит */
     var eased = 1 - Math.pow(1 - progress, 4);
     el.textContent = Math.round(from + diff * eased);
-    if (progress < 1) requestAnimationFrame(step);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      /* Анимация завершена — запускаем pop */
+      void el.offsetWidth; /* force reflow для повторного запуска анимации */
+      el.classList.add('counter-pop');
+    }
   }
   requestAnimationFrame(step);
 }
@@ -10236,13 +10277,48 @@ var EMOJI_MAP = {
    CONTEXT-AWARE EMPTY STATES
    Каждый виджет получает уникальное пустое состояние.
 ══════════════════════════════════════════ */
+/* ── Illustrative Empty State SVGs ──
+   Паттерн: Scene Illustrations (Notion, Linear, Raycast).
+   Каждая иллюстрация — составная SVG-сцена из 3-5 элементов.
+   Не «иконка ошибки», а «мини-история» приглашающая к действию.
+   currentColor — адаптируется к теме через CSS .empty-illust. */
+var EMPTY_ILLUST = {
+  /* Проекты — стопка карточек с «+» */
+  folder: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="28" height="22" rx="3" opacity="0.3"/><rect x="11" y="10" width="28" height="22" rx="3" opacity="0.5"/><rect x="14" y="6" width="28" height="22" rx="3"/><line x1="28" y1="13" x2="28" y2="21"/><line x1="24" y1="17" x2="32" y2="17"/></svg>',
+
+  /* Встречи — календарь с человечком */
+  users: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="24" height="24" rx="3"/><line x1="8" y1="18" x2="32" y2="18"/><line x1="16" y1="6" x2="16" y2="14"/><line x1="24" y1="6" x2="24" y2="14"/><circle cx="36" cy="24" r="4"/><path d="M30 36c0-3.3 2.7-6 6-6s6 2.7 6 6"/><line x1="14" y1="24" x2="18" y2="24" opacity="0.4"/><line x1="22" y1="24" x2="26" y2="24" opacity="0.4"/><line x1="14" y1="28" x2="18" y2="28" opacity="0.4"/></svg>',
+
+  /* Звонки — трубка с волнами сигнала */
+  phone: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 20c0-2 1-4 3-5.5s4.5-2 7-2c2.5 0 5 .5 7 2s3 3.5 3 5.5"/><path d="M11 14.5a15.4 15.4 0 0113-6c5 0 9.5 2.2 13 6" opacity="0.4"/><rect x="12" y="24" width="8" height="14" rx="4"/><rect x="28" y="24" width="8" height="14" rx="4"/><path d="M12 31h-1a3 3 0 01-3-3v-4a3 3 0 013-3h1" opacity="0.5"/><path d="M36 31h1a3 3 0 003-3v-4a3 3 0 00-3-3h-1" opacity="0.5"/></svg>',
+
+  /* Дедлайны — мишень */
+  target: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16" opacity="0.25"/><circle cx="24" cy="24" r="10" opacity="0.5"/><circle cx="24" cy="24" r="4"/><circle cx="24" cy="24" r="1.5" fill="currentColor" stroke="none"/><line x1="24" y1="4" x2="24" y2="8" opacity="0.3"/><line x1="24" y1="40" x2="24" y2="44" opacity="0.3"/><line x1="4" y1="24" x2="8" y2="24" opacity="0.3"/><line x1="40" y1="24" x2="44" y2="24" opacity="0.3"/></svg>',
+
+  /* Прогресс проектов — ступеньки вверх */
+  trending: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="38" x2="42" y2="38" opacity="0.3"/><rect x="8" y="30" width="6" height="8" rx="1" opacity="0.3"/><rect x="17" y="24" width="6" height="14" rx="1" opacity="0.5"/><rect x="26" y="18" width="6" height="20" rx="1" opacity="0.7"/><rect x="35" y="12" width="6" height="26" rx="1"/><polyline points="10 16 20 12 30 8 40 4" stroke-dasharray="2 3" opacity="0.4"/><circle cx="40" cy="4" r="2" fill="currentColor" stroke="none" opacity="0.5"/></svg>',
+
+  /* Активность — пульс/heartbeat */
+  chart: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 28 12 28 16 20 20 32 24 16 28 28 32 24 36 28 44 28" opacity="0.3"/><circle cx="24" cy="24" r="6" opacity="0.4"/><line x1="24" y1="22" x2="24" y2="26"/><line x1="22" y1="24" x2="26" y2="24"/></svg>',
+
+  /* Задачи — клипборд с пустыми строками */
+  clipboard: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="8" width="28" height="34" rx="3"/><rect x="18" y="4" width="12" height="8" rx="2"/><line x1="16" y1="20" x2="32" y2="20" opacity="0.25"/><line x1="16" y1="26" x2="28" y2="26" opacity="0.25"/><line x1="16" y1="32" x2="24" y2="32" opacity="0.25"/></svg>',
+
+  /* Запланированные звонки на день — календарь + часы */
+  calendar: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="10" width="26" height="26" rx="3"/><line x1="6" y1="18" x2="32" y2="18"/><line x1="14" y1="6" x2="14" y2="14"/><line x1="24" y1="6" x2="24" y2="14"/><circle cx="36" cy="32" r="9"/><polyline points="36 28 36 32 40 34"/><line x1="12" y1="24" x2="16" y2="24" opacity="0.3"/><line x1="20" y1="24" x2="26" y2="24" opacity="0.3"/><line x1="12" y1="30" x2="16" y2="30" opacity="0.3"/></svg>',
+};
+
 function emptyState(iconKey, text, hint) {
-  var ic = ICON[iconKey] || '';
-  var svg = ic ? ic.replace(/width="\d+"/, 'width="28"').replace(/height="\d+"/, 'height="28"') : '';
+  var illust = EMPTY_ILLUST[iconKey] || '';
+  /* Fallback: если нет иллюстрации, пробуем ICON */
+  if (!illust && ICON[iconKey]) {
+    var ic = ICON[iconKey];
+    illust = ic.replace(/width="\d+"/, 'width="40"').replace(/height="\d+"/, 'height="40"');
+  }
   return '<div class="empty-msg">' +
-    (svg ? '<span class="empty-icon">' + svg + '</span>' : '') +
-    '<span>' + text + '</span>' +
-    (hint ? '<span class="empty-hint">' + hint + '</span>' : '') +
+    (illust ? '<span class="empty-illust">' + illust + '</span>' : '') +
+    '<span>' + esc(text) + '</span>' +
+    (hint ? '<span class="empty-hint">' + esc(hint) + '</span>' : '') +
   '</div>';
 }
 
@@ -10933,7 +11009,7 @@ function renderActivity() {
   if (!el) return;
   var list = getActivity();
   if (list.length === 0) {
-    el.innerHTML = '<div class="w-act-empty">Действия появятся здесь</div>';
+    el.innerHTML = emptyState('chart', 'Действия появятся здесь', 'Создай задачу или запиши звонок');
     return;
   }
   el.innerHTML = list.map(function(a) {
@@ -11093,7 +11169,7 @@ function renderStreak(data) {
   var badge = document.getElementById('streak-badge');
   var num = document.getElementById('streak-num');
   if (!badge || !num) return;
-  num.textContent = data.current || 0;
+  animateValue(num, data.current || 0, 500);
   badge.classList.toggle('hot', data.current >= 3);
   badge.title = 'Streak: ' + data.current + ' дн (рекорд: ' + (data.best || 0) + ' дн)';
 }
