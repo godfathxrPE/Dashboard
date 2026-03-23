@@ -5591,8 +5591,8 @@
       <div class="auth-title">Вход в дашборд</div>
       <div class="auth-sub">Введи рабочую почту —<br>пришлём ссылку для входа</div>
       <input type="email" id="login-email" placeholder="твоя@почта.ru"
-             onkeydown="if(event.key==='Enter') document.getElementById('login-btn').click()">
-      <button id="login-btn" onclick="sendMagicLink(document.getElementById('login-email').value)">
+             data-enter-action="send-magic-link">
+      <button id="login-btn" data-action="send-magic-link">
         Войти через email
       </button>
       <p id="login-msg"></p>
@@ -5630,16 +5630,16 @@
   <div class="smart-alerts" id="smart-alerts"></div>
   <div class="hdr-actions">
     <!-- PWA INSTALL BUTTON (появляется когда доступно) -->
-    <button id="pwa-install-btn" class="hdr-pwa-btn" onclick="installPWA()" title="Установить приложение">
+    <button id="pwa-install-btn" class="hdr-pwa-btn" data-action="install-pwa" title="Установить приложение">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     </button>
 
     <!-- ─── GROUP 1: Navigation ─── -->
     <div class="hdr-group">
       <div class="view-switcher" id="view-switcher">
-        <button class="view-btn active" onclick="setView('default')" data-view="default">Всё</button>
-        <button class="view-btn" onclick="setView('sales')" data-view="sales">Продажи</button>
-        <button class="view-btn" onclick="setView('analytics')" data-view="analytics">Аналитика</button>
+        <button class="view-btn active" data-action="set-view" data-value="default" data-view="default">Всё</button>
+        <button class="view-btn" data-action="set-view" data-value="sales" data-view="sales">Продажи</button>
+        <button class="view-btn" data-action="set-view" data-value="analytics" data-view="analytics">Аналитика</button>
       </div>
       <span class="streak-badge" id="streak-badge" title="Дней подряд">
         <span class="streak-fire">🔥</span>
@@ -5652,11 +5652,11 @@
 
     <!-- ─── GROUP 2: Quick actions ─── -->
     <div class="hdr-group">
-      <button class="hdr-search-btn" onclick="cmdOpen()" title="Поиск команд (⌘K)">
+      <button class="hdr-search-btn" data-action="cmd-open" title="Поиск команд (⌘K)">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span class="hdr-kbd">⌘K</span>
       </button>
-      <button id="focus-mode-btn" class="hdr-icon-btn" onclick="toggleFocusMode()" title="Режим фокуса (F)">
+      <button id="focus-mode-btn" class="hdr-icon-btn" data-action="toggle-focus-mode" title="Режим фокуса (F)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
       </button>
     </div>
@@ -5665,65 +5665,65 @@
 
     <!-- ─── GROUP 3: Settings ─── -->
     <div class="hdr-icon-group">
-      <button id="dl-toggle" class="hdr-icon-btn" onclick="toggleDarkLight()" title="Светлая / Тёмная тема">
+      <button id="dl-toggle" class="hdr-icon-btn" data-action="toggle-dark-light" title="Светлая / Тёмная тема">
         <span id="dl-icon"></span>
       </button>
-      <button id="wc-open-btn" class="hdr-icon-btn" onclick="wcToggle()" title="Настроить виджеты">
+      <button id="wc-open-btn" class="hdr-icon-btn" data-action="wc-toggle" title="Настроить виджеты">
         <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
           <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
         </svg>
       </button>
       <div class="theme-switcher" id="theme-switcher">
-        <button class="hdr-icon-btn theme-btn" onclick="toggleThemeMenu()" title="Сменить тему">
+        <button class="hdr-icon-btn theme-btn" data-action="toggle-theme-menu" title="Сменить тему">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
           </svg>
         </button>
       <div class="theme-menu" id="theme-menu">
-        <div class="theme-item" onclick="setTheme('t-claude')">
+        <div class="theme-item" data-action="set-theme" data-value="t-claude">
           <span class="theme-swatch" style="background:#f5f4ef;border:1px solid #e5e3dc;"></span>
           <span class="theme-swatch" style="background:#b5622a;"></span>
           Claude
         </div>
-        <div class="theme-item" onclick="setTheme('t-frost')">
+        <div class="theme-item" data-action="set-theme" data-value="t-frost">
           <span class="theme-swatch" style="background:#0d1020;border:1px solid rgba(255,255,255,0.15);"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#5b8aff,#a78bfa);"></span>
           Frost
         </div>
-        <div class="theme-item" onclick="setTheme('t-paper')">
+        <div class="theme-item" data-action="set-theme" data-value="t-paper">
           <span class="theme-swatch" style="background:#f5f0e0;border:1px solid #c8bfa0;"></span>
           <span class="theme-swatch" style="background:#8b3a1a;"></span>
           Paper
         </div>
-        <div class="theme-item" onclick="setTheme('t-sand')">
+        <div class="theme-item" data-action="set-theme" data-value="t-sand">
           <span class="theme-swatch" style="background:#f0e8d8;border:1px solid #c0a880;"></span>
           <span class="theme-swatch" style="background:#c05828;"></span>
           Sand
         </div>
-        <div class="theme-item" onclick="setTheme('t-midnight')">
+        <div class="theme-item" data-action="set-theme" data-value="t-midnight">
           <span class="theme-swatch" style="background:#0f1318;border:1px solid #243040;"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#38c8a0,#5898e8);"></span>
           Midnight
         </div>
-        <div class="theme-item" onclick="setTheme('t-forest')">
+        <div class="theme-item" data-action="set-theme" data-value="t-forest">
           <span class="theme-swatch" style="background:#f0ece4;border:1px solid #d8d0c0;"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#4e7c3a,#8ab86a);"></span>
           Forest
         </div>
-        <div class="theme-item" onclick="setTheme('t-aurora')">
+        <div class="theme-item" data-action="set-theme" data-value="t-aurora">
           <span class="theme-swatch" style="background:#0a0e1a;border:1px solid rgba(255,255,255,0.15);"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#a060ff,#20e8a0);"></span>
           Aurora
         </div>
-        <div class="theme-item" onclick="setTheme('t-neon')">
+        <div class="theme-item" data-action="set-theme" data-value="t-neon">
           <span class="theme-swatch" style="background:#050508;border:1px solid rgba(0,238,255,0.3);box-shadow:0 0 6px rgba(0,238,255,0.3);"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#00eeff,#ff00aa);box-shadow:0 0 6px rgba(0,238,255,0.4);"></span>
           Neon
         </div>
       </div>
     </div>
-      <button class="hdr-icon-btn" onclick="tourStart()" title="Обзор дашборда (?)">?</button>
+      <button class="hdr-icon-btn" data-action="tour-start" title="Обзор дашборда (?)">?</button>
     </div>
   </div>
 </header>
@@ -5740,7 +5740,7 @@
       </div>
       <div style="display:flex;gap:6px;align-items:center;">
         <span class="badge" id="tasks-count">0</span>
-        <button class="btn" onclick="openTaskModal(null)">+ Задача</button>
+        <button class="btn" data-action="open-task-modal">+ Задача</button>
       </div>
     </div>
     <div class="task-lanes">
@@ -5753,7 +5753,7 @@
         </div>
         <div id="tasks-now"></div>
         <div class="add-task-row">
-          <input class="add-task-input" placeholder="Добавить..." onkeydown="if(event.key==='Enter')quickAdd('now',this)">
+          <input class="add-task-input" placeholder="Добавить..." data-enter-action="quick-add" data-lane="now">
         </div>
       </div>
       <!-- СЛЕДУЮЩИЕ -->
@@ -5764,7 +5764,7 @@
         </div>
         <div id="tasks-next"></div>
         <div class="add-task-row">
-          <input class="add-task-input" placeholder="Добавить..." onkeydown="if(event.key==='Enter')quickAdd('next',this)">
+          <input class="add-task-input" placeholder="Добавить..." data-enter-action="quick-add" data-lane="next">
         </div>
       </div>
       <!-- ОТЛОЖЕННЫЕ -->
@@ -5775,7 +5775,7 @@
         </div>
         <div id="tasks-wait"></div>
         <div class="add-task-row">
-          <input class="add-task-input" placeholder="Добавить..." onkeydown="if(event.key==='Enter')quickAdd('wait',this)">
+          <input class="add-task-input" placeholder="Добавить..." data-enter-action="quick-add" data-lane="wait">
         </div>
       </div>
       <!-- ВЫПОЛНЕНО -->
@@ -5806,7 +5806,7 @@
     <div class="w-daycalls" data-widget-id="daycalls">
       <div class="w-daycalls-head">
         <div class="w-daycalls-title">📅 Запланированные звонки <span class="w-daycalls-count" id="dc-count">0</span></div>
-        <button class="w-daycalls-add" onclick="dcOpenModal()">+ Звонок</button>
+        <button class="w-daycalls-add" data-action="dc-open-modal">+ Звонок</button>
       </div>
       <div id="dc-list"></div>
     </div>
@@ -5816,7 +5816,7 @@
       <div class="w-focus-label">🎯 Фокус дня</div>
       <input class="w-focus-input" id="w-focus-input"
         placeholder="Одно главное дело на сегодня..."
-        oninput="saveFocus()" onkeydown="if(event.key==='Enter')this.blur()">
+        data-input-action="save-focus" data-enter-action="blur">
       <div class="w-focus-saved" id="w-focus-saved">✓ сохранено</div>
     </div>
 
@@ -5852,9 +5852,9 @@
       <div class="w-timer-label">
         <span>⏱ Таймер</span>
         <div class="w-timer-mode-btns">
-          <button class="w-timer-mode-btn active" id="tbtn-work" onclick="setTimerMode('work')">Фокус 25</button>
-          <button class="w-timer-mode-btn" id="tbtn-short" onclick="setTimerMode('short')">Пауза 5</button>
-          <button class="w-timer-mode-btn" id="tbtn-long" onclick="setTimerMode('long')">Пауза 15</button>
+          <button class="w-timer-mode-btn active" id="tbtn-work" data-action="set-timer-mode" data-value="work">Фокус 25</button>
+          <button class="w-timer-mode-btn" id="tbtn-short" data-action="set-timer-mode" data-value="short">Пауза 5</button>
+          <button class="w-timer-mode-btn" id="tbtn-long" data-action="set-timer-mode" data-value="long">Пауза 15</button>
         </div>
       </div>
       <div class="w-timer-display">
@@ -5865,8 +5865,8 @@
         <div class="w-timer-bar" id="timer-bar"></div>
       </div>
       <div class="w-timer-controls">
-        <button class="w-timer-btn primary" id="timer-play-btn" onclick="timerPlayPause()">▶ Старт</button>
-        <button class="w-timer-btn" onclick="timerReset()">↺ Сброс</button>
+        <button class="w-timer-btn primary" id="timer-play-btn" data-action="timer-play-pause">▶ Старт</button>
+        <button class="w-timer-btn" data-action="timer-reset">↺ Сброс</button>
       </div>
       <div class="w-timer-sessions" id="timer-sessions">
         <div class="w-timer-dot" id="ts-0"></div>
@@ -5880,7 +5880,7 @@
     <div class="w-call-tracker" data-widget-id="call-tracker">
       <div class="w-call-tracker-label">
         <span>📞 Звонки сегодня</span>
-        <button class="w-cr-reset" onclick="resetDayReport()">сброс дня</button>
+        <button class="w-cr-reset" data-action="reset-day-report">сброс дня</button>
       </div>
 
       <!-- Главный счётчик -->
@@ -5895,15 +5895,15 @@
           <div class="w-ct-desc">план</div>
         </div>
         <div class="w-ct-controls">
-          <button class="w-ct-arrow up" title="Совершил звонок" onclick="callTrackerAdd(1)">+</button>
-          <button class="w-ct-arrow down" title="Убрать последний" onclick="callTrackerAdd(-1)">−</button>
+          <button class="w-ct-arrow up" title="Совершил звонок" data-action="call-tracker-add" data-delta="1">+</button>
+          <button class="w-ct-arrow down" title="Убрать последний" data-action="call-tracker-add" data-delta="-1">−</button>
         </div>
       </div>
 
       <!-- Установить план -->
       <div class="w-ct-plan-row">
         <span class="w-ct-plan-label">План на день:</span>
-        <input class="w-ct-plan-input" id="wct-plan-input" type="number" min="1" max="200" value="40" oninput="callTrackerSetPlan(this.value)">
+        <input class="w-ct-plan-input" id="wct-plan-input" type="number" min="1" max="200" value="40" data-input-action="call-tracker-set-plan">
         <span class="w-ct-plan-badge neutral" id="wct-day-badge">—</span>
       </div>
 
@@ -5927,12 +5927,12 @@
     <div class="w-call-results" data-widget-id="call-results">
       <div class="w-cr-label">🎯 Результат звонков (сегодня)</div>
       <div class="w-cr-btns">
-        <button class="w-cr-btn success" onclick="callResultAdd('success')" title="Дозвонился, поговорил">
+        <button class="w-cr-btn success" data-action="call-result-add" data-value="success" title="Дозвонился, поговорил">
           <span class="w-cr-btn-icon" style="color:var(--green)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
           <span class="w-cr-btn-num" id="wcr-success">0</span>
           <span class="w-cr-btn-label">Успешных</span>
         </button>
-        <button class="w-cr-btn fail" onclick="openFailReason(event)" title="Недозвон / не нашёл">
+        <button class="w-cr-btn fail" data-action="open-fail-reason" title="Недозвон / не нашёл">
           <span class="w-cr-btn-icon" style="color:var(--red)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>
           <span class="w-cr-btn-num" id="wcr-fail">0</span>
           <span class="w-cr-btn-label">Неуспешных</span>
@@ -5943,7 +5943,7 @@
       </div>
       <div class="w-cr-rate-label">
         <span>Конверсия: <b id="wcr-rate">0%</b></span>
-        <button class="w-cr-reset" onclick="callResultReset()">обнулить</button>
+        <button class="w-cr-reset" data-action="call-result-reset">обнулить</button>
       </div>
       <!-- Причины неуспеха -->
       <div class="w-cr-reasons">
@@ -5983,19 +5983,19 @@
       <div class="w-fn-inputs">
         <div class="w-fn-input-row">
           <label class="w-fn-input-label">Цель звонков/нед</label>
-          <input class="w-fn-input" id="wfn-goal-calls" type="number" min="1" value="200" oninput="renderFunnel()">
+          <input class="w-fn-input" id="wfn-goal-calls" type="number" min="1" value="200" data-input-action="render-funnel">
         </div>
         <div class="w-fn-input-row">
           <label class="w-fn-input-label">Встреч назначено</label>
-          <input class="w-fn-input" id="wfn-meetings-in" type="number" min="0" value="0" oninput="saveFunnelManual();renderFunnel()">
+          <input class="w-fn-input" id="wfn-meetings-in" type="number" min="0" value="0" data-input-action="save-funnel">
         </div>
         <div class="w-fn-input-row">
           <label class="w-fn-input-label">КП отправлено</label>
-          <input class="w-fn-input" id="wfn-kp-in" type="number" min="0" value="0" oninput="saveFunnelManual();renderFunnel()">
+          <input class="w-fn-input" id="wfn-kp-in" type="number" min="0" value="0" data-input-action="save-funnel">
         </div>
         <div class="w-fn-input-row">
           <label class="w-fn-input-label">Сделок закрыто</label>
-          <input class="w-fn-input" id="wfn-deals-in" type="number" min="0" value="0" oninput="saveFunnelManual();renderFunnel()">
+          <input class="w-fn-input" id="wfn-deals-in" type="number" min="0" value="0" data-input-action="save-funnel">
         </div>
       </div>
     </div>
@@ -6041,19 +6041,19 @@
       <div class="w-pf-inputs">
         <div class="w-pf-input-row">
           <label class="w-pf-input-label">План звонков</label>
-          <input class="w-pf-input" id="wpf-plan-calls" type="number" min="0" value="200" oninput="savePFPlans();renderPlanFact()">
+          <input class="w-pf-input" id="wpf-plan-calls" type="number" min="0" value="200" data-input-action="save-pf-plans">
         </div>
         <div class="w-pf-input-row">
           <label class="w-pf-input-label">План встреч</label>
-          <input class="w-pf-input" id="wpf-plan-meets" type="number" min="0" value="5" oninput="savePFPlans();renderPlanFact()">
+          <input class="w-pf-input" id="wpf-plan-meets" type="number" min="0" value="5" data-input-action="save-pf-plans">
         </div>
         <div class="w-pf-input-row">
           <label class="w-pf-input-label">План КП</label>
-          <input class="w-pf-input" id="wpf-plan-kp" type="number" min="0" value="3" oninput="savePFPlans();renderPlanFact()">
+          <input class="w-pf-input" id="wpf-plan-kp" type="number" min="0" value="3" data-input-action="save-pf-plans">
         </div>
         <div class="w-pf-input-row">
           <label class="w-pf-input-label">План сделок</label>
-          <input class="w-pf-input" id="wpf-plan-deals" type="number" min="0" value="1" oninput="savePFPlans();renderPlanFact()">
+          <input class="w-pf-input" id="wpf-plan-deals" type="number" min="0" value="1" data-input-action="save-pf-plans">
         </div>
       </div>
       <div class="w-pf-summary" id="wpf-summary" style="display:none"></div>
@@ -6063,18 +6063,18 @@
     <div class="w-quick-log" data-widget-id="quick-log">
       <div class="w-ql-label">
         <span>⚡ Быстрый лог</span>
-        <button class="w-cr-reset" onclick="qlClear()">очистить</button>
+        <button class="w-cr-reset" data-action="ql-clear">очистить</button>
       </div>
       <div class="w-ql-types">
-        <button class="w-ql-type active" data-type="call"  onclick="qlSelectType(this)">Звонок</button>
-        <button class="w-ql-type"        data-type="meet"  onclick="qlSelectType(this)">Встреча</button>
-        <button class="w-ql-type"        data-type="kp"    onclick="qlSelectType(this)">КП</button>
-        <button class="w-ql-type"        data-type="deal"  onclick="qlSelectType(this)">Сделка</button>
-        <button class="w-ql-type"        data-type="other" onclick="qlSelectType(this)">Другое</button>
+        <button class="w-ql-type active" data-type="call"  data-action="ql-select-type">Звонок</button>
+        <button class="w-ql-type"        data-type="meet"  data-action="ql-select-type">Встреча</button>
+        <button class="w-ql-type"        data-type="kp"    data-action="ql-select-type">КП</button>
+        <button class="w-ql-type"        data-type="deal"  data-action="ql-select-type">Сделка</button>
+        <button class="w-ql-type"        data-type="other" data-action="ql-select-type">Другое</button>
       </div>
       <div class="w-ql-input-row">
-        <input class="w-ql-input" id="ql-text" placeholder="Компания / клиент / что произошло..." onkeydown="if(event.key==='Enter')qlAdd()">
-        <button class="w-ql-add" onclick="qlAdd()">+ Добавить</button>
+        <input class="w-ql-input" id="ql-text" placeholder="Компания / клиент / что произошло..." data-enter-action="ql-add">
+        <button class="w-ql-add" data-action="ql-add">+ Добавить</button>
       </div>
       <div class="w-ql-history" id="ql-history"></div>
     </div>
@@ -6083,7 +6083,7 @@
     <div class="card" data-widget-id="meetings">
       <div class="card-header">
         <div class="card-title"><span class="dot blue"></span>Встречи на неделе</div>
-        <button class="btn" onclick="openMeetingModal()">+ Встреча</button>
+        <button class="btn" data-action="open-meeting-modal">+ Встреча</button>
       </div>
       <div class="card-body" style="padding:8px 16px;">
         <div id="meetings-list"><div class="empty-msg">Встреч пока нет</div></div>
@@ -6094,7 +6094,7 @@
     <div class="card" data-widget-id="comms">
       <div class="card-header">
         <div class="card-title"><span class="dot yellow"></span>Коммуникации</div>
-        <button class="btn" onclick="openCommModal()">+ Напоминание</button>
+        <button class="btn" data-action="open-comm-modal">+ Напоминание</button>
       </div>
       <div class="card-body" style="padding:8px 16px;">
         <div id="comms-list"></div>
@@ -6107,7 +6107,7 @@
         <div class="card-title"><span class="dot green"></span>Быстрые заметки</div>
       </div>
       <div class="card-body">
-        <textarea class="notes-area" id="notes-area" placeholder="Мысли, идеи, фиксация...&#10;Ctrl+Enter — сохранить" oninput="scheduleNoteSave()"></textarea>
+        <textarea class="notes-area" id="notes-area" placeholder="Мысли, идеи, фиксация...&#10;Ctrl+Enter — сохранить" data-input-action="schedule-note-save"></textarea>
         <div class="notes-saved" id="notes-saved"></div>
       </div>
     </div>
@@ -6116,7 +6116,7 @@
     <div class="w-activity" data-widget-id="activity">
       <div class="w-act-label">
         <span>Лента действий</span>
-        <button class="btn" onclick="clearActivity()" style="font-size:var(--text-2xs);padding:2px 6px;">Очистить</button>
+        <button class="btn" data-action="clear-activity" style="font-size:var(--text-2xs);padding:2px 6px;">Очистить</button>
       </div>
       <div class="w-act-list" id="act-list">
         <div class="w-act-empty">Действия появятся здесь</div>
@@ -6131,19 +6131,19 @@
       <div class="card-title"><span class="dot green"></span>Проекты по маркировке</div>
       <div style="display:flex;gap:6px;align-items:center;">
         <span class="badge" id="projects-count">0</span>
-        <button class="btn btn-primary" onclick="openProjectModal()">+ Проект</button>
+        <button class="btn btn-primary" data-action="open-project-modal">+ Проект</button>
       </div>
     </div>
     <div class="proj-sort-bar">
       <span class="proj-sort-label">Сортировка:</span>
-      <button class="proj-sort-btn active" onclick="setProjSort('added',this)">По добавлению</button>
-      <button class="proj-sort-btn" onclick="setProjSort('deadline',this)">По дедлайну</button>
-      <button class="proj-sort-btn" onclick="setProjSort('stage',this)">По стадии</button>
+      <button class="proj-sort-btn active" data-action="set-proj-sort" data-value="added">По добавлению</button>
+      <button class="proj-sort-btn" data-action="set-proj-sort" data-value="deadline">По дедлайну</button>
+      <button class="proj-sort-btn" data-action="set-proj-sort" data-value="stage">По стадии</button>
     </div>
     <div class="projects-grid" id="projects-list">
       <div class="empty-msg">Проектов пока нет. Нажми «+ Проект»</div>
     </div>
-    <div class="projects-divider" onclick="toggleLostSection()">
+    <div class="projects-divider" data-action="toggle-lost-section">
       <div class="projects-divider-line"></div>
       <div class="projects-divider-label">
         Проигранные сделки
@@ -6161,7 +6161,7 @@
       <div class="card-title"><span class="dot" style="background:var(--blue)"></span>Звонки</div>
       <div style="display:flex;gap:6px;">
         <span class="badge" id="calls-count">0</span>
-        <button class="btn btn-primary" onclick="openCallModal(null)">+ Звонок</button>
+        <button class="btn btn-primary" data-action="open-call-modal">+ Звонок</button>
       </div>
     </div>
     <div class="calls-list" id="calls-list">
@@ -6179,9 +6179,9 @@
           <span class="kpi-week-num" id="kpi-week-num">0</span>
           <span class="kpi-week-label">/ 50 б</span>
         </div>
-        <button class="kpi-reset-btn" onclick="kpiReset()">↺ Сброс</button>
+        <button class="kpi-reset-btn" data-action="kpi-reset">↺ Сброс</button>
         <!-- Кнопка разворачивания виджета в модальное окно -->
-        <button class="kpi-expand-btn" onclick="kpiModalOpen()" title="Развернуть KPI">⤢</button>
+        <button class="kpi-expand-btn" data-action="kpi-modal-open" title="Развернуть KPI">⤢</button>
       </div>
     </div>
     <div class="kpi-progress-wrap">
@@ -6221,7 +6221,7 @@
 </div><!-- /main -->
 
 <!-- ══ KPI MODAL OVERLAY ══ -->
-<div class="kpi-modal-backdrop" id="kpi-modal-backdrop" onclick="kpiModalBackdropClick(event)">
+<div class="kpi-modal-backdrop" id="kpi-modal-backdrop" data-action="kpi-modal-backdrop-click">
   <div class="kpi-modal-panel" id="kpi-modal-panel">
 
     <!-- Хедер модалки — дублируем прогресс и сброс -->
@@ -6234,8 +6234,8 @@
         <span style="font-size: 0.75rem;color:var(--text-dim)">/ 50 б</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <button class="kpi-reset-btn" onclick="kpiReset()">↺ Сброс</button>
-        <button class="kpi-modal-close" onclick="kpiModalClose()" title="Закрыть">×</button>
+        <button class="kpi-reset-btn" data-action="kpi-reset">↺ Сброс</button>
+        <button class="kpi-modal-close" data-action="kpi-modal-close" title="Закрыть">×</button>
       </div>
     </div>
 
@@ -6262,27 +6262,27 @@
 
 <!-- ══ CONTEXT MENU ══ -->
 <div class="ctx-menu" id="ctx-menu">
-  <div class="ctx-item" onclick="ctxEdit()">Редактировать</div>
+  <div class="ctx-item" data-action="ctx-edit">Редактировать</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item" onclick="ctxMoveTo('now')">▶ → Сейчас</div>
-  <div class="ctx-item" onclick="ctxMoveTo('next')">→ Следующие</div>
-  <div class="ctx-item" onclick="ctxMoveTo('wait')">→ Отложено</div>
-  <div class="ctx-item" onclick="ctxMoveTo('done')">✓ → Выполнено</div>
+  <div class="ctx-item" data-action="ctx-move-to" data-value="now">▶ → Сейчас</div>
+  <div class="ctx-item" data-action="ctx-move-to" data-value="next">→ Следующие</div>
+  <div class="ctx-item" data-action="ctx-move-to" data-value="wait">→ Отложено</div>
+  <div class="ctx-item" data-action="ctx-move-to" data-value="done">✓ → Выполнено</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item danger" onclick="ctxDelete()">Удалить</div>
+  <div class="ctx-item danger" data-action="ctx-delete">Удалить</div>
 </div>
 
 <!-- ══ MODAL: ЗАДАЧА ══ -->
-<div class="overlay" id="task-modal" onclick="closeModalOnBg(event,'task-modal')">
+<div class="overlay" id="task-modal" data-action="close-modal-bg" data-modal="task-modal">
   <div class="modal">
     <div class="modal-title">
       <span id="task-modal-title">Новая задача</span>
-      <button class="btn btn-ghost btn-icon" onclick="closeModal('task-modal')">✕</button>
+      <button class="btn btn-ghost btn-icon" data-action="close-modal" data-modal="task-modal">✕</button>
     </div>
     <input type="hidden" id="task-edit-id">
     <div class="modal-field">
       <label>Задача</label>
-      <input class="modal-input" id="task-text-in" placeholder="Что нужно сделать?" onkeydown="if(event.key==='Enter')saveTask()">
+      <input class="modal-input" id="task-text-in" placeholder="Что нужно сделать?" data-enter-action="save-task">
     </div>
     <div class="modal-field">
       <label>Столбец</label>
@@ -6295,9 +6295,9 @@
     <div class="modal-field">
       <label>Приоритет</label>
       <div class="priority-selector" id="task-priority-sel">
-        <button type="button" class="priority-opt active-none" onclick="selectPriority('')">Обычный</button>
-        <button type="button" class="priority-opt" onclick="selectPriority('important')">Важный</button>
-        <button type="button" class="priority-opt" onclick="selectPriority('critical')">Критичный</button>
+        <button type="button" class="priority-opt active-none" data-action="select-priority" data-value="">Обычный</button>
+        <button type="button" class="priority-opt" data-action="select-priority" data-value="important">Важный</button>
+        <button type="button" class="priority-opt" data-action="select-priority" data-value="critical">Критичный</button>
       </div>
       <input type="hidden" id="task-priority-in" value="">
     </div>
@@ -6327,18 +6327,18 @@
       </select>
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="closeModal('task-modal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveTask()">Сохранить</button>
+      <button class="btn" data-action="close-modal" data-modal="task-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="save-task">Сохранить</button>
     </div>
   </div>
 </div>
 
 <!-- ══ MODAL: ПРОЕКТ ══ -->
-<div class="overlay" id="project-modal" onclick="closeModalOnBg(event,'project-modal')">
+<div class="overlay" id="project-modal" data-action="close-modal-bg" data-modal="project-modal">
   <div class="modal" style="width:520px">
     <div class="modal-title">
       <span id="proj-modal-title">Новый проект</span>
-      <button class="btn btn-ghost btn-icon" onclick="closeModal('project-modal')">✕</button>
+      <button class="btn btn-ghost btn-icon" data-action="close-modal" data-modal="project-modal">✕</button>
     </div>
     <input type="hidden" id="proj-edit-id">
     <div class="modal-field">
@@ -6360,12 +6360,12 @@
       </div>
       <div class="modal-field">
         <label>Бюджет (₽)</label>
-        <input class="modal-input" id="proj-budget-in" placeholder="11 000 000" oninput="formatBudgetInput(this)">
+        <input class="modal-input" id="proj-budget-in" placeholder="11 000 000" data-input-action="format-budget">
       </div>
     </div>
     <div class="modal-field">
       <label>Этап воронки</label>
-      <select class="modal-select" id="proj-stage-in" onchange="checkLostStage(this.value)">
+      <select class="modal-select" id="proj-stage-in" data-change-action="check-lost-stage">
         <option value="0">Новый лид</option>
         <option value="1">Квалификация</option>
         <option value="2">Ожидание материалов</option>
@@ -6384,12 +6384,12 @@
     <div class="modal-field" id="proj-loss-block" style="display:none;">
       <label>Причина проигрыша</label>
       <div class="loss-reason-grid">
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Цена')" data-r="Цена">💰 Цена</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Конкурент')" data-r="Конкурент">🏁 Конкурент</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Нет бюджета')" data-r="Нет бюджета">Нет бюджета</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Отложили')" data-r="Отложили">⏸ Отложили</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Не наш продукт')" data-r="Не наш продукт">❓ Не наш продукт</button>
-        <button type="button" class="loss-reason-opt" onclick="selectLossReason(this,'Другое')" data-r="Другое">Другое</button>
+        <button type="button" class="loss-reason-opt" data-action="select-loss-reason" data-r="Цена">💰 Цена</button>
+        <button type="button" class="loss-reason-opt" data-action="select-loss-reason" data-r="Конкурент">🏁 Конкурент</button>
+        <button type="button" class="loss-reason-opt" data-action="select-loss-reason" data-r="Нет бюджета">Нет бюджета</button>
+        <button type="button" class="loss-reason-opt" data-action="select-loss-reason" data-r="Отложили">⏸ Отложили</button>
+        <button type="button" class="loss-reason-opt" data-action="select-loss-reason" data-r="Не наш продукт">❓ Не наш продукт</button>
+        <button type="button" class="loss-reason-opt" data-action="select-loss-reason" data-r="Другое">Другое</button>
       </div>
       <input class="modal-input" id="proj-loss-detail-in" placeholder="Уточнение (опционально)" style="margin-top:8px;">
       <input type="hidden" id="proj-loss-reason-in">
@@ -6403,44 +6403,44 @@
       <input class="modal-input" id="proj-owner-in" placeholder="Коля / Гриша / Олег">
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="closeModal('project-modal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveProject()">Сохранить</button>
+      <button class="btn" data-action="close-modal" data-modal="project-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="save-project">Сохранить</button>
     </div>
   </div>
 </div>
 
 <!-- ══ MODAL: ПРОИГРЫШ СДЕЛКИ ══ -->
-<div class="loss-modal-overlay" id="loss-modal" onclick="if(event.target===this)closeLossModal()">
+<div class="loss-modal-overlay" id="loss-modal" data-action="close-loss-modal-bg">
   <div class="loss-modal-win">
     <div class="loss-modal-title">
       <span>Почему проиграли сделку?</span>
-      <button class="btn btn-ghost btn-icon" onclick="closeLossModal()">✕</button>
+      <button class="btn btn-ghost btn-icon" data-action="close-loss-modal">✕</button>
     </div>
     <input type="hidden" id="loss-proj-id">
     <div class="loss-reason-grid">
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Цена')" data-r="Цена">💰 Цена</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Конкурент')" data-r="Конкурент">🏁 Конкурент</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Нет бюджета')" data-r="Нет бюджета">Нет бюджета</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Отложили')" data-r="Отложили">⏸ Отложили</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Не наш продукт')" data-r="Не наш продукт">❓ Не наш продукт</button>
-      <button type="button" class="loss-reason-opt" onclick="lossModalSelect(this,'Другое')" data-r="Другое">Другое</button>
+      <button type="button" class="loss-reason-opt" data-action="loss-modal-select" data-r="Цена">💰 Цена</button>
+      <button type="button" class="loss-reason-opt" data-action="loss-modal-select" data-r="Конкурент">🏁 Конкурент</button>
+      <button type="button" class="loss-reason-opt" data-action="loss-modal-select" data-r="Нет бюджета">Нет бюджета</button>
+      <button type="button" class="loss-reason-opt" data-action="loss-modal-select" data-r="Отложили">⏸ Отложили</button>
+      <button type="button" class="loss-reason-opt" data-action="loss-modal-select" data-r="Не наш продукт">❓ Не наш продукт</button>
+      <button type="button" class="loss-reason-opt" data-action="loss-modal-select" data-r="Другое">Другое</button>
     </div>
     <div class="modal-field" style="margin-top:12px;">
       <label>Уточнение (опционально)</label>
       <input class="modal-input" id="loss-detail-in" placeholder="Кто победил, какая цена, что сказал клиент...">
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="closeLossModal()">Отмена</button>
-      <button class="btn btn-primary" onclick="saveLossModal()" style="background:var(--red);border-color:var(--red);">Подтвердить проигрыш</button>
+      <button class="btn" data-action="close-loss-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="save-loss-modal" style="background:var(--red);border-color:var(--red);">Подтвердить проигрыш</button>
     </div>
   </div>
 </div>
 <!-- ══ MODAL: ВСТРЕЧА ══ -->
-<div class="overlay" id="meeting-modal" onclick="closeModalOnBg(event,'meeting-modal')">
+<div class="overlay" id="meeting-modal" data-action="close-modal-bg" data-modal="meeting-modal">
   <div class="modal">
     <div class="modal-title">
       <span>Встреча / звонок</span>
-      <button class="btn btn-ghost btn-icon" onclick="closeModal('meeting-modal')">✕</button>
+      <button class="btn btn-ghost btn-icon" data-action="close-modal" data-modal="meeting-modal">✕</button>
     </div>
     <input type="hidden" id="meeting-edit-id">
     <div class="modal-field">
@@ -6462,26 +6462,26 @@
       <input class="modal-input" id="meeting-who-in" placeholder="Гриша, Клиент">
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="closeModal('meeting-modal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveMeeting()">Сохранить</button>
+      <button class="btn" data-action="close-modal" data-modal="meeting-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="save-meeting">Сохранить</button>
     </div>
   </div>
 </div>
 
 <!-- ══ MODAL: КОММУНИКАЦИЯ ══ -->
-<div class="overlay" id="comm-modal" onclick="closeModalOnBg(event,'comm-modal')">
+<div class="overlay" id="comm-modal" data-action="close-modal-bg" data-modal="comm-modal">
   <div class="modal">
     <div class="modal-title">
       <span>Напоминание о связи</span>
-      <button class="btn btn-ghost btn-icon" onclick="closeModal('comm-modal')">✕</button>
+      <button class="btn btn-ghost btn-icon" data-action="close-modal" data-modal="comm-modal">✕</button>
     </div>
     <input type="hidden" id="comm-edit-id">
     <div class="modal-field">
       <label>Контакт</label>
       <div class="tag-select" id="comm-person-tags">
-        <span class="tag-opt" onclick="selectPerson(this,'Гриша')">Гриша</span>
-        <span class="tag-opt" onclick="selectPerson(this,'Панкратов')">Панкратов</span>
-        <span class="tag-opt" onclick="selectPerson(this,'Коля')">Коля</span>
+        <span class="tag-opt" data-action="select-person" data-value="Гриша">Гриша</span>
+        <span class="tag-opt" data-action="select-person" data-value="Панкратов">Панкратов</span>
+        <span class="tag-opt" data-action="select-person" data-value="Коля">Коля</span>
       </div>
       <input class="modal-input" id="comm-person-in" placeholder="Или введи имя..." style="margin-top:7px;">
     </div>
@@ -6494,8 +6494,8 @@
       <input type="date" class="modal-input" id="comm-date-in">
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="closeModal('comm-modal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveComm()">Сохранить</button>
+      <button class="btn" data-action="close-modal" data-modal="comm-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="save-comm">Сохранить</button>
     </div>
   </div>
 </div>
@@ -6533,6 +6533,199 @@ var renderAnalyticsCharts = function() {};
 var emptyState = function(iconKey, text, hint) {
   return '<div class="empty-msg">' + (text || '') + (hint ? '<br><span class="empty-hint">' + hint + '</span>' : '') + '</div>';
 };
+
+
+/* ═══════════════════════════════════════════
+   EVENT DELEGATION — центральный диспетчер.
+   Паттерн: Event Delegation (React, Stimulus).
+   Один listener на document вместо 200+ inline handlers.
+   Элементы помечены data-action="имя-действия",
+   дополнительные параметры через data-* атрибуты.
+═══════════════════════════════════════════ */
+const ActionDispatcher = {
+  /* ── Click-действия ── */
+  'install-pwa':          ()          => installPWA(),
+  'cmd-open':             ()          => cmdOpen(),
+  'toggle-focus-mode':    ()          => toggleFocusMode(),
+  'toggle-dark-light':    ()          => toggleDarkLight(),
+  'wc-toggle':            ()          => wcToggle(),
+  'toggle-theme-menu':    ()          => toggleThemeMenu(),
+  'tour-start':           ()          => tourStart(),
+  'tour-end':             ()          => tourEnd(),
+  'timer-play-pause':     ()          => timerPlayPause(),
+  'timer-reset':          ()          => timerReset(),
+  'reset-day-report':     ()          => resetDayReport(),
+  'open-fail-reason':     (el, e)     => openFailReason(e),
+  'call-result-reset':    ()          => callResultReset(),
+  'ql-clear':             ()          => qlClear(),
+  'ql-add':               ()          => qlAdd(),
+  'open-task-modal':      (el)        => openTaskModal(el.dataset.id || null),
+  'open-meeting-modal':   ()          => openMeetingModal(),
+  'open-comm-modal':      ()          => openCommModal(),
+  'clear-activity':       ()          => clearActivity(),
+  'open-project-modal':   (el)        => openProjectModal(el.dataset.id || undefined),
+  'open-call-modal':      (el)        => openCallModal(el.dataset.id || null),
+  'open-loss-modal':      (el)        => openLossModal(el.dataset.id),
+  'kpi-reset':            ()          => kpiReset(),
+  'kpi-modal-open':       ()          => kpiModalOpen(),
+  'kpi-modal-close':      ()          => kpiModalClose(),
+  'kpi-modal-backdrop-click': (el, e) => kpiModalBackdropClick(e),
+  'ctx-edit':             ()          => ctxEdit(),
+  'ctx-delete':           ()          => ctxDelete(),
+  'save-task':            ()          => saveTask(),
+  'save-project':         ()          => saveProject(),
+  'close-loss-modal':     ()          => closeLossModal(),
+  'save-loss-modal':      ()          => saveLossModal(),
+  'save-meeting':         ()          => saveMeeting(),
+  'save-comm':            ()          => saveComm(),
+  'toggle-lost-section':  ()          => toggleLostSection(),
+  'close-export':         ()          => closeExport(),
+  'close-review':         ()          => closeReview(),
+  'close-call-modal':     ()          => closeCallModal(),
+  'save-call':            ()          => saveCall(),
+  'dc-open-modal':        ()          => dcOpenModal(),
+  'dc-close-modal':       ()          => dcCloseModal(),
+  'dc-save':              ()          => dcSave(),
+  'dc-snooze':            ()          => dcSnooze(),
+  'dc-dismiss-alert':     ()          => dcDismissAlert(),
+  'dc-mark-done-from-alert': ()       => dcMarkDoneFromAlert(),
+  'wc-close':             ()          => wcClose(),
+  'wc-reset-all':         ()          => wcResetAll(),
+  'wc-toggle-row':        (el)        => wcToggleRow(el.dataset.wid),
+  'fab-close':            ()          => fabClose(),
+  'fab-toggle':           ()          => fabToggle(),
+  'export-data':          ()          => exportData(),
+  'export-tasks-csv':     ()          => exportTasksCSV(),
+  'export-projects-csv':  ()          => exportProjectsCSV(),
+  'export-calls-csv':     ()          => exportCallsCSV(),
+  'export-all-csv':       ()          => exportAllCSV(),
+  'copy-review':          ()          => copyReview(),
+  'send-magic-link':      ()          => sendMagicLink(document.getElementById('login-email').value),
+  'set-view':             (el)        => setView(el.dataset.value),
+  'set-theme':            (el)        => setTheme(el.dataset.value),
+  'set-timer-mode':       (el)        => setTimerMode(el.dataset.value),
+  'set-proj-sort':        (el)        => setProjSort(el.dataset.value, el),
+  'call-tracker-add':     (el)        => callTrackerAdd(+el.dataset.delta),
+  'call-result-add':      (el)        => callResultAdd(el.dataset.value),
+  'close-modal':          (el)        => closeModal(el.dataset.modal),
+  'close-modal-bg':       (el, e)     => closeModalOnBg(e, el.dataset.modal),
+  'ctx-move-to':          (el)        => ctxMoveTo(el.dataset.value),
+  'select-priority':      (el)        => selectPriority(el.dataset.value),
+  'select-loss-reason':   (el)        => selectLossReason(el, el.dataset.r),
+  'loss-modal-select':    (el)        => lossModalSelect(el, el.dataset.r),
+  'select-person':        (el)        => selectPerson(el, el.dataset.value),
+  'ql-select-type':       (el)        => qlSelectType(el),
+  'pick-fail-reason':     (el)        => pickFailReason(el.dataset.value),
+  'toggle-task':          (el)        => toggleTask(el.dataset.id),
+  'delete-task':          (el)        => deleteTask(el.dataset.id),
+  'toggle-project':       (el)        => toggleProject(el.dataset.id),
+  'delete-project':       (el)        => deleteProject(el.dataset.id),
+  'restore-project':      (el)        => restoreProject(el.dataset.id),
+  'set-project-stage':    (el)        => setProjectStage(el.dataset.id, +el.dataset.stage),
+  'toggle-call':          (el)        => toggleCall(el.dataset.id),
+  'delete-call':          (el)        => deleteCall(el.dataset.id),
+  'delete-meeting':       (el)        => deleteMeeting(el.dataset.id),
+  'delete-comm':          (el)        => deleteComm(el.dataset.id),
+  'dc-toggle-done':       (el)        => dcToggleDone(el.dataset.id),
+  'dc-toggle-bell':       (el)        => dcToggleBell(el.dataset.id),
+  'dc-delete':            (el)        => dcDelete(el.dataset.id),
+  'dr-dismiss':           (el)        => drDismiss(el.dataset.id),
+  'ql-delete':            (el)        => qlDelete(el.dataset.id),
+  'dismiss-toast':        (el)        => dismissToast(el.parentElement),
+  'tour-show':            (el)        => tourShow(+el.dataset.idx),
+  'smart-alert':          (el)        => smartAlertAction(+el.dataset.idx),
+  'cmd-exec':             (el)        => cmdExec(+el.dataset.idx),
+  'kpi-change':           (el)        => kpiChange(el.dataset.mid, +el.dataset.di, +el.dataset.delta),
+  'kpi-input-focus':      (el)        => el.select(),
+  /* ── Backdrop click-to-close (if target === self) ── */
+  'close-loss-modal-bg':  (el, e)     => { if (e.target === el) closeLossModal(); },
+  'close-call-modal-bg':  (el, e)     => { if (e.target === el) closeCallModal(); },
+  'dc-close-modal-bg':    (el, e)     => { if (e.target === el) dcCloseModal(); },
+  'dc-dismiss-alert-bg':  (el, e)     => { if (e.target === el) dcDismissAlert(); },
+  'close-export-bg':      (el, e)     => { if (e.target === el) closeExport(); },
+  'close-review-bg':      (el, e)     => { if (e.target === el) closeReview(); },
+  'cmd-close-bg':         (el, e)     => { if (e.target === el) cmdClose(); },
+  /* ── FAB combined actions ── */
+  'fab-open-task':        ()          => { fabClose(); openTaskModal(null); },
+  'fab-open-project':     ()          => { fabClose(); openProjectModal(); },
+  'fab-open-call':        ()          => { fabClose(); openCallModal(); },
+  'fab-open-meeting':     ()          => { fabClose(); openMeetingModal(); },
+};
+
+/* ── Главный click-listener ── */
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  /* data-stop — если между target и data-action есть элемент
+     с data-stop (и это НЕ сам data-action), значит клик был
+     на вложенном элементе, который должен «поглотить» событие. */
+  const stopEl = e.target.closest('[data-stop]');
+  if (stopEl && stopEl !== el && el.contains(stopEl)) return;
+  const handler = ActionDispatcher[el.dataset.action];
+  if (handler) handler(el, e);
+});
+
+/* ── Enter-key delegation ── */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const el = e.target.closest('[data-enter-action]');
+  if (!el) return;
+  const action = el.dataset.enterAction;
+  if (action === 'blur') { el.blur(); return; }
+  if (action === 'quick-add') { quickAdd(el.dataset.lane, el); return; }
+  const handler = ActionDispatcher[action];
+  if (handler) handler(el, e);
+});
+
+/* ── Input delegation ── */
+const InputDispatcher = {
+  'save-focus':           (el) => saveFocus(),
+  'call-tracker-set-plan':(el) => callTrackerSetPlan(el.value),
+  'render-funnel':        (el) => renderFunnel(),
+  'save-funnel':          (el) => { saveFunnelManual(); renderFunnel(); },
+  'save-pf-plans':        (el) => { savePFPlans(); renderPlanFact(); },
+  'schedule-note-save':   (el) => scheduleNoteSave(),
+  'format-budget':        (el) => formatBudgetInput(el),
+};
+document.addEventListener('input', (e) => {
+  const el = e.target.closest('[data-input-action]');
+  if (!el) return;
+  const handler = InputDispatcher[el.dataset.inputAction];
+  if (handler) handler(el);
+});
+
+/* ── Change delegation ── */
+const ChangeDispatcher = {
+  'check-lost-stage':     (el) => checkLostStage(el.value),
+  'update-proj-field':    (el) => {
+    const val = el.dataset.field === 'budget' ? el.value.replace(/\D/g, '') : el.value;
+    updateProjField(el.dataset.id, el.dataset.field, val);
+  },
+  'update-proj-deadline': (el) => { updateProjField(el.dataset.id, 'deadline', el.value); renderProjects(); },
+  'save-next-step':       (el) => saveNextStep(el.dataset.id, el.value),
+  'kpi-set':              (el) => kpiSet(el.dataset.mid, +el.dataset.di, el.value),
+  'wc-toggle-by-id':      (el) => wcToggleById(el.dataset.wid, el.checked),
+  'import-data':          (el) => importData(el),
+};
+document.addEventListener('change', (e) => {
+  const el = e.target.closest('[data-change-action]');
+  if (!el) return;
+  const handler = ChangeDispatcher[el.dataset.changeAction];
+  if (handler) handler(el);
+});
+
+/* ── Blur delegation ── */
+const BlurDispatcher = {
+  'save-next-step':    (el) => saveNextStep(el.dataset.id, el.value),
+  'save-last-contact': (el) => saveLastContact(el.dataset.id, el.value),
+};
+document.addEventListener('focusout', (e) => {
+  const el = e.target.closest('[data-blur-action]');
+  if (!el) return;
+  const handler = BlurDispatcher[el.dataset.blurAction];
+  if (handler) handler(el);
+});
+
 
 /* ═══════════════════════════════════════════
    STATE
@@ -6681,18 +6874,18 @@ function taskHTML(t) {
     doneInfo = `<div class="task-meta" style="color:var(--text-mute)">${label}</div>`;
   }
   const deleteBtn = done
-    ? `<button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();deleteTask('${t.id}')" title="Удалить"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'><polyline points='3 6 5 6 21 6'/><path d='M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2'/></svg></button>`
+    ? `<button class="btn btn-ghost btn-icon" data-action="delete-task" data-id="${t.id}" data-stop title="Удалить"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round'><polyline points='3 6 5 6 21 6'/><path d='M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2'/></svg></button>`
     : '';
   return `
     <div class="task-card-item task-item ${done?'is-done':''}${prioClass}" data-id="${t.id}" draggable="true"
-         onclick="toggleTask('${t.id}')">
+         data-action="toggle-task" data-id="${t.id}">
       <div class="task-check">${done?'✓':''}</div>
       <div style="flex:1;min-width:0">
         <div class="task-text">${esc(t.text)}</div>
         ${dateStr}${doneInfo}
       </div>
       <div class="task-actions">
-        <button class="btn btn-ghost btn-icon" onclick="event.stopPropagation();openTaskModal('${t.id}')" title="Редактировать"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z'/></svg></button>
+        <button class="btn btn-ghost btn-icon" data-action="open-task-modal" data-id="${t.id}" data-stop title="Редактировать"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z'/></svg></button>
         ${deleteBtn}
       </div>
     </div>`;
@@ -7039,7 +7232,7 @@ function projectHTML(p) {
   const funnelHTML = FUNNEL.map((s,i) => {
     const cls = i === stage ? 'active' : (i < stage ? 'past' : '');
     return '<span class="funnel-step ' + cls + '"' +
-      ' onclick="event.stopPropagation();setProjectStage(\'' + p.id + '\',' + i + ')"' +
+      ' data-action="set-project-stage" data-id="' + p.id + '" data-stage="' + i + '" data-stop ' +
       ' ondragover="projFunnelDragOver(event)"' +
       ' ondragleave="projFunnelDragLeave(event)"' +
       ' ondrop="projFunnelDrop(event,\'' + p.id + '\',' + i + ')"' +
@@ -7055,7 +7248,7 @@ function projectHTML(p) {
        draggable="true"
        ondragstart="projDragStart(event,'${p.id}')"
        ondragend="projDragEnd(event)"
-       onclick="toggleProject('${p.id}')"
+       data-action="toggle-project" data-id="${p.id}"
        oncontextmenu="event.preventDefault();openProjectModal('${p.id}')">
     <div class="project-top">
       <div style="flex:1;min-width:0;">
@@ -7073,19 +7266,19 @@ function projectHTML(p) {
       <div class="project-fields">
         <div class="project-field">
           <label>Ответственный</label>
-          <input value="${esc(p.owner||'')}" onclick="event.stopPropagation()"
-            onchange="updateProjField('${p.id}','owner',this.value)" placeholder="—">
+          <input value="${esc(p.owner||'')}" data-stop
+            data-change-action="update-proj-field" data-id="${p.id}" data-field="owner" placeholder="—">
         </div>
         <div class="project-field">
           <label>Бюджет</label>
           <input value="${p.budget ? fmtBudget(p.budget) : ''}"
-            onclick="event.stopPropagation()" oninput="formatBudgetInput(this)"
-            onchange="updateProjField('${p.id}','budget',this.value.replace(/\D/g,''))" placeholder="—">
+            data-stop data-input-action="format-budget"
+            data-change-action="update-proj-field" data-id="${p.id}" data-field="budget" placeholder="—">
         </div>
         <div class="project-field">
           <label>Дедлайн</label>
-          <input type="date" value="${p.deadline||''}" onclick="event.stopPropagation()"
-            onchange="updateProjField('${p.id}','deadline',this.value);renderProjects()">
+          <input type="date" value="${p.deadline||''}" data-stop
+            data-change-action="update-proj-deadline" data-id="${p.id}">
         </div>
       </div>
       <div class="proj-next-step">
@@ -7093,25 +7286,25 @@ function projectHTML(p) {
         <input class="proj-next-step-input"
           placeholder="Что сделать прямо сейчас?"
           value="${esc(p.nextStep||'')}"
-          onclick="event.stopPropagation()"
-          onblur="saveNextStep('${p.id}',this.value)"
-          onchange="saveNextStep('${p.id}',this.value)">
+          data-stop
+          data-blur-action="save-next-step" data-id="${p.id}"
+          data-change-action="save-next-step" data-id="${p.id}">
       </div>
       <div class="proj-last-contact">
         <div class="proj-last-contact-label">Последний контакт</div>
         <textarea class="proj-last-contact-input"
           placeholder="Что обсудили, договорённости, настроение клиента..."
-          onclick="event.stopPropagation()"
-          onblur="saveLastContact('${p.id}',this.value)">${esc(p.lastContact||'')}</textarea>
+          data-stop
+          data-blur-action="save-last-contact" data-id="${p.id}">${esc(p.lastContact||'')}</textarea>
         <div class="proj-last-contact-meta">
           <span id="plc-meta-${p.id}">${p.lastContactDate ? 'обновлено ' + fmtDate(p.lastContactDate) : 'ещё не заполнено'}</span>
           <span>blur — сохранит</span>
         </div>
       </div>
       <div class="project-actions-row">
-        <button class="btn" onclick="event.stopPropagation();openProjectModal('${p.id}')"><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
-        <button class="btn" style="color:var(--red)" onclick="event.stopPropagation();openLossModal('${p.id}')">Проиграть</button>
-        <button class="btn danger" style="color:var(--red)" onclick="event.stopPropagation();deleteProject('${p.id}')">Удалить</button>
+        <button class="btn" data-action="open-project-modal" data-id="${p.id}" data-stop><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
+        <button class="btn" style="color:var(--red)" data-action="open-loss-modal" data-id="${p.id}" data-stop>Проиграть</button>
+        <button class="btn danger" style="color:var(--red)" data-action="delete-project" data-id="${p.id}" data-stop>Удалить</button>
       </div>
       ${getLinkedItemsHTML(p.id)}
     </div>
@@ -7130,8 +7323,8 @@ function lostProjectHTML(p) {
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
         ${p.budget ? '<span style="font-size:var(--text-xs);color:var(--text-mute)">' + fmtBudget(p.budget) + '</span>' : ''}
         <span class="proj-loss-badge">${esc(p.lossReason||'Проиграна')}${p.lostDate ? ' · ' + fmtDate(p.lostDate) : ''}</span>
-        <button class="btn" style="font-size:var(--text-xs);padding:2px 8px;" onclick="restoreProject('${p.id}')">↩ Вернуть</button>
-        <button class="btn" style="font-size:var(--text-xs);padding:2px 8px;color:var(--red)" onclick="deleteProject('${p.id}')">Удалить</button>
+        <button class="btn" style="font-size:var(--text-xs);padding:2px 8px;" data-action="restore-project" data-id="${p.id}">↩ Вернуть</button>
+        <button class="btn" style="font-size:var(--text-xs);padding:2px 8px;color:var(--red)" data-action="delete-project" data-id="${p.id}">Удалить</button>
       </div>
     </div>
   </div>`;
@@ -7148,7 +7341,7 @@ function getLinkedItemsHTML(projectId) {
 
   if (!linkedTasks.length && !doneTasks.length && !linkedCalls.length) return '';
 
-  let html = '<div class="proj-linked" onclick="event.stopPropagation()">';
+  let html = '<div class="proj-linked" data-stop>';
 
   if (linkedTasks.length || doneTasks.length) {
     html += '<div class="proj-linked-title">' + ICON.clipboard + ' Задачи (' + linkedTasks.length + ' активных)</div>';
@@ -7354,7 +7547,7 @@ function renderMeetings() {
         <div class="meeting-title">${esc(m.title)}</div>
         ${m.who ? `<div class="meeting-sub">${esc(m.who)}</div>` : ''}
       </div>
-      <button class="btn btn-ghost btn-icon" onclick="deleteMeeting('${m.id}')" title="Удалить">✕</button>
+      <button class="btn btn-ghost btn-icon" data-action="delete-meeting" data-id="${m.id}" title="Удалить">✕</button>
     </div>`).join('');
 }
 
@@ -7437,7 +7630,7 @@ function renderComms() {
           ${c.topic ? `<div class="comm-reminder">${esc(c.topic)}</div>` : '<div class="comm-reminder" style="color:var(--text-mute)">Нет напоминаний</div>'}
           ${dueStr}
         </div>
-        ${!c.isDefault ? `<button class="btn btn-ghost btn-icon" onclick="deleteComm('${c.id}')" title="Удалить">✕</button>` : ''}
+        ${!c.isDefault ? `<button class="btn btn-ghost btn-icon" data-action="delete-comm" data-id="${c.id}" title="Удалить">✕</button>` : ''}
       </div>`;
   }).join('');
 }
@@ -7624,11 +7817,11 @@ function renderKPI() {
       let inCls = val===0 ? ' zero' : '';
       let mid = m.id;
       html += '<td class="' + tdCls + '"><div class="kpi-cell">'
-        + '<button class="kpi-btn" onclick="kpiChange(\'' + mid + '\',' + di + ',-1)">−</button>'
+        + '<button class="kpi-btn" data-action="kpi-change" data-mid="' + mid + '" data-di="' + di + '" data-delta="-1">−</button>'
         + '<input class="kpi-input' + inCls + '" type="number" min="0" value="' + (val===0?'':val) + '" placeholder="·"'
-        + ' onchange="kpiSet(\'' + mid + '\',' + di + ',this.value)"'
-        + ' onclick="event.stopPropagation();this.select()">'
-        + '<button class="kpi-btn" onclick="kpiChange(\'' + mid + '\',' + di + ',+1)">+</button>'
+        + ' data-change-action="kpi-set" data-mid="' + mid + '" data-di="' + di + '"'
+        + ' data-action="kpi-input-focus" data-stop>'
+        + '<button class="kpi-btn" data-action="kpi-change" data-mid="' + mid + '" data-di="' + di + '" data-delta="1">+</button>'
         + '</div></td>';
     });
     html += '</tr>';
@@ -7739,7 +7932,7 @@ function callHTML(c) {
   const dateStr = c.date ? new Date(c.date).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
   return `
   <div class="call-card" id="call-${c.id}">
-    <div class="call-head" onclick="toggleCall('${c.id}')">
+    <div class="call-head" data-action="toggle-call" data-id="${c.id}">
       <div class="call-status-dot ${c.status}"></div>
       <div class="call-company">${esc(c.company)}</div>
       ${c.contact ? `<div class="call-contact-inline">${esc(c.contact)}</div>` : ''}
@@ -7760,8 +7953,8 @@ function callHTML(c) {
         </div>` : ''}
       ${!c.agreements && !c.nextStep ? '<div class="call-field-value" style="margin-top:8px;color:var(--text-mute)">Нет записей</div>' : ''}
       <div class="call-actions">
-        <button class="btn" onclick="openCallModal('${c.id}')"><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
-        <button class="btn danger" onclick="deleteCall('${c.id}')">Удалить</button>
+        <button class="btn" data-action="open-call-modal" data-id="${c.id}"><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
+        <button class="btn danger" data-action="delete-call" data-id="${c.id}">Удалить</button>
       </div>
     </div>
   </div>`;
@@ -8468,7 +8661,7 @@ function renderDeadlineRadar() {
       <div class="w-dr-name" title="${esc(item.name)}">${esc(item.name)}</div>
       <span class="w-dr-type">${item.type}</span>
       <div class="w-dr-days ${dc}">${getDaysLabel(item.diff)}</div>
-      <button class="w-dr-dismiss" onclick="drDismiss('${item.id}')" title="Убрать">✕</button>
+      <button class="w-dr-dismiss" data-action="dr-dismiss" data-id="${item.id}" title="Убрать">✕</button>
     </div>`;
   }).join('');
 }
@@ -8686,7 +8879,7 @@ function renderQL() {
       <span class="w-ql-entry-type ql-${e.type}">${QL_TYPE_LABELS[e.type] || e.type}</span>
       <div class="w-ql-entry-text">${esc(e.text)}</div>
       <span class="w-ql-entry-time">${e.time}</span>
-      <button class="w-ql-entry-del" onclick="qlDelete('${e.id}')" title="Удалить">✕</button>
+      <button class="w-ql-entry-del" data-action="ql-delete" data-id="${e.id}" title="Удалить">✕</button>
     </div>`).join('');
 }
 renderQL();
@@ -8783,13 +8976,13 @@ renderTimer();
 </script>
 
 <!-- ══ МОДАЛКА ЗВОНКА ══ -->
-<div class="call-modal-overlay" id="call-modal" onclick="if(event.target===this)closeCallModal()">
+<div class="call-modal-overlay" id="call-modal" data-action="close-call-modal-bg">
   <div class="call-modal-win">
 
     <!-- Шапка -->
     <div class="call-modal-top">
       <div class="call-modal-top-title" id="call-modal-title">Новый звонок</div>
-      <button class="call-modal-close" onclick="closeCallModal()">✕</button>
+      <button class="call-modal-close" data-action="close-call-modal">✕</button>
     </div>
 
     <!-- Поля верхней строки -->
@@ -8828,8 +9021,8 @@ renderTimer();
 
     <!-- Футер -->
     <div class="call-modal-footer">
-      <button class="btn" onclick="closeCallModal()">Отмена</button>
-      <button class="btn btn-primary" onclick="saveCall()">Сохранить звонок</button>
+      <button class="btn" data-action="close-call-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="save-call">Сохранить звонок</button>
     </div>
 
   </div>
@@ -8837,11 +9030,11 @@ renderTimer();
 
 
 <!-- ══ МОДАЛКА: ЗАПЛАНИРОВАТЬ ЗВОНОК ══ -->
-<div class="dc-modal-backdrop" id="dc-modal" onclick="if(event.target===this)dcCloseModal()">
+<div class="dc-modal-backdrop" id="dc-modal" data-action="dc-close-modal-bg">
   <div class="dc-modal">
     <div class="dc-modal-header">
       <span id="dc-modal-title">Запланировать звонок</span>
-      <button class="dc-modal-close" onclick="dcCloseModal()">×</button>
+      <button class="dc-modal-close" data-action="dc-close-modal">×</button>
     </div>
     <div class="dc-modal-body">
       <div class="dc-modal-row">
@@ -8878,14 +9071,14 @@ renderTimer();
       </div>
     </div>
     <div class="dc-modal-footer">
-      <button class="btn" onclick="dcCloseModal()">Отмена</button>
-      <button class="btn btn-primary" onclick="dcSave()">Сохранить</button>
+      <button class="btn" data-action="dc-close-modal">Отмена</button>
+      <button class="btn btn-primary" data-action="dc-save">Сохранить</button>
     </div>
   </div>
 </div>
 
 <!-- ══ ОПОВЕЩЕНИЕ О ЗВОНКЕ ══ -->
-<div class="dc-alert-overlay" id="dc-alert" onclick="if(event.target===this)dcDismissAlert()">
+<div class="dc-alert-overlay" id="dc-alert" data-action="dc-dismiss-alert-bg">
   <div class="dc-alert-card">
     <div class="dc-alert-header">
       <span class="dc-alert-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
@@ -8916,9 +9109,9 @@ renderTimer();
       </div>
     </div>
     <div class="dc-alert-footer">
-      <button class="dc-alert-btn" onclick="dcSnooze()">⏰ +5 мин</button>
-      <button class="dc-alert-btn" onclick="dcDismissAlert()">Закрыть</button>
-      <button class="dc-alert-btn primary" onclick="dcMarkDoneFromAlert()">✓ Позвонил</button>
+      <button class="dc-alert-btn" data-action="dc-snooze">⏰ +5 мин</button>
+      <button class="dc-alert-btn" data-action="dc-dismiss-alert">Закрыть</button>
+      <button class="dc-alert-btn primary" data-action="dc-mark-done-from-alert">✓ Позвонил</button>
     </div>
   </div>
 </div>
@@ -9336,11 +9529,11 @@ window.addEventListener('appinstalled', function() {
 <!-- ══ ПОПАП: ПРИЧИНА НЕУСПЕХА (вне всех контейнеров!) ══ -->
 <div class="fail-reason-popup" id="fail-reason-popup">
   <div class="fail-reason-title">Почему не получилось?</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Недозвон')"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>Недозвон</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Занято')"><span class="icon" style="color:var(--yellow)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Занято</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Нет нужного')"><span class="icon" style="color:var(--text-mute)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>Нет нужного</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Отказ')"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Отказ</div>
-  <div class="fail-reason-opt" onclick="pickFailReason('Другое')"><span class="icon" style="color:var(--text-dim)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>Другое</div>
+  <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Недозвон"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>Недозвон</div>
+  <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Занято"><span class="icon" style="color:var(--yellow)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Занято</div>
+  <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Нет нужного"><span class="icon" style="color:var(--text-mute)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>Нет нужного</div>
+  <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Отказ"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Отказ</div>
+  <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Другое"><span class="icon" style="color:var(--text-dim)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>Другое</div>
 </div>
 
 <!-- ══ АНИМАЦИИ: SCROLL PROGRESS + STAGGER + MICRO-INTERACTIONS ══ -->
@@ -9481,7 +9674,7 @@ window.ctxDelete = function() {
 
 <!-- ══ WIDGET CONSTRUCTOR — backdrop + panel ══ -->
 <!-- Backdrop Dimming — полупрозрачный фон, закрывает панель по клику -->
-<div id="wc-backdrop" onclick="wcClose()"></div>
+<div id="wc-backdrop" data-action="wc-close"></div>
 
 <!-- Slide-over панель -->
 <div id="wc-panel">
@@ -9495,7 +9688,7 @@ window.ctxDelete = function() {
       </div>
       Настройка виджетов
     </div>
-    <button class="wc-close-btn" onclick="wcClose()">×</button>
+    <button class="wc-close-btn" data-action="wc-close">×</button>
   </div>
   <div class="wc-sub">Включай и выключай блоки на дашборде</div>
 
@@ -9505,7 +9698,7 @@ window.ctxDelete = function() {
 
   <div class="wc-footer">
     <div class="wc-counter">Включено: <b id="wc-on-count">0</b> из <b id="wc-total-count">0</b></div>
-    <button class="wc-reset-btn" onclick="wcResetAll()">Включить все виджеты</button>
+    <button class="wc-reset-btn" data-action="wc-reset-all">Включить все виджеты</button>
   </div>
 </div>
 
@@ -9573,9 +9766,9 @@ function dcRender() {
       '<td class="dc-contact" title="' + esc(c.contact||'') + '">' + esc(c.contact || '—') + '</td>' +
       '<td class="dc-phone">' + phoneFmt + '</td>' +
       '<td class="dc-actions">' +
-        '<button class="' + doneCls + '" onclick="dcToggleDone(\'' + c.id + '\')" title="Выполнено">' + doneMark + '</button>' +
-        '<button class="' + bellCls + '" onclick="dcToggleBell(\'' + c.id + '\')" title="Оповещение"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></button>' +
-        '<button class="dc-btn-sm del" onclick="dcDelete(\'' + c.id + '\')" title="Удалить">✕</button>' +
+        '<button class="' + doneCls + '" data-action="dc-toggle-done" data-id="' + c.id + '" title="Выполнено">' + doneMark + '</button>' +
+        '<button class="' + bellCls + '" data-action="dc-toggle-bell" data-id="' + c.id + '" title="Оповещение"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></button>' +
+        '<button class="dc-btn-sm del" data-action="dc-delete" data-id="' + c.id + '" title="Удалить">✕</button>' +
       '</td>' +
     '</tr>';
   }).join('');
@@ -9882,14 +10075,14 @@ function wcRenderPanel() {
     WC_REGISTRY.filter(function(w) { return w.section === sec; }).forEach(function(w) {
       let isOn = wcState[w.id] !== false;
       html +=
-        '<div class="wc-row' + (isOn ? ' is-on' : '') + '" id="wc-row-' + w.id + '" onclick="wcToggleRow(\'' + w.id + '\')">' +
+        '<div class="wc-row' + (isOn ? ' is-on' : '') + '" id="wc-row-' + w.id + '" data-action="wc-toggle-row" data-wid="' + w.id + '">' +
           '<div class="wc-row-icon">' + w.icon + '</div>' +
           '<div class="wc-row-info">' +
             '<div class="wc-row-name">' + w.name + '</div>' +
             '<div class="wc-row-desc">' + w.desc + '</div>' +
           '</div>' +
-          '<label class="wc-toggle" onclick="event.stopPropagation()">' +
-            '<input type="checkbox"' + (isOn ? ' checked' : '') + ' onchange="wcToggleById(\'' + w.id + '\', this.checked)">' +
+          '<label class="wc-toggle" data-stop>' +
+            '<input type="checkbox"' + (isOn ? ' checked' : '') + ' data-change-action="wc-toggle-by-id" data-wid="' + w.id + '">' +
             '<div class="wc-toggle-track"></div>' +
             '<div class="wc-toggle-thumb"></div>' +
           '</label>' +
@@ -10114,60 +10307,60 @@ if (document.readyState === 'loading') {
 
 <!-- ══ TOAST CONTAINER ══ -->
 <!-- ══ MOBILE FAB ══ -->
-<div class="fab-backdrop" id="fab-backdrop" onclick="fabClose()"></div>
+<div class="fab-backdrop" id="fab-backdrop" data-action="fab-close"></div>
 <div class="fab-container" id="fab-container">
   <div class="fab-menu">
-    <button class="fab-action" onclick="fabClose();openTaskModal(null);">
+    <button class="fab-action" data-action="fab-open-task">
       <span class="fab-action-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span>
       Задача
     </button>
-    <button class="fab-action" onclick="fabClose();openProjectModal();">
+    <button class="fab-action" data-action="fab-open-project">
       <span class="fab-action-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></span>
       Проект
     </button>
-    <button class="fab-action" onclick="fabClose();openCallModal();">
+    <button class="fab-action" data-action="fab-open-call">
       <span class="fab-action-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
       Звонок
     </button>
-    <button class="fab-action" onclick="fabClose();openMeetingModal();">
+    <button class="fab-action" data-action="fab-open-meeting">
       <span class="fab-action-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
       Встреча
     </button>
   </div>
-  <button class="fab-main" onclick="fabToggle()">+</button>
+  <button class="fab-main" data-action="fab-toggle">+</button>
 </div>
 
 <!-- ══ DATA EXPORT / IMPORT MODAL ══ -->
-<div class="export-backdrop" id="export-backdrop" onclick="if(event.target===this)closeExport()">
+<div class="export-backdrop" id="export-backdrop" data-action="close-export-bg">
   <div class="export-panel">
     <div class="export-header">
       <span class="export-title">Данные дашборда</span>
-      <button class="btn" onclick="closeExport()">Закрыть</button>
+      <button class="btn" data-action="close-export">Закрыть</button>
     </div>
     <div class="export-body">
       <div class="export-section">
         <div class="export-section-title">Экспорт</div>
         <div class="export-info">Скачает JSON-файл со всеми данными: задачи, проекты, звонки, встречи, заметки, настройки виджетов.</div>
-        <button class="btn btn-primary" onclick="exportData()" style="width:100%;">Скачать backup (.json)</button>
+        <button class="btn btn-primary" data-action="export-data" style="width:100%;">Скачать backup (.json)</button>
       </div>
       <div class="export-section">
         <div class="export-section-title">Экспорт в CSV (для Excel)</div>
         <div class="export-info">Скачай таблицы для отчётности или анализа. Кириллица поддерживается.</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="btn" onclick="exportTasksCSV()" style="flex:1;">Задачи</button>
-          <button class="btn" onclick="exportProjectsCSV()" style="flex:1;">Проекты</button>
-          <button class="btn" onclick="exportCallsCSV()" style="flex:1;">Звонки</button>
+          <button class="btn" data-action="export-tasks-csv" style="flex:1;">Задачи</button>
+          <button class="btn" data-action="export-projects-csv" style="flex:1;">Проекты</button>
+          <button class="btn" data-action="export-calls-csv" style="flex:1;">Звонки</button>
         </div>
-        <button class="btn" onclick="exportAllCSV()" style="width:100%;margin-top:6px;">Скачать всё (3 файла)</button>
+        <button class="btn" data-action="export-all-csv" style="width:100%;margin-top:6px;">Скачать всё (3 файла)</button>
       </div>
       <div class="export-section">
         <div class="export-section-title">Импорт</div>
         <div class="export-info">Загрузи ранее сохранённый JSON-файл. Текущие данные будут заменены.</div>
-        <input type="file" class="export-file-input" id="import-file" accept=".json" onchange="importData(this)">
+        <input type="file" class="export-file-input" id="import-file" accept=".json" data-change-action="import-data">
       </div>
     </div>
     <div class="export-footer">
-      <button class="btn" onclick="closeExport()">Закрыть</button>
+      <button class="btn" data-action="close-export">Закрыть</button>
     </div>
   </div>
 </div>
@@ -10178,22 +10371,22 @@ if (document.readyState === 'loading') {
 <div id="toast-container"></div>
 
 <!-- ══ WEEKLY REVIEW MODAL ══ -->
-<div class="review-backdrop" id="review-backdrop" onclick="if(event.target===this)closeReview()">
+<div class="review-backdrop" id="review-backdrop" data-action="close-review-bg">
   <div class="review-panel">
     <div class="review-header">
       <span class="review-title">Итоги недели</span>
-      <button class="btn" onclick="closeReview()">Закрыть</button>
+      <button class="btn" data-action="close-review">Закрыть</button>
     </div>
     <div class="review-body" id="review-body"></div>
     <div class="review-footer">
-      <button class="btn" onclick="copyReview()">Копировать текстом</button>
-      <button class="btn btn-primary" onclick="closeReview()">Готово</button>
+      <button class="btn" data-action="copy-review">Копировать текстом</button>
+      <button class="btn btn-primary" data-action="close-review">Готово</button>
     </div>
   </div>
 </div>
 
 <!-- ══ COMMAND PALETTE (Cmd+K) ══ -->
-<div class="cmd-backdrop" id="cmd-backdrop" onclick="if(event.target===this)cmdClose()">
+<div class="cmd-backdrop" id="cmd-backdrop" data-action="cmd-close-bg">
   <div class="cmd-palette">
     <div class="cmd-search-wrap">
       <span class="cmd-search-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
@@ -10234,7 +10427,7 @@ function toast(message, type, duration) {
     '<div class="toast-body">' +
       '<div class="toast-msg">' + message + '</div>' +
     '</div>' +
-    '<button class="toast-close" onclick="dismissToast(this.parentElement)">✕</button>' +
+    '<button class="toast-close" data-action="dismiss-toast">✕</button>' +
     '<div class="toast-progress"></div>';
 
   container.appendChild(el);
@@ -10300,7 +10493,7 @@ function toastUndo(message, onUndo, duration) {
     '<div class="toast-body">' +
       '<div class="toast-msg">' + message + '</div>' +
     '</div>' +
-    '<button class="btn" style="font-size:var(--text-sm);padding:3px 10px;margin-left:4px;white-space:nowrap;flex-shrink:0;" onclick="event.stopPropagation()">Отменить</button>' +
+    '<button class="btn" style="font-size:var(--text-sm);padding:3px 10px;margin-left:4px;white-space:nowrap;flex-shrink:0;" data-stop>Отменить</button>' +
     '<div class="toast-progress"></div>';
 
   container.appendChild(el);
@@ -10796,9 +10989,9 @@ function tourShow(idx) {
     '<div class="tour-tooltip-footer">' +
       '<div class="tour-dots">' + dots + '</div>' +
       '<div class="tour-btns">' +
-        '<button class="tour-skip" onclick="tourEnd()">Пропустить</button>' +
-        (idx > 0 ? '<button class="btn" onclick="tourShow(' + (idx-1) + ')">Назад</button>' : '') +
-        '<button class="btn btn-primary" onclick="' + (idx < TOUR_STEPS.length - 1 ? 'tourShow(' + (idx+1) + ')' : 'tourEnd()') + '">' +
+        '<button class="tour-skip" data-action="tour-end">Пропустить</button>' +
+        (idx > 0 ? '<button class="btn" data-action="tour-show" data-idx="' + (idx-1) + '">Назад</button>' : '') +
+        '<button class="btn btn-primary" ' + (idx < TOUR_STEPS.length - 1 ? 'data-action="tour-show" data-idx="' + (idx+1) + '"' : 'data-action="tour-end"') + '>' +
           (idx < TOUR_STEPS.length - 1 ? 'Далее (' + (idx+1) + '/' + TOUR_STEPS.length + ')' : 'Готово!') +
         '</button>' +
       '</div>' +
@@ -11685,7 +11878,7 @@ function updateSmartAlerts() {
 
   /* Максимум 4 alerts чтобы не перегружать */
   el.innerHTML = alerts.slice(0, 4).map(function(a, i) {
-    return '<span class="smart-alert ' + a.cls + '" onclick="smartAlertAction(' + i + ')">' + esc(a.text) + '</span>';
+    return '<span class="smart-alert ' + a.cls + '" data-action="smart-alert" data-idx="' + i + '">' + esc(a.text) + '</span>';
   }).join('');
 
   /* Сохраняем actions для onclick */
@@ -12309,7 +12502,7 @@ function cmdRender(query) {
     html += '<div class="cmd-group-label">' + esc(g) + '</div>';
     groups[g].forEach(function(a, i) {
       let globalIdx = cmdFiltered.indexOf(a);
-      html += '<div class="cmd-item' + (globalIdx === cmdIdx ? ' active' : '') + '" data-idx="' + globalIdx + '" onclick="cmdExec(' + globalIdx + ')" onmouseenter="cmdHover(' + globalIdx + ')">' +
+      html += '<div class="cmd-item' + (globalIdx === cmdIdx ? ' active' : '') + '" data-idx="' + globalIdx + '" data-action="cmd-exec" data-idx="' + globalIdx + '" onmouseenter="cmdHover(' + globalIdx + ')">' +
         '<span class="cmd-item-icon">' + (a.icon || '') + '</span>' +
         '<span class="cmd-item-label">' + esc(a.label) +
           (a.sub ? '<div class="cmd-item-sub">' + esc(a.sub) + '</div>' : '') +
