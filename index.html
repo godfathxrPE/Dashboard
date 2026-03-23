@@ -2814,6 +2814,7 @@
   }
   .tasks-block  { grid-column: 1 / 3; }
   .projects-block { grid-column: 1 / 3; }
+  .prospect-block { grid-column: 1 / 3; }
   .calls-block  { grid-column: 1 / 3; }
   .right-col {
     grid-column: 1 / 3;
@@ -2866,6 +2867,7 @@
   }
   .tasks-block   { grid-column: 1; }
   .projects-block{ grid-column: 1; }
+  .prospect-block{ grid-column: 1; }
   .calls-block   { grid-column: 1; }
   .right-col {
     grid-column: 1;
@@ -4788,6 +4790,7 @@
     max-width: 900px !important;
   }
   body.focus-mode .projects-block,
+  body.focus-mode .prospect-block,
   body.focus-mode .calls-block,
   body.focus-mode .right-col > *:not(.w-timer):not(.w-focus) {
     max-height: 0 !important;
@@ -5144,6 +5147,7 @@
   body.view-analytics .main { grid-template-columns: 1fr !important; max-width: 1100px !important; }
   body.view-analytics .tasks-block,
   body.view-analytics .projects-block,
+  body.view-analytics .prospect-block,
   body.view-analytics .calls-block { display: none !important; }
   body.view-analytics .right-col {
     grid-column: 1 !important;
@@ -5305,6 +5309,84 @@
       margin: 1cm;
     }
   }
+
+
+  /* ═══════════════════════════════════════════
+     ВИДЖЕТ — ПРОРАБОТКА (Prospecting Feed)
+     Читает данные из calls-campaign localStorage.
+     Показывает активные компании (статус ≠ new, skip).
+  ═══════════════════════════════════════════ */
+  .prospect-block { grid-column: 1 / 3; }
+  .prospect-grid { display: flex; flex-direction: column; gap: 2px; padding: 0 16px 12px; }
+  .prospect-empty { padding: 24px 16px; text-align: center; color: var(--text-mute); font-size: var(--text-sm); }
+
+  .prospect-card {
+    display: grid;
+    grid-template-columns: 6px 1fr auto;
+    gap: 0 10px;
+    padding: 10px 12px 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    border-radius: var(--radius-s);
+    transition: background 0.12s;
+  }
+  .prospect-card:last-child { border-bottom: none; }
+  .prospect-card:hover { background: var(--accent-l); }
+
+  .prospect-status-bar {
+    width: 4px; border-radius: 99px;
+    align-self: stretch; margin: 2px 0; flex-shrink: 0;
+  }
+  .prospect-status-bar.s-calling    { background: var(--yellow); }
+  .prospect-status-bar.s-nodial     { background: var(--red); }
+  .prospect-status-bar.s-gatekeeper { background: var(--blue); }
+  .prospect-status-bar.s-found      { background: var(--green); }
+  .prospect-status-bar.s-done       { background: var(--green); opacity: 0.5; }
+
+  .prospect-info { min-width: 0; }
+  .prospect-name {
+    font-size: var(--text-sm); font-weight: 600; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .prospect-meta {
+    font-size: var(--text-xs); color: var(--text-mute);
+    margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .prospect-next {
+    font-size: var(--text-xs); color: var(--accent); margin-top: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .prospect-badge {
+    font-size: 0.625rem; font-weight: 600; padding: 2px 7px;
+    border-radius: 99px; white-space: nowrap; align-self: center;
+  }
+  .prospect-badge.s-calling    { background: var(--yellow-l); color: var(--yellow); }
+  .prospect-badge.s-nodial     { background: var(--red-l); color: var(--red); }
+  .prospect-badge.s-gatekeeper { background: var(--blue-l); color: var(--blue); }
+  .prospect-badge.s-found      { background: var(--green-l); color: var(--green); }
+  .prospect-badge.s-done       { background: rgba(46,125,82,0.18); color: #1a5c38; }
+
+  .prospect-filters {
+    display: flex; gap: 4px; padding: 6px 16px 8px; flex-wrap: wrap;
+  }
+  .prospect-filter-btn {
+    padding: 3px 9px; border-radius: 99px;
+    border: 1px solid var(--border2); background: transparent;
+    font-size: var(--text-2xs); color: var(--text-mute);
+    cursor: pointer; transition: all 0.12s; font-family: inherit;
+  }
+  .prospect-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .prospect-filter-btn.active {
+    border-color: var(--accent); color: var(--accent);
+    background: var(--accent-l); font-weight: 600;
+  }
+  .prospect-link {
+    display: block; text-align: center; padding: 8px 16px;
+    font-size: var(--text-xs); color: var(--accent);
+    cursor: pointer; transition: opacity 0.12s;
+    border-top: 1px solid var(--border);
+  }
+  .prospect-link:hover { opacity: 0.7; }
 
 
 </style>
@@ -6155,6 +6237,28 @@
     <div class="projects-lost-grid" id="lost-list"></div>
   </div>
 
+  <!-- ══ ПРОРАБОТКА — компании из calls-campaign ══ -->
+  <div class="card prospect-block will-reveal" data-widget-id="prospects">
+    <div class="card-header">
+      <div class="card-title"><span class="dot" style="background:var(--yellow)"></span>Проработка компаний</div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span class="badge" id="prospect-count">0</span>
+        <a class="btn" href="./calls-campaign.html" target="_blank" style="font-size:var(--text-xs);text-decoration:none;">Открыть кампанию ↗</a>
+      </div>
+    </div>
+    <div class="prospect-filters" id="prospect-filters">
+      <button class="prospect-filter-btn active" data-action="prospect-filter" data-value="active">Активные</button>
+      <button class="prospect-filter-btn" data-action="prospect-filter" data-value="calling">🟡 В работе</button>
+      <button class="prospect-filter-btn" data-action="prospect-filter" data-value="found">🟢 ЛПР найден</button>
+      <button class="prospect-filter-btn" data-action="prospect-filter" data-value="nodial">🔴 Недозвон</button>
+      <button class="prospect-filter-btn" data-action="prospect-filter" data-value="all">Все</button>
+    </div>
+    <div class="prospect-grid" id="prospect-list">
+      <div class="prospect-empty">Данные из кампании прозвона не найдены</div>
+    </div>
+    <a class="prospect-link" href="./calls-campaign.html" target="_blank">Перейти к полной кампании прозвона →</a>
+  </div>
+
   <!-- ══ БЛОК ЗВОНКИ ══ -->
   <div class="card calls-block">
     <div class="card-header">
@@ -6650,6 +6754,9 @@ const ActionDispatcher = {
   'fab-open-project':     ()          => { fabClose(); openProjectModal(); },
   'fab-open-call':        ()          => { fabClose(); openCallModal(); },
   'fab-open-meeting':     ()          => { fabClose(); openMeetingModal(); },
+  /* ── Проработка ── */
+  'prospect-filter':      (el)        => prospectSetFilter(el.dataset.value),
+  'prospect-open':        (el)        => { window.open('./calls-campaign.html#' + el.dataset.inn, '_blank'); },
 };
 
 /* ── Главный click-listener ── */
@@ -7861,14 +7968,125 @@ document.addEventListener('keydown', function(e) {
 });
 
 /* ═══════════════════════════════════════════
+   ПРОРАБОТКА — виджет, читающий данные кампании
+   из localStorage ключа calls-campaign-v1.
+   Паттерн: Cross-File Data Bridge.
+═══════════════════════════════════════════ */
+const PROSPECT_STORAGE_KEY = 'calls-campaign-v1';
+const PROSPECT_STATUS = {
+  calling:    { label: 'В работе',    cls: 's-calling' },
+  nodial:     { label: 'Недозвон',    cls: 's-nodial' },
+  gatekeeper: { label: 'Привратник',  cls: 's-gatekeeper' },
+  found:      { label: 'ЛПР найден', cls: 's-found' },
+  done:       { label: 'Внедрена',    cls: 's-done' },
+};
+let prospectFilter = 'active';
+
+function prospectSetFilter(f) {
+  prospectFilter = f;
+  document.querySelectorAll('.prospect-filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.value === f);
+  });
+  renderProspects();
+}
+
+function renderProspects() {
+  const el = document.getElementById('prospect-list');
+  const badge = document.getElementById('prospect-count');
+  if (!el) return;
+
+  /* Читаем данные кампании из localStorage */
+  let raw = {};
+  try { raw = JSON.parse(localStorage.getItem(PROSPECT_STORAGE_KEY)) || {}; } catch(e) {}
+
+  /* Собираем массив компаний с активными статусами */
+  const activeStatuses = ['calling', 'nodial', 'gatekeeper', 'found', 'done'];
+  let items = [];
+  for (const inn in raw) {
+    const c = raw[inn];
+    if (!c.status || !activeStatuses.includes(c.status)) continue;
+    items.push({
+      inn: inn,
+      name: c.name || ('ИНН ' + inn),
+      status: c.status,
+      nextStep: c.nextStep || '',
+      nextDate: c.nextDate || '',
+      contacts: c.contacts || [],
+      callLog: c.callLog || [],
+      notes: c.notes || ''
+    });
+  }
+
+  /* Фильтруем по текущему фильтру */
+  let filtered = items;
+  if (prospectFilter === 'active') {
+    filtered = items.filter(c => c.status !== 'done');
+  } else if (prospectFilter !== 'all') {
+    filtered = items.filter(c => c.status === prospectFilter);
+  }
+
+  /* Сортировка: found → calling → gatekeeper → nodial → done */
+  const ORDER = { found: 0, calling: 1, gatekeeper: 2, nodial: 3, done: 4 };
+  filtered.sort((a, b) => (ORDER[a.status] ?? 5) - (ORDER[b.status] ?? 5));
+
+  /* Обновляем badge — количество активных (без done) */
+  const activeCount = items.filter(c => c.status !== 'done').length;
+  if (badge) badge.textContent = activeCount;
+
+  if (!filtered.length) {
+    el.innerHTML = '<div class="prospect-empty">' +
+      (items.length ? 'Нет компаний с таким статусом' : 'Откройте кампанию прозвона — данные появятся автоматически') +
+    '</div>';
+    return;
+  }
+
+  el.innerHTML = filtered.map(c => {
+    const st = PROSPECT_STATUS[c.status] || PROSPECT_STATUS.calling;
+    const lpr = c.contacts ? c.contacts.find(ct => ct.isLpr) : null;
+    const lprName = lpr ? esc(lpr.name) : '';
+    const lastCall = c.callLog && c.callLog.length ? c.callLog[c.callLog.length - 1] : null;
+    const lastDate = lastCall ? lastCall.date : '';
+    const nextLabel = c.nextStep ? esc(c.nextStep) + (c.nextDate ? ' · ' + c.nextDate : '') : '';
+
+    return '<div class="prospect-card" data-action="prospect-open" data-inn="' + c.inn + '">' +
+      '<div class="prospect-status-bar ' + st.cls + '"></div>' +
+      '<div class="prospect-info">' +
+        '<div class="prospect-name">' + esc(c.name) + '</div>' +
+        '<div class="prospect-meta">' +
+          (lprName ? '<span>👤 ' + lprName + '</span>' : '') +
+          (lastDate ? '<span>📞 ' + lastDate + '</span>' : '') +
+          '<span>' + (c.contacts ? c.contacts.length : 0) + ' конт.</span>' +
+        '</div>' +
+        (nextLabel ? '<div class="prospect-next">→ ' + nextLabel + '</div>' : '') +
+      '</div>' +
+      '<span class="prospect-badge ' + st.cls + '">' + st.label + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
 cleanOldDoneTasks(); // удаляем выполненные задачи старше 10 дней
 renderTasks();
 renderKPI();
 renderProjects();
+renderProspects();
 renderMeetings();
 renderComms();
+
+/* ═══════════════════════════════════════════
+   DATA BRIDGE — связь с calls-campaign.html
+   Паттерн: Cross-Tab Sync.
+   1. visibilitychange — обновляет виджет при возврате на вкладку
+   2. storage event — обновляет если campaign открыта в соседней вкладке
+═══════════════════════════════════════════ */
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') renderProspects();
+});
+window.addEventListener('storage', (e) => {
+  if (e.key === PROSPECT_STORAGE_KEY) renderProspects();
+});
 
 /* ═══════════════════════════════════════════
    ТЕМА — переключатель
@@ -10011,6 +10229,7 @@ let WC_REGISTRY = [
   { id: 'comms',        icon: ICON.message,   name: 'Коммуникации',         desc: 'Напоминания по контактам',       section: 'Коммуникации' },
   { id: 'notes',        icon: ICON.fileText,  name: 'Быстрые заметки',      desc: 'Свободный текст, черновики',     section: 'Коммуникации' },
   { id: 'activity',     icon: ICON.clock,     name: 'Лента действий',       desc: 'Хронология за сегодня',          section: 'Коммуникации' },
+  { id: 'prospects',    icon: ICON.trending,  name: 'Проработка компаний',  desc: 'Компании из кампании прозвона',  section: 'Продажи' },
 ];
 
 /* ─────────────────────────────────────────────────────
