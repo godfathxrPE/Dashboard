@@ -990,7 +990,24 @@
   .hdr-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+  }
+  /* ── Header Group Divider ──
+     Паттерн: Toolbar Separators (Linear, Arc, Figma).
+     Тонкая вертикальная линия между семантическими группами.
+     Высота 16px — не на всю высоту header, а компактная. */
+  .hdr-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
+  /* Группа элементов без gap (внутри одной зоны) */
+  .hdr-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   .hdr-icon-group {
     display: flex;
@@ -2771,10 +2788,11 @@
   }
   .header-sub { display: none; }
   .header-date { display: none; }
-  .theme-btn span:first-child { display: none; } /* прячем текст "Тема" */
-  .hdr-search-btn { display: none !important; } /* Cmd+K бесполезен на мобиле */
-  .focus-btn-label { display: none; } /* Только иконка на мобиле */
-  .streak-badge span:last-child { display: none; } /* Скрываем "дн" на мобиле */
+  .theme-btn span:first-child { display: none; }
+  .hdr-search-btn { display: none !important; }
+  .hdr-sep { display: none; } /* Разделители не нужны при wrap */
+  .focus-btn-label { display: none; }
+  .streak-badge span:last-child { display: none; }
 
   /* Основная сетка */
   .main {
@@ -5547,54 +5565,57 @@
   <!-- Smart Alerts — отдельная линия под greeting -->
   <div class="smart-alerts" id="smart-alerts"></div>
   <div class="hdr-actions">
-    <!-- PWA INSTALL BUTTON -->
+    <!-- PWA INSTALL BUTTON (появляется когда доступно) -->
     <button id="pwa-install-btn" class="hdr-pwa-btn" onclick="installPWA()" title="Установить приложение">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     </button>
-    <!-- VIEW SWITCHER -->
-    <div class="view-switcher" id="view-switcher">
-      <button class="view-btn active" onclick="setView('default')" data-view="default">Всё</button>
-      <button class="view-btn" onclick="setView('sales')" data-view="sales">Продажи</button>
-      <button class="view-btn" onclick="setView('analytics')" data-view="analytics">Аналитика</button>
+
+    <!-- ─── GROUP 1: Navigation ─── -->
+    <div class="hdr-group">
+      <div class="view-switcher" id="view-switcher">
+        <button class="view-btn active" onclick="setView('default')" data-view="default">Всё</button>
+        <button class="view-btn" onclick="setView('sales')" data-view="sales">Продажи</button>
+        <button class="view-btn" onclick="setView('analytics')" data-view="analytics">Аналитика</button>
+      </div>
+      <span class="streak-badge" id="streak-badge" title="Дней подряд">
+        <span class="streak-fire">🔥</span>
+        <span class="streak-num" id="streak-num">0</span>
+        <span>дн</span>
+      </span>
     </div>
-    <!-- STREAK COUNTER -->
-    <span class="streak-badge" id="streak-badge" title="Дней подряд">
-      <span class="streak-fire">🔥</span>
-      <span class="streak-num" id="streak-num">0</span>
-      <span>дн</span>
-    </span>
-    <!-- ICON BUTTONS GROUP -->
-    <div class="hdr-icon-group">
-      <!-- DARK/LIGHT TOGGLE -->
-      <button id="dl-toggle" class="hdr-icon-btn" onclick="toggleDarkLight()" title="Светлая / Тёмная тема">
-        <span id="dl-icon"></span>
+
+    <div class="hdr-sep" aria-hidden="true"></div>
+
+    <!-- ─── GROUP 2: Quick actions ─── -->
+    <div class="hdr-group">
+      <button class="hdr-search-btn" onclick="cmdOpen()" title="Поиск команд (⌘K)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="hdr-kbd">⌘K</span>
       </button>
-      <!-- FOCUS MODE -->
       <button id="focus-mode-btn" class="hdr-icon-btn" onclick="toggleFocusMode()" title="Режим фокуса (F)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
       </button>
-      <!-- TOUR -->
-      <button class="hdr-icon-btn" onclick="tourStart()" title="Обзор дашборда (?)">?</button>
     </div>
-    <!-- SEARCH -->
-    <button class="hdr-search-btn" onclick="cmdOpen()" title="Поиск команд (⌘K)">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span class="hdr-kbd">⌘K</span>
-    </button>
-    <!-- WIDGETS -->
-    <button id="wc-open-btn" class="hdr-icon-btn" onclick="wcToggle()" title="Настроить виджеты">
-      <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
-        <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
-      </svg>
-    </button>
-    <!-- THEME SWITCHER -->
-    <div class="theme-switcher" id="theme-switcher">
-      <button class="hdr-icon-btn theme-btn" onclick="toggleThemeMenu()" title="Сменить тему">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+
+    <div class="hdr-sep" aria-hidden="true"></div>
+
+    <!-- ─── GROUP 3: Settings ─── -->
+    <div class="hdr-icon-group">
+      <button id="dl-toggle" class="hdr-icon-btn" onclick="toggleDarkLight()" title="Светлая / Тёмная тема">
+        <span id="dl-icon"></span>
+      </button>
+      <button id="wc-open-btn" class="hdr-icon-btn" onclick="wcToggle()" title="Настроить виджеты">
+        <svg viewBox="0 0 14 14" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/>
+          <rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/>
         </svg>
       </button>
+      <div class="theme-switcher" id="theme-switcher">
+        <button class="hdr-icon-btn theme-btn" onclick="toggleThemeMenu()" title="Сменить тему">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+          </svg>
+        </button>
       <div class="theme-menu" id="theme-menu">
         <div class="theme-item" onclick="setTheme('t-claude')">
           <span class="theme-swatch" style="background:#f5f4ef;border:1px solid #e5e3dc;"></span>
@@ -5637,6 +5658,8 @@
           Neon
         </div>
       </div>
+    </div>
+      <button class="hdr-icon-btn" onclick="tourStart()" title="Обзор дашборда (?)">?</button>
     </div>
   </div>
 </header>
