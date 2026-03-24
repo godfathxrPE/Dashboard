@@ -596,41 +596,7 @@
     --op-lo: 0.35; --op-hi: 0.7;
   }
 
-  /* ТЕМА 3: Midnight — тёмный изумрудно-синий */
-  html.t-midnight {
-    --bg:#0f1318; --surface:#161c24; --surface2:#1c2530;
-    --border:#243040; --border2:#2e3d52;
-    --text:#e0eaf4; --text-dim:#7a9ab8; --text-mute:#3d5570;
-    --accent:#38c8a0; --accent-l:rgba(56,200,160,0.10); --accent-l2:rgba(56,200,160,0.20);
-    --green:#38c880; --green-l:rgba(56,200,128,0.12);
-    --red:#e06858;   --red-l:rgba(224,104,88,0.12);
-    --blue:#5898e8;  --blue-l:rgba(88,152,232,0.12);
-    --yellow:#d8b848;--yellow-l:rgba(216,184,72,0.12);
-    --logo-bg:linear-gradient(135deg,#38c8a0,#5898e8); --logo-color:#0f1318;
-    --radius:8px; --radius-s:5px;
-    --shadow-xs: 0 1px 2px rgba(0,0,0,0.25);
-    --shadow-sm: 0 2px 6px rgba(0,0,0,0.3);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
-  }
 
-  /* ТЕМА 4: Forest — земля, мох, кора */
-  html.t-forest {
-    --bg:#f0ece4; --surface:#faf8f4; --surface2:#e8e2d8;
-    --border:#d8d0c0; --border2:#c0b498;
-    --text:#1e1a10; --text-dim:#6a5e40; --text-mute:#a89870;
-    --accent:#4e7c3a; --accent-l:rgba(78,124,58,0.09); --accent-l2:rgba(78,124,58,0.18);
-    --green:#4e7c3a; --green-l:rgba(78,124,58,0.10);
-    --red:#b84830;   --red-l:rgba(184,72,48,0.10);
-    --blue:#3868a0;  --blue-l:rgba(56,104,160,0.10);
-    --yellow:#907828;--yellow-l:rgba(144,120,40,0.10);
-    --logo-bg:linear-gradient(135deg,#4e7c3a,#8ab86a); --logo-color:#fff;
-    --radius:8px; --radius-s:5px;
-    --shadow-xs: 0 1px 2px rgba(30,26,16,0.05);
-    --shadow-sm: 0 1px 3px rgba(30,26,16,0.07), 0 1px 2px rgba(30,26,16,0.04);
-    --shadow-md: 0 4px 12px rgba(30,26,16,0.07), 0 1px 3px rgba(30,26,16,0.04);
-    --shadow-lg: 0 10px 32px rgba(30,26,16,0.10), 0 2px 8px rgba(30,26,16,0.04);
-  }
 
   /* ТЕМА 5: Aurora — Северное сияние (сюрприз)
      Индиго-фон, неоновые переливы, стекло-карточки */
@@ -693,273 +659,36 @@
   }
 
   /* ══════════════════════════════════════════════════════════
-     ТЕМА 6: Neon — Cyberpunk
-     Философия: чёрная бездна + неоновые обводки.
-     Карточки — не закрашенные, а светящиеся изнутри.
-     Каждый цветовой канал имеет свой glow.
-     Паттерн: Outlined Neon Cards (Cyberpunk 2077 UI, Tron).
-  ══════════════════════════════════════════════════════════ */
-  html.t-neon {
-    /* Основа — чёрный как смола, не просто тёмно-синий */
-    --bg:#050508;
-    /* Карточки — почти прозрачные, сам фон просвечивает */
-    --surface:rgba(255,255,255,0.028);
-    --surface2:rgba(255,255,255,0.018);
-    /* Границы — главный выразительный элемент этой темы */
-    --border:rgba(0,238,255,0.22);
-    --border2:rgba(0,238,255,0.40);
-    /* Текст — холодный белый, не кремовый */
-    --text:#e8f8ff;
-    --text-dim:#6ab8cc;
-    --text-mute:#2a5060;
-    /* Акцент — cyan. Это главный цвет темы */
-    --accent:#00eeff;
-    --accent-l:rgba(0,238,255,0.10);
-    --accent-l2:rgba(0,238,255,0.20);
-    /* Зелёный — неоновый лайм */
-    --green:#00ff88;
-    --green-l:rgba(0,255,136,0.10);
-    /* Красный — горячий пинк */
-    --red:#ff2d6e;
-    --red-l:rgba(255,45,110,0.12);
-    /* Синий — электрик */
-    --blue:#4080ff;
-    --blue-l:rgba(64,128,255,0.12);
-    /* Жёлтый — янтарный неон */
-    --yellow:#ffcc00;
-    --yellow-l:rgba(255,204,0,0.10);
-    /* Логотип — градиент cyan→magenta */
-    --logo-bg:linear-gradient(135deg,#00eeff,#ff00aa);
-    --logo-color:#050508;
-    --radius:6px;
-    --radius-s:3px;
-    --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
-    --shadow-sm: 0 2px 6px rgba(0,0,0,0.35);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.4), 0 0 1px rgba(0,238,255,0.15);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.45), 0 0 2px rgba(0,238,255,0.2);
-  } — создаёт ощущение киберпанк-пространства.
      Паттерн: Grid Background — используют Tron, Cyberpunk 2077 UI. */
-  html.t-neon body::before {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background-image:
-      linear-gradient(rgba(0,238,255,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,238,255,0.035) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
   /* Угловые засветки — имитируют неоновые лампы за кадром */
-  html.t-neon body::after {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(ellipse 50% 40% at 0% 0%,   rgba(0,238,255,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 50% at 100% 100%, rgba(255,0,170,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 30% 40% at 100% 0%,  rgba(64,128,255,0.05) 0%, transparent 60%);
-  }
-  html.t-neon .main { position:relative; z-index:1; }
-  html.t-neon header { position:sticky; top:0; z-index:100; }
-
   /* Scroll progress — градиент cyan→magenta */
-  html.t-neon #scroll-progress {
-    background: linear-gradient(90deg, #00eeff, #ff00aa);
-    box-shadow: 0 0 8px rgba(0,238,255,0.6);
-    height: 1px;
-  }
-
   /* Все карточки — outline-стиль с glow.
      Ключевой трюк: box-shadow снаружи создаёт glow,
      box-shadow inset создаёт внутреннее свечение. */
-  html.t-neon .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow:
-      0 0 0 0 transparent,
-      inset 0 0 20px rgba(0,238,255,0.03);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  html.t-neon .card:hover {
-    border-color: rgba(0,238,255,0.45);
-    box-shadow:
-      0 0 16px rgba(0,238,255,0.08),
-      inset 0 0 20px rgba(0,238,255,0.05);
-  }
-  html.t-neon .card-header {
-    border-bottom-color: rgba(0,238,255,0.12);
-  }
-
   /* Точки-индикаторы — светятся */
-  html.t-neon .card-title .dot        { background:#00eeff; box-shadow:0 0 6px rgba(0,238,255,0.8); }
-  html.t-neon .card-title .dot.green  { background:#00ff88; box-shadow:0 0 6px rgba(0,255,136,0.8); }
-  html.t-neon .card-title .dot.blue   { background:#4080ff; box-shadow:0 0 6px rgba(64,128,255,0.8); }
-  html.t-neon .card-title .dot.yellow { background:#ffcc00; box-shadow:0 0 6px rgba(255,204,0,0.8); }
-
   /* Header — стеклянный с неоновой границей снизу */
-  html.t-neon header {
-    background: rgba(5,5,8,0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,238,255,0.15);
-    box-shadow: 0 1px 0 rgba(0,238,255,0.08), 0 4px 24px rgba(0,0,0,0.4);
-  }
-
   /* Кнопки — неоновый outline при hover */
-  html.t-neon .btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 8px rgba(0,238,255,0.3);
-  }
-  html.t-neon .btn-primary {
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 10px rgba(0,238,255,0.2), inset 0 0 10px rgba(0,238,255,0.05);
-  }
-  html.t-neon .btn-primary:hover {
-    background: rgba(0,238,255,0.1);
-    box-shadow: 0 0 16px rgba(0,238,255,0.4), inset 0 0 16px rgba(0,238,255,0.08);
-    filter: none;
-  }
-
   /* Бейджи */
-  html.t-neon .badge {
-    background: rgba(0,238,255,0.1);
-    color: var(--accent);
-    border: 1px solid rgba(0,238,255,0.25);
-  }
-
   /* Инпуты */
-  html.t-neon input, html.t-neon textarea, html.t-neon select {
-    caret-color: var(--accent);
-  }
-  html.t-neon input:focus, html.t-neon textarea:focus, html.t-neon select:focus {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 8px rgba(0,238,255,0.2);
-  }
-
   /* Статусы проектов — каждый цвет канала */
-  html.t-neon .status-pill { border: none !important; }
-  html.t-neon .st-0  { background:rgba(255,255,255,0.05); color:var(--text-mute); }
-  html.t-neon .st-1  { background:rgba(64,128,255,0.12);  color:#4080ff; box-shadow:0 0 6px rgba(64,128,255,0.2); }
-  html.t-neon .st-2  { background:rgba(64,128,255,0.12);  color:#4080ff; }
-  html.t-neon .st-3  { background:rgba(255,204,0,0.12);   color:#ffcc00; box-shadow:0 0 6px rgba(255,204,0,0.2); }
-  html.t-neon .st-4  { background:rgba(255,204,0,0.12);   color:#ffcc00; }
-  html.t-neon .st-5  { background:rgba(0,238,255,0.12);   color:#00eeff; box-shadow:0 0 6px rgba(0,238,255,0.2); }
-  html.t-neon .st-6  { background:rgba(0,238,255,0.15);   color:#00eeff; box-shadow:0 0 8px rgba(0,238,255,0.25); }
-  html.t-neon .st-7  { background:rgba(255,0,170,0.12);   color:#ff40cc; box-shadow:0 0 6px rgba(255,0,170,0.2); }
-  html.t-neon .st-8  { background:rgba(255,0,170,0.12);   color:#ff40cc; }
-  html.t-neon .st-9  { background:rgba(0,255,136,0.10);   color:#00ff88; box-shadow:0 0 6px rgba(0,255,136,0.2); }
-  html.t-neon .st-10 { background:rgba(0,255,136,0.14);   color:#00ff88; box-shadow:0 0 8px rgba(0,255,136,0.25); }
-  html.t-neon .st-11 { background:rgba(0,255,136,0.20);   color:#00ff88; box-shadow:0 0 12px rgba(0,255,136,0.40); }
-
   /* Воронка — активный шаг светится */
-  html.t-neon .funnel-step.active {
-    background: transparent;
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 12px rgba(0,238,255,0.45), inset 0 0 8px rgba(0,238,255,0.08);
-  }
-  html.t-neon .funnel-step.past {
-    background: rgba(0,238,255,0.06);
-    border-color: rgba(0,238,255,0.2);
-    color: rgba(0,238,255,0.6);
-  }
-
   /* Раскрытая карточка проекта */
-  html.t-neon .project-card.expanded {
-    box-shadow: 0 0 0 1px var(--accent), 0 0 20px rgba(0,238,255,0.12);
-  }
-  html.t-neon .project-card { background: rgba(255,255,255,0.02); }
-
   /* Progress bars — glow на заполненной части */
-  html.t-neon .kpi-progress-fill {
-    box-shadow: 0 0 8px rgba(0,255,136,0.5);
-  }
-  html.t-neon .kpi-progress-fill.done {
-    box-shadow: 0 0 12px rgba(0,255,136,0.7);
-  }
-
   /* Таймер — цифры светятся */
-  html.t-neon .w-timer-digits {
-    color: var(--accent);
-    text-shadow: 0 0 20px rgba(0,238,255,0.6);
-  }
-  html.t-neon .w-timer-bar {
-    box-shadow: 0 0 8px rgba(0,238,255,0.4);
-  }
-
   /* Трекер звонков — главное число */
-  html.t-neon .w-ct-num {
-    text-shadow: 0 0 16px currentColor;
-  }
-
   /* Логотип — pulse анимация */
-  html.t-neon .header-logo {
-    animation: neon-logo-pulse 3s ease-in-out infinite;
-  }
   @keyframes neon-logo-pulse {
     0%, 100% { box-shadow: 0 0 8px rgba(0,238,255,0.4); }
     50%       { box-shadow: 0 0 20px rgba(0,238,255,0.7), 0 0 40px rgba(255,0,170,0.3); }
   }
 
   /* Скроллбар — тонкий неоновый */
-  html.t-neon ::-webkit-scrollbar-thumb {
-    background: rgba(0,238,255,0.25);
-  }
-  html.t-neon ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0,238,255,0.45);
-  }
-
   /* KPI expand button */
-  html.t-neon .kpi-expand-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 8px rgba(0,238,255,0.3);
-  }
-
   /* Modal panels */
-  html.t-neon .kpi-modal-panel {
-    background: rgba(5,5,8,0.95);
-    border-color: rgba(0,238,255,0.3);
-    box-shadow: 0 0 40px rgba(0,238,255,0.1), 0 24px 64px rgba(0,0,0,0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
   /* Overlay модалки */
-  html.t-neon .overlay { background: rgba(0,0,0,0.75); }
-  html.t-neon .modal {
-    background: rgba(5,5,8,0.96);
-    border: 1px solid rgba(0,238,255,0.25);
-    box-shadow: 0 0 30px rgba(0,238,255,0.08), 0 20px 60px rgba(0,0,0,0.7);
-  }
-
   /* Settings panel */
-  html.t-neon #wc-panel {
-    background: rgba(5,5,8,0.95);
-    border-color: rgba(0,238,255,0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-
   /* Standalone виджеты — cyan glow как у .card */
-  html.t-neon [data-widget-id]:not(.card) {
-    box-shadow: 0 0 0 0 transparent, inset 0 0 20px rgba(0,238,255,0.03);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  html.t-neon [data-widget-id]:not(.card):hover {
-    border-color: rgba(0,238,255,0.45);
-    box-shadow: 0 0 16px rgba(0,238,255,0.08), inset 0 0 20px rgba(0,238,255,0.05);
-  }
-  html.t-neon .wc-toggle input:checked + .wc-toggle-track {
-    background: var(--accent);
-    box-shadow: 0 0 8px rgba(0,238,255,0.5);
-  }
-
   /* Активная строка виджета в панели */
-  html.t-neon .wc-row.is-on .wc-row-icon {
-    background: rgba(0,238,255,0.08);
-    border-color: rgba(0,238,255,0.35);
-    box-shadow: 0 0 8px rgba(0,238,255,0.15);
-  }
-
   /* ══════════════════════════════════════════════════════════
      ТЕМА 9: Tidal — Глубоководный мох и водоросли
      Философия: затонувший храм, заросший водорослями.
@@ -1260,10 +989,6 @@
     background: linear-gradient(90deg, #a060ff, #20e8a0);
   }
   /* Тема Midnight — чуть ярче чтобы читался на тёмном */
-  html.t-midnight #scroll-progress {
-    background: var(--accent);
-    box-shadow: 0 0 8px rgba(56,200,160,0.5);
-  }
   .header-left {
     display: flex;
     align-items: center;
@@ -3788,51 +3513,7 @@
   }
 
   /* Тема Forest — зелёно-земляные орбы */
-  html.t-forest #bg-orbs .orb-1 {
-    width: 460px; height: 460px;
-    background: radial-gradient(circle, rgba(78,124,58,0.10) 0%, transparent 70%);
-    top: -140px; left: -100px;
-    --dur: 22s; --tx1: 15px; --ty1: -18px; --tx2: -10px; --ty2: 20px; --tx3: 12px; --ty3: -6px;
-    --op-lo: 0.55; --op-hi: 0.9;
-  }
-  html.t-forest #bg-orbs .orb-2 {
-    width: 340px; height: 340px;
-    background: radial-gradient(circle, rgba(184,72,48,0.07) 0%, transparent 70%);
-    bottom: -90px; right: 5%;
-    --dur: 26s; --tx1: -16px; --ty1: -14px; --tx2: 10px; --ty2: -18px; --tx3: -8px; --ty3: 14px;
-    --op-lo: 0.45; --op-hi: 0.82;
-  }
-  html.t-forest #bg-orbs .orb-3 {
-    width: 240px; height: 240px;
-    background: radial-gradient(circle, rgba(144,120,40,0.07) 0%, transparent 70%);
-    top: 45%; left: 50%;
-    --dur: 32s; --tx1: 20px; --ty1: 15px; --tx2: -14px; --ty2: -20px; --tx3: 8px; --ty3: 18px;
-    --op-lo: 0.4; --op-hi: 0.72;
-  }
-
   /* Тема Midnight — тёмная с бирюзово-синими орбами */
-  html.t-midnight #bg-orbs .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(56,200,160,0.13) 0%, transparent 65%);
-    top: -150px; left: -100px;
-    --dur: 20s; --tx1: 22px; --ty1: -16px; --tx2: -12px; --ty2: 24px; --tx3: 16px; --ty3: -10px;
-    --op-lo: 0.6; --op-hi: 1;
-  }
-  html.t-midnight #bg-orbs .orb-2 {
-    width: 380px; height: 380px;
-    background: radial-gradient(circle, rgba(88,152,232,0.12) 0%, transparent 65%);
-    bottom: -100px; right: 8%;
-    --dur: 27s; --tx1: -20px; --ty1: -12px; --tx2: 14px; --ty2: -24px; --tx3: -8px; --ty3: 16px;
-    --op-lo: 0.5; --op-hi: 0.9;
-  }
-  html.t-midnight #bg-orbs .orb-3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(56,200,128,0.09) 0%, transparent 65%);
-    top: 30%; left: 58%;
-    --dur: 34s; --tx1: 28px; --ty1: 14px; --tx2: -16px; --ty2: -22px; --tx3: 10px; --ty3: 24px;
-    --op-lo: 0.4; --op-hi: 0.78;
-  }
-
   /* Aurora — орбы уже есть через body::before,
      но усиливаем через #bg-orbs дополнительным слоем */
   html.t-aurora #bg-orbs .orb-1 {
@@ -3950,9 +3631,6 @@
   .project-card:not(.expanded):hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-  }
-  html.t-midnight .project-card:not(.expanded):hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
   }
   html.t-aurora .project-card:not(.expanded):hover {
     box-shadow: 0 4px 24px rgba(160,96,255,0.15);
@@ -5621,11 +5299,8 @@
 .t-claude #screen-grain,
 .t-paper  #screen-grain,
 .t-sand   #screen-grain,
-.t-forest #screen-grain  { opacity: 0.04; }
 .t-frost    #screen-grain,
-.t-midnight #screen-grain,
 .t-aurora   #screen-grain,
-.t-neon     #screen-grain,
 .t-tidal    #screen-grain { opacity: 0.025; }
 
 #screen-content {
@@ -5775,18 +5450,9 @@
 .t-claude #login-email,
 .t-paper  #login-email,
 .t-sand   #login-email,
-.t-forest #login-email {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-color: rgba(0,0,0,0.1);
-}
 .t-claude #login-email:focus,
 .t-paper  #login-email:focus,
 .t-sand   #login-email:focus,
-.t-forest #login-email:focus {
-  border-color: var(--accent);
-}
 
 /* Кнопка */
 #login-btn {
@@ -5970,25 +5636,10 @@
           <span class="theme-swatch" style="background:#c05828;"></span>
           Sand
         </div>
-        <div class="theme-item" data-action="set-theme" data-value="t-midnight">
-          <span class="theme-swatch" style="background:#0f1318;border:1px solid #243040;"></span>
-          <span class="theme-swatch" style="background:linear-gradient(135deg,#38c8a0,#5898e8);"></span>
-          Midnight
-        </div>
-        <div class="theme-item" data-action="set-theme" data-value="t-forest">
-          <span class="theme-swatch" style="background:#f0ece4;border:1px solid #d8d0c0;"></span>
-          <span class="theme-swatch" style="background:linear-gradient(135deg,#4e7c3a,#8ab86a);"></span>
-          Forest
-        </div>
         <div class="theme-item" data-action="set-theme" data-value="t-aurora">
           <span class="theme-swatch" style="background:#0a0e1a;border:1px solid rgba(255,255,255,0.15);"></span>
           <span class="theme-swatch" style="background:linear-gradient(135deg,#a060ff,#20e8a0);"></span>
           Aurora
-        </div>
-        <div class="theme-item" data-action="set-theme" data-value="t-neon">
-          <span class="theme-swatch" style="background:#050508;border:1px solid rgba(0,238,255,0.3);box-shadow:0 0 6px rgba(0,238,255,0.3);"></span>
-          <span class="theme-swatch" style="background:linear-gradient(135deg,#00eeff,#ff00aa);box-shadow:0 0 6px rgba(0,238,255,0.4);"></span>
-          Neon
         </div>
         <div class="theme-item" data-action="set-theme" data-value="t-tidal">
           <span class="theme-swatch" style="background:#080f0d;border:1px solid rgba(72,184,144,0.25);"></span>
@@ -7964,8 +7615,7 @@ function renderComms() {
   // Default people if empty
   const defaults = [
     { id:'d-grisha',    person:'Гриша',    topic:'', deadline:'', isDefault:true },
-    { id:'d-pankratov', person:'Панкратов',topic:'', deadline:'', isDefault:true },
-  ];
+    { id:'d-pankratov', person:'Панкратов',topic:'', deadline:'', isDefault:true }];
   const all = comms.length ? comms : defaults;
   el.innerHTML = all.map(c => {
     const initials = c.person.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
@@ -8085,8 +7735,7 @@ const KPI_METRICS = [
   { id: 'interest', name: 'Новая сделка в стадии «интерес»', pts: 2  },
   { id: 'nps',      name: 'NPS',                             pts: 2  },
   { id: 'upsell',   name: 'Допродажа текущему клиенту',      pts: 10 },
-  { id: 'lead',     name: 'Передача лида между ролями',      pts: 5  },
-];
+  { id: 'lead',     name: 'Передача лида между ролями',      pts: 5  }];
 const KPI_DAYS = ['Пн','Вт','Ср','Чт','Пт'];
 
 function kpiTodayIdx() {
@@ -8431,7 +8080,7 @@ window.addEventListener('storage', (e) => {
 /* ═══════════════════════════════════════════
    ТЕМА — переключатель
 ═══════════════════════════════════════════ */
-const THEMES = ['t-claude','t-frost','t-paper','t-sand','t-midnight','t-forest','t-aurora','t-neon','t-tidal'];
+const THEMES = ['t-claude','t-frost','t-paper','t-sand','t-aurora','t-tidal'];
 const THEME_KEY = 'wdb_theme';
 
 function setTheme(t) {
@@ -9366,8 +9015,7 @@ function renderPlanFact() {
     { label: 'Звонки',  plan: plans.calls, fact: factCalls },
     { label: 'Встречи', plan: plans.meets, fact: factMeets },
     { label: 'КП',      plan: plans.kp,    fact: factKP    },
-    { label: 'Сделки',  plan: plans.deals,  fact: factDeals },
-  ];
+    { label: 'Сделки',  plan: plans.deals,  fact: factDeals }];
 
   const maxVal = Math.max(1, ...metrics.map(m => Math.max(m.plan, m.fact)));
 
@@ -9981,8 +9629,7 @@ window.addEventListener('appinstalled', function() {
     { x:0.50, y:0.78, r:0.48, color:parseColor(colors.green),  alpha: dark?0.25:0.30, sx:0.16, sy:0.09, px:2.4, py:1.8  },
     { x:0.12, y:0.68, r:0.32, color:parseColor(colors.red),    alpha: dark?0.18:0.22, sx:0.09, sy:0.14, px:3.6, py:3.0  },
     { x:0.82, y:0.62, r:0.38, color:parseColor(colors.accent), alpha: dark?0.20:0.28, sx:0.12, sy:0.11, px:4.8, py:2.2  },
-    { x:0.50, y:0.12, r:0.30, color:parseColor(colors.mute),   alpha: dark?0.15:0.20, sx:0.14, sy:0.10, px:0.8, py:4.0  },
-  ];
+    { x:0.50, y:0.12, r:0.30, color:parseColor(colors.mute),   alpha: dark?0.15:0.20, sx:0.14, sy:0.10, px:0.8, py:4.0  }];
   let AMP_X = 0.12, AMP_Y = 0.10;
 
   /* ── Render loop ── */
@@ -10609,8 +10256,7 @@ let WC_REGISTRY = [
   { id: 'comms',        icon: ICON.message,   name: 'Коммуникации',         desc: 'Напоминания по контактам',       section: 'Коммуникации' },
   { id: 'notes',        icon: ICON.fileText,  name: 'Быстрые заметки',      desc: 'Свободный текст, черновики',     section: 'Коммуникации' },
   { id: 'activity',     icon: ICON.clock,     name: 'Лента действий',       desc: 'Хронология за сегодня',          section: 'Коммуникации' },
-  { id: 'prospects',    icon: ICON.trending,  name: 'Проработка компаний',  desc: 'Компании из кампании прозвона',  section: 'Продажи' },
-];
+  { id: 'prospects',    icon: ICON.trending,  name: 'Проработка компаний',  desc: 'Компании из кампании прозвона',  section: 'Продажи' }];
 
 /* ─────────────────────────────────────────────────────
    СОСТОЯНИЕ
@@ -11513,8 +11159,7 @@ let TOUR_STEPS = [
   { selector: '.w-timer',             title: 'Pomodoro таймер',     body: 'Фокус-сессии 25/5/15 минут. Помогает работать блоками.' },
   { selector: '.hdr-search-btn',      title: 'Быстрый поиск ⌘K',  body: 'Нажми Cmd+K (Ctrl+K) — палитра команд. Любое действие за пару нажатий.' },
   { selector: '#dl-toggle',           title: 'Светлая / Тёмная',   body: 'Мгновенное переключение между светлой и тёмной версией текущей темы.' },
-  { selector: '.theme-switcher',      title: '8 тем',               body: 'От минимализма Claude до киберпанка Neon. Выбирай по настроению.' },
-];
+  { selector: '.theme-switcher',      title: '8 тем',               body: 'От минимализма Claude до киберпанка Neon. Выбирай по настроению.' }];
 
 let tourStep = 0;
 let tourOverlay = null;
@@ -12758,8 +12403,7 @@ function renderChartTasksDist() {
     { label: 'Сейчас', val: counts.now, color: clr.accent },
     { label: 'Следующие', val: counts.next, color: clr.blue },
     { label: 'Отложено', val: counts.wait, color: clr.yellow },
-    { label: 'Готово', val: counts.done, color: clr.green },
-  ];
+    { label: 'Готово', val: counts.done, color: clr.green }];
 
   let cx = w * 0.38, cy = h / 2, radius = Math.min(cx, cy) - 16;
   let innerRadius = radius * 0.6;
@@ -12816,8 +12460,7 @@ function renderChartProjectPipeline() {
     { label: 'Лид / Квалификация', stages: [0,1,2], color: clr.mute, count: 0 },
     { label: 'Подготовка КП', stages: [3,4,5], color: clr.blue, count: 0 },
     { label: 'Согласование', stages: [6,7,8], color: clr.accent, count: 0 },
-    { label: 'Закрытие', stages: [9,10,11], color: clr.green, count: 0 },
-  ];
+    { label: 'Закрытие', stages: [9,10,11], color: clr.green, count: 0 }];
   projects.forEach(function(p) {
     let s = parseInt(p.stage) || 0;
     buckets.forEach(function(b) { if (b.stages.indexOf(s) !== -1) b.count++; });
@@ -12962,17 +12605,15 @@ function initGreeting() {
    Одна кнопка переключает между ними.
 ══════════════════════════════════════════ */
 let THEME_PAIRS = {
-  't-claude':   't-midnight',
-  't-midnight': 't-claude',
+  't-claude':   't-tidal',
+  't-tidal':    't-claude',
   't-paper':    't-aurora',
   't-aurora':   't-paper',
-  't-sand':     't-neon',
-  't-neon':     't-sand',
-  't-forest':   't-frost',
-  't-frost':    't-forest',
+  't-sand':     't-frost',
+  't-frost':    't-sand',
 };
 
-let DARK_THEMES = ['t-frost', 't-midnight', 't-aurora', 't-neon', 't-tidal'];
+let DARK_THEMES = ['t-frost', 't-aurora', 't-tidal'];
 
 function isDarkTheme() {
   let current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
@@ -12981,7 +12622,6 @@ function isDarkTheme() {
 
 function toggleDarkLight() {
   let current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
-  let paired = THEME_PAIRS[current] || 't-midnight';
   setTheme(paired);
   updateDLIcon();
   toast(isDarkTheme() ? 'Тёмная тема' : 'Светлая тема', 'success', 1500);
@@ -13045,11 +12685,7 @@ let cmdActions = [
   { group: 'Тема',         icon: ICON.palette,   label: 'Frost',               action: function(){ cmdClose(); setTheme('t-frost'); toast('Тема: Frost', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Paper',               action: function(){ cmdClose(); setTheme('t-paper'); toast('Тема: Paper', 'success'); } },
   { group: 'Тема',         icon: ICON.palette,   label: 'Sand',                action: function(){ cmdClose(); setTheme('t-sand'); toast('Тема: Sand', 'success'); } },
-  { group: 'Тема',         icon: ICON.moon,      label: 'Midnight',            hint: 'D',  action: function(){ cmdClose(); setTheme('t-midnight'); toast('Тема: Midnight', 'success'); } },
-  { group: 'Тема',         icon: ICON.palette,   label: 'Forest',              action: function(){ cmdClose(); setTheme('t-forest'); toast('Тема: Forest', 'success'); } },
-  { group: 'Тема',         icon: ICON.palette,   label: 'Aurora',              action: function(){ cmdClose(); setTheme('t-aurora'); toast('Тема: Aurora', 'success'); } },
-  { group: 'Тема',         icon: ICON.zap,       label: 'Neon',                action: function(){ cmdClose(); setTheme('t-neon'); toast('Тема: Neon', 'success'); } },
-];
+  { group: 'Тема',         icon: ICON.palette,   label: 'Aurora',              action: function(){ cmdClose(); setTheme('t-aurora'); toast('Тема: Aurora', 'success'); } }];
 
 let cmdIdx = 0; /* Индекс активного элемента */
 let cmdFiltered = []; /* Отфильтрованный список */
