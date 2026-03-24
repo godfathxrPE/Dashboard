@@ -960,6 +960,149 @@
     box-shadow: 0 0 8px rgba(0,238,255,0.15);
   }
 
+  /* ══════════════════════════════════════════════════════════
+     ТЕМА 9: Tidal — Глубоководный мох и водоросли
+     Философия: затонувший храм, заросший водорослями.
+     Тёмно-зелёный фон + органичные мшистые акценты.
+     Нежно-голубой свет пробивается с поверхности.
+     Паттерн: Deep Organic Dark (вдохновлён Subnautica / Ктулху).
+  ══════════════════════════════════════════════════════════ */
+  html.t-tidal {
+    --bg:#080f0d; --surface:rgba(60,140,100,0.07); --surface2:rgba(60,140,100,0.04);
+    --border:rgba(80,160,120,0.15); --border2:rgba(80,160,120,0.25);
+    --text:#c0d8cc; --text-dim:#688c78; --text-mute:#344a3e;
+    --accent:#48b890; --accent-l:rgba(72,184,144,0.10); --accent-l2:rgba(72,184,144,0.20);
+    --green:#40c088; --green-l:rgba(64,192,136,0.12);
+    --red:#c86858;   --red-l:rgba(200,104,88,0.12);
+    --blue:#5ca8d0;  --blue-l:rgba(92,168,208,0.12);
+    --yellow:#b8a058;--yellow-l:rgba(184,160,88,0.12);
+    --logo-bg:linear-gradient(135deg,#48b890,#5ca8d0); --logo-color:#080f0d;
+    --radius:8px; --radius-s:5px;
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-sm: 0 2px 6px rgba(0,0,0,0.35);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.45);
+  }
+
+  /* Tidal — header + toolbar стеклянный blur */
+  html.t-tidal header {
+    background: rgba(8,15,13,0.65);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border-bottom: 1px solid rgba(72,184,144,0.10);
+  }
+  html.t-tidal #scroll-progress {
+    background: linear-gradient(90deg, #48b890, #5ca8d0);
+    box-shadow: 0 0 10px rgba(72,184,144,0.4);
+  }
+
+  /* Tidal — карточки как подводное стекло */
+  html.t-tidal .card {
+    background: rgba(60,140,100,0.06);
+    border: 1px solid rgba(80,160,120,0.12);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  html.t-tidal .card:hover {
+    border-color: rgba(80,160,120,0.22);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  }
+  html.t-tidal .overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); }
+  html.t-tidal .modal {
+    background: rgba(12,22,18,0.92);
+    border: 1px solid rgba(80,160,120,0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  html.t-tidal #wc-panel {
+    background: rgba(12,22,18,0.95);
+    border-left: 1px solid rgba(80,160,120,0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  html.t-tidal [data-widget-id]:not(.card) {
+    background: rgba(60,140,100,0.05);
+    border: 1px solid rgba(80,160,120,0.10);
+    border-radius: var(--radius);
+  }
+  html.t-tidal [data-widget-id]:not(.card):hover {
+    border-color: rgba(80,160,120,0.18);
+  }
+  html.t-tidal ::-webkit-scrollbar-thumb { background: rgba(72,184,144,0.25); }
+  html.t-tidal ::-webkit-scrollbar-thumb:hover { background: rgba(72,184,144,0.4); }
+  html.t-tidal .kpi-modal-panel {
+    background: rgba(12,22,18,0.95);
+    border: 1px solid rgba(80,160,120,0.15);
+    backdrop-filter: blur(20px);
+  }
+  html.t-tidal .header-logo {
+    background: var(--logo-bg);
+    color: var(--logo-color);
+    box-shadow: 0 0 12px rgba(72,184,144,0.25);
+  }
+
+  /* Tidal — funnel pipeline pills */
+  html.t-tidal .status-pill { border: none !important; }
+  html.t-tidal .st-0  { background:rgba(255,255,255,0.06); color:var(--text-mute); }
+  html.t-tidal .st-1  { background:rgba(92,168,208,0.14);  color:#5ca8d0; }
+  html.t-tidal .st-2  { background:rgba(92,168,208,0.14);  color:#5ca8d0; }
+  html.t-tidal .st-3  { background:rgba(184,160,88,0.14);  color:#b8a058; }
+  html.t-tidal .st-4  { background:rgba(184,160,88,0.14);  color:#b8a058; }
+  html.t-tidal .st-5  { background:rgba(72,184,144,0.14);  color:#48b890; }
+  html.t-tidal .st-6  { background:rgba(72,184,144,0.18);  color:#48b890; }
+  html.t-tidal .st-7  { background:rgba(92,168,208,0.16);  color:#78c0e0; }
+  html.t-tidal .st-8  { background:rgba(92,168,208,0.16);  color:#78c0e0; }
+  html.t-tidal .st-9  { background:rgba(64,192,136,0.14);  color:#40c088; }
+  html.t-tidal .st-10 { background:rgba(64,192,136,0.18);  color:#40c088; }
+  html.t-tidal .st-11 { background:rgba(64,192,136,0.28);  color:#40c088; box-shadow:0 0 10px rgba(64,192,136,0.3); }
+  html.t-tidal .funnel-step.active {
+    background:var(--accent); border-color:var(--accent); color:#fff;
+    box-shadow:0 0 12px rgba(72,184,144,0.45);
+  }
+  html.t-tidal .project-card:not(.expanded):hover {
+    box-shadow:0 2px 16px rgba(72,184,144,0.08);
+  }
+  html.t-tidal .project-card.expanded {
+    box-shadow:0 0 0 1px var(--accent), 0 4px 24px rgba(72,184,144,0.15);
+  }
+  html.t-tidal .wc-toggle input:checked + .wc-toggle-track {
+    background: rgba(72,184,144,0.3);
+    border-color: rgba(72,184,144,0.5);
+  }
+  html.t-tidal .wc-row.is-on .wc-row-icon {
+    background: rgba(72,184,144,0.08);
+    border-color: rgba(72,184,144,0.30);
+    box-shadow: 0 0 8px rgba(72,184,144,0.12);
+  }
+
+  /* Tidal — dot glow (индикаторы карточек) */
+  html.t-tidal .card-title .dot        { background:#48b890; box-shadow:0 0 6px rgba(72,184,144,0.7); }
+  html.t-tidal .card-title .dot.green  { background:#40c088; box-shadow:0 0 6px rgba(64,192,136,0.7); }
+  html.t-tidal .card-title .dot.blue   { background:#5ca8d0; box-shadow:0 0 6px rgba(92,168,208,0.7); }
+  html.t-tidal .card-title .dot.yellow { background:#b8a058; box-shadow:0 0 6px rgba(184,160,88,0.7); }
+
+  /* Tidal — органический фоновый шум (водяная текстура)
+     Паттерн: Organic Noise Overlay — тонкий SVG fractalNoise
+     имитирует рябь воды / структуру мха. Subtler чем neon grid. */
+  html.t-tidal body::before {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 512px 512px;
+    opacity: 0.02;
+    mix-blend-mode: soft-light;
+  }
+  /* Каустики — мягкие подводные световые пятна */
+  html.t-tidal body::after {
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 45% 35% at 20% 15%, rgba(92,168,208,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 35% 45% at 80% 70%, rgba(72,184,144,0.03) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 30% at 55% 40%, rgba(40,100,70,0.04) 0%, transparent 60%);
+  }
+  html.t-tidal .main { position:relative; z-index:1; }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -3714,6 +3857,29 @@
     --op-lo: 0.45; --op-hi: 0.8;
   }
 
+  /* ── Tidal orbs — глубоководный мох + тусклое голубое свечение сверху ── */
+  html.t-tidal #bg-orbs .orb-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(40,100,70,0.18) 0%, transparent 60%);
+    top: -160px; left: -120px;
+    --dur: 26s; --tx1: 20px; --ty1: -15px; --tx2: -15px; --ty2: 20px; --tx3: 10px; --ty3: -8px;
+    --op-lo: 0.5; --op-hi: 0.85;
+  }
+  html.t-tidal #bg-orbs .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(72,184,144,0.10) 0%, transparent 65%);
+    bottom: -110px; right: 5%;
+    --dur: 30s; --tx1: -18px; --ty1: -20px; --tx2: 22px; --ty2: -12px; --tx3: -12px; --ty3: 16px;
+    --op-lo: 0.4; --op-hi: 0.75;
+  }
+  html.t-tidal #bg-orbs .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(92,168,208,0.08) 0%, transparent 65%);
+    top: 25%; left: 60%;
+    --dur: 34s; --tx1: 25px; --ty1: 12px; --tx2: -20px; --ty2: -18px; --tx3: 8px; --ty3: 22px;
+    --op-lo: 0.35; --op-hi: 0.7;
+  }
+
   /* Все карточки и header поверх орбов */
   /* Орбы под контентом. header выше .main — иначе дропдаун меню тем
      не вылезает поверх карточек (stacking context). */
@@ -5341,6 +5507,7 @@
   .prospect-status-bar.s-nodial     { background: var(--red); }
   .prospect-status-bar.s-gatekeeper { background: var(--blue); }
   .prospect-status-bar.s-found      { background: var(--green); }
+  .prospect-status-bar.s-project    { background: var(--accent); }
   .prospect-status-bar.s-done       { background: var(--green); opacity: 0.5; }
 
   .prospect-info { min-width: 0; }
@@ -5364,6 +5531,7 @@
   .prospect-badge.s-nodial     { background: var(--red-l); color: var(--red); }
   .prospect-badge.s-gatekeeper { background: var(--blue-l); color: var(--blue); }
   .prospect-badge.s-found      { background: var(--green-l); color: var(--green); }
+  .prospect-badge.s-project    { background: var(--accent-l); color: var(--accent); }
   .prospect-badge.s-done       { background: rgba(46,125,82,0.18); color: #1a5c38; }
 
   .prospect-filters {
@@ -5387,6 +5555,24 @@
     border-top: 1px solid var(--border);
   }
   .prospect-link:hover { opacity: 0.7; }
+
+  /* ── Кнопка «В проект» на prospect-карточке ── */
+  .prospect-to-proj {
+    padding: 3px 9px; border-radius: 99px;
+    border: 1px solid var(--green); background: var(--green-l);
+    color: var(--green); font-size: var(--text-2xs); font-weight: 600;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    font-family: inherit; flex-shrink: 0;
+  }
+  .prospect-to-proj:hover { background: var(--green); color: #fff; }
+  .prospect-in-proj {
+    padding: 3px 9px; border-radius: 99px;
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text-mute); font-size: var(--text-2xs);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .prospect-card { align-items: center; }
+  .prospect-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
 
 </style>
@@ -5439,7 +5625,8 @@
 .t-frost    #screen-grain,
 .t-midnight #screen-grain,
 .t-aurora   #screen-grain,
-.t-neon     #screen-grain { opacity: 0.025; }
+.t-neon     #screen-grain,
+.t-tidal    #screen-grain { opacity: 0.025; }
 
 #screen-content {
   position: relative; z-index: 2;
@@ -5803,6 +5990,11 @@
           <span class="theme-swatch" style="background:linear-gradient(135deg,#00eeff,#ff00aa);box-shadow:0 0 6px rgba(0,238,255,0.4);"></span>
           Neon
         </div>
+        <div class="theme-item" data-action="set-theme" data-value="t-tidal">
+          <span class="theme-swatch" style="background:#080f0d;border:1px solid rgba(72,184,144,0.25);"></span>
+          <span class="theme-swatch" style="background:linear-gradient(135deg,#48b890,#5ca8d0);"></span>
+          Tidal
+        </div>
       </div>
     </div>
       <button class="hdr-icon-btn" data-action="tour-start" title="Обзор дашборда (?)">?</button>
@@ -6061,6 +6253,7 @@
         </div>
       </div>
       <div class="w-fn-conv" id="wfn-conv"></div>
+      <div id="wfn-pipeline" style="padding:4px 0;display:none;"></div>
       <!-- Ручной ввод встреч и КП -->
       <div class="w-fn-inputs">
         <div class="w-fn-input-row">
@@ -6757,6 +6950,7 @@ const ActionDispatcher = {
   /* ── Проработка ── */
   'prospect-filter':      (el)        => prospectSetFilter(el.dataset.value),
   'prospect-open':        (el)        => { window.open('./calls-campaign.html#' + el.dataset.inn, '_blank'); },
+  'prospect-to-project':  (el)        => prospectToProject(el.dataset.inn),
 };
 
 /* ── Главный click-listener ── */
@@ -7360,7 +7554,7 @@ function projectHTML(p) {
     <div class="project-top">
       <div style="flex:1;min-width:0;">
         <div class="project-name"><span class="health-dot ${getHealthClass(p)}"></span>${esc(p.name)}</div>
-        <div class="project-client">${esc(p.client||'')}${p.contact?' · '+esc(p.contact):''}</div>
+        <div class="project-client">${esc(p.client||'')}${p.contact?' · '+esc(p.contact):''}${p.sourceInn ? ' <a href="./calls-campaign.html#'+esc(p.sourceInn)+'" target="_blank" data-stop style="font-size:var(--text-2xs);color:var(--accent);opacity:0.6;text-decoration:none;" title="Открыть в кампании прозвона">📞 кампания</a>' : ''}</div>
         ${nextStepPreview}
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
@@ -7408,6 +7602,10 @@ function projectHTML(p) {
           <span>blur — сохранит</span>
         </div>
       </div>
+      ${p.campaignNotes ? `<div class="proj-campaign-notes" data-stop>
+        <div style="font-size:var(--text-2xs);color:var(--text-mute);margin-bottom:4px;display:flex;align-items:center;gap:4px;">📞 Из кампании прозвона</div>
+        <div style="font-size:var(--text-xs);color:var(--text-dim);white-space:pre-line;line-height:1.5;max-height:120px;overflow-y:auto;padding:6px 8px;background:var(--surface2);border-radius:var(--radius-s);border:1px solid var(--border);">${esc(p.campaignNotes)}</div>
+      </div>` : ''}
       <div class="project-actions-row">
         <button class="btn" data-action="open-project-modal" data-id="${p.id}" data-stop><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
         <button class="btn" style="color:var(--red)" data-action="open-loss-modal" data-id="${p.id}" data-stop>Проиграть</button>
@@ -7488,6 +7686,8 @@ function setProjectStage(id, stage) {
     p.stage = stage;
     LS.set('wdb_projects', projects);
     renderProjects();
+    renderFunnel();
+    renderPlanFact();
     if (oldStage !== stage) toast(FUNNEL[stage], 'success', 2000);
   }
 }
@@ -7576,6 +7776,11 @@ function openProjectModal(id) {
   });
   selectedLossReason = p?.lossReason || '';
   document.getElementById('project-modal').classList.add('open');
+  /* Очищаем поля моста — при обычном открытии они не нужны */
+  var _si = document.getElementById('proj-source-inn');
+  var _sn = document.getElementById('proj-source-notes');
+  if (_si) _si.value = p?.sourceInn || '';
+  if (_sn) _sn.value = '';
   setTimeout(() => document.getElementById('proj-name-in').focus(), 80);
 }
 
@@ -7598,6 +7803,15 @@ function saveProject() {
     data.lossDetail = document.getElementById('proj-loss-detail-in').value.trim();
     if (!id) data.lostDate = new Date().toISOString().split('T')[0];
   }
+  /* ── Prospect → Project bridge: сохраняем sourceInn ── */
+  var sourceInnEl = document.getElementById('proj-source-inn');
+  var sourceNotesEl = document.getElementById('proj-source-notes');
+  if (!id && sourceInnEl && sourceInnEl.value) {
+    data.sourceInn = sourceInnEl.value;
+    if (sourceNotesEl && sourceNotesEl.value) {
+      data.campaignNotes = sourceNotesEl.value;
+    }
+  }
   if (!data.name) return;
   if (id) {
     const p = projects.find(x => x.id === id);
@@ -7606,8 +7820,26 @@ function saveProject() {
     projects.push({ id: uid(), ...data });
   }
   LS.set('wdb_projects', projects);
+  /* ── Обновляем статус в кампании прозвона ── */
+  if (!id && data.sourceInn) {
+    try {
+      var cRaw = JSON.parse(localStorage.getItem(PROSPECT_STORAGE_KEY)) || {};
+      if (cRaw[data.sourceInn]) {
+        cRaw[data.sourceInn].status = 'project';
+        localStorage.setItem(PROSPECT_STORAGE_KEY, JSON.stringify(cRaw));
+      }
+    } catch(e) {}
+  }
   closeModal('project-modal');
   renderProjects();
+  renderProspects(); /* обновляем кнопки "В проекте ✓" */
+  renderFunnel();    /* обновляем pipeline в воронке */
+  renderPlanFact();  /* обновляем факт КП/сделок */
+  /* Очищаем скрытые поля моста */
+  var _sinn = document.getElementById('proj-source-inn');
+  var _snot = document.getElementById('proj-source-notes');
+  if (_sinn) _sinn.value = '';
+  if (_snot) _snot.value = '';
   toast(id ? 'Проект обновлён' : 'Проект создан', 'success');
   logActivity('folder', (id ? 'Обновил' : 'Создал') + ' проект: ' + data.name);
 }
@@ -7620,10 +7852,14 @@ function deleteProject(id) {
   LS.set('wdb_projects', projects);
   if(expandedProject === id) expandedProject = null;
   renderProjects();
+  renderFunnel();
+  renderPlanFact();
   toastUndo('Проект удалён', function() {
     projects.splice(idx, 0, deleted);
     LS.set('wdb_projects', projects);
     renderProjects();
+    renderFunnel();
+    renderPlanFact();
   });
 }
 
@@ -7687,6 +7923,8 @@ function saveMeeting() {
   LS.set('wdb_meetings', meetings);
   closeModal('meeting-modal');
   renderMeetings();
+  renderFunnel();
+  renderPlanFact();
   toast(id ? 'Встреча обновлена' : 'Встреча добавлена', 'success');
   logActivity('users', (id ? 'Обновил' : 'Добавил') + ' встречу: ' + data.title);
 }
@@ -7698,10 +7936,14 @@ function deleteMeeting(id) {
   meetings = meetings.filter(x => x.id !== id);
   LS.set('wdb_meetings', meetings);
   renderMeetings();
+  renderFunnel();
+  renderPlanFact();
   toastUndo('Встреча удалена', function() {
     meetings.splice(idx, 0, deleted);
     LS.set('wdb_meetings', meetings);
     renderMeetings();
+    renderFunnel();
+    renderPlanFact();
   });
 }
 
@@ -7978,6 +8220,7 @@ const PROSPECT_STATUS = {
   nodial:     { label: 'Недозвон',    cls: 's-nodial' },
   gatekeeper: { label: 'Привратник',  cls: 's-gatekeeper' },
   found:      { label: 'ЛПР найден', cls: 's-found' },
+  project:    { label: 'В проекте',   cls: 's-project' },
   done:       { label: 'Внедрена',    cls: 's-done' },
 };
 let prospectFilter = 'active';
@@ -7990,6 +8233,81 @@ function prospectSetFilter(f) {
   renderProspects();
 }
 
+/* ═══════════════════════════════════════════
+   PROSPECT → PROJECT BRIDGE
+   Создаёт проект из данных кампании прозвона.
+   Предзаполняет модальное окно проекта:
+   name, client, contact (ЛПР), nextStep, sourceInn.
+═══════════════════════════════════════════ */
+function prospectToProject(inn) {
+  /* Читаем данные компании из кампании */
+  let raw = {};
+  try { raw = JSON.parse(localStorage.getItem(PROSPECT_STORAGE_KEY)) || {}; } catch(e) {}
+  const c = raw[inn];
+  if (!c) { toast('Данные компании не найдены', 'error'); return; }
+
+  /* Проверяем дублирование */
+  if (projects.some(p => p.sourceInn === inn)) {
+    toast('Проект для этой компании уже существует', 'warning');
+    return;
+  }
+
+  /* Находим ЛПР-контакт */
+  const contacts = c.contacts || [];
+  const lpr = contacts.find(ct => ct.isLpr);
+  const contactName = lpr ? lpr.name : (contacts.length ? contacts[0].name : '');
+
+  /* Собираем заметку из истории кампании */
+  let noteLines = [];
+  if (c.notes) noteLines.push(c.notes);
+  if (c.callLog && c.callLog.length) {
+    noteLines.push('--- История звонков (' + c.callLog.length + ') ---');
+    c.callLog.slice(-3).forEach(function(log) {
+      noteLines.push((log.date || '') + ' | ' + (log.contact || '') + ': ' + (log.result || ''));
+    });
+  }
+  noteLines.push('Источник: кампания прозвона (ИНН ' + inn + ')');
+
+  /* Открываем модальное окно проекта */
+  openProjectModal(null);
+
+  /* Заполняем поля после открытия */
+  setTimeout(function() {
+    var nameIn = document.getElementById('proj-name-in');
+    var clientIn = document.getElementById('proj-client-in');
+    var contactIn = document.getElementById('proj-contact-in');
+    var stageIn = document.getElementById('proj-stage-in');
+    var nextIn = document.getElementById('proj-nextstep-in');
+    if (nameIn)    nameIn.value = c.name || '';
+    if (clientIn)  clientIn.value = c.name || '';
+    if (contactIn) contactIn.value = contactName;
+    if (stageIn)   stageIn.value = '0'; /* Новый лид */
+    if (nextIn)    nextIn.value = c.nextStep || '';
+
+    /* Сохраняем sourceInn в скрытом поле (создадим его) */
+    var hiddenInn = document.getElementById('proj-source-inn');
+    if (!hiddenInn) {
+      hiddenInn = document.createElement('input');
+      hiddenInn.type = 'hidden';
+      hiddenInn.id = 'proj-source-inn';
+      nameIn.parentNode.appendChild(hiddenInn);
+    }
+    hiddenInn.value = inn;
+
+    /* Сохраняем заметку из кампании в скрытом поле */
+    var hiddenNotes = document.getElementById('proj-source-notes');
+    if (!hiddenNotes) {
+      hiddenNotes = document.createElement('input');
+      hiddenNotes.type = 'hidden';
+      hiddenNotes.id = 'proj-source-notes';
+      nameIn.parentNode.appendChild(hiddenNotes);
+    }
+    hiddenNotes.value = noteLines.join('\n');
+
+    toast('Заполнено из кампании — проверьте и сохраните', 'success');
+  }, 100);
+}
+
 function renderProspects() {
   const el = document.getElementById('prospect-list');
   const badge = document.getElementById('prospect-count');
@@ -8000,7 +8318,7 @@ function renderProspects() {
   try { raw = JSON.parse(localStorage.getItem(PROSPECT_STORAGE_KEY)) || {}; } catch(e) {}
 
   /* Собираем массив компаний с активными статусами */
-  const activeStatuses = ['calling', 'nodial', 'gatekeeper', 'found', 'done'];
+  const activeStatuses = ['calling', 'nodial', 'gatekeeper', 'found', 'project', 'done'];
   let items = [];
   for (const inn in raw) {
     const c = raw[inn];
@@ -8026,7 +8344,7 @@ function renderProspects() {
   }
 
   /* Сортировка: found → calling → gatekeeper → nodial → done */
-  const ORDER = { found: 0, calling: 1, gatekeeper: 2, nodial: 3, done: 4 };
+  const ORDER = { found: 0, project: 1, calling: 2, gatekeeper: 3, nodial: 4, done: 5 };
   filtered.sort((a, b) => (ORDER[a.status] ?? 5) - (ORDER[b.status] ?? 5));
 
   /* Обновляем badge — количество активных (без done) */
@@ -8048,6 +8366,12 @@ function renderProspects() {
     const lastDate = lastCall ? lastCall.date : '';
     const nextLabel = c.nextStep ? esc(c.nextStep) + (c.nextDate ? ' · ' + c.nextDate : '') : '';
 
+    /* Проверяем, есть ли уже проект с таким sourceInn */
+    const hasProject = projects.some(p => p.sourceInn === c.inn);
+    const actionBtn = hasProject
+      ? '<span class="prospect-in-proj">В проекте ✓</span>'
+      : '<button class="prospect-to-proj" data-action="prospect-to-project" data-inn="' + c.inn + '" data-stop>→ В проект</button>';
+
     return '<div class="prospect-card" data-action="prospect-open" data-inn="' + c.inn + '">' +
       '<div class="prospect-status-bar ' + st.cls + '"></div>' +
       '<div class="prospect-info">' +
@@ -8059,7 +8383,10 @@ function renderProspects() {
         '</div>' +
         (nextLabel ? '<div class="prospect-next">→ ' + nextLabel + '</div>' : '') +
       '</div>' +
-      '<span class="prospect-badge ' + st.cls + '">' + st.label + '</span>' +
+      '<div class="prospect-actions">' +
+        '<span class="prospect-badge ' + st.cls + '">' + st.label + '</span>' +
+        actionBtn +
+      '</div>' +
     '</div>';
   }).join('');
 }
@@ -8082,16 +8409,29 @@ renderComms();
    2. storage event — обновляет если campaign открыта в соседней вкладке
 ═══════════════════════════════════════════ */
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') renderProspects();
+  if (document.visibilityState === 'visible') {
+    renderProspects();
+    /* Campaign пишет в call tracker — подхватываем при возврате */
+    if (typeof renderCallTracker === 'function') renderCallTracker();
+    if (typeof renderFunnel === 'function') renderFunnel();
+    if (typeof renderPlanFact === 'function') renderPlanFact();
+    if (typeof updateSmartAlerts === 'function') updateSmartAlerts();
+  }
 });
 window.addEventListener('storage', (e) => {
   if (e.key === PROSPECT_STORAGE_KEY) renderProspects();
+  /* Campaign инкрементирует call tracker — обновляем виджеты */
+  if (e.key && e.key.startsWith('wdb_call_tracker_')) {
+    if (typeof renderCallTracker === 'function') renderCallTracker();
+    if (typeof renderFunnel === 'function') renderFunnel();
+    if (typeof updateSmartAlerts === 'function') updateSmartAlerts();
+  }
 });
 
 /* ═══════════════════════════════════════════
    ТЕМА — переключатель
 ═══════════════════════════════════════════ */
-const THEMES = ['t-claude','t-frost','t-paper','t-sand','t-midnight','t-forest','t-aurora','t-neon'];
+const THEMES = ['t-claude','t-frost','t-paper','t-sand','t-midnight','t-forest','t-aurora','t-neon','t-tidal'];
 const THEME_KEY = 'wdb_theme';
 
 function setTheme(t) {
@@ -8618,6 +8958,35 @@ function saveFunnelManual() {
   LS.set(getFunnelKey(), { ...data, meetings: m, kp: k, deals: d, goalCalls: g });
 }
 
+/* ── Auto-метрики из данных дашборда (shared между воронкой и план/фактом) ── */
+function getAutoMetrics() {
+  const now = new Date();
+  const day = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  const mon = new Date(now); mon.setDate(now.getDate() - day); mon.setHours(0,0,0,0);
+
+  /* Звонки — суммируем call tracker за рабочие дни недели */
+  let weekCalls = 0;
+  for (let i = 0; i <= day && i < 5; i++) {
+    const dd = new Date(mon); dd.setDate(mon.getDate() + i);
+    const key = `wdb_call_tracker_${dd.getFullYear()}_${dd.getMonth()}_${dd.getDate()}`;
+    const ct = LS.get(key, { done: 0 });
+    weekCalls += ct.done || 0;
+  }
+
+  /* Встречи — из wdb_meetings за эту неделю */
+  const weekStart = mon.toISOString().split('T')[0];
+  const weekEnd = new Date(mon); weekEnd.setDate(mon.getDate() + 6);
+  const weekEndStr = weekEnd.toISOString().split('T')[0];
+  const autoMeetings = (LS.get('wdb_meetings', [])).filter(m => m.date >= weekStart && m.date <= weekEndStr).length;
+
+  /* КП и сделки — из стадий проектов */
+  const activeProjects = (LS.get('wdb_projects', [])).filter(p => p.stage !== 'lost');
+  const autoKP    = activeProjects.filter(p => parseInt(p.stage) >= 4 && parseInt(p.stage) <= 5).length;
+  const autoDeals = activeProjects.filter(p => parseInt(p.stage) >= 10).length;
+
+  return { weekCalls, autoMeetings, autoKP, autoDeals, activeProjects };
+}
+
 function renderFunnel() {
   const fn = getFunnelData();
   const now = new Date();
@@ -8627,31 +8996,30 @@ function renderFunnel() {
 
   // Звонки берём из трекера (суммируем каждый день недели)
   let weekCalls = 0;
-  for (let d = 0; d < 5; d++) {
-    const now2 = new Date();
-    // Грубо: берём данные за сегодня из трекера (можно улучшить)
-    const ct = getCTData();
-    if (d === HM_DAY_JS.indexOf(now2.getDay())) weekCalls += ct.done || 0;
-  }
-  // Дополнительно считаем из heatmap для прошлых дней
-  const hmData = getHeatmapData();
-  let hmCalls = 0;
-  Object.values(hmData).forEach(v => hmCalls += v || 0);
-  weekCalls = Math.max(weekCalls, hmCalls);
+  const auto = getAutoMetrics();
+  weekCalls = auto.weekCalls;
+  const autoMeetings = auto.autoMeetings;
+  const activeProjects = auto.activeProjects;
+  const autoKP = auto.autoKP;
+  const autoDeals = auto.autoDeals;
 
-  const goalCalls  = parseInt(document.getElementById('wfn-goal-calls')?.value) || fn.goalCalls || 200;
-  const meetings   = parseInt(document.getElementById('wfn-meetings-in')?.value) ?? fn.meetings ?? 0;
-  const kp         = parseInt(document.getElementById('wfn-kp-in')?.value)       ?? fn.kp       ?? 0;
-  const deals      = parseInt(document.getElementById('wfn-deals-in')?.value)    ?? fn.deals    ?? 0;
+  const goalCalls = parseInt(document.getElementById('wfn-goal-calls')?.value) || fn.goalCalls || 200;
+  // Встречи: авто-значение, но ручной ввод может быть выше (доп. встречи вне системы)
+  const manualMeetings = parseInt(document.getElementById('wfn-meetings-in')?.value);
+  const meetings = Math.max(autoMeetings, isNaN(manualMeetings) ? (fn.meetings ?? 0) : manualMeetings);
+  const manualKP = parseInt(document.getElementById('wfn-kp-in')?.value);
+  const kp = Math.max(autoKP, isNaN(manualKP) ? (fn.kp ?? 0) : manualKP);
+  const manualDeals = parseInt(document.getElementById('wfn-deals-in')?.value);
+  const deals = Math.max(autoDeals, isNaN(manualDeals) ? (fn.deals ?? 0) : manualDeals);
 
   // Восстанавливаем поля при загрузке
   const mIn = document.getElementById('wfn-meetings-in');
   const kIn = document.getElementById('wfn-kp-in');
   const dIn = document.getElementById('wfn-deals-in');
   const gIn = document.getElementById('wfn-goal-calls');
-  if (mIn && mIn !== document.activeElement) mIn.value = fn.meetings ?? 0;
-  if (kIn && kIn !== document.activeElement) kIn.value = fn.kp ?? 0;
-  if (dIn && dIn !== document.activeElement) dIn.value = fn.deals ?? 0;
+  if (mIn && mIn !== document.activeElement) mIn.value = meetings;
+  if (kIn && kIn !== document.activeElement) kIn.value = kp;
+  if (dIn && dIn !== document.activeElement) dIn.value = deals;
   if (gIn && gIn !== document.activeElement) gIn.value = fn.goalCalls ?? 200;
 
   // Счётчики
@@ -8682,6 +9050,30 @@ function renderFunnel() {
       <span class="w-fn-conv-item">Встреча → КП: <b>${m2k}%</b></span>
       <span class="w-fn-conv-item">КП → сделка: <b>${k2d}%</b></span>
     `;
+  }
+
+  // Pipeline — распределение проектов по стадиям
+  var pipeEl = document.getElementById('wfn-pipeline');
+  if (pipeEl && activeProjects.length > 0) {
+    var stageCounts = {};
+    activeProjects.forEach(function(p) {
+      var s = parseInt(p.stage) || 0;
+      stageCounts[s] = (stageCounts[s] || 0) + 1;
+    });
+    var pipeHTML = '<div style="font-size:var(--text-2xs);color:var(--text-mute);margin-bottom:4px;">Проекты по стадиям (' + activeProjects.length + ')</div>';
+    pipeHTML += '<div style="display:flex;gap:1px;height:16px;border-radius:4px;overflow:hidden;">';
+    var colors = ['var(--text-mute)','var(--blue)','var(--blue)','var(--yellow)','var(--accent)','var(--accent)','var(--green)','var(--green)','var(--green)','var(--green)','var(--green)','var(--green)'];
+    FUNNEL.forEach(function(name, i) {
+      var cnt = stageCounts[i] || 0;
+      if (cnt === 0) return;
+      var pct = Math.round((cnt / activeProjects.length) * 100);
+      pipeHTML += '<div title="' + name + ': ' + cnt + '" style="flex:' + cnt + ';background:' + (colors[i]||'var(--accent)') + ';opacity:0.7;min-width:8px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;">' + (pct >= 15 ? cnt : '') + '</div>';
+    });
+    pipeHTML += '</div>';
+    pipeEl.innerHTML = pipeHTML;
+    pipeEl.style.display = '';
+  } else if (pipeEl) {
+    pipeEl.style.display = 'none';
   }
 }
 renderFunnel();
@@ -8958,29 +9350,17 @@ function renderPlanFact() {
 
   const plans = LS.get('wdb_pf_plans_' + getPFWeekKey(), { calls: 200, meets: 5, kp: 3, deals: 1 });
 
-  // Факт: звонки из трекера (суммируем 5 дней недели)
-  const day = d.getDay() === 0 ? 6 : d.getDay() - 1;
-  const mon = new Date(d); mon.setDate(d.getDate() - day); mon.setHours(0,0,0,0);
-  let factCalls = 0;
-  for (let i = 0; i <= day; i++) {
-    const dd = new Date(mon); dd.setDate(mon.getDate() + i);
-    const key = `wdb_call_tracker_${dd.getFullYear()}_${dd.getMonth()}_${dd.getDate()}`;
-    const ct = LS.get(key, { done: 0 });
-    factCalls += ct.done || 0;
-  }
+  // Факт из shared helper
+  const auto = getAutoMetrics();
+  const factCalls = auto.weekCalls;
+  const factMeets = auto.autoMeetings;
 
-  // Факт: встречи из блока встреч
-  const weekStart = mon.toISOString().split('T')[0];
-  const weekEnd = new Date(mon); weekEnd.setDate(mon.getDate() + 6);
-  const weekEndStr = weekEnd.toISOString().split('T')[0];
-  const factMeets = (LS.get('wdb_meetings', [])).filter(m => m.date >= weekStart && m.date <= weekEndStr).length;
-
-  // Факт: КП и сделки из воронки (ручной ввод из виджета воронки)
+  // КП/сделки: максимум из авто (проекты) и ручного (воронка)
   const weekNum2 = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
   const funnelKey = `wdb_funnel_${d.getFullYear()}_w${weekNum2}`;
   const funnelManual = LS.get(funnelKey, { meetings: 0, kp: 0, deals: 0 });
-  const factKP    = funnelManual.kp    || 0;
-  const factDeals = funnelManual.deals || 0;
+  const factKP    = Math.max(auto.autoKP,    funnelManual.kp    || 0);
+  const factDeals = Math.max(auto.autoDeals, funnelManual.deals || 0);
 
   const metrics = [
     { label: 'Звонки',  plan: plans.calls, fact: factCalls },
@@ -12592,7 +12972,7 @@ let THEME_PAIRS = {
   't-frost':    't-forest',
 };
 
-let DARK_THEMES = ['t-frost', 't-midnight', 't-aurora', 't-neon'];
+let DARK_THEMES = ['t-frost', 't-midnight', 't-aurora', 't-neon', 't-tidal'];
 
 function isDarkTheme() {
   let current = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
