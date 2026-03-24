@@ -27,6 +27,16 @@
   /* ══ KPI TRACKER ══ */
   .kpi-table-wrap { overflow-x: auto; max-height: 320px; overflow-y: auto; }
   .kpi-block { align-self: start; }
+  /* Компактный KPI-виджет для right-col (340px) */
+  .kpi-compact-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 12px; border-bottom: 1px solid var(--border);
+    gap: 6px;
+  }
+  .kpi-compact-row:last-child { border-bottom: none; }
+  .kpi-compact-name { font-size: var(--text-xs); color: var(--text-dim); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .kpi-compact-cell { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+  .kpi-compact-total { padding: 6px 12px; display: flex; justify-content: space-between; font-size: var(--text-xs); font-weight: 600; color: var(--accent); border-top: 1px solid var(--border); }
   .kpi-table { width: 100%; border-collapse: collapse; font-size: var(--text-base); }
   .kpi-table th {
     padding: 8px 8px; text-align: center;
@@ -6090,8 +6100,8 @@
           <span>Цель: 50 баллов</span>
         </div>
       </div>
-      <div class="kpi-table-wrap">
-        <table class="kpi-table" id="kpi-table"></table>
+      <div class="kpi-table-wrap" style="max-height:none;overflow:visible;">
+        <div id="kpi-today-compact"></div>
       </div>
     </div>
 
@@ -7794,8 +7804,9 @@ function kpiReset() {
 }
 
 function renderKPI() {
-  let table = document.getElementById('kpi-table');
-  if (!table) return;
+  let compact = document.getElementById('kpi-today-compact');
+  let modalTbl = document.getElementById('kpi-modal-table');
+  if (!compact && !modalTbl) return;
   let today = kpiTodayIdx();
   let dayTotals = [0,0,0,0,0];
   KPI_METRICS.forEach(function(m) {
@@ -7821,7 +7832,7 @@ function renderKPI() {
     let el = document.getElementById(id); if (el) el.textContent = pct + '%';
   });
 
-  // Генерируем HTML таблицы один раз — ставим в оба контейнера
+  // Генерируем HTML таблицы для модалки
   let html = '<thead><tr><th class="kpi-metric-head">Показатель</th>';
   KPI_DAYS.forEach(function(d, di) {
     html += '<th class="' + (di===today?'kpi-today-col':'') + '">' + d + '</th>';
@@ -7852,9 +7863,29 @@ function renderKPI() {
   });
   html += '</tr></tbody>';
 
-  table.innerHTML = html;
-  let modalTable = document.getElementById('kpi-modal-table');
-  if (modalTable) modalTable.innerHTML = html;
+  /* Полная таблица — только в модалке */
+  if (modalTbl) modalTbl.innerHTML = html;
+
+  /* Компактный вид — только сегодняшние метрики с +/− */
+  /* compact уже объявлен выше */
+  if (compact) {
+    let chtml = '<div style="font-size:var(--text-2xs);color:var(--text-mute);padding:6px 12px 2px;">' + KPI_DAYS[today] + ' · сегодня</div>';
+    KPI_METRICS.forEach(function(m) {
+      let val = kpiData.counts[m.id][today] || 0;
+      let inCls = val === 0 ? ' zero' : '';
+      chtml += '<div class="kpi-compact-row">'
+        + '<span class="kpi-compact-name">' + m.name + '</span>'
+        + '<div class="kpi-compact-cell">'
+        + '<button class="kpi-btn" data-action="kpi-change" data-mid="' + m.id + '" data-di="' + today + '" data-delta="-1">−</button>'
+        + '<input class="kpi-input' + inCls + '" type="number" min="0" value="' + (val===0?'':val) + '" placeholder="·"'
+        + ' data-change-action="kpi-set" data-mid="' + m.id + '" data-di="' + today + '"'
+        + ' data-action="kpi-input-focus" data-stop style="width:32px;">'
+        + '<button class="kpi-btn" data-action="kpi-change" data-mid="' + m.id + '" data-di="' + today + '" data-delta="1">+</button>'
+        + '</div></div>';
+    });
+    chtml += '<div class="kpi-compact-total"><span>Сегодня: ' + dayTotals[today] + ' б</span><span>Неделя: ' + weekTotal + ' / ' + KPI_GOAL + '</span></div>';
+    compact.innerHTML = chtml;
+  }
 }
 
 /* ── KPI MODAL: открытие / закрытие ── */
