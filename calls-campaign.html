@@ -435,8 +435,51 @@ input, textarea, select { font-family:inherit; color:var(--text); }
   box-shadow:0 8px 32px rgba(0,0,0,0.18);
 }
 .toast.show { transform:translateX(-50%) translateY(0); }
+/* ══ IMPORT MODAL ══ */
+.import-backdrop {
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);
+  z-index:600;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.import-backdrop.open { opacity:1;pointer-events:all; }
+.import-panel {
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  width:min(95vw,640px);max-height:85vh;display:flex;flex-direction:column;
+  box-shadow:0 16px 48px rgba(0,0,0,0.25);overflow:hidden;
+  transform:translateY(20px) scale(0.97);transition:transform 0.25s cubic-bezier(.22,.68,0,1.1);
+}
+.import-backdrop.open .import-panel { transform:translateY(0) scale(1); }
+.import-header {
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.import-header h3 { font-size:var(--text-md);font-weight:600; }
+.import-body { padding:14px 18px;overflow-y:auto;flex:1; }
+.import-mapping { display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-bottom:12px; }
+.import-mapping label { font-size:var(--text-xs);color:var(--text-dim);margin-bottom:2px; }
+.import-mapping select {
+  padding:5px 8px;border:1px solid var(--border2);border-radius:var(--radius-s);
+  background:var(--surface);font-size:var(--text-xs);color:var(--text);font-family:inherit;
+}
+.import-preview { border:1px solid var(--border);border-radius:var(--radius-s);overflow:auto;max-height:260px; }
+.import-preview table { width:100%;border-collapse:collapse;font-size:var(--text-2xs); }
+.import-preview th { background:var(--surface2);padding:4px 8px;text-align:left;font-weight:600;position:sticky;top:0;border-bottom:1px solid var(--border); }
+.import-preview td { padding:3px 8px;border-bottom:1px solid var(--border);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.import-footer {
+  padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;
+}
+.import-stats { font-size:var(--text-xs);color:var(--text-dim);margin-right:auto; }
+.import-btn {
+  padding:6px 16px;border-radius:var(--radius-s);font-size:var(--text-sm);font-weight:600;
+  border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;
+  transition:all 0.12s;
+}
+.import-btn:hover { border-color:var(--accent);color:var(--accent); }
+.import-btn.primary { background:var(--accent);color:#fff;border-color:var(--accent); }
+.import-btn.primary:hover { opacity:0.9; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
 </head>
 <body>
@@ -500,6 +543,9 @@ input, textarea, select { font-family:inherit; color:var(--text); }
     <option value="contacts">По контактам ↓</option>
     <option value="status">По статусу</option>
   </select>
+  <div class="filter-sep"></div>
+  <button class="filter-btn" data-action="open-import" style="color:var(--accent);border-color:var(--accent);">📥 Импорт Excel</button>
+  <input type="file" id="import-file-input" accept=".xlsx,.xls,.csv" style="display:none;">
 </div>
 
 <!-- MAIN -->
@@ -981,6 +1027,11 @@ const CampaignActions = {
   'add-contact':       (el) => addContact(el.dataset.inn),
   'toggle-add-contact':(el) => toggleAddContactForm(el.dataset.inn),
   'save-notes':        (el) => saveNotes(el.dataset.inn),
+  'open-import':       () => openImportModal(),
+  'close-import':      () => closeImportModal(),
+  'close-import-bg':   (el, e) => { if (e.target === el) closeImportModal(); },
+  'trigger-import-file':() => document.getElementById('import-file-input').click(),
+  'confirm-import':    () => confirmImport(),
 };
 document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-action]');
@@ -1033,6 +1084,229 @@ filterCompanies();
     setTimeout(() => openModal(hash), 300);
   }
 })();
+
+/* ═══════════════════════════════════════════
+   IMPORT FROM EXCEL
+   Парсит .xlsx/.xls/.csv через SheetJS.
+   Автоматически маппит колонки по заголовкам.
+   Мерджит в существующий список компаний.
+═══════════════════════════════════════════ */
+var _importData = null;
+var _importHeaders = [];
+
+function openImportModal() {
+  document.getElementById('import-backdrop').classList.add('open');
+  document.getElementById('import-footer').style.display = 'none';
+  document.getElementById('import-content').innerHTML =
+    '<div style="text-align:center;padding:30px;">' +
+      '<button class="import-btn primary" data-action="trigger-import-file">Выбрать файл</button>' +
+    '</div>';
+  _importData = null;
+}
+
+function closeImportModal() {
+  document.getElementById('import-backdrop').classList.remove('open');
+  _importData = null;
+}
+
+document.getElementById('import-file-input').addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var data = new Uint8Array(ev.target.result);
+      var workbook = XLSX.read(data, { type: 'array' });
+      var sheetName = workbook.SheetNames[0];
+      var sheet = workbook.Sheets[sheetName];
+      var json = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+      if (json.length < 2) { toast('Файл пуст или только заголовки'); return; }
+
+      _importHeaders = json[0].map(function(h) { return String(h || '').trim(); });
+      _importData = json.slice(1).filter(function(row) {
+        return row.some(function(cell) { return cell && String(cell).trim(); });
+      });
+      renderImportPreview(file.name);
+    } catch(err) {
+      toast('Ошибка чтения файла: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+function autoDetectColumn(headers, keywords) {
+  for (var i = 0; i < headers.length; i++) {
+    var h = headers[i].toLowerCase();
+    for (var k = 0; k < keywords.length; k++) {
+      if (h.indexOf(keywords[k]) !== -1) return i;
+    }
+  }
+  return -1;
+}
+
+function renderImportPreview(filename) {
+  var content = document.getElementById('import-content');
+  var footer = document.getElementById('import-footer');
+  var stats = document.getElementById('import-stats');
+
+  var colName   = autoDetectColumn(_importHeaders, ['назван', 'компан', 'организ', 'клиент']);
+  var colInn    = autoDetectColumn(_importHeaders, ['инн', 'inn', 'огрн']);
+  var colContact= autoDetectColumn(_importHeaders, ['имя', 'фио', 'контакт']);
+  var colPhone  = autoDetectColumn(_importHeaders, ['телеф', 'phone', 'тел.', 'моб']);
+  var colEmail  = autoDetectColumn(_importHeaders, ['почт', 'email', 'e-mail']);
+  var colPos    = autoDetectColumn(_importHeaders, ['должн', 'position']);
+  var colMgr    = autoDetectColumn(_importHeaders, ['менед', 'ответств', 'manager']);
+
+  if (colContact === colName && colContact !== -1) colContact = -1;
+
+  function makeSelect(id, selected) {
+    var html = '<select id="' + id + '"><option value="-1">— пропустить —</option>';
+    _importHeaders.forEach(function(h, i) {
+      html += '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + escHtml(h || 'Колонка ' + (i+1)) + '</option>';
+    });
+    return html + '</select>';
+  }
+
+  var mappingHTML = '<div class="import-mapping">' +
+    '<div><label>Название компании *</label>' + makeSelect('imp-col-name', colName) + '</div>' +
+    '<div><label>ИНН</label>' + makeSelect('imp-col-inn', colInn) + '</div>' +
+    '<div><label>ФИО контакта</label>' + makeSelect('imp-col-contact', colContact) + '</div>' +
+    '<div><label>Телефон</label>' + makeSelect('imp-col-phone', colPhone) + '</div>' +
+    '<div><label>Email</label>' + makeSelect('imp-col-email', colEmail) + '</div>' +
+    '<div><label>Должность</label>' + makeSelect('imp-col-pos', colPos) + '</div>' +
+    '<div><label>Менеджер</label>' + makeSelect('imp-col-mgr', colMgr) + '</div>' +
+  '</div>';
+
+  var previewHTML = '<div class="import-preview"><table><thead><tr>';
+  _importHeaders.forEach(function(h) { previewHTML += '<th>' + escHtml(h || '—') + '</th>'; });
+  previewHTML += '</tr></thead><tbody>';
+  _importData.slice(0, 8).forEach(function(row) {
+    previewHTML += '<tr>';
+    _importHeaders.forEach(function(_, i) { previewHTML += '<td>' + escHtml(String(row[i] || '')) + '</td>'; });
+    previewHTML += '</tr>';
+  });
+  if (_importData.length > 8) {
+    previewHTML += '<tr><td colspan="' + _importHeaders.length + '" style="text-align:center;color:var(--text-mute);">... ещё ' + (_importData.length - 8) + ' строк</td></tr>';
+  }
+  previewHTML += '</tbody></table></div>';
+
+  content.innerHTML =
+    '<div style="font-size:var(--text-xs);color:var(--text-dim);margin-bottom:8px;">Файл: <b>' + escHtml(filename) + '</b></div>' +
+    '<div style="font-size:var(--text-xs);color:var(--text-dim);margin-bottom:8px;">Сопоставьте колонки:</div>' +
+    mappingHTML +
+    '<div style="font-size:var(--text-xs);color:var(--text-dim);margin:8px 0 4px;">Предпросмотр:</div>' +
+    previewHTML;
+
+  stats.textContent = _importData.length + ' строк';
+  footer.style.display = '';
+}
+
+function generatePseudoInn(name) {
+  var hash = 0;
+  var s = name.toLowerCase().replace(/\s+/g, '').replace(/[""«»"']/g, '');
+  for (var i = 0; i < s.length; i++) { hash = ((hash << 5) - hash) + s.charCodeAt(i); hash = hash & hash; }
+  return 'imp_' + Math.abs(hash).toString(36);
+}
+
+function confirmImport() {
+  if (!_importData || !_importData.length) return;
+
+  var colName   = +document.getElementById('imp-col-name').value;
+  var colInn    = +document.getElementById('imp-col-inn').value;
+  var colContact= +document.getElementById('imp-col-contact').value;
+  var colPhone  = +document.getElementById('imp-col-phone').value;
+  var colEmail  = +document.getElementById('imp-col-email').value;
+  var colPos    = +document.getElementById('imp-col-pos').value;
+  var colMgr    = +document.getElementById('imp-col-mgr').value;
+
+  if (colName === -1) { toast('Укажите колонку с названием компании'); return; }
+
+  /* Группируем строки по компании */
+  var byCompany = {};
+  _importData.forEach(function(row) {
+    var name = String(row[colName] || '').trim();
+    if (!name || name.indexOf('<Клиент') !== -1 || name.indexOf('<Объект не найден') !== -1) return;
+    var inn = colInn >= 0 ? String(row[colInn] || '').trim() : '';
+    var key = inn || generatePseudoInn(name);
+
+    if (!byCompany[key]) {
+      byCompany[key] = { name: name, inn: key, okved: '', contacts: [], manager: '' };
+    }
+
+    var ctName  = colContact >= 0 ? String(row[colContact] || '').trim() : '';
+    var ctPhone = colPhone >= 0 ? String(row[colPhone] || '').trim() : '';
+    var ctEmail = colEmail >= 0 ? String(row[colEmail] || '').trim() : '';
+    var ctPos   = colPos >= 0 ? String(row[colPos] || '').trim() : '';
+    var mgr     = colMgr >= 0 ? String(row[colMgr] || '').trim() : '';
+
+    if (ctName || ctPhone || ctEmail) {
+      byCompany[key].contacts.push({
+        name: ctName, position: ctPos, phone: ctPhone, phone2: '', email: ctEmail, isLpr: false
+      });
+    }
+    if (mgr) byCompany[key].manager = mgr;
+  });
+
+  /* Мерджим */
+  var added = 0, updated = 0;
+  Object.keys(byCompany).forEach(function(key) {
+    var imp = byCompany[key];
+    var existing = companies.find(function(c) { return c.inn === key; });
+
+    if (existing) {
+      imp.contacts.forEach(function(ct) {
+        var isDup = existing.contacts.some(function(ec) { return ec.name === ct.name && ec.phone === ct.phone; });
+        if (!isDup) { existing.contacts.push(ct); updated++; }
+      });
+      persistCompany(existing);
+    } else {
+      var nc = {
+        inn: imp.inn, name: imp.name, okved: imp.okved,
+        contacts: imp.contacts, status: 'new',
+        notes: imp.manager ? 'Менеджер: ' + imp.manager : '',
+        nextStep: '', nextDate: '', callLog: [], idx: companies.length
+      };
+      companies.push(nc);
+      persistCompany(nc);
+      added++;
+    }
+  });
+
+  closeImportModal();
+  filterCompanies();
+  updateStats();
+  toast('Импорт: +' + added + ' компаний, +' + updated + ' контактов');
+}
+
 </script>
+<!-- ══ IMPORT MODAL ══ -->
+<div class="import-backdrop" id="import-backdrop" data-action="close-import-bg">
+  <div class="import-panel">
+    <div class="import-header">
+      <h3>📥 Импорт из Excel</h3>
+      <button class="modal-close" data-action="close-import">✕</button>
+    </div>
+    <div class="import-body" id="import-body">
+      <p style="font-size:var(--text-xs);color:var(--text-dim);margin-bottom:10px;">
+        Загрузите .xlsx, .xls или .csv файл с данными компаний для прозвона.
+        Укажите, какой столбец соответствует каждому полю.
+      </p>
+      <div id="import-content">
+        <div style="text-align:center;padding:30px;">
+          <button class="import-btn primary" data-action="trigger-import-file">Выбрать файл</button>
+        </div>
+      </div>
+    </div>
+    <div class="import-footer" id="import-footer" style="display:none;">
+      <div class="import-stats" id="import-stats"></div>
+      <button class="import-btn" data-action="close-import">Отмена</button>
+      <button class="import-btn primary" data-action="confirm-import">Импортировать</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
