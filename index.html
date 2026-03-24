@@ -25,7 +25,8 @@
 </script>
 <style>
   /* ══ KPI TRACKER ══ */
-  .kpi-table-wrap { overflow-x: auto; }
+  .kpi-table-wrap { overflow-x: auto; max-height: 320px; overflow-y: auto; }
+  .kpi-block { align-self: start; }
   .kpi-table { width: 100%; border-collapse: collapse; font-size: var(--text-base); }
   .kpi-table th {
     padding: 8px 8px; text-align: center;
@@ -4853,16 +4854,30 @@
 
   /* ══════════════════════════════════════════
      WIDGET REORDER (Drag to reorder)
-     Паттерн: Drag Reorder (iOS Home Screen, Notion Sidebar).
-     Виджеты в правой колонке перетаскиваются для кастомизации.
+     Паттерн: Gap Drop Zones (Notion/Linear block reorder).
+     При drag между виджетами появляются зоны-приёмники.
   ══════════════════════════════════════════ */
   .right-col [data-widget-id].widget-dragging {
-    opacity: 0.5;
+    opacity: 0.4;
     transform: scale(0.97);
     box-shadow: var(--shadow-lg);
+    pointer-events: none;
   }
-  .right-col [data-widget-id].widget-drop-target {
-    border-top: 2px solid var(--accent) !important;
+  /* Невидимые зоны между виджетами — расширяются при drag */
+  .widget-drop-zone {
+    height: 6px;
+    margin: -3px 0;
+    border-radius: 4px;
+    transition: height 0.15s, background 0.15s, margin 0.15s;
+    position: relative;
+    z-index: 10;
+  }
+  .widget-drop-zone.active {
+    height: 32px;
+    margin: 4px 0;
+    background: var(--accent-l);
+    border: 2px dashed var(--accent);
+    border-radius: var(--radius-s);
   }
 
   /* ══════════════════════════════════════════
@@ -10931,15 +10946,7 @@ function showSkeletons() {
         '<div class="skeleton sk-card"></div>' +
       '</div>';
   }
-  /* Встречи */
-  let meetList = document.getElementById('meetings-list');
-  if (meetList && meetList.querySelector('.empty-msg')) {
-    meetList.innerHTML =
-      '<div id="sk-meetings" style="padding:4px 0;">' +
-        '<div class="skeleton-row" style="padding:7px 0;gap:10px;"><div class="skeleton sk-line" style="width:60px"></div><div class="skeleton sk-line" style="flex:1"></div></div>' +
-        '<div class="skeleton-row" style="padding:7px 0;gap:10px;"><div class="skeleton sk-line" style="width:60px"></div><div class="skeleton sk-line" style="flex:1;width:70%"></div></div>' +
-      '</div>';
-  }
+  /* Встречи — данные локальные, рендер мгновенный, скелетон не нужен */
   /* Коммуникации */
   let commList = document.getElementById('comms-list');
   if (commList && commList.children.length === 0) {
@@ -11965,43 +11972,97 @@ function wrInit() {
   /* Добавляем draggable ко всем виджетам */
   col.querySelectorAll('[data-widget-id]').forEach(function(el) {
     el.setAttribute('draggable', 'true');
+  });
 
-    el.addEventListener('dragstart', function(e) {
-      e.dataTransfer.setData('text/plain', el.getAttribute('data-widget-id'));
+  /* ── Gap Drop Zones — зоны-приёмники между виджетами ──
+     Паттерн: Notion/Linear block reorder.
+     При dragstart: создаём div.widget-drop-zone между каждой парой виджетов.
+     При dragover на зону: зона расширяется (visual feedback).
+     При drop на зону: вставляем виджет перед следующим элементом.
+     При dragend: удаляем все зоны. */
+
+  function createDropZones() {
+    removeDropZones();
+    var widgets = col.querySelectorAll('[data-widget-id]');
+    widgets.forEach(function(w, i) {
+      var zone = document.createElement('div');
+      zone.className = 'widget-drop-zone';
+      zone.setAttribute('data-insert-before', w.getAttribute('data-widget-id'));
+      col.insertBefore(zone, w);
+    });
+    /* Последняя зона — после последнего виджета */
+    var lastZone = document.createElement('div');
+    lastZone.className = 'widget-drop-zone';
+    lastZone.setAttribute('data-insert-end', 'true');
+    col.appendChild(lastZone);
+  }
+
+  function removeDropZones() {
+    col.querySelectorAll('.widget-drop-zone').forEach(function(z) { z.remove(); });
+  }
+
+  col.addEventListener('dragstart', function(e) {
+    var el = e.target.closest('[data-widget-id]');
+    if (!el) return;
+    e.dataTransfer.setData('text/plain', el.getAttribute('data-widget-id'));
+    e.dataTransfer.effectAllowed = 'move';
+    /* Задержка чтобы элемент успел "схватиться" до добавления зон */
+    setTimeout(function() {
       el.classList.add('widget-dragging');
-      playSound('click');
-    });
+      createDropZones();
+    }, 0);
+    playSound('click');
+  });
 
-    el.addEventListener('dragend', function() {
+  col.addEventListener('dragend', function(e) {
+    col.querySelectorAll('.widget-dragging').forEach(function(el) {
       el.classList.remove('widget-dragging');
-      col.querySelectorAll('.widget-drop-target').forEach(function(t) { t.classList.remove('widget-drop-target'); });
     });
+    removeDropZones();
+  });
 
-    el.addEventListener('dragover', function(e) {
-      e.preventDefault();
-      /* Только если над другим виджетом */
-      let draggingId = e.dataTransfer.types.includes('text/plain');
-      if (draggingId && !el.classList.contains('widget-dragging')) {
-        el.classList.add('widget-drop-target');
+  col.addEventListener('dragover', function(e) {
+    var zone = e.target.closest('.widget-drop-zone');
+    if (!zone) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    /* Подсвечиваем только текущую зону */
+    col.querySelectorAll('.widget-drop-zone.active').forEach(function(z) {
+      if (z !== zone) z.classList.remove('active');
+    });
+    zone.classList.add('active');
+  });
+
+  col.addEventListener('dragleave', function(e) {
+    var zone = e.target.closest('.widget-drop-zone');
+    if (zone && !zone.contains(e.relatedTarget)) {
+      zone.classList.remove('active');
+    }
+  });
+
+  col.addEventListener('drop', function(e) {
+    var zone = e.target.closest('.widget-drop-zone');
+    if (!zone) return;
+    e.preventDefault();
+    var draggedId = e.dataTransfer.getData('text/plain');
+    var draggedEl = col.querySelector('[data-widget-id="' + draggedId + '"]');
+    if (!draggedEl) return;
+
+    if (zone.hasAttribute('data-insert-end')) {
+      /* Вставка в конец */
+      col.appendChild(draggedEl);
+    } else {
+      /* Вставка перед целевым виджетом */
+      var targetId = zone.getAttribute('data-insert-before');
+      var targetEl = col.querySelector('[data-widget-id="' + targetId + '"]');
+      if (targetEl && targetEl !== draggedEl) {
+        col.insertBefore(draggedEl, targetEl);
       }
-    });
-
-    el.addEventListener('dragleave', function() {
-      el.classList.remove('widget-drop-target');
-    });
-
-    el.addEventListener('drop', function(e) {
-      e.preventDefault();
-      el.classList.remove('widget-drop-target');
-      let draggedId = e.dataTransfer.getData('text/plain');
-      let draggedEl = col.querySelector('[data-widget-id="' + draggedId + '"]');
-      if (draggedEl && draggedEl !== el) {
-        /* Вставляем перед целевым элементом */
-        col.insertBefore(draggedEl, el);
-        wrSaveOrder(col);
-        playSound('tick');
-      }
-    });
+    }
+    removeDropZones();
+    draggedEl.classList.remove('widget-dragging');
+    wrSaveOrder(col);
+    playSound('tick');
   });
 }
 
