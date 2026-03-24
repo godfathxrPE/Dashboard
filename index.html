@@ -6064,6 +6064,37 @@
       </div>
     </div>
 
+
+
+    <!-- ВИДЖЕТ: KPI TRACKER -->
+
+    <div class="card kpi-block" data-widget-id="kpi">
+      <div class="card-header">
+        <div class="card-title"><span class="dot" style="background:var(--green)"></span>KPI недели</div>
+        <div class="kpi-header-right">
+          <div class="kpi-week-block">
+            <span class="kpi-week-num" id="kpi-week-num">0</span>
+            <span class="kpi-week-label">/ 50 б</span>
+          </div>
+          <button class="kpi-reset-btn" data-action="kpi-reset">↺ Сброс</button>
+          <!-- Кнопка разворачивания виджета в модальное окно -->
+          <button class="kpi-expand-btn" data-action="kpi-modal-open" title="Развернуть KPI">⤢</button>
+        </div>
+      </div>
+      <div class="kpi-progress-wrap">
+        <div class="kpi-progress-track">
+          <div class="kpi-progress-fill" id="kpi-progress-fill" style="width:0%"></div>
+        </div>
+        <div class="kpi-progress-meta">
+          <span id="kpi-progress-pct">0%</span>
+          <span>Цель: 50 баллов</span>
+        </div>
+      </div>
+      <div class="kpi-table-wrap">
+        <table class="kpi-table" id="kpi-table"></table>
+      </div>
+    </div>
+
   </div>
 
   <!-- ══ ПРОЕКТЫ ══ -->
@@ -6134,32 +6165,6 @@
 
 
   <!-- ══ KPI TRACKER ══ -->
-  <div class="card kpi-block">
-    <div class="card-header">
-      <div class="card-title"><span class="dot" style="background:var(--green)"></span>KPI недели</div>
-      <div class="kpi-header-right">
-        <div class="kpi-week-block">
-          <span class="kpi-week-num" id="kpi-week-num">0</span>
-          <span class="kpi-week-label">/ 50 б</span>
-        </div>
-        <button class="kpi-reset-btn" data-action="kpi-reset">↺ Сброс</button>
-        <!-- Кнопка разворачивания виджета в модальное окно -->
-        <button class="kpi-expand-btn" data-action="kpi-modal-open" title="Развернуть KPI">⤢</button>
-      </div>
-    </div>
-    <div class="kpi-progress-wrap">
-      <div class="kpi-progress-track">
-        <div class="kpi-progress-fill" id="kpi-progress-fill" style="width:0%"></div>
-      </div>
-      <div class="kpi-progress-meta">
-        <span id="kpi-progress-pct">0%</span>
-        <span>Цель: 50 баллов</span>
-      </div>
-    </div>
-    <div class="kpi-table-wrap">
-      <table class="kpi-table" id="kpi-table"></table>
-    </div>
-  </div>
 
   <!-- ══ ANALYTICS CHARTS — видны только в Analytics Mode ══ -->
   <div class="analytics-charts" id="analytics-charts">
@@ -10258,6 +10263,7 @@ let WC_REGISTRY = [
   { id: 'daycalls',     icon: ICON.calendar,  name: 'Заплан. звонки',      desc: 'План звонков + оповещения',      section: 'Ориентация' },
   { id: 'focus',        icon: ICON.target,    name: 'Фокус дня',           desc: 'Одно главное дело на сегодня',   section: 'Ориентация' },
   { id: 'stats',        icon: ICON.chart,     name: 'Мини-статистика',      desc: 'Проекты, звонки, задачи',        section: 'Ориентация' },
+  { id: 'kpi',          icon: ICON.chart,     name: 'KPI недели',           desc: 'Баллы, прогресс, метрики',       section: 'Ориентация' },
   { id: 'timer',        icon: ICON.timer,     name: 'Pomodoro таймер',      desc: 'Фокус-сессии 25/5/15 мин',       section: 'Продуктивность' },
   { id: 'call-tracker', icon: ICON.phone,     name: 'Трекер звонков',       desc: 'Счётчик и план на день',         section: 'Продуктивность' },
   { id: 'call-results', icon: ICON.target,    name: 'Результат звонков',    desc: 'Успешные, неуспешные, причины',  section: 'Продуктивность' },
