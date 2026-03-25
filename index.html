@@ -6564,7 +6564,7 @@ const ActionDispatcher = {
   'timer-play-pause':     ()          => timerPlayPause(),
   'timer-reset':          ()          => timerReset(),
   'reset-day-report':     ()          => resetDayReport(),
-  'open-fail-reason':     (el, e)     => openFailReason(e),
+  'open-fail-reason':     (el, e)     => openFailReason(el, e),
   'call-result-reset':    ()          => callResultReset(),
   'ql-clear':             ()          => qlClear(),
   'ql-add':               ()          => qlAdd(),
@@ -8639,19 +8639,18 @@ function renderCallResults() {
 renderCallResults();
 
 /* ── ПОПАП ПРИЧИНЫ НЕУСПЕХА ── */
-function openFailReason(e) {
+function openFailReason(el, e) {
   e.stopPropagation();
   e.preventDefault();
   const popup = document.getElementById('fail-reason-popup');
 
-  // Если уже открыт — закрываем
   if (popup.classList.contains('open')) {
     popup.classList.remove('open');
     return;
   }
 
-  const btn = e.currentTarget;
-  const rect = btn.getBoundingClientRect(); // координаты относительно viewport
+  /* el — это кнопка [data-action="open-fail-reason"], не document */
+  const rect = el.getBoundingClientRect();
 
   // Показываем за экраном чтобы измерить размер
   popup.style.top  = '-9999px';
