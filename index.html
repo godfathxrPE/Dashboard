@@ -1467,7 +1467,7 @@
                 border-color 0.3s ease;
   }
   .project-card.expanded .project-details {
-    max-height: 900px;
+    max-height: 600px;
     opacity: 1;
     margin-top: 10px;
     padding-top: 10px;
@@ -1508,7 +1508,6 @@
     gap: 3px;
     margin-bottom: 10px;
     flex-wrap: wrap;
-    display: none; /* скрыт — заменён на dot-progress */
   }
   .funnel-step {
     font-size: var(--text-2xs, 9px);
@@ -1534,76 +1533,6 @@
     background: var(--accent-l);
     border-color: rgba(193,127,63,0.3);
     color: var(--accent);
-  }
-
-  /* ── DOT PROGRESS BAR ── */
-  .proj-progress-wrap { margin-bottom: 14px; }
-  .proj-progress-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
-  }
-  .proj-progress-stage { font-size: var(--text-sm); font-weight: 600; }
-  .proj-progress-counter { font-size: var(--text-xs); color: var(--text-mute); }
-  .proj-dot-track {
-    display: flex; align-items: center; gap: 0; margin-bottom: 8px;
-  }
-  .proj-dot {
-    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    background: var(--border2); transition: all 0.2s;
-  }
-  .proj-dot.done { background: var(--green); width: 8px; height: 8px; }
-  .proj-dot.current {
-    width: 14px; height: 14px; background: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-l);
-  }
-  .proj-dot-line {
-    flex: 1; height: 2px; background: var(--border); min-width: 4px;
-  }
-  .proj-dot-line.done { background: var(--green); }
-  .proj-progress-actions {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .proj-progress-actions .btn-back,
-  .proj-progress-actions .btn-fwd {
-    padding: 3px 10px; font-size: var(--text-2xs); border-radius: var(--radius-s);
-    border: 1px solid var(--border2); background: var(--surface); color: var(--text-dim);
-    cursor: pointer; font-family: inherit; transition: all 0.12s;
-  }
-  .proj-progress-actions .btn-fwd {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-  .proj-progress-actions .btn-back:hover { border-color: var(--accent); color: var(--accent); }
-  .proj-progress-actions .btn-fwd:hover { opacity: 0.85; }
-  .proj-progress-next-hint { font-size: var(--text-2xs); color: var(--text-mute); }
-
-  /* ── DEADLINE URGENCY BADGE ── */
-  .proj-deadline-badge {
-    font-size: var(--text-2xs); font-weight: 600; padding: 2px 8px;
-    border-radius: var(--radius-s); white-space: nowrap;
-  }
-  .proj-deadline-badge.urgent { background: var(--red-l); color: var(--red); }
-  .proj-deadline-badge.warning { background: var(--yellow-l); color: var(--yellow); }
-  .proj-deadline-badge.ok { background: var(--green-l); color: var(--green); }
-  .proj-deadline-badge.overdue { background: var(--red); color: #fff; }
-
-  /* ── BUDGET WARNING ── */
-  .proj-budget-warn { color: var(--red); font-size: var(--text-xs); display: flex; align-items: center; gap: 4px; }
-  .proj-budget-warn::before {
-    content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex-shrink: 0;
-  }
-
-  /* ── SECTION DIVIDERS ── */
-  .proj-section {
-    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px;
-  }
-  .proj-section:first-child { border-top: none; padding-top: 0; margin-top: 0; }
-
-  /* ── NEXT STEP INLINE ── */
-  .proj-nextstep-row {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .proj-nextstep-label {
-    font-size: var(--text-2xs); font-weight: 600; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
   }
 
   /* ── PROJECT DRAG-AND-DROP ──
@@ -4168,7 +4097,66 @@
     color: var(--text-mute); background: none; border: none; cursor: pointer; padding: 2px;
     opacity: 0; transition: opacity 0.12s; font-family: inherit;
   }
-  .proj-contact-card:hover .proj-contact-del { opacity: 1; }
+  .proj-contact-card:hover .proj-contact-del,
+  .proj-contact-card:hover .proj-contact-edit { opacity: 1; }
+  .proj-contact-edit {
+    position: absolute; top: 4px; right: 24px; font-size: var(--text-2xs);
+    color: var(--accent); background: none; border: none; cursor: pointer; padding: 2px;
+    opacity: 0; transition: opacity 0.12s; font-family: inherit;
+  }
+
+  /* ── Comment expand overlay ── */
+  .comment-expand-btn {
+    font-size: var(--text-2xs); color: var(--accent); background: none; border: none;
+    cursor: pointer; padding: 0; font-family: inherit; opacity: 0.7; transition: opacity 0.12s;
+  }
+  .comment-expand-btn:hover { opacity: 1; }
+  .comment-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px);
+    z-index: 500; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .comment-overlay.open { opacity: 1; pointer-events: all; }
+  .comment-overlay-panel {
+    background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius);
+    width: min(92vw, 640px); max-height: 80vh; display: flex; flex-direction: column;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    transform: translateY(20px) scale(0.97); transition: transform 0.25s cubic-bezier(.22,.68,0,1.1);
+  }
+  .comment-overlay.open .comment-overlay-panel { transform: translateY(0) scale(1); }
+  .comment-overlay-header {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .comment-overlay-header h3 { font-size: var(--text-base); font-weight: 600; margin: 0; }
+  .comment-overlay-body { padding: 12px 16px; flex: 1; overflow-y: auto; }
+  .comment-overlay-body textarea {
+    width: 100%; min-height: 220px; background: transparent; border: 1px solid var(--border);
+    border-radius: var(--radius-s); padding: 10px; font-size: var(--text-sm); font-family: inherit;
+    color: var(--text); outline: none; resize: vertical; line-height: 1.6;
+  }
+  .comment-overlay-body textarea:focus { border-color: var(--accent); }
+  .comment-overlay-footer {
+    padding: 10px 16px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+  }
+  .comment-overlay-footer .meta { font-size: var(--text-2xs); color: var(--text-mute); }
+
+  /* ── Contact edit form inline ── */
+  .proj-contact-edit-form {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+    padding: 6px 10px; margin-bottom: 4px; background: var(--surface2);
+    border: 1px solid var(--accent); border-radius: var(--radius-s);
+  }
+  .proj-contact-edit-form input {
+    padding: 4px 6px; border: 1px solid var(--border2); border-radius: var(--radius-s);
+    background: var(--surface); font-size: var(--text-2xs); font-family: inherit;
+    color: var(--text); outline: none;
+  }
+  .proj-contact-edit-form input:focus { border-color: var(--accent); }
+  .proj-contact-edit-form .form-actions {
+    grid-column: 1 / -1; display: flex; gap: 4px; justify-content: flex-end; margin-top: 2px;
+  }
   .proj-contact-add-btn {
     font-size: var(--text-2xs); color: var(--accent); background: none;
     border: 1px dashed var(--border2); border-radius: var(--radius-s);
@@ -6635,7 +6623,7 @@ const ActionDispatcher = {
   'timer-play-pause':     ()          => timerPlayPause(),
   'timer-reset':          ()          => timerReset(),
   'reset-day-report':     ()          => resetDayReport(),
-  'open-fail-reason':     (el, e)     => openFailReason(el, e),
+  'open-fail-reason':     (el, e)     => openFailReason(e),
   'call-result-reset':    ()          => callResultReset(),
   'ql-clear':             ()          => qlClear(),
   'ql-add':               ()          => qlAdd(),
@@ -6735,6 +6723,13 @@ const ActionDispatcher = {
   'prospect-open':        (el)        => { window.open('./calls-campaign.html#' + el.dataset.inn, '_blank'); },
   'prospect-to-project':  (el)        => prospectToProject(el.dataset.inn),
   'del-proj-contact':     (el)        => delProjContact(el.dataset.id, +el.dataset.idx),
+  'edit-proj-contact':    (el)        => editProjContact(el.dataset.id, +el.dataset.idx),
+  'save-edit-proj-contact':(el)       => saveEditProjContact(el.dataset.id, +el.dataset.idx),
+  'cancel-edit-proj-contact':()       => renderProjects(),
+  'expand-comment':       (el)        => openCommentOverlay(el.dataset.id),
+  'close-comment-overlay': ()         => closeCommentOverlay(),
+  'close-comment-overlay-bg':(el,e)   => { if (e.target === el) closeCommentOverlay(); },
+  'save-comment-overlay':  ()         => saveCommentOverlay(),
   'add-proj-contact-form':(el)        => showProjContactForm(el.dataset.id),
   'save-proj-contact':    (el)        => saveProjContact(el.dataset.id),
   'cancel-proj-contact':  (el)        => renderProjects(),
@@ -7186,11 +7181,11 @@ function deadlineDays(iso) {
   if (!iso) return null;
   const today = new Date(); today.setHours(0,0,0,0);
   const diff = Math.round((new Date(iso+'T00:00:00') - today) / 86400000);
-  if (diff < 0)  return { text: 'просроч. '+Math.abs(diff)+' дн.', cls: 'overdue', days: diff };
-  if (diff === 0) return { text: 'сегодня', cls: 'urgent', days: 0 };
-  if (diff === 1) return { text: 'завтра',  cls: 'urgent', days: 1 };
-  if (diff <= 7) return { text: diff+' дн.', cls: 'soon', days: diff };
-  return { text: diff+' дн.', cls: 'ok', days: diff };
+  if (diff < 0)  return { text: 'просроч. '+Math.abs(diff)+' дн.', cls: 'overdue' };
+  if (diff === 0) return { text: 'сегодня', cls: 'urgent' };
+  if (diff === 1) return { text: 'завтра',  cls: 'urgent' };
+  if (diff <= 7) return { text: diff+' дн.', cls: 'soon' };
+  return { text: diff+' дн.', cls: 'ok' };
 }
 
 function checkLostStage(val) {
@@ -7312,34 +7307,24 @@ function projectHTML(p) {
   const expanded = expandedProject === p.id;
   const dd = deadlineDays(p.deadline);
 
-  /* ── Шапка: название + юрлицо + дедлайн badge ── */
-  let urgencyClass = 'ok';
-  if (dd && dd.cls === 'overdue') urgencyClass = 'overdue';
-  else if (dd && (dd.cls === 'urgent' || dd.cls === 'soon')) urgencyClass = 'urgent';
-  else if (dd && dd.days !== null && dd.days <= 30) urgencyClass = 'warning';
-
   const deadlineHtml = p.deadline ? (
-    '<span style="font-size:var(--text-2xs);padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius-s);white-space:nowrap;">' + fmtDate(p.deadline) + '</span>' +
-    '<span class="proj-deadline-badge ' + urgencyClass + '">' + dd.text + '</span>'
+    '<span style="font-size:var(--text-sm);color:' + (dd.cls==='overdue'||dd.cls==='urgent'?'var(--red)':'var(--text-mute)') + '">📅 ' + fmtDate(p.deadline) + '</span>' +
+    '<span class="proj-deadline-days ' + dd.cls + '">' + dd.text + '</span>'
   ) : '';
 
-  /* ── Dot progress bar ── */
-  let dotsHTML = '';
-  for (let i = 0; i < FUNNEL.length; i++) {
-    if (i > 0) dotsHTML += '<div class="proj-dot-line' + (i <= stage ? ' done' : '') + '"></div>';
-    if (i < stage) dotsHTML += '<div class="proj-dot done"></div>';
-    else if (i === stage) dotsHTML += '<div class="proj-dot current"></div>';
-    else dotsHTML += '<div class="proj-dot"></div>';
-  }
-  const nextStageName = stage < FUNNEL.length - 1 ? FUNNEL[stage + 1] : '—';
+  const funnelHTML = FUNNEL.map((s,i) => {
+    const cls = i === stage ? 'active' : (i < stage ? 'past' : '');
+    return '<span class="funnel-step ' + cls + '"' +
+      ' data-action="set-project-stage" data-id="' + p.id + '" data-stage="' + i + '" data-stop ' +
+      ' ondragover="projFunnelDragOver(event)"' +
+      ' ondragleave="projFunnelDragLeave(event)"' +
+      ' ondrop="projFunnelDrop(event,\'' + p.id + '\',' + i + ')"' +
+      ' title="' + s + '">' + s + '</span>';
+  }).join('');
 
-  /* ── Бюджет: предупреждение если пуст ── */
-  const budgetDisplay = p.budget
-    ? '<span>' + fmtBudget(p.budget) + '</span>'
-    : '<span class="proj-budget-warn">Не указан</span>';
-
-  /* ── Последний контакт: дата справа ── */
-  const lcDateHtml = p.lastContactDate ? fmtDate(p.lastContactDate) : '';
+  const nextStepPreview = p.nextStep
+    ? '<div style="font-size:var(--text-xs);color:var(--accent);margin-top:2px;">→ ' + esc(p.nextStep) + '</div>'
+    : '';
 
   return `
   <div class="project-card ${expanded?'expanded':''}" data-id="${p.id}"
@@ -7351,96 +7336,66 @@ function projectHTML(p) {
     <div class="project-top">
       <div style="flex:1;min-width:0;">
         <div class="project-name"><span class="health-dot ${getHealthClass(p)}"></span>${esc(p.name)}</div>
-        <div class="project-client">${esc(p.client||'')}${p.sourceInn ? ' <a href="./calls-campaign.html#'+esc(p.sourceInn)+'" target="_blank" data-stop style="font-size:var(--text-2xs);color:var(--accent);opacity:0.6;text-decoration:none;" title="Открыть в кампании прозвона">📞</a>' : ''}</div>
+        <div class="project-client">${esc(p.client||'')}${p.contact?' · '+esc(p.contact):''}${p.sourceInn ? ' <a href="./calls-campaign.html#'+esc(p.sourceInn)+'" target="_blank" data-stop style="font-size:var(--text-2xs);color:var(--accent);opacity:0.6;text-decoration:none;" title="Открыть в кампании прозвона">📞 кампания</a>' : ''}</div>
+        ${nextStepPreview}
       </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
         ${deadlineHtml}
         <span class="status-pill st-${stage}">${FUNNEL[stage]}</span>
       </div>
     </div>
     <div class="project-details">
-
-      <!-- Dot progress -->
-      <div class="proj-progress-wrap">
-        <div class="proj-progress-header">
-          <span class="proj-progress-stage">${FUNNEL[stage]}</span>
-          <span class="proj-progress-counter">этап ${stage + 1} / ${FUNNEL.length}</span>
+      <div class="funnel-track">${funnelHTML}</div>
+      <div class="project-fields">
+        <div class="project-field">
+          <label>Ответственный</label>
+          <input value="${esc(p.owner||'')}" data-stop
+            data-change-action="update-proj-field" data-id="${p.id}" data-field="owner" placeholder="—">
         </div>
-        <div class="proj-dot-track">${dotsHTML}</div>
-        <div class="proj-progress-actions">
-          ${stage > 0 ? '<button class="btn-back" data-action="set-project-stage" data-id="'+p.id+'" data-stage="'+(stage-1)+'" data-stop>← Назад</button>' : ''}
-          ${stage < FUNNEL.length - 1 ? '<button class="btn-fwd" data-action="set-project-stage" data-id="'+p.id+'" data-stage="'+(stage+1)+'" data-stop>Вперёд →</button>' : ''}
-          <span class="proj-progress-next-hint">Следующий: ${esc(nextStageName)}</span>
+        <div class="project-field">
+          <label>Бюджет</label>
+          <input value="${p.budget ? fmtBudget(p.budget) : ''}"
+            data-stop data-input-action="format-budget"
+            data-change-action="update-proj-field" data-id="${p.id}" data-field="budget" placeholder="—">
         </div>
-      </div>
-
-      <!-- Мета: ответственный / бюджет / дедлайн -->
-      <div class="proj-section">
-        <div class="project-fields">
-          <div class="project-field">
-            <label>Ответственный</label>
-            <input value="${esc(p.owner||'')}" data-stop
-              data-change-action="update-proj-field" data-id="${p.id}" data-field="owner" placeholder="—">
-          </div>
-          <div class="project-field">
-            <label>Бюджет</label>
-            <input value="${p.budget ? fmtBudget(p.budget) : ''}"
-              data-stop data-input-action="format-budget"
-              data-change-action="update-proj-field" data-id="${p.id}" data-field="budget"
-              placeholder="Не указан" style="${!p.budget?'border-color:var(--red);':''}">
-          </div>
-          <div class="project-field">
-            <label>Дедлайн</label>
-            <input type="date" value="${p.deadline||''}" data-stop
-              data-change-action="update-proj-deadline" data-id="${p.id}">
-          </div>
+        <div class="project-field">
+          <label>Дедлайн</label>
+          <input type="date" value="${p.deadline||''}" data-stop
+            data-change-action="update-proj-deadline" data-id="${p.id}">
         </div>
       </div>
-
-      <!-- Следующий шаг — одна строка -->
-      <div class="proj-section">
-        <div class="proj-nextstep-row">
-          <span class="proj-nextstep-label">Следующий шаг</span>
-          <input style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px 0;font-size:var(--text-sm);color:var(--text);font-family:inherit;outline:none;"
-            placeholder="Что сделать прямо сейчас?"
-            value="${esc(p.nextStep||'')}"
-            data-stop
-            data-blur-action="save-next-step" data-id="${p.id}">
-        </div>
+      <div class="proj-next-step">
+        <div class="proj-next-step-label">→ Следующий шаг</div>
+        <input class="proj-next-step-input"
+          placeholder="Что сделать прямо сейчас?"
+          value="${esc(p.nextStep||'')}"
+          data-stop
+          data-blur-action="save-next-step" data-id="${p.id}"
+          data-change-action="save-next-step" data-id="${p.id}">
       </div>
-
-      <!-- Последний контакт -->
-      <div class="proj-section">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <span style="font-size:var(--text-2xs);color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;">Последний контакт</span>
-          <span style="font-size:var(--text-2xs);color:var(--text-mute);" id="plc-meta-${p.id}">${lcDateHtml}</span>
+      <div class="proj-last-contact">
+        <div class="proj-last-contact-label" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>Последний контакт</span>
+          <button class="comment-expand-btn" data-action="expand-comment" data-id="${p.id}" data-stop title="Развернуть">⤢</button>
         </div>
-        <textarea style="width:100%;min-height:36px;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px 0;font-size:var(--text-sm);color:var(--text);font-family:inherit;outline:none;resize:vertical;line-height:1.4;"
-          placeholder="Что обсудили, договорённости..."
+        <textarea class="proj-last-contact-input"
+          placeholder="Что обсудили, договорённости, настроение клиента..."
           data-stop
           data-blur-action="save-last-contact" data-id="${p.id}">${esc(p.lastContact||'')}</textarea>
-      </div>
-
-      ${p.campaignNotes ? `<div class="proj-section" data-stop>
-        <div style="font-size:var(--text-2xs);color:var(--text-mute);margin-bottom:4px;">📞 Из кампании прозвона</div>
-        <div style="font-size:var(--text-xs);color:var(--text-dim);white-space:pre-line;line-height:1.5;max-height:100px;overflow-y:auto;">${esc(p.campaignNotes)}</div>
-      </div>` : ''}
-
-      <!-- Контакты -->
-      <div class="proj-section">
-        ${renderProjContacts(p)}
-      </div>
-
-      <!-- Действия -->
-      <div class="proj-section">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <button class="btn" data-action="add-proj-contact-form" data-id="${p.id}" data-stop style="font-size:var(--text-2xs);">+ Контакт</button>
-          <div class="project-actions-row">
-            <button class="btn" data-action="open-project-modal" data-id="${p.id}" data-stop>Редактировать</button>
-            <button class="btn" style="color:var(--red)" data-action="open-loss-modal" data-id="${p.id}" data-stop>Проиграть</button>
-            <button class="btn" style="color:var(--text-mute)" data-action="delete-project" data-id="${p.id}" data-stop>Удалить</button>
-          </div>
+        <div class="proj-last-contact-meta">
+          <span id="plc-meta-${p.id}">${p.lastContactDate ? 'обновлено ' + fmtDate(p.lastContactDate) : 'ещё не заполнено'}</span>
+          <span>blur — сохранит</span>
         </div>
+      </div>
+      ${p.campaignNotes ? `<div class="proj-campaign-notes" data-stop>
+        <div style="font-size:var(--text-2xs);color:var(--text-mute);margin-bottom:4px;display:flex;align-items:center;gap:4px;">📞 Из кампании прозвона</div>
+        <div style="font-size:var(--text-xs);color:var(--text-dim);white-space:pre-line;line-height:1.5;max-height:120px;overflow-y:auto;padding:6px 8px;background:var(--surface2);border-radius:var(--radius-s);border:1px solid var(--border);">${esc(p.campaignNotes)}</div>
+      </div>` : ''}
+      ${renderProjContacts(p)}
+      <div class="project-actions-row">
+        <button class="btn" data-action="open-project-modal" data-id="${p.id}" data-stop><span class="inline-icon" style="margin-right:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>Редактировать</button>
+        <button class="btn" style="color:var(--red)" data-action="open-loss-modal" data-id="${p.id}" data-stop>Проиграть</button>
+        <button class="btn danger" style="color:var(--red)" data-action="delete-project" data-id="${p.id}" data-stop>Удалить</button>
       </div>
       ${getLinkedItemsHTML(p.id)}
     </div>
@@ -7450,17 +7405,14 @@ function projectHTML(p) {
 /* ── Контактные лица проекта ── */
 function renderProjContacts(p) {
   const contacts = p.contacts || [];
-  if (!contacts.length) return '';
   let html = '<div class="proj-contacts-wrap" data-stop>';
+  html += '<div class="proj-contacts-title"><span>Контактные лица (' + contacts.length + ')</span></div>';
   contacts.forEach(function(ct, i) {
     const phones = [ct.phone, ct.phone2].filter(function(x) { return x && x.trim(); });
-    const initials = (ct.name || '??').split(/\s+/).map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase();
-    html += '<div class="proj-contact-card' + (ct.isLpr ? ' is-lpr' : '') + '" style="display:flex;align-items:center;gap:8px;">';
-    html += '<div style="width:30px;height:30px;border-radius:50%;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:var(--text-2xs);font-weight:600;color:var(--accent);flex-shrink:0;">' + initials + '</div>';
-    html += '<div style="flex:1;min-width:0;">';
+    html += '<div class="proj-contact-card' + (ct.isLpr ? ' is-lpr' : '') + '">';
     html += '<div><span class="proj-contact-name">' + esc(ct.name || '') + '</span>';
-    if (ct.isLpr) html += ' <span style="font-size:8px;padding:1px 5px;background:var(--green-l);color:var(--green);border-radius:var(--radius-s);font-weight:600;">ЛПР</span>';
-    if (ct.position) html += '<span class="proj-contact-position"> · ' + esc(ct.position) + '</span>';
+    if (ct.position) html += '<span class="proj-contact-position">' + esc(ct.position) + '</span>';
+    if (ct.isLpr) html += ' <span style="font-size:var(--text-2xs);color:var(--green);font-weight:600;">⭐ ЛПР</span>';
     html += '</div>';
     if (phones.length || ct.email) {
       html += '<div class="proj-contact-row">';
@@ -7470,10 +7422,11 @@ function renderProjContacts(p) {
       if (ct.email) html += '<a href="mailto:' + esc(ct.email) + '">' + esc(ct.email) + '</a>';
       html += '</div>';
     }
-    html += '</div>';
+    html += '<button class="proj-contact-edit" data-action="edit-proj-contact" data-id="' + p.id + '" data-idx="' + i + '" title="Редактировать">✎</button>';
     html += '<button class="proj-contact-del" data-action="del-proj-contact" data-id="' + p.id + '" data-idx="' + i + '" title="Удалить контакт">✕</button>';
     html += '</div>';
   });
+  html += '<button class="proj-contact-add-btn" data-action="add-proj-contact-form" data-id="' + p.id + '">+ Добавить контакт</button>';
   html += '</div>';
   return html;
 }
@@ -8255,6 +8208,88 @@ function saveProjContact(projId) {
   toast('Контакт добавлен');
 }
 
+/* ── Редактирование контакта ── */
+function editProjContact(projId, idx) {
+  var p = projects.find(function(x) { return x.id === projId; });
+  if (!p || !p.contacts || !p.contacts[idx]) return;
+  var ct = p.contacts[idx];
+  var card = document.querySelectorAll('.project-card[data-id="' + projId + '"] .proj-contact-card')[idx];
+  if (!card) return;
+  var form = document.createElement('div');
+  form.className = 'proj-contact-edit-form';
+  form.setAttribute('data-stop', '');
+  form.innerHTML =
+    '<input id="pce-name-' + projId + '-' + idx + '" placeholder="ФИО" value="' + esc(ct.name || '') + '" style="grid-column:1/-1;">' +
+    '<input id="pce-pos-' + projId + '-' + idx + '" placeholder="Должность" value="' + esc(ct.position || '') + '">' +
+    '<input id="pce-phone-' + projId + '-' + idx + '" placeholder="Телефон" value="' + esc(ct.phone || '') + '">' +
+    '<input id="pce-email-' + projId + '-' + idx + '" placeholder="Email" value="' + esc(ct.email || '') + '" style="grid-column:1/-1;">' +
+    '<div class="form-actions">' +
+      '<label style="font-size:var(--text-2xs);display:flex;align-items:center;gap:4px;margin-right:auto;cursor:pointer;">' +
+        '<input type="checkbox" id="pce-lpr-' + projId + '-' + idx + '"' + (ct.isLpr ? ' checked' : '') + '> ЛПР' +
+      '</label>' +
+      '<button class="btn" data-action="cancel-edit-proj-contact" data-stop>Отмена</button>' +
+      '<button class="btn btn-primary" data-action="save-edit-proj-contact" data-id="' + projId + '" data-idx="' + idx + '" data-stop>Сохранить</button>' +
+    '</div>';
+  card.replaceWith(form);
+  document.getElementById('pce-name-' + projId + '-' + idx).focus();
+}
+
+function saveEditProjContact(projId, idx) {
+  var p = projects.find(function(x) { return x.id === projId; });
+  if (!p || !p.contacts || !p.contacts[idx]) return;
+  var pfx = 'pce-';
+  var name  = (document.getElementById(pfx + 'name-' + projId + '-' + idx) || {}).value || '';
+  var pos   = (document.getElementById(pfx + 'pos-' + projId + '-' + idx) || {}).value || '';
+  var phone = (document.getElementById(pfx + 'phone-' + projId + '-' + idx) || {}).value || '';
+  var email = (document.getElementById(pfx + 'email-' + projId + '-' + idx) || {}).value || '';
+  var isLpr = (document.getElementById(pfx + 'lpr-' + projId + '-' + idx) || {}).checked || false;
+  if (!name.trim()) { toast('Укажите ФИО', 'warning'); return; }
+  p.contacts[idx].name = name.trim();
+  p.contacts[idx].position = pos.trim();
+  p.contacts[idx].phone = phone.trim();
+  p.contacts[idx].email = email.trim();
+  p.contacts[idx].isLpr = isLpr;
+  LS.set('wdb_projects', projects);
+  renderProjects();
+  toast('Контакт обновлён');
+}
+
+/* ── Развёрнутый комментарий (overlay) ── */
+var _commentOverlayId = null;
+
+function openCommentOverlay(projId) {
+  var p = projects.find(function(x) { return x.id === projId; });
+  if (!p) return;
+  _commentOverlayId = projId;
+  var overlay = document.getElementById('comment-overlay');
+  var textarea = document.getElementById('comment-overlay-textarea');
+  var meta = document.getElementById('comment-overlay-meta');
+  var title = document.getElementById('comment-overlay-title');
+  title.textContent = 'Последний контакт — ' + (p.name || '');
+  textarea.value = p.lastContact || '';
+  meta.textContent = p.lastContactDate ? 'обновлено ' + fmtDate(p.lastContactDate) : '';
+  overlay.classList.add('open');
+  setTimeout(function() { textarea.focus(); }, 100);
+}
+
+function closeCommentOverlay() {
+  document.getElementById('comment-overlay').classList.remove('open');
+  _commentOverlayId = null;
+}
+
+function saveCommentOverlay() {
+  if (!_commentOverlayId) return;
+  var p = projects.find(function(x) { return x.id === _commentOverlayId; });
+  if (!p) return;
+  var val = document.getElementById('comment-overlay-textarea').value;
+  p.lastContact = val;
+  p.lastContactDate = new Date().toISOString().slice(0, 10);
+  LS.set('wdb_projects', projects);
+  closeCommentOverlay();
+  renderProjects();
+  toast('Комментарий сохранён');
+}
+
 function renderProspects() {
   const el = document.getElementById('prospect-list');
   const badge = document.getElementById('prospect-count');
@@ -8756,18 +8791,19 @@ function renderCallResults() {
 renderCallResults();
 
 /* ── ПОПАП ПРИЧИНЫ НЕУСПЕХА ── */
-function openFailReason(el, e) {
+function openFailReason(e) {
   e.stopPropagation();
   e.preventDefault();
   const popup = document.getElementById('fail-reason-popup');
 
+  // Если уже открыт — закрываем
   if (popup.classList.contains('open')) {
     popup.classList.remove('open');
     return;
   }
 
-  /* el — это кнопка [data-action="open-fail-reason"], не document */
-  const rect = el.getBoundingClientRect();
+  const btn = e.currentTarget;
+  const rect = btn.getBoundingClientRect(); // координаты относительно viewport
 
   // Показываем за экраном чтобы измерить размер
   popup.style.top  = '-9999px';
@@ -10076,6 +10112,23 @@ window.addEventListener('appinstalled', function() {
   <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Нет нужного"><span class="icon" style="color:var(--text-mute)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>Нет нужного</div>
   <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Отказ"><span class="icon" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Отказ</div>
   <div class="fail-reason-opt" data-action="pick-fail-reason" data-value="Другое"><span class="icon" style="color:var(--text-dim)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>Другое</div>
+</div>
+
+<!-- ══ COMMENT EXPAND OVERLAY ══ -->
+<div class="comment-overlay" id="comment-overlay" data-action="close-comment-overlay-bg">
+  <div class="comment-overlay-panel">
+    <div class="comment-overlay-header">
+      <h3 id="comment-overlay-title">Последний контакт</h3>
+      <button class="modal-close" data-action="close-comment-overlay" data-stop>✕</button>
+    </div>
+    <div class="comment-overlay-body">
+      <textarea id="comment-overlay-textarea" placeholder="Что обсудили, договорённости, настроение клиента..."></textarea>
+    </div>
+    <div class="comment-overlay-footer">
+      <span class="meta" id="comment-overlay-meta"></span>
+      <button class="btn btn-primary" data-action="save-comment-overlay" data-stop>Сохранить</button>
+    </div>
+  </div>
 </div>
 
 <!-- ══ АНИМАЦИИ: SCROLL PROGRESS + STAGGER + MICRO-INTERACTIONS ══ -->
