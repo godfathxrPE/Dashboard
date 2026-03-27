@@ -6610,6 +6610,59 @@ function safeRender(renderFn, containerSelector, label) {
 }
 
 /* ═══════════════════════════════════════════
+   DATA VALIDATORS
+   Проверяют структуру данных при загрузке.
+   Если массив битый — очищают плохие записи,
+   но НЕ удаляют всё. Принцип: спаси что можно.
+   Паттерн: Salesforce Validation Rules — контракт полей.
+═══════════════════════════════════════════ */
+const Validators = {
+  /* Задача обязана иметь id и text */
+  task: function(t) {
+    return t && typeof t === 'object'
+      && typeof t.id === 'string' && t.id.length > 0
+      && typeof t.text === 'string' && t.text.length > 0
+      && ['now','next','wait','done'].includes(t.lane || 'now');
+  },
+  /* Проект обязан иметь id и name */
+  project: function(p) {
+    return p && typeof p === 'object'
+      && typeof p.id === 'string' && p.id.length > 0
+      && typeof p.name === 'string' && p.name.length > 0;
+  },
+  /* Звонок обязан иметь id и company */
+  call: function(c) {
+    return c && typeof c === 'object'
+      && typeof c.id === 'string' && c.id.length > 0
+      && typeof c.company === 'string';
+  },
+  /* Встреча обязана иметь id */
+  meeting: function(m) {
+    return m && typeof m === 'object'
+      && typeof m.id === 'string' && m.id.length > 0;
+  }
+};
+
+/* Безопасная загрузка массива с валидацией */
+function loadValidated(key, validator, fallback) {
+  var raw = LS.get(key, fallback);
+  if (!Array.isArray(raw)) {
+    console.warn('[Validator] ' + key + ' is not an array, using fallback');
+    return fallback;
+  }
+  var valid = raw.filter(function(item, i) {
+    var ok = validator(item);
+    if (!ok) console.warn('[Validator] ' + key + '[' + i + '] invalid, skipping:', item);
+    return ok;
+  });
+  if (valid.length !== raw.length) {
+    console.warn('[Validator] ' + key + ': removed ' + (raw.length - valid.length) + ' invalid items');
+    LS.set(key, valid);
+  }
+  return valid;
+}
+
+/* ═══════════════════════════════════════════
    STUB REGISTRY — заглушки для функций,
    определённых в поздних script-блоках.
    Паттерн: Progressive Enhancement Stubs.
@@ -6844,9 +6897,9 @@ document.addEventListener('focusout', (e) => {
 /* ═══════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════ */
-let tasks    = LS.get('wdb_tasks',    []);
-let projects = LS.get('wdb_projects', []);
-let meetings = LS.get('wdb_meetings', []);
+let tasks    = loadValidated('wdb_tasks',    Validators.task,    []);
+let projects = loadValidated('wdb_projects', Validators.project, []);
+let meetings = loadValidated('wdb_meetings', Validators.meeting, []);
 let comms    = LS.get('wdb_comms',    []);
 
 /* ═══════════════════════════════════════════
@@ -7018,6 +7071,7 @@ function toggleTask(id) {
   if(!t) return;
   let wasDone = (t.lane === 'done');
   if (t.lane === 'done') { t.lane = 'now'; delete t.doneAt; } else { t.lane = 'done'; t.doneAt = Date.now(); }
+  t._updatedAt = Date.now();
   LS.set('wdb_tasks', tasks);
   _lastMovedTaskId = id;
   renderTasks();
@@ -7069,7 +7123,7 @@ function quickAdd(lane, input) {
   const text = input.value.trim();
   if(!text) return;
   let newId = uid();
-  tasks.push({ id: newId, text, lane, project:'', deadline:'' });
+  tasks.push({ id: newId, text, lane, project:'', deadline:'', _updatedAt: Date.now() });
   LS.set('wdb_tasks', tasks);
   input.value = '';
   _lastMovedTaskId = newId;
@@ -7130,10 +7184,10 @@ function saveTask() {
   let taskId = id;
   if(id) {
     const t = tasks.find(t => t.id === id);
-    if(t) Object.assign(t, {text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind});
+    if(t) Object.assign(t, {text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind, _updatedAt: Date.now()});
   } else {
     taskId = uid();
-    tasks.push({ id: taskId, text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind });
+    tasks.push({ id: taskId, text, lane, projectId: projId, project: projName, deadline: date, time: time, priority: priority, remind: remind, _updatedAt: Date.now() });
   }
   LS.set('wdb_tasks', tasks);
   closeModal('task-modal');
@@ -7151,7 +7205,7 @@ function onDrop(e, lane) {
   e.currentTarget.classList.remove('drag-over');
   if(!draggingId) return;
   const t = tasks.find(t => t.id === draggingId);
-  if(t) { t.lane = lane; LS.set('wdb_tasks', tasks); _lastMovedTaskId = t.id; renderTasks(); }
+  if(t) { t.lane = lane; t._updatedAt = Date.now(); LS.set('wdb_tasks', tasks); _lastMovedTaskId = t.id; renderTasks(); }
   draggingId = null;
 }
 
@@ -7159,7 +7213,7 @@ function onDrop(e, lane) {
 function ctxMoveTo(lane) {
   if(!ctxTaskId) return;
   const t = tasks.find(x => x.id === ctxTaskId);
-  if(t) { t.lane = lane; LS.set('wdb_tasks', tasks); _lastMovedTaskId = t.id; renderTasks(); }
+  if(t) { t.lane = lane; t._updatedAt = Date.now(); LS.set('wdb_tasks', tasks); _lastMovedTaskId = t.id; renderTasks(); }
   closeCtx();
 }
 function ctxEdit() {
@@ -7263,6 +7317,7 @@ function saveLossModal() {
   p.lossReason = reason;
   p.lossDetail = detail;
   p.lostDate = new Date().toISOString().split('T')[0];
+  p._updatedAt = Date.now();
   LS.set('wdb_projects', projects);
   if (expandedProject === id) expandedProject = null;
   closeLossModal();
@@ -7276,6 +7331,7 @@ function saveLastContact(id, text) {
   if (!p) return;
   p.lastContact = text;
   p.lastContactDate = new Date().toISOString().split('T')[0];
+  p._updatedAt = Date.now();
   LS.set('wdb_projects', projects);
   const metaEl = document.getElementById('plc-meta-' + id);
   if (metaEl) metaEl.textContent = 'обновлено ' + fmtDate(p.lastContactDate);
@@ -7285,6 +7341,7 @@ function saveNextStep(id, text) {
   const p = projects.find(x => x.id === id);
   if (!p) return;
   p.nextStep = text;
+  p._updatedAt = Date.now();
   LS.set('wdb_projects', projects);
 }
 
@@ -7538,6 +7595,7 @@ function setProjectStage(id, stage) {
   if(p) {
     let oldStage = p.stage;
     p.stage = stage;
+    p._updatedAt = Date.now();
     LS.set('wdb_projects', projects);
     renderProjects();
     renderFunnel();
@@ -7595,7 +7653,7 @@ function projFunnelDrop(e, projId, stageIdx) {
 
 function updateProjField(id, field, value) {
   const p = projects.find(x => x.id === id);
-  if(p) { p[field] = value; LS.set('wdb_projects', projects); }
+  if(p) { p[field] = value; p._updatedAt = Date.now(); LS.set('wdb_projects', projects); }
 }
 
 function restoreProject(id) {
@@ -7603,6 +7661,7 @@ function restoreProject(id) {
   if (!p) return;
   p.stage = 0;
   delete p.lossReason; delete p.lostDate; delete p.lossDetail;
+  p._updatedAt = Date.now();
   LS.set('wdb_projects', projects);
   renderProjects();
 }
@@ -7674,6 +7733,7 @@ function saveProject() {
     }
   }
   if (!data.name) return;
+  data._updatedAt = Date.now();
   if (id) {
     const p = projects.find(x => x.id === id);
     if (p) Object.assign(p, data);
@@ -7777,6 +7837,7 @@ function saveMeeting() {
     who:   document.getElementById('meeting-who-in').value.trim(),
   };
   if(!data.title) return;
+  data._updatedAt = Date.now();
   if(id) {
     const m = meetings.find(x => x.id === id);
     if(m) Object.assign(m, data);
@@ -8491,7 +8552,7 @@ document.addEventListener('click', e => {
 /* ═══════════════════════════════════════════
    ЗВОНКИ
 ═══════════════════════════════════════════ */
-let calls = LS.get('wdb_calls', []);
+let calls = loadValidated('wdb_calls', Validators.call, []);
 let editCallId = null;
 
 function renderCalls() {
@@ -8578,6 +8639,7 @@ function saveCall() {
     agreements: document.getElementById('cf-agreements').value.trim(),
     nextStep:   document.getElementById('cf-next').value.trim(),
   };
+  data._updatedAt = Date.now();
   if (editCallId) {
     const c = calls.find(x => x.id === editCallId);
     if (c) Object.assign(c, data);
@@ -9773,9 +9835,89 @@ function setSyncStatus(state, text) {
   if (lbl) lbl.textContent = text;
 }
 
+/* ═══════════════════════════════════════════
+   RECORD-LEVEL MERGE
+   Паттерн: Salesforce/HubSpot per-record conflict resolution.
+   Вместо «кто последний — тот прав» для всего массива,
+   мержим по-записно: для каждого id берём более новую версию.
+   Новые записи с обеих сторон сохраняются.
+═══════════════════════════════════════════ */
+function mergeArrays(local, incoming) {
+  if (!Array.isArray(local) || !Array.isArray(incoming)) return incoming;
+  if (!local.length) return incoming;
+  if (!incoming.length) return local;
+  if (!local[0] || !local[0].id || !incoming[0] || !incoming[0].id) return incoming;
+
+  var localMap = {};
+  local.forEach(function(item) { localMap[item.id] = item; });
+
+  var incomingMap = {};
+  incoming.forEach(function(item) { incomingMap[item.id] = item; });
+
+  /* Собираем все уникальные id */
+  var allIds = {};
+  local.forEach(function(item) { allIds[item.id] = true; });
+  incoming.forEach(function(item) { allIds[item.id] = true; });
+
+  var merged = [];
+  Object.keys(allIds).forEach(function(id) {
+    var l = localMap[id];
+    var r = incomingMap[id];
+    if (!l) { merged.push(r); return; }  /* новое из облака */
+    if (!r) { merged.push(l); return; }  /* только локальное */
+    /* Оба есть — берём тот, у которого свежее _updatedAt */
+    var lt = l._updatedAt || 0;
+    var rt = r._updatedAt || 0;
+    merged.push(rt >= lt ? r : l);
+  });
+
+  return merged;
+}
+
+/* Ключи для которых работает record-level merge */
+var MERGE_KEYS = ['wdb_tasks', 'wdb_projects', 'wdb_calls', 'wdb_meetings'];
+
 /* ── Применить входящие данные к UI ── */
 function sbApplyIncoming(key, incoming) {
   suppressSync = true;
+
+  /* ── AUTO-BACKUP: сохраняем предыдущую версию перед перезаписью ── */
+  try {
+    var prev = localStorage.getItem(key);
+    if (prev && prev !== 'null' && prev !== '[]') {
+      localStorage.setItem(key + '__backup', prev);
+      localStorage.setItem(key + '__backup_ts', new Date().toISOString());
+    }
+  } catch(e) { /* quota exceeded — не критично */ }
+
+  /* ── ВАЛИДАЦИЯ ВХОДЯЩИХ: фильтруем битые записи из облака ── */
+  if (Array.isArray(incoming)) {
+    var validator = {
+      'wdb_tasks': Validators.task,
+      'wdb_projects': Validators.project,
+      'wdb_calls': Validators.call,
+      'wdb_meetings': Validators.meeting
+    }[key];
+    if (validator) {
+      var before = incoming.length;
+      incoming = incoming.filter(validator);
+      if (incoming.length !== before) {
+        console.warn('[Sync] ' + key + ': filtered out ' +
+          (before - incoming.length) + ' invalid items from cloud');
+      }
+    }
+  }
+
+  /* ── RECORD-LEVEL MERGE: мержим по id вместо полной перезаписи ── */
+  if (MERGE_KEYS.indexOf(key) !== -1 && Array.isArray(incoming)) {
+    try {
+      var local = JSON.parse(localStorage.getItem(key));
+      if (Array.isArray(local) && local.length > 0) {
+        incoming = mergeArrays(local, incoming);
+      }
+    } catch(e) { /* localStorage read failed — используем incoming as-is */ }
+  }
+
   localStorage.setItem(key, JSON.stringify(incoming));
   try {
     if (key === 'wdb_tasks')    { tasks    = incoming; safeRender(renderTasks, '#tasks-now', 'Задачи (sync)'); }
@@ -9910,15 +10052,74 @@ async function sbSyncInit(user) {
   sbSubscribe();
 }
 
-/* ── Перехватываем LS.set — пишем в Supabase параллельно ── */
+/* ── Восстановление из backup ──
+   Вызов: restoreBackup('wdb_tasks') — из консоли или Command Palette.
+   Откатывает к последнему snapshot перед sync-перезаписью. */
+function restoreBackup(key) {
+  var backup = localStorage.getItem(key + '__backup');
+  var ts = localStorage.getItem(key + '__backup_ts');
+  if (!backup) {
+    toast('Нет backup для ' + key, 'error');
+    return false;
+  }
+  if (!confirm('Восстановить ' + key + ' из backup от ' + (ts || '?') + '?')) return false;
+  localStorage.setItem(key, backup);
+  localStorage.setItem(key + '__ts', new Date().toISOString());
+  toast('Восстановлено из backup. Перезагрузка...', 'success');
+  setTimeout(function() { location.reload(); }, 600);
+  return true;
+}
+
+/* ── Перехватываем LS.set — безопасная запись + debounced Supabase sync ──
+   Fix 6: 1) try/catch для QuotaExceededError
+          2) debounce 300ms для Supabase writes
+          3) Уведомление если localStorage полон */
 const _lsSetOrigSb = LS.set.bind(LS);
+const _sbWriteTimers = {};
+
 LS.set = function(key, value) {
-  _lsSetOrigSb(key, value);
+  /* 1. Безопасная запись в localStorage */
+  try {
+    _lsSetOrigSb(key, value);
+  } catch (err) {
+    if (err.name === 'QuotaExceededError' || err.code === 22) {
+      console.error('[LS] Quota exceeded for key:', key);
+      toast('Хранилище переполнено! Удали старые данные.', 'error');
+      /* Попытка освободить место — удаляем старые backup'ы */
+      try {
+        Object.keys(localStorage).forEach(function(k) {
+          if (k.endsWith('__backup') || k.endsWith('__backup_ts')) {
+            localStorage.removeItem(k);
+          }
+        });
+        _lsSetOrigSb(key, value);
+      } catch (e2) {
+        console.error('[LS] Still full after cleanup:', e2);
+      }
+    } else {
+      console.error('[LS] Write error:', err);
+    }
+    return;
+  }
+
+  /* 2. Skip sync для подавленных/локальных ключей */
   if (suppressSync) return;
   if (!shouldSync(key)) return;
-  /* Сохраняем локальный timestamp для merge-логики в sbLoadAll */
-  localStorage.setItem(key + '__ts', new Date().toISOString());
-  if (sbUserId) sbWrite(key, value);
+
+  /* 3. Timestamp для merge-логики */
+  try {
+    localStorage.setItem(key + '__ts', new Date().toISOString());
+  } catch(e) { /* не критично */ }
+
+  /* 4. Debounced Supabase write (300ms) —
+     при быстрых кликах (KPI +/-, drag-drop) в облако
+     уходит одна запись вместо десяти */
+  if (!sbUserId) return;
+  if (_sbWriteTimers[key]) clearTimeout(_sbWriteTimers[key]);
+  _sbWriteTimers[key] = setTimeout(function() {
+    delete _sbWriteTimers[key];
+    sbWrite(key, value);
+  }, 300);
 };
 </script>
 <!-- ══ PWA INSTALL ══ -->
