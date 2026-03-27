@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="./manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 <!-- Применяем тему до рендера — убирает flash дефолтной темы -->
 <script>
   (function(){
-    let t = localStorage.getItem('dashboard-theme') || 't-claude';
+    let t = localStorage.getItem('wdb_theme') || localStorage.getItem('dashboard-theme') || 't-claude';
     document.documentElement.classList.add(t);
   })();
 </script>
@@ -1201,7 +1201,6 @@
     margin-bottom: 4px;
     cursor: pointer;
     transition: background 0.15s, transform 0.15s;
-    group: true;
   }
   .task-item:hover { background: var(--surface2); }
   .task-item:active { transform: scale(0.99); }
@@ -1501,7 +1500,7 @@
     transition: border-color 0.15s, box-shadow 0.15s;
   }
   .project-field input:focus, .project-field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-l); }
-  .project-field select option { background: #fff; color: #1a1916; }
+  .project-field select option { background: var(--surface, #fff); color: var(--text, #1a1916); }
 
   .funnel-track {
     display: flex;
@@ -1715,7 +1714,7 @@
     outline: none;
     cursor: pointer;
   }
-  .modal-select option { background: #fff; color: #1a1916; }
+  .modal-select option { background: var(--surface, #fff); color: var(--text, #1a1916); }
   .modal-footer {
     display: flex;
     gap: 8px;
@@ -6579,6 +6578,38 @@ const LS = {
 };
 
 /* ═══════════════════════════════════════════
+   SAFE RENDER — Error Boundary для vanilla JS
+   Паттерн: React Error Boundaries, адаптирован.
+   Каждый рендер оборачивается — если упал,
+   показываем fallback вместо белого экрана.
+═══════════════════════════════════════════ */
+function safeRender(renderFn, containerSelector, label) {
+  try {
+    renderFn();
+  } catch (err) {
+    console.error('[SafeRender] ' + label + ':', err);
+    const el = typeof containerSelector === 'string'
+      ? document.querySelector(containerSelector)
+      : containerSelector;
+    if (el) {
+      el.innerHTML =
+        '<div style="padding:16px;text-align:center;color:var(--red);font-size:var(--text-sm);">' +
+        '⚠️ Ошибка отображения: ' + esc(label) + '<br>' +
+        '<span style="color:var(--text-mute);font-size:var(--text-xs);">' +
+        esc(err.message) + '</span><br>' +
+        '<button onclick="location.reload()" style="margin-top:8px;padding:4px 12px;' +
+        'border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface);' +
+        'color:var(--text);cursor:pointer;font-family:inherit;font-size:var(--text-xs);">' +
+        'Перезагрузить</button></div>';
+    }
+    // Уведомляем пользователя, но НЕ ломаем всё приложение
+    if (typeof toast === 'function') {
+      toast('Ошибка в блоке: ' + label, 'error');
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════
    STUB REGISTRY — заглушки для функций,
    определённых в поздних script-блоках.
    Паттерн: Progressive Enhancement Stubs.
@@ -6875,6 +6906,14 @@ const FUNNEL = [
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
 
+/* ── Week Number Utility ──
+   Единая формула вычисления номера ISO-недели.
+   Используется в heatmap, funnel, plan/fact, clock и других виджетах. */
+function getWeekNum(date) {
+  const d = date || new Date();
+  return Math.ceil((((d - new Date(d.getFullYear(), 0, 1)) / 86400000) + 1) / 7);
+}
+
 function fmtDate(iso) {
   if(!iso) return '';
   const d = new Date(iso + 'T00:00:00');
@@ -6961,7 +7000,7 @@ function taskHTML(t) {
     : '';
   return `
     <div class="task-card-item task-item ${done?'is-done':''}${prioClass}" data-id="${t.id}" draggable="true"
-         data-action="toggle-task" data-id="${t.id}">
+         data-action="toggle-task">
       <div class="task-check">${done?'✓':''}</div>
       <div style="flex:1;min-width:0">
         <div class="task-text">${esc(t.text)}</div>
@@ -8856,7 +8895,7 @@ const HM_HOURS  = [9,10,11,12,13,14,15,16,17];
 function getHeatmapKey(weekOffset) {
   // Ключ по номеру недели
   const now = new Date();
-  const weekNum = Math.ceil((((now - new Date(now.getFullYear(),0,1))/86400000)+1)/7);
+  const weekNum = getWeekNum(now);
   return `wdb_heatmap_${now.getFullYear()}_w${weekNum + (weekOffset||0)}`;
 }
 
@@ -8925,7 +8964,7 @@ renderHeatmap();
 ═══════════════════════════════════════════ */
 function getFunnelKey() {
   const now = new Date();
-  const weekNum = Math.ceil((((now - new Date(now.getFullYear(),0,1))/86400000)+1)/7);
+  const weekNum = getWeekNum(now);
   return `wdb_funnel_${now.getFullYear()}_w${weekNum}`;
 }
 function getFunnelData() {
@@ -8972,7 +9011,7 @@ function getAutoMetrics() {
 function renderFunnel() {
   const fn = getFunnelData();
   const now = new Date();
-  const weekNum = Math.ceil((((now - new Date(now.getFullYear(),0,1))/86400000)+1)/7);
+  const weekNum = getWeekNum(now);
   const lbl = document.getElementById('wfn-week-label');
   if (lbl) lbl.textContent = `Неделя ${weekNum}`;
 
@@ -9082,7 +9121,7 @@ function tickClock() {
   const d = document.getElementById('w-date');
   const w = document.getElementById('w-week');
   if (d) d.textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
-  const weekNum = Math.ceil((((now - new Date(now.getFullYear(),0,1))/86400000)+1)/7);
+  const weekNum = getWeekNum(now);
   if (w) w.textContent = 'Неделя ' + weekNum;
 }
 setInterval(tickClock, 1000);
@@ -9316,7 +9355,8 @@ function savePFPlans() {
     kp:    parseInt(document.getElementById('wpf-plan-kp')?.value)    || 3,
     deals: parseInt(document.getElementById('wpf-plan-deals')?.value) || 1,
   };
-  LS.get; // avoid circular
+  /* Записываем напрямую в localStorage (минуя LS.set → Supabase sync),
+     т.к. plans — локальная настройка, не требующая облачной синхронизации */
   localStorage.setItem('wdb_pf_plans_' + getPFWeekKey(), JSON.stringify(data));
 }
 
@@ -9327,7 +9367,7 @@ function renderPlanFact() {
 
   // Неделя
   const d = new Date();
-  const weekNum = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
+  const weekNum = getWeekNum(d);
   if (wlEl) wlEl.textContent = 'Неделя ' + weekNum;
 
   const plans = LS.get('wdb_pf_plans_' + getPFWeekKey(), { calls: 200, meets: 5, kp: 3, deals: 1 });
@@ -9338,8 +9378,7 @@ function renderPlanFact() {
   const factMeets = auto.autoMeetings;
 
   // КП/сделки: максимум из авто (проекты) и ручного (воронка)
-  const weekNum2 = Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+1)/7);
-  const funnelKey = `wdb_funnel_${d.getFullYear()}_w${weekNum2}`;
+  const funnelKey = `wdb_funnel_${d.getFullYear()}_w${weekNum}`;
   const funnelManual = LS.get(funnelKey, { meetings: 0, kp: 0, deals: 0 });
   const factKP    = Math.max(auto.autoKP,    funnelManual.kp    || 0);
   const factDeals = Math.max(auto.autoDeals, funnelManual.deals || 0);
@@ -9739,12 +9778,12 @@ function sbApplyIncoming(key, incoming) {
   suppressSync = true;
   localStorage.setItem(key, JSON.stringify(incoming));
   try {
-    if (key === 'wdb_tasks')    { tasks    = incoming; renderTasks(); }
-    if (key === 'wdb_kpi')      { kpiData  = incoming; renderKPI(); }
-    if (key === 'wdb_projects') { projects = incoming; renderProjects(); }
-    if (key === 'wdb_meetings') { meetings = incoming; renderMeetings(); }
-    if (key === 'wdb_comms')    { comms    = incoming; renderComms(); }
-    if (key === 'wdb_calls')    { calls    = incoming; renderCalls(); }
+    if (key === 'wdb_tasks')    { tasks    = incoming; safeRender(renderTasks, '#tasks-now', 'Задачи (sync)'); }
+    if (key === 'wdb_kpi')      { kpiData  = incoming; safeRender(renderKPI, '.kpi-block', 'KPI (sync)'); }
+    if (key === 'wdb_projects') { projects = incoming; safeRender(renderProjects, '#projects-list', 'Проекты (sync)'); }
+    if (key === 'wdb_meetings') { meetings = incoming; safeRender(renderMeetings, '#meetings-list', 'Встречи (sync)'); }
+    if (key === 'wdb_comms')    { comms    = incoming; safeRender(renderComms, '#comms-list', 'Коммуникации (sync)'); }
+    if (key === 'wdb_calls')    { calls    = incoming; safeRender(renderCalls, '#calls-list', 'Звонки (sync)'); }
     if (key === 'wdb_notes') {
       const na = document.getElementById('notes-area');
       if (na) na.value = incoming || '';
@@ -9767,7 +9806,9 @@ function sbApplyIncoming(key, incoming) {
     }
     renderPlanFact();
     updateSparklines();
-  } catch(e) {}
+  } catch(e) {
+    console.error('[sbApplyIncoming] Unexpected error for key=' + key + ':', e);
+  }
   suppressSync = false;
 }
 
@@ -9796,7 +9837,7 @@ async function sbLoadAll() {
   setSyncStatus('syncing', 'загрузка...');
   const { data, error } = await _sb
     .from('dashboard_sync')
-    .select('id, data')
+    .select('id, data, updated_at')
     .eq('user_id', sbUserId);
   if (error) {
     console.warn('Supabase load error:', error.message);
@@ -9804,17 +9845,28 @@ async function sbLoadAll() {
     toast('Ошибка загрузки из облака', 'error');
     return;
   }
-  // Мержим: облако приоритетнее если локально пусто
+  /* Мержим с учётом timestamp:
+     - Если локально пусто → берём облако
+     - Если облако новее локального → берём облако
+     - Если локальное новее или нет timestamp → заливаем локальное */
   (data || []).forEach(row => {
     const key      = row.id;
     const incoming = row.data;
+    const cloudTs  = row.updated_at || '';
     if (!shouldSync(key)) return;
     const local = (() => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } })();
     const localEmpty = !local || (Array.isArray(local) && local.length === 0);
+    const localTs = localStorage.getItem(key + '__ts') || '';
     if (localEmpty) {
+      /* Локально пусто — берём облако */
       sbApplyIncoming(key, incoming);
+      localStorage.setItem(key + '__ts', cloudTs);
+    } else if (cloudTs && localTs && cloudTs > localTs) {
+      /* Облако новее — берём облако */
+      sbApplyIncoming(key, incoming);
+      localStorage.setItem(key + '__ts', cloudTs);
     } else {
-      // Локальные данные есть — заливаем в облако
+      /* Локальные данные новее или нет timestamp — заливаем в облако */
       sbWrite(key, local);
     }
   });
@@ -9864,6 +9916,8 @@ LS.set = function(key, value) {
   _lsSetOrigSb(key, value);
   if (suppressSync) return;
   if (!shouldSync(key)) return;
+  /* Сохраняем локальный timestamp для merge-логики в sbLoadAll */
+  localStorage.setItem(key + '__ts', new Date().toISOString());
   if (sbUserId) sbWrite(key, value);
 };
 </script>
@@ -10064,7 +10118,9 @@ window.addEventListener('appinstalled', function() {
   window.screenHide = function() {
     let screen = document.getElementById('screen');
     if (screen) screen.classList.add('hidden');
-    setTimeout(killCanvas, 1500);
+    /* Останавливаем RAF сразу — нет смысла рендерить canvas
+       пока экран fade-out'ится (opacity → 0, visibility → hidden) */
+    killCanvas();
   };
 
   /* Переключает splash → auth form */
@@ -10239,7 +10295,12 @@ window.deleteTask = function(id) {
   let el = document.querySelector('.task-card-item[data-id="' + id + '"]');
   if (el) {
     el.classList.add('task-removing');
-    setTimeout(function() { _origDeleteTask(id); }, 280);
+    setTimeout(function() {
+      /* Удаляем напрямую, минуя оригинал с его вторичной анимацией */
+      tasks = tasks.filter(function(t) { return t.id !== id; });
+      LS.set('wdb_tasks', tasks);
+      renderTasks();
+    }, 280);
   } else {
     _origDeleteTask(id);
   }
@@ -10249,19 +10310,28 @@ let _origCtxDelete = ctxDelete;
 window.ctxDelete = function() {
   if (!ctxTaskId) return;
   let id = ctxTaskId;
+  let deleted = tasks.find(function(t) { return t.id === id; });
+  if (!deleted) return;
+  let idx = tasks.indexOf(deleted);
   let el = document.querySelector('.task-card-item[data-id="' + id + '"]');
   closeCtx();
-  if (el) {
-    el.classList.add('task-removing');
-    setTimeout(function() {
-      tasks = tasks.filter(function(t) { return t.id !== id; });
-      LS.set('wdb_tasks', tasks);
-      renderTasks();
-    }, 280);
-  } else {
+
+  function doDelete() {
     tasks = tasks.filter(function(t) { return t.id !== id; });
     LS.set('wdb_tasks', tasks);
     renderTasks();
+    toastUndo('Задача удалена', function() {
+      tasks.splice(idx, 0, deleted);
+      LS.set('wdb_tasks', tasks);
+      renderTasks();
+    });
+  }
+
+  if (el) {
+    el.classList.add('task-removing');
+    setTimeout(doDelete, 280);
+  } else {
+    doDelete();
   }
 };
 
@@ -11057,16 +11127,16 @@ function toastConfirm(message, onConfirm) {
     '<div class="toast-body">' +
       '<div class="toast-msg">' + message + '</div>' +
       '<div style="display:flex;gap:6px;margin-top:8px;">' +
-        '<button class="btn btn-primary" style="font-size:var(--text-sm);padding:4px 12px;" id="tc-yes">Да</button>' +
-        '<button class="btn" style="font-size:var(--text-sm);padding:4px 12px;" id="tc-no">Отмена</button>' +
+        '<button class="btn btn-primary tc-confirm-yes" style="font-size:var(--text-sm);padding:4px 12px;">Да</button>' +
+        '<button class="btn tc-confirm-no" style="font-size:var(--text-sm);padding:4px 12px;">Отмена</button>' +
       '</div>' +
     '</div>' +
     '<div class="toast-progress"></div>';
 
   container.appendChild(el);
 
-  el.querySelector('#tc-yes').onclick = function() { dismissToast(el); onConfirm(); };
-  el.querySelector('#tc-no').onclick  = function() { dismissToast(el); };
+  el.querySelector('.tc-confirm-yes').onclick = function() { dismissToast(el); onConfirm(); };
+  el.querySelector('.tc-confirm-no').onclick  = function() { dismissToast(el); };
 
   let timer = setTimeout(function() { dismissToast(el); }, 10000);
   el._timer = timer;
@@ -13134,13 +13204,13 @@ function cmdRender(query) {
     html += '<div class="cmd-group-label">' + esc(g) + '</div>';
     groups[g].forEach(function(a, i) {
       let globalIdx = cmdFiltered.indexOf(a);
-      html += '<div class="cmd-item' + (globalIdx === cmdIdx ? ' active' : '') + '" data-idx="' + globalIdx + '" data-action="cmd-exec" data-idx="' + globalIdx + '" onmouseenter="cmdHover(' + globalIdx + ')">' +
+      html += '<div class="cmd-item' + (globalIdx === cmdIdx ? ' active' : '') + '" data-idx="' + globalIdx + '" data-action="cmd-exec" onmouseenter="cmdHover(' + globalIdx + ')">' +
         '<span class="cmd-item-icon">' + (a.icon || '') + '</span>' +
         '<span class="cmd-item-label">' + esc(a.label) +
           (a.sub ? '<div class="cmd-item-sub">' + esc(a.sub) + '</div>' : '') +
         '</span>' +
         (a.type ? '<span class="cmd-item-type">' + esc(a.type) + '</span>' : '') +
-        (a.hint ? '<span class="cmd-item-hint">' + a.hint + '</span>' : '') +
+        (a.hint ? '<span class="cmd-item-hint">' + esc(a.hint) + '</span>' : '') +
       '</div>';
     });
   });
