@@ -1,5 +1,6 @@
 /* Module: modules/prospects.js — Проработка, контакты проектов, INIT, тема */
 
+/* ═══════════════════════════════════════════
    ПРОРАБОТКА — виджет, читающий данные кампании
    из localStorage ключа calls-campaign-v1.
    Паттерн: Cross-File Data Bridge.
